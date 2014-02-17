@@ -1,0 +1,33 @@
+{
+    "name":        "bab/swarrot",
+    "description": "A simple lib to consume RabbitMQ queues",
+    "keywords": ["amqp","worker"],
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Olivier Dolbeau",
+            "homepage": "http://odolbeau.fr/"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.3",
+        "ext-amqp": "*"
+    },
+    "require-dev": {
+        "phpspec/phpspec": "2.0.*@dev"
+    },
+    "config": {
+        "bin-dir": "bin"
+    },
+    "autoload": {
+        "psr-0": {
+            "Swarrot": "src"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0.x-dev"
+        }
+    }
+}
