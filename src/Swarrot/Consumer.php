@@ -2,13 +2,17 @@
 
 namespace Swarrot;
 
+use Swarrot\AMQP\MessageProviderInterface;
+use Swarrot\AMQP\Message;
+use Swarrot\ParameterBag;
+
 class Consumer
 {
-    protected $queue;
+    protected $messageProvider;
 
-    public function __construct(\AMQPQueue $queue)
+    public function __construct(MessageProviderInterface $messageProvider)
     {
-        $this->queue = $queue;
+        $this->messageProvider = $messageProvider;
     }
 
     /**
@@ -16,33 +20,32 @@ class Consumer
      *
      * @param callable     $processor The processor to call
      * @param ParameterBag $bag       Parameters sent to the processor
-     * @param int          $flags     Some Rabbit flags if needed
      *
      * @return void
      */
-    public function consume($processor, ParameterBag $bag = null, $flags = AMQP_NOPARAM)
+    public function consume($processor, ParameterBag $bag = null)
     {
         if (null === $bag) {
             $bag = new ParameterBag();
         }
 
         if ($processor instanceof InitializableInterface) {
-            $processor->initialize($this->queue, $bag);
+            $processor->initialize($bag);
         }
 
         $continue = true;
         while ($continue) {
-            $envelope = $this->queue->get($flags);
+            $message = $this->messageProvider->get();
 
-            if (!$envelope) {
-                usleep($bag->get('poll_interval', 50000));
+            if (null !== $message) {
+                $continue = $processor($message, $bag);
             } else {
-                $continue = $processor($envelope, $this->queue, $bag);
+                usleep($bag->get('poll_interval', 50000));
             }
         }
 
         if ($processor instanceof TerminableInterface) {
-            $processor->terminate($this->queue, $bag);
+            $processor->terminate($bag);
         }
     }
 
