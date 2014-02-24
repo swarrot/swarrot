@@ -12,9 +12,9 @@ use Prophecy\Argument;
 
 class StackedProcessorSpec extends ObjectBehavior
 {
-    function it_is_initializable(InitializableProcessor $p1, TerminableProcessor $p2)
+    function it_is_initializable(ProcessorInterface $p1, InitializableProcessor $p2, TerminableProcessor $p3)
     {
-        $this->beConstructedWith(array($p1, $p2));
+        $this->beConstructedWith($p1, array($p2, $p3));
         $this->shouldHaveType('Swarrot\Processor\Stack\StackedProcessor');
     }
 }
