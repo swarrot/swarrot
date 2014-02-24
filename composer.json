@@ -1,0 +1,34 @@
+{
+    "name": "swarrot/ack-processor",
+    "description": "A swarrot processor for ack or nack messages",
+    "keywords": ["swarrot","processor"],
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Olivier Dolbeau",
+            "homepage": "http://odolbeau.fr/"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.3",
+        "swarrot/swarrot": "dev-master",
+        "psr/log": "~1.0"
+    },
+    "require-dev": {
+        "phpspec/phpspec": "2.0.*@dev"
+    },
+    "config": {
+        "bin-dir": "bin"
+    },
+    "autoload": {
+        "psr-0": {
+            "Swarrot": "src"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0.x-dev"
+        }
+    }
+}
