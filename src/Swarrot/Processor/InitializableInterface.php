@@ -2,16 +2,14 @@
 
 namespace Swarrot\Processor;
 
-use Swarrot\ParameterBag;
-
 interface InitializableInterface
 {
     /**
      * initialize
      *
-     * @param ParameterBag $bag
+     * @param array $options
      *
      * @return void
      */
-    public function initialize(ParameterBag $bag);
+    public function initialize(array $options);
 }

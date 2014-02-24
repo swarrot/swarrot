@@ -4,49 +4,53 @@ namespace Swarrot;
 
 use Swarrot\AMQP\MessageProviderInterface;
 use Swarrot\AMQP\Message;
-use Swarrot\ParameterBag;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class Consumer
 {
     protected $messageProvider;
+    protected $optionsResolver;
 
-    public function __construct(MessageProviderInterface $messageProvider)
+    public function __construct(MessageProviderInterface $messageProvider, OptionsResolverInterface $optionsResolver = null)
     {
         $this->messageProvider = $messageProvider;
+
+        if (null === $optionsResolver) {
+            $optionsResolver = new OptionsResolver();
+        }
+        $this->optionsResolver = $optionsResolver;
     }
 
     /**
      * consume
      *
-     * @param callable     $processor The processor to call
-     * @param ParameterBag $bag       Parameters sent to the processor
+     * @param callable $processor The processor to call
+     * @param array    $options   Parameters sent to the processor
      *
      * @return void
      */
-    public function consume($processor, ParameterBag $bag = null)
+    public function consume($processor, array $options = null)
     {
-        if (null === $bag) {
-            $bag = new ParameterBag();
-        }
+        $this->optionsResolver->setDefault('poll_interval', 50000);
 
-        if ($processor instanceof InitializableInterface) {
-            $processor->initialize($bag);
-        }
+        $this->getDefaultOptions($this->optionsResolver);
+
+        $options = $this->optionsResolver->resolve($options);
 
         $continue = true;
         while ($continue) {
             $message = $this->messageProvider->get();
 
             if (null !== $message) {
-                $continue = $processor($message, $bag);
+                $continue = $processor($message, $options);
             } else {
-                usleep($bag->get('poll_interval', 50000));
+                usleep($options['poll_interval']);
             }
         }
 
         if ($processor instanceof TerminableInterface) {
-            $processor->terminate($bag);
+            $processor->terminate($options);
         }
     }
-
 }

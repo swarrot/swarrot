@@ -5,7 +5,6 @@ namespace spec\Swarrot\Processor\Stack;
 use Swarrot\Processor\InitializableInterface;
 use Swarrot\Processor\TerminableInterface;
 use Swarrot\Processor\ProcessorInterface;
-use Swarrot\ParameterBag;
 use Swarrot\AMQP\Message;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -20,9 +19,9 @@ class StackedProcessorSpec extends ObjectBehavior
 }
 
 class InitializableProcessor implements InitializableInterface {
-    public function initialize(ParameterBag $bag) {}
+    public function initialize(array $options) {}
 }
 
 class TerminableProcessor implements TerminableInterface {
-    public function terminate(ParameterBag $bag) {}
+    public function terminate(array $options) {}
 }

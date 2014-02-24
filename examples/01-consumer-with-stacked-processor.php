@@ -5,7 +5,6 @@ require_once __DIR__ . '/../vendor/autoload.php';
 use Swarrot\Consumer;
 use Swarrot\AMQP\PeclPackageMessageProvider;
 use Swarrot\AMQP\Message;
-use Swarrot\ParameterBag;
 use Swarrot\Processor\ProcessorInterface;
 
 class Processor implements ProcessorInterface {
@@ -15,12 +14,12 @@ class Processor implements ProcessorInterface {
         $this->processor = $processor;
         $this->num       = (int) $num;
     }
-    public function __invoke(Message $message, ParameterBag $bag)
+    public function __invoke(Message $message, array $options)
     {
         echo sprintf("Start processing message #%d in processor #%d\n", $message->getId(), $this->num);
         $return = call_user_func_array(
             $this->processor,
-            array($message, $bag)
+            array($message, $options)
         );
         echo sprintf("End processing message #%d in processor #%d\n", $message->getId(), $this->num);
 
@@ -40,7 +39,7 @@ $stack = (new \Swarrot\Processor\Stack\Builder())
     ->push('Processor', 1)
     ->push('Processor', 2)
 ;
-$processor = $stack->resolve(function(Message $message, ParameterBag $bag) {
+$processor = $stack->resolve(function(Message $message, array $options) {
     echo sprintf("Processing message #%d in callback.\n", $message->getId());
 });
 

@@ -5,7 +5,6 @@ require_once __DIR__ . '/../vendor/autoload.php';
 use Swarrot\Consumer;
 use Swarrot\AMQP\PeclPackageMessageProvider;
 use Swarrot\AMQP\Message;
-use Swarrot\ParameterBag;
 
 $connection = new \AMQPConnection();
 $connection->connect();
@@ -16,7 +15,7 @@ $queue->setName('global');
 $messageProvider = new PeclPackageMessageProvider($queue);
 
 $consumer = new Consumer($messageProvider);
-$consumer->consume(function (Message $message, ParameterBag $bag) {
+$consumer->consume(function (Message $message, array $options) {
     echo sprintf("Consume message #%d\n", $message->getId());
 
     return true;

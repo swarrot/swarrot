@@ -2,16 +2,14 @@
 
 namespace Swarrot\Processor;
 
-use Swarrot\ParameterBag;
-
 interface TerminableInterface
 {
     /**
      * terminate
      *
-     * @param ParameterBag $bag
+     * @param array $options
      *
      * @return void
      */
-    public function terminate(ParameterBag $bag);
+    public function terminate(array $options);
 }

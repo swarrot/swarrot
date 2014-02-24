@@ -2,7 +2,6 @@
 
 namespace Swarrot\Processor;
 
-use Swarrot\ParameterBag;
 use Swarrot\AMQP\Message;
 
 interface ProcessorInterface
@@ -10,10 +9,10 @@ interface ProcessorInterface
     /**
      * __invoke
      *
-     * @param Message      $message The message given by a MessageProvider
-     * @param ParameterBag $bag     The bag containing all parameters
+     * @param Message $message The message given by a MessageProvider
+     * @param array   $options An array containing all parameters
      *
      * @return boolean
      */
-    public function __invoke(Message $message, ParameterBag $bag);
+    public function __invoke(Message $message, array $options);
 }
