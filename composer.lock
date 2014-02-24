@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "f043132f9d38153115bd44edc03c49b6",
+    "hash": "a62c05ab8855bbc2f8eae2012c10e1b5",
     "packages": [
         {
             "name": "symfony/options-resolver",

@@ -1,7 +1,7 @@
 {
-    "name":        "bab/swarrot",
+    "name":        "swarrot/swarrot",
     "description": "A simple lib to consume RabbitMQ queues",
-    "keywords": ["amqp","worker"],
+    "keywords": ["swarrot","worker"],
     "type": "library",
     "license": "MIT",
     "authors": [
