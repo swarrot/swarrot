@@ -23,4 +23,20 @@ class PeclPackageMessageProvider implements MessageProviderInterface
 
         return new Message($envelope->getDeliveryTag(), $envelope->getBody(), $envelope->getHeaders());
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function ack(Message $message)
+    {
+        $this->queue->ack($message->getId());
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function nack(Message $message)
+    {
+        $this->queue->nack($message->getId());
+    }
 }
