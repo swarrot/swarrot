@@ -32,9 +32,9 @@ class Consumer
      */
     public function consume($processor, array $options = null)
     {
-        $this->optionsResolver->setDefault('poll_interval', 50000);
-
-        $this->getDefaultOptions($this->optionsResolver);
+        $this->optionsResolver->setDefaults(array(
+            'poll_interval' => 50000
+        ));
 
         $options = $this->optionsResolver->resolve($options);
 
@@ -43,7 +43,8 @@ class Consumer
             $message = $this->messageProvider->get();
 
             if (null !== $message) {
-                $continue = $processor($message, $options);
+                $return = $processor($message, $options);
+                $continue = false !== $return;
             } else {
                 usleep($options['poll_interval']);
             }
