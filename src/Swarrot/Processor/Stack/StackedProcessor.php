@@ -6,7 +6,7 @@ use Swarrot\Processor\ConfigurableInterface;
 use Swarrot\Processor\InitializableInterface;
 use Swarrot\Processor\TerminableInterface;
 use Swarrot\Processor\ProcessorInterface;
-use Swarrot\AMQP\Message;
+use Swarrot\Broker\Message;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class StackedProcessor implements ConfigurableInterface, InitializableInterface, TerminableInterface, ProcessorInterface

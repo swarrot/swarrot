@@ -3,8 +3,8 @@
 require_once __DIR__ . '/../vendor/autoload.php';
 
 use Swarrot\Consumer;
-use Swarrot\AMQP\PeclPackageMessageProvider;
-use Swarrot\AMQP\Message;
+use Swarrot\Broker\PeclPackageMessageProvider;
+use Swarrot\Broker\Message;
 
 $connection = new \AMQPConnection();
 $connection->connect();

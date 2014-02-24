@@ -5,7 +5,7 @@ namespace spec\Swarrot\Processor\Stack;
 use Swarrot\Processor\InitializableInterface;
 use Swarrot\Processor\TerminableInterface;
 use Swarrot\Processor\ProcessorInterface;
-use Swarrot\AMQP\Message;
+use Swarrot\Broker\Message;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
 

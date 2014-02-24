@@ -12,7 +12,6 @@
     ],
     "require": {
         "php": ">=5.3.3",
-        "ext-amqp": "*",
         "symfony/options-resolver": "~2.4"
     },
     "require-dev": {

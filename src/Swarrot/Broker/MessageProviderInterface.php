@@ -1,6 +1,6 @@
 <?php
 
-namespace Swarrot\AMQP;
+namespace Swarrot\Broker;
 
 interface MessageProviderInterface
 {

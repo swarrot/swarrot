@@ -2,8 +2,8 @@
 
 namespace Swarrot;
 
-use Swarrot\AMQP\MessageProviderInterface;
-use Swarrot\AMQP\Message;
+use Swarrot\Broker\MessageProviderInterface;
+use Swarrot\Broker\Message;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 

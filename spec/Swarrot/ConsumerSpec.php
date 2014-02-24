@@ -4,7 +4,7 @@ namespace spec\Swarrot;
 
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
-use Swarrot\AMQP\MessageProviderInterface;
+use Swarrot\Broker\MessageProviderInterface;
 use Swarrot\Processor\ProcessorInterface;
 
 class ConsumerSpec extends ObjectBehavior

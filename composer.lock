@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "a62c05ab8855bbc2f8eae2012c10e1b5",
+    "hash": "d4f1d4ddb54fcaad3854b64ef0909d32",
     "packages": [
         {
             "name": "symfony/options-resolver",
@@ -439,8 +439,7 @@
         "phpspec/phpspec": 20
     },
     "platform": {
-        "php": ">=5.3.3",
-        "ext-amqp": "*"
+        "php": ">=5.3.3"
     },
     "platform-dev": [
 
