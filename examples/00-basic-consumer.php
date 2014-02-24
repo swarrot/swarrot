@@ -14,9 +14,9 @@ $queue->setName('global');
 
 $messageProvider = new PeclPackageMessageProvider($queue);
 
-$consumer = new Consumer($messageProvider);
-$consumer->consume(function (Message $message, array $options) {
+$consumer = new Consumer($messageProvider, function (Message $message, array $options) {
     echo sprintf("Consume message #%d\n", $message->getId());
 
     return true;
 });
+$consumer->consume();

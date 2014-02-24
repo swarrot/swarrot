@@ -43,5 +43,5 @@ $processor = $stack->resolve(function(Message $message, array $options) {
     echo sprintf("Processing message #%d in callback.\n", $message->getId());
 });
 
-$consumer = new Consumer($messageProvider);
-$consumer->consume($processor);
+$consumer = new Consumer($messageProvider, $processor);
+$consumer->consume();
