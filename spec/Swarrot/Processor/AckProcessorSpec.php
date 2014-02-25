@@ -48,6 +48,6 @@ class AckProcessorSpec extends ObjectBehavior
         )->willThrow(new \Exception());
 
         $this->beConstructedWith($this->processor, $this->messageProvider, $this->logger);
-        $this->__invoke($message, array())->shouldReturn(false);
+        $this->__invoke($message, array())->shouldReturn(null);
     }
 }
