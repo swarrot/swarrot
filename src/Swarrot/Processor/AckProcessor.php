@@ -45,8 +45,6 @@ class AckProcessor implements ProcessorInterface
                     $e->getMessage()
                 ));
             }
-
-            return false;
         }
     }
 }
