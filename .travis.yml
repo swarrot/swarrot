@@ -10,4 +10,4 @@ script: bin/phpspec run
 
 notifications:
   email:
-    - olivier.dolbeau@blablacar.com
+    - odolbeau@gmail.com
