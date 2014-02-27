@@ -27,3 +27,7 @@ page to choose a stable version to use, avoid the `@stable` meta constraint.
 ## Usage
 
 See [swarrot documentation](https://github.com/swarrot/swarrot).
+
+## License
+
+hateoas is released under the MIT License. See the bundled LICENSE file for details.
