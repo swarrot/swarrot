@@ -30,4 +30,4 @@ See [swarrot documentation](https://github.com/swarrot/swarrot).
 
 ## License
 
-hateoas is released under the MIT License. See the bundled LICENSE file for details.
+AckProcessor is released under the MIT License. See the bundled LICENSE file for details.
