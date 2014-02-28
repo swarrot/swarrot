@@ -43,15 +43,13 @@ class InstantRetryProcessorSpec extends ObjectBehavior
 
     function it_should_throw_an_exception_after_consecutive_failed(Message $message)
     {
-        $exception = new \Exception('toto');
-
-        $this->processor->__call('__invoke', array(
+        $this->processor->__invoke(
             Argument::type('Swarrot\Broker\Message'),
             Argument::exact(array(
                 'instant_retry_attempts' => 3,
                 'instant_retry_delay' => 1000
             ))
-        ))
+        )
         ->shouldBeCalledTimes(3)
         ->willThrow('\Exception');
 
