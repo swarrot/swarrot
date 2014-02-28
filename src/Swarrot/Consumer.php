@@ -6,6 +6,9 @@ use Swarrot\Broker\MessageProviderInterface;
 use Swarrot\Broker\Message;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Swarrot\Processor\ConfigurableInterface;
+use Swarrot\Processor\InitializableInterface;
+use Swarrot\Processor\TerminableInterface;
 
 class Consumer
 {
@@ -37,12 +40,16 @@ class Consumer
             'poll_interval' => 50000
         ));
 
-        $options = $this->optionsResolver->resolve($options);
-
         $processor = $this->processor;
 
+        if ($processor instanceof ConfigurableInterface) {
+            $processor->setDefaultOptions($this->optionsResolver);
+        }
+
+        $options = $this->optionsResolver->resolve($options);
+
         if ($processor instanceof InitializableInterface) {
-            $processor->initialize($this->optionsResolver);
+            $processor->initialize($options);
         }
 
         $continue = true;

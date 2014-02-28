@@ -20,8 +20,10 @@ class StackedProcessorSpec extends ObjectBehavior
 
 class InitializableProcessor implements InitializableInterface {
     public function initialize(array $options) {}
+    public function __invoke(Message $message, array $options) {}
 }
 
 class TerminableProcessor implements TerminableInterface {
     public function terminate(array $options) {}
+    public function __invoke(Message $message, array $options) {}
 }

@@ -5,11 +5,10 @@ namespace Swarrot\Processor\Stack;
 use Swarrot\Processor\ConfigurableInterface;
 use Swarrot\Processor\InitializableInterface;
 use Swarrot\Processor\TerminableInterface;
-use Swarrot\Processor\ProcessorInterface;
 use Swarrot\Broker\Message;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class StackedProcessor implements ConfigurableInterface, InitializableInterface, TerminableInterface, ProcessorInterface
+class StackedProcessor implements ConfigurableInterface, InitializableInterface, TerminableInterface
 {
     protected $processor;
     protected $middlewares;
@@ -31,7 +30,7 @@ class StackedProcessor implements ConfigurableInterface, InitializableInterface,
     {
         foreach ($this->middlewares as $middleware) {
             if ($middleware instanceof ConfigurableInterface) {
-                $middleware->initialize($resolver);
+                $middleware->setDefaultOptions($resolver);
             }
         }
     }

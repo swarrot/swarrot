@@ -4,7 +4,7 @@ namespace Swarrot\Processor;
 
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-interface ConfigurableInterface
+interface ConfigurableInterface extends ProcessorInterface
 {
     /**
      * setDefaultOptions

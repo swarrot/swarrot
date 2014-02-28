@@ -2,7 +2,7 @@
 
 namespace Swarrot\Processor;
 
-interface InitializableInterface
+interface InitializableInterface extends ProcessorInterface
 {
     /**
      * initialize
