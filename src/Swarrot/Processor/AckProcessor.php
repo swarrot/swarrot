@@ -37,7 +37,7 @@ class AckProcessor implements ConfigurableInterface
                 ));
             }
         } catch (\Exception $e) {
-            $requeue = isset($options['requeue-on-error'])? (boolean) $options['requeue-on-error'] : false;
+            $requeue = isset($options['requeue_on_error'])? (boolean) $options['requeue_on_error'] : false;
             $this->messageProvider->nack($message, $requeue);
 
             if (null !== $this->logger) {
@@ -58,11 +58,11 @@ class AckProcessor implements ConfigurableInterface
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'requeue-on-error' => false
+            'requeue_on_error' => false
         ));
 
         $resolver->setAllowedValues(array(
-            'requeue-on-error' => array(true, false),
+            'requeue_on_error' => array(true, false),
         ));
     }
 }

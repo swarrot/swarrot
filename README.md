@@ -32,7 +32,7 @@ See [swarrot documentation](https://github.com/swarrot/swarrot).
 
 |Key             |Default|Description                                            |
 |:--------------:|:-----:|-------------------------------------------------------|
-|requeue-on-error|false  |If true, the message will be requeued in the same queue|
+|requeue_on_error|false  |If true, the message will be requeued in the same queue|
 
 ## License
 

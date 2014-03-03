@@ -77,12 +77,12 @@ class AckProcessorTest extends \PHPUnit_Framework_TestCase
 
         $message = new Message(1, 'body');
 
-        $processor->__invoke(Argument::exact($message), Argument::exact(array('requeue-on-error' => true)))->willThrow('\BadMethodCallException');
+        $processor->__invoke(Argument::exact($message), Argument::exact(array('requeue_on_error' => true)))->willThrow('\BadMethodCallException');
         $messageProvider->nack(Argument::exact($message), Argument::exact(true))->willReturn(null);
 
         $processor = new AckProcessor($processor->reveal(), $messageProvider->reveal(), $logger->reveal());
 
         $this->setExpectedException('\BadMethodCallException');
-        $this->assertNull($processor->__invoke($message, array('requeue-on-error' => true)));
+        $this->assertNull($processor->__invoke($message, array('requeue_on_error' => true)));
     }
 }
