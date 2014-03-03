@@ -24,7 +24,7 @@ class SignalHandlerProcessor implements InitializableInterface, ConfigurableInte
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefault(array(
+        $resolver->setDefaults(array(
             'signal_handler_signals' => array(SIGTERM, SIGINT, SIGQUIT)
         ));
     }
@@ -40,7 +40,7 @@ class SignalHandlerProcessor implements InitializableInterface, ConfigurableInte
 
         $signals = isset($options['signal_handler_signals']) ? $options['signal_handler_signals'] : array();
         foreach ($signals as $signal) {
-            pcntl_signal($signal, function ($signal) {
+            pcntl_signal($signal, function () {
                 SignalHandlerProcessor::$shouldExit = true;
             });
         }
