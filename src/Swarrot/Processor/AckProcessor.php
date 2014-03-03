@@ -6,8 +6,9 @@ use Swarrot\Processor\ProcessorInterface;
 use Swarrot\Broker\MessageProviderInterface;
 use Swarrot\Broker\Message;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class AckProcessor implements ProcessorInterface
+class AckProcessor implements ConfigurableInterface
 {
     protected $processor;
     protected $logger;
@@ -36,7 +37,8 @@ class AckProcessor implements ProcessorInterface
                 ));
             }
         } catch (\Exception $e) {
-            $this->messageProvider->nack($message);
+            $requeue = isset($options['requeue-on-error'])? (boolean) $options['requeue-on-error'] : false;
+            $this->messageProvider->nack($message, $requeue);
 
             if (null !== $this->logger) {
                 $this->logger->warning(sprintf(
@@ -45,6 +47,22 @@ class AckProcessor implements ProcessorInterface
                     $e->getMessage()
                 ));
             }
+
+            throw $e;
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setDefaults(array(
+            'requeue-on-error' => false
+        ));
+
+        $resolver->setAllowedValues(array(
+            'requeue-on-error' => array(true, false),
+        ));
     }
 }
