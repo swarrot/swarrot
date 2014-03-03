@@ -28,6 +28,12 @@ page to choose a stable version to use, avoid the `@stable` meta constraint.
 
 See [swarrot documentation](https://github.com/swarrot/swarrot).
 
+## Configuration
+
+|Key             |Default|
+|:--------------:|:-----:|
+|requeue-on-error|false  |
+
 ## License
 
 AckProcessor is released under the MIT License. See the bundled LICENSE file for details.
