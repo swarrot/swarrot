@@ -1,6 +1,6 @@
 {
-    "name": "swarrot/instant-retry-processor",
-    "description": "A swarrot processor for immediately recall processor when an error append",
+    "name": "swarrot/exception-catcher-processor",
+    "description": "A swarrot processor to catch exception and avoid the consumer to stop",
     "keywords": ["swarrot","processor"],
     "type": "library",
     "license": "MIT",
