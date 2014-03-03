@@ -49,12 +49,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/swarrot/swarrot.git",
-                "reference": "da5ace48b6ca11b0fcaeba69bb084e3aac7845e5"
+                "reference": "0d4e64cf6ad5e83646410995bc8345de0499fb28"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/swarrot/swarrot/zipball/da5ace48b6ca11b0fcaeba69bb084e3aac7845e5",
-                "reference": "da5ace48b6ca11b0fcaeba69bb084e3aac7845e5",
+                "url": "https://api.github.com/repos/swarrot/swarrot/zipball/0d4e64cf6ad5e83646410995bc8345de0499fb28",
+                "reference": "0d4e64cf6ad5e83646410995bc8345de0499fb28",
                 "shasum": ""
             },
             "require": {
@@ -90,7 +90,7 @@
                 "swarrot",
                 "worker"
             ],
-            "time": "2014-02-24 23:10:35"
+            "time": "2014-02-28 17:14:40"
         },
         {
             "name": "symfony/options-resolver",
