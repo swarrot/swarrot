@@ -1,0 +1,74 @@
+<?php
+
+namespace Swarrot\Processor;
+
+use Swarrot\Broker\Message;
+use Psr\Log\LoggerInterface;
+use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+
+class SignalHandlerProcessor implements InitializableInterface, ConfigurableInterface
+{
+    static protected $shouldExit = false;
+
+    protected $processor;
+    protected $logger;
+
+    public function __construct(ProcessorInterface $processor, LoggerInterface $logger = null)
+    {
+        $this->processor = $processor;
+        $this->logger    = $logger;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    {
+        $resolver->setDefault(array(
+            'signal_handler_signals' => array(SIGTERM, SIGINT, SIGQUIT)
+        ));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function initialize(array $options)
+    {
+        if (!extension_loaded('pcntl')) {
+            return;
+        }
+
+        $signals = isset($options['signal_handler_signals']) ? $options['signal_handler_signals'] : array();
+        foreach ($signals as $signal) {
+            pcntl_signal($signal, function ($signal) {
+                SignalHandlerProcessor::$shouldExit = true;
+            });
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function __invoke(Message $message, array $options)
+    {
+        $processor = $this->processor;
+        $return = $processor($message, $options);
+
+        if (!extension_loaded('pcntl')) {
+            return $return;
+        }
+
+        pcntl_signal_dispatch();
+
+        $signals = isset($options['signal_handler_signals']) ? $options['signal_handler_signals'] : array();
+        foreach ($signals as $signal) {
+            pcntl_signal($signal, SIG_DFL);
+        }
+
+        if ($this::$shouldExit) {
+            return false;
+        }
+
+        return $return;
+    }
+}
