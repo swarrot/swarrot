@@ -1,6 +1,7 @@
 # ExceptionCatcherProcessor
 
 [![Build Status](https://travis-ci.org/swarrot/exception-catcher-processor.png)](https://travis-ci.org/swarrot/exception-catcher-processor)
+[![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/swarrot/exception-catcher-processor/badges/quality-score.png?s=38d6342994453aa63ae9358b967654325239647a)](https://scrutinizer-ci.com/g/swarrot/exception-catcher-processor/)
 
 ExceptionCatcherProcessor is a [swarrot](https://github.com/swarrot/swarrot) processor.
 Is goal is to catch all exceptions to avoid stopping the worker.
