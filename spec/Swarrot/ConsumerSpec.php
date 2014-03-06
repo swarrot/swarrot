@@ -9,6 +9,7 @@ use Swarrot\Processor\ProcessorInterface;
 use Swarrot\Processor\ConfigurableInterface;
 use Swarrot\Processor\InitializableInterface;
 use Swarrot\Processor\TerminableInterface;
+use Swarrot\Processor\SleepyInterface;
 use Swarrot\Broker\Message;
 
 class ConsumerSpec extends ObjectBehavior
@@ -66,6 +67,20 @@ class ConsumerSpec extends ObjectBehavior
     {
         $provider->get()->willReturn($message);
         $processor->terminate(Argument::type('array'))->willReturn(null);
+        $processor->__invoke(
+            Argument::type('Swarrot\Broker\Message'),
+            Argument::type('array')
+        )->willReturn(false);
+
+        $this->beConstructedWith($provider, $processor);
+
+        $this->consume()->shouldReturn(null);
+    }
+
+    function it_call_processor_if_its_Sleepy(MessageProviderInterface $provider, SleepyInterface $processor, Message $message)
+    {
+        $provider->get()->willReturn($message);
+        $processor->sleep(Argument::type('array'))->willReturn(null);
         $processor->__invoke(
             Argument::type('Swarrot\Broker\Message'),
             Argument::type('array')

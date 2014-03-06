@@ -5,6 +5,7 @@ namespace spec\Swarrot\Processor\Stack;
 use Swarrot\Processor\InitializableInterface;
 use Swarrot\Processor\TerminableInterface;
 use Swarrot\Processor\ProcessorInterface;
+use Swarrot\Processor\SleepyInterface;
 use Swarrot\Broker\Message;
 use PhpSpec\ObjectBehavior;
 use Prophecy\Argument;
@@ -25,5 +26,10 @@ class InitializableProcessor implements InitializableInterface {
 
 class TerminableProcessor implements TerminableInterface {
     public function terminate(array $options) {}
+    public function __invoke(Message $message, array $options) {}
+}
+
+class SleepyProcessor implements SleepyInterface {
+    public function sleep(array $options) {}
     public function __invoke(Message $message, array $options) {}
 }
