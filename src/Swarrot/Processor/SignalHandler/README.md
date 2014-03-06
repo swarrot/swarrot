@@ -1,8 +1,5 @@
 # SignalHandlerProcessor
 
-[![Build Status](https://travis-ci.org/swarrot/signal-handler-processor.png)](https://travis-ci.org/swarrot/signal-handler-processor)
-[![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/swarrot/signal-handler-processor/badges/quality-score.png?s=1bd19642ab68676817790d292026a200f464db2b)](https://scrutinizer-ci.com/g/swarrot/signal-handler-processor/)
-
 SignalHandlerProcessor is a [swarrot](https://github.com/swarrot/swarrot) processor.
 Is goal is to handle signals to avoid the worker to stop during processing.
 

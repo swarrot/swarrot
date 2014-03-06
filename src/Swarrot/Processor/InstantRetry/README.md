@@ -1,8 +1,5 @@
 # InstantRetryProcessor
 
-[![Build Status](https://travis-ci.org/swarrot/instant-retry-processor.png)](https://travis-ci.org/swarrot/instant-retry-processor)
-[![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/swarrot/instant-retry-processor/badges/quality-score.png?s=91ff54b237a9edc7c23d4c9d5a0413c2f39da876)](https://scrutinizer-ci.com/g/swarrot/instant-retry-processor/)
-
 InstantRetryProcessor is a [swarrot](https://github.com/swarrot/swarrot) processor.
 Its goal is to recall the processor when an error occured.
 

@@ -104,6 +104,7 @@ Builder like this:
 * [AckProcessor](https://github.com/swarrot/ack-processor)
 * [ExceptionCatcherProcessor](https://github.com/swarrot/exception-catcher-processor)
 * [InstantRetryProcessor](https://github.com/swarrot/instant-retry-processor)
+* [MaxExecutionTimeProcessor](https://github.com/swarrot/max-execution-time-processor) (thanks to [Remy Lemeunier](https://github.com/remyLemeunier))
 * [MaxMessagesProcessor](https://github.com/swarrot/max-messages-processor) (thanks to [Remy Lemeunier](https://github.com/remyLemeunier))
 * [SignalHandlerProcessor](https://github.com/swarrot/signal-handler-processor)
 
