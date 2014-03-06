@@ -63,8 +63,8 @@ class AckProcessor implements ConfigurableInterface
             'requeue_on_error' => false
         ));
 
-        $resolver->setAllowedValues(array(
-            'requeue_on_error' => array(true, false),
+        $resolver->setAllowedTypes(array(
+            'requeue_on_error' => 'boolean',
         ));
     }
 }
