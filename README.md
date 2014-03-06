@@ -137,6 +137,10 @@ $processor = $stack->resolve(new Processor());
 
 ### Create your own processor
 
+To create your own processor and be able to use it with the StackProcessor, you
+just need to implement `ProcessorInterface` and to take another
+`ProcessorInterface` as first argument in constructor.
+
 ## Inspiration
 
 * [stackphp/builder](https://github.com/stackphp/builder)
