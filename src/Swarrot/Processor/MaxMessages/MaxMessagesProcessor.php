@@ -4,7 +4,6 @@ namespace Swarrot\Processor\MaxMessages;
 
 use Swarrot\Processor\ProcessorInterface;
 use Swarrot\Processor\ConfigurableInterface;
-use Swarrot\Broker\MessageProviderInterface;
 use Swarrot\Broker\Message;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -15,10 +14,9 @@ class MaxMessagesProcessor implements ConfigurableInterface
     protected $logger;
     protected $messagesProcessed = 0;
 
-    public function __construct(ProcessorInterface $processor, MessageProviderInterface $messageProvider, LoggerInterface $logger = null)
+    public function __construct(ProcessorInterface $processor, LoggerInterface $logger = null)
     {
         $this->processor       = $processor;
-        $this->messageProvider = $messageProvider;
         $this->logger          = $logger;
     }
 

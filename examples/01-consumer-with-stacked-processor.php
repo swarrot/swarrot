@@ -9,6 +9,7 @@ use Swarrot\Processor\ProcessorInterface;
 
 class Processor implements ProcessorInterface {
     protected $processor;
+    protected $num;
     public function __construct($processor, $num = 1)
     {
         $this->processor = $processor;

@@ -21,19 +21,17 @@ class MaxMessagesProcessorTest extends \PHPUnit_Framework_TestCase
     public function test_it_is_initializable_without_a_logger()
     {
         $processor = $this->prophet->prophesize('Swarrot\Processor\ProcessorInterface');
-        $messageProvider    = $this->prophet->prophesize('Swarrot\Broker\MessageProviderInterface');
 
-        $processor = new MaxMessagesProcessor($processor->reveal(), $messageProvider->reveal());
+        $processor = new MaxMessagesProcessor($processor->reveal());
         $this->assertInstanceOf('Swarrot\Processor\MaxMessages\MaxMessagesProcessor', $processor);
     }
 
     public function test_it_is_initializable_with_a_logger()
     {
         $processor = $this->prophet->prophesize('Swarrot\Processor\ProcessorInterface');
-        $messageProvider    = $this->prophet->prophesize('Swarrot\Broker\MessageProviderInterface');
-        $logger             = $this->prophet->prophesize('Psr\Log\LoggerInterface');
+        $logger    = $this->prophet->prophesize('Psr\Log\LoggerInterface');
 
-        $processor = new MaxMessagesProcessor($processor->reveal(), $messageProvider->reveal(), $logger->reveal());
+        $processor = new MaxMessagesProcessor($processor->reveal(), $logger->reveal());
         $this->assertInstanceOf('Swarrot\Processor\MaxMessages\MaxMessagesProcessor', $processor);
     }
 
@@ -49,7 +47,6 @@ class MaxMessagesProcessorTest extends \PHPUnit_Framework_TestCase
         )
         ->shouldBeCalledTimes(2);
 
-        $messageProvider    = $this->prophet->prophesize('Swarrot\Broker\MessageProviderInterface');
         $logger    = $this->prophet->prophesize('Psr\Log\LoggerInterface');
         $logger->debug(
             Argument::exact(sprintf('Max messages have been reached (%d)', $maxMessages))
@@ -59,7 +56,6 @@ class MaxMessagesProcessorTest extends \PHPUnit_Framework_TestCase
         $message = new Message(1, 'body');
         $processor = new MaxMessagesProcessor(
             $processor->reveal(),
-            $messageProvider->reveal(),
             $logger->reveal()
         );
 
