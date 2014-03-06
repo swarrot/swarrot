@@ -14,7 +14,7 @@
 
     <testsuites>
         <testsuite name="Swarrot Exception catcher processor test suite">
-            <directory>tests</directory>
+            <directory>Tests</directory>
         </testsuite>
     </testsuites>
 

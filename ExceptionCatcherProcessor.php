@@ -1,8 +1,9 @@
 <?php
 
-namespace Swarrot\Processor;
+namespace Swarrot\Processor\ExceptionCatcher;
 
 use Swarrot\Broker\Message;
+use Swarrot\Processor\ProcessorInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 

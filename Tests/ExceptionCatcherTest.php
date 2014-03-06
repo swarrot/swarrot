@@ -1,8 +1,8 @@
 <?php
 
-namespace Swarrot\Processor;
+namespace Swarrot\Processor\ExceptionCatcher;
 
-use Swarrot\Processor\ExceptionCatcher;
+use Swarrot\Processor\ExceptionCatcher\ExceptionCatcherProcessor;
 use Prophecy\Argument;
 use Swarrot\Broker\Message;
 
@@ -23,7 +23,7 @@ class ExceptionCatcherTest extends \PHPUnit_Framework_TestCase
         $processor       = $this->prophet->prophesize('Swarrot\Processor\ProcessorInterface');
 
         $processor = new ExceptionCatcherProcessor($processor->reveal());
-        $this->assertInstanceOf('Swarrot\Processor\ExceptionCatcherProcessor', $processor);
+        $this->assertInstanceOf('Swarrot\Processor\ExceptionCatcher\ExceptionCatcherProcessor', $processor);
     }
 
     public function test_it_is_initializable_with_a_logger()
@@ -32,7 +32,7 @@ class ExceptionCatcherTest extends \PHPUnit_Framework_TestCase
         $logger          = $this->prophet->prophesize('Psr\Log\LoggerInterface');
 
         $processor = new ExceptionCatcherProcessor($processor->reveal(), $logger->reveal());
-        $this->assertInstanceOf('Swarrot\Processor\ExceptionCatcherProcessor', $processor);
+        $this->assertInstanceOf('Swarrot\Processor\ExceptionCatcher\ExceptionCatcherProcessor', $processor);
     }
 
     public function test_it_should_return_void_when_no_exception_is_thrown()
