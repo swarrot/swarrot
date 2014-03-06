@@ -20,11 +20,7 @@ class Consumer
     {
         $this->messageProvider = $messageProvider;
         $this->processor       = $processor;
-
-        if (null === $optionsResolver) {
-            $optionsResolver = new OptionsResolver();
-        }
-        $this->optionsResolver = $optionsResolver;
+        $this->optionsResolver = $optionsResolver ?: new OptionsResolver();
     }
 
     /**
