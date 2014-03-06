@@ -1,0 +1,34 @@
+{
+    "name": "swarrot/max-messages-processor",
+    "description": "A swarrot processor for ack or nack messages",
+    "keywords": ["swarrot","processor"],
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Rémy Lemeunier"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.3",
+        "swarrot/swarrot": "dev-master",
+        "psr/log": "~1.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~3.7",
+        "phpspec/prophecy": "~1.1"
+    },
+    "config": {
+        "bin-dir": "bin"
+    },
+    "autoload": {
+        "psr-4": {
+            "Swarrot\\Processor\\MaxMessages\\": ""
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0.x-dev"
+        }
+    }
+}
