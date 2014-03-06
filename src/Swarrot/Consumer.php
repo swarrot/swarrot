@@ -48,16 +48,14 @@ class Consumer
             $processor->initialize($options);
         }
 
-        $continue = true;
-        while ($continue) {
-            $message = $this->messageProvider->get();
-
-            if (null !== $message) {
-                $return = $processor($message, $options);
-                $continue = false !== $return;
-            } else {
-                usleep($options['poll_interval']);
+        while (true) {
+            while (null !== $message = $this->messageProvider->get()) {
+                if (false === $processor($message, $options)) {
+                    break 2;
+                }
             }
+
+            usleep($options['poll_interval']);
         }
 
         if ($processor instanceof TerminableInterface) {
