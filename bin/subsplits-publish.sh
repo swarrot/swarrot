@@ -11,4 +11,5 @@ $GIT_SUBSPLIT update
 
 $GIT_SUBSPLIT publish "
     src/Swarrot/Processor/Ack:git@github.com:swarrot/ack-processor.git
+    src/Swarrot/Processor/MaxExecutionTime:git@github.com:swarrot/max-execution-time-processor.git
 " --heads=master
