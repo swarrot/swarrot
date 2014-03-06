@@ -1,6 +1,6 @@
 <?php
 
-namespace Swarrot\Processor\AckProcessor;
+namespace Swarrot\Processor\Ack;
 
 use Swarrot\Processor\ProcessorInterface;
 use Swarrot\Processor\ConfigurableInterface;

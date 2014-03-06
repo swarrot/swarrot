@@ -24,7 +24,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Swarrot\\Processor\\AckProcessor\\": ""
+            "Swarrot\\Processor\\Ack\\": ""
         }
     },
     "extra": {
