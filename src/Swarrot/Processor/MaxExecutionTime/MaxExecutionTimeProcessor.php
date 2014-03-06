@@ -3,7 +3,6 @@
 namespace Swarrot\Processor\MaxExecutionTime;
 
 use Swarrot\Processor\ProcessorInterface;
-use Swarrot\Broker\MessageProviderInterface;
 use Swarrot\Broker\Message;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -16,10 +15,9 @@ class MaxExecutionTimeProcessor implements ConfigurableInterface, InitializableI
     protected $logger;
     protected $startTime;
 
-    public function __construct(ProcessorInterface $processor, MessageProviderInterface $messageProvider, LoggerInterface $logger = null)
+    public function __construct(ProcessorInterface $processor, LoggerInterface $logger = null)
     {
         $this->processor       = $processor;
-        $this->messageProvider = $messageProvider;
         $this->logger          = $logger;
     }
 
