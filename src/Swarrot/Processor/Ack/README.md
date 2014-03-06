@@ -1,8 +1,5 @@
 # AckProcessor
 
-[![Build Status](https://travis-ci.org/swarrot/ack-processor.png)](https://travis-ci.org/swarrot/ack-processor)
-[![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/swarrot/ack-processor/badges/quality-score.png?s=cd91b26f160699f8452120a15df296975e5b7a64)](https://scrutinizer-ci.com/g/swarrot/ack-processor/)
-
 AckProcessor is a [swarrot](https://github.com/swarrot/swarrot) processor.
 Its goal is to ack (or NACK) messages when needed.
 
