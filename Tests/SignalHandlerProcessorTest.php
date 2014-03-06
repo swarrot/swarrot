@@ -1,6 +1,6 @@
 <?php
 
-namespace Swarrot\Processor;
+namespace Swarrot\Processor\SignalHandler;
 
 use Swarrot\Processor\ExceptionCatcher;
 use Prophecy\Argument;
@@ -23,7 +23,7 @@ class SignalHandlerProcessorTest extends \PHPUnit_Framework_TestCase
         $processor       = $this->prophet->prophesize('Swarrot\Processor\ProcessorInterface');
 
         $processor = new SignalHandlerProcessor($processor->reveal());
-        $this->assertInstanceOf('Swarrot\Processor\SignalHandlerProcessor', $processor);
+        $this->assertInstanceOf('Swarrot\Processor\SignalHandler\SignalHandlerProcessor', $processor);
     }
 
     public function test_it_is_initializable_with_a_logger()
@@ -32,7 +32,7 @@ class SignalHandlerProcessorTest extends \PHPUnit_Framework_TestCase
         $logger          = $this->prophet->prophesize('Psr\Log\LoggerInterface');
 
         $processor = new SignalHandlerProcessor($processor->reveal(), $logger->reveal());
-        $this->assertInstanceOf('Swarrot\Processor\SignalHandlerProcessor', $processor);
+        $this->assertInstanceOf('Swarrot\Processor\SignalHandler\SignalHandlerProcessor', $processor);
     }
 
     public function test_it_should_return_void_when_no_exception_is_thrown()

@@ -1,8 +1,11 @@
 <?php
 
-namespace Swarrot\Processor;
+namespace Swarrot\Processor\SignalHandler;
 
 use Swarrot\Broker\Message;
+use Swarrot\Processor\ProcessorInterface;
+use Swarrot\Processor\InitializableInterface;
+use Swarrot\Processor\ConfigurableInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
