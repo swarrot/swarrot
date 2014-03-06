@@ -9,6 +9,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Swarrot\Processor\ConfigurableInterface;
 use Swarrot\Processor\InitializableInterface;
 use Swarrot\Processor\TerminableInterface;
+use Swarrot\Processor\SleepyInterface;
 
 class Consumer
 {
@@ -52,6 +53,12 @@ class Consumer
             while (null !== $message = $this->messageProvider->get()) {
                 if (false === $processor($message, $options)) {
                     break 2;
+                }
+            }
+
+            if ($processor instanceof SleepyInterface) {
+                if (false === $processor->sleep($options)) {
+                    break;
                 }
             }
 
