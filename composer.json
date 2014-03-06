@@ -6,8 +6,7 @@
     "license": "MIT",
     "authors": [
         {
-            "name": "Olivier Dolbeau",
-            "homepage": "http://odolbeau.fr/"
+            "name": "Rémy Lemeunier"
         }
     ],
     "require": {

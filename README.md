@@ -1,6 +1,7 @@
 # MaxMessagesProcessor
 
 [![Build Status](https://travis-ci.org/swarrot/max-messages-processor.png)](https://travis-ci.org/swarrot/max-messages-processor)
+[![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/swarrot/max-messages-processor/badges/quality-score.png?s=80f945baeb7a954aed7be7c580c922a50dfbc704)](https://scrutinizer-ci.com/g/swarrot/max-messages-processor/)
 
 MaxMessagesProcessor is a [swarrot](https://github.com/swarrot/swarrot) processor.
 The goal of this processor is to stop when X messages have been processed.
