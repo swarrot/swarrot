@@ -39,7 +39,7 @@ $stack = (new \Swarrot\Processor\Stack\Builder())
     ->push('Processor', 1)
     ->push('Processor', 2)
 ;
-$processor = $stack->resolve(function(Message $message, array $options) {
+$processor = $stack->resolve(function(Message $message) {
     echo sprintf("Processing message #%d in callback.\n", $message->getId());
 });
 

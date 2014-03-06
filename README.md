@@ -1,6 +1,8 @@
-# AckProcessor
+# Swarrot
 
 [![Build Status](https://travis-ci.org/swarrot/swarrot.png)](https://travis-ci.org/swarrot/swarrot)
+[![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/swarrot/swarrot/badges/quality-score.png?s=2c759b6224c762fc30a902d661b5512596060753)](https://scrutinizer-ci.com/g/swarrot/swarrot/)
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/70007bd7-f9d8-460c-a35a-4e9fa1767ecb/big.png)](https://insight.sensiolabs.com/projects/70007bd7-f9d8-460c-a35a-4e9fa1767ecb)
 
 Swarrot is PHP library to consume messages from a broker.
 
@@ -48,7 +50,7 @@ stack](#using-a-stack)). For the example, let's use a simple callback:
 
     $processor = function (Message $message, array $options) {
         echo sprintf("Consume message #%d\n", $message->getId());
-    })
+    });
 
 You now have a `Swarrot\Broker\MessageProviderInterface` to retrieve messages
 and a Processor to process them. So, ask the `Swarrot\Consumer`to do it's job :
@@ -56,8 +58,56 @@ and a Processor to process them. So, ask the `Swarrot\Consumer`to do it's job :
     $consumer = new Consumer($messageProvider, $processor);
     $consumer->consume();
 
+### Decorate your processor
+
+Using the [built in processors](#official-processors) or by [creating your
+own](#create-your-own-processor), you can extend the bahavior of your
+processor. Let's imagine you want to catch exception during execution to avoid
+the consumer to stop in production environment, you can use the
+[ExceptionCatcherProcessor](https://github.com/swarrot/exception-catcher-processor)
+like this:
+
+    use Swarrot\Processor\ExceptionCatcherProcessor;
+
+    $myCallback = function (Message $message, array $options) {
+        echo sprintf("Consume message #%d\n", $message->getId());
+    });
+
+    $processor = new ExceptionCatcherProcessor($myCallback);
+
+Take a look at [this processor's
+code](https://github.com/swarrot/exception-catcher-processor/blob/master/src/Swarrot/Processor/ExceptionCatcherProcessor.php#L23).
+It just decorate your own processor with a try/catch block.
+
 ### Using a stack
 
+Heavily inspired by [stackphp/builder](https://github.com/stackphp/builder) you
+can use `Swarrot\Processor\Stack\Builder` to stack your processors.
+Because it can be annoying to chain all you're processors, you can use the
+Builder like this:
+
+    $stack = (new \Swarrot\Processor\Stack\Builder())
+        ->push('Swarrot\Processor\ExceptionCatcherProcessor')
+        ->push('Swarrot\Processor\MaxMessagesProcessor', new Logger())
+    ;
+
+    $myCallback = function (Message $message, array $options) {
+        echo sprintf("Consume message #%d\n", $message->getId());
+    });
+
+    $processor = $stack->resolve($myCallback);
+
+## Processors
+
+### Official processors
+
+* [AckProcessor](https://github.com/swarrot/ack-processor)
+* [ExceptionCatcherProcessor](https://github.com/swarrot/exception-catcher-processor)
+* [InstantRetryProcessor](https://github.com/swarrot/instant-retry-processor)
+* [MaxMessagesProcessor](https://github.com/swarrot/max-messages-processor) (thanks to [Remy Lemeunier](https://github.com/remyLemeunier))
+* [SignalHandlerProcessor](https://github.com/swarrot/signal-handler-processor)
+
+### Create your own processor
 
 ## Inspiration
 
