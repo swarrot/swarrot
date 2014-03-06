@@ -1,0 +1,35 @@
+{
+    "name": "swarrot/instant-retry-processor",
+    "description": "A swarrot processor for immediately recall processor when an error append",
+    "keywords": ["swarrot","processor"],
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Olivier Dolbeau",
+            "homepage": "http://odolbeau.fr/"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.3",
+        "swarrot/swarrot": "dev-master",
+        "psr/log": "~1.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~3.7",
+        "phpspec/prophecy": "~1.1"
+    },
+    "config": {
+        "bin-dir": "bin"
+    },
+    "autoload": {
+        "psr-4": {
+            "Swarrot\\Processor\\InstantRetry\\": ""
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0.x-dev"
+        }
+    }
+}
