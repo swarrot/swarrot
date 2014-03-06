@@ -41,7 +41,7 @@ class MaxMessagesProcessorTest extends \PHPUnit_Framework_TestCase
     {
         $maxMessages = 2;
         $processor = $this->prophet->prophesize('Swarrot\Processor\ProcessorInterface');
-        $processor->__invoke(
+        $processor->process(
             Argument::type('Swarrot\Broker\Message'),
             Argument::exact(array(
                 'max_messages' => $maxMessages,
@@ -62,11 +62,11 @@ class MaxMessagesProcessorTest extends \PHPUnit_Framework_TestCase
         );
 
         // Process
-        $this->assertNull($processor->__invoke($message, array('max_messages' => $maxMessages)));
+        $this->assertNull($processor->process($message, array('max_messages' => $maxMessages)));
         // Process
-        $this->assertNull($processor->__invoke($message, array('max_messages' => $maxMessages)));
+        $this->assertNull($processor->process($message, array('max_messages' => $maxMessages)));
 
         // Too much messages processed, return false
-        $this->assertFalse($processor->__invoke($message, array('max_messages' => $maxMessages)));
+        $this->assertFalse($processor->process($message, array('max_messages' => $maxMessages)));
     }
 }

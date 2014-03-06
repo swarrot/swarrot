@@ -22,14 +22,13 @@ class InstantRetryProcessor implements ConfigurableInterface
     /**
      * {@inheritDoc}
      */
-    public function __invoke(Message $message, array $options)
+    public function process(Message $message, array $options)
     {
         $retry = 0;
 
-        $processor = $this->processor;
         while ($retry++ < $options['instant_retry_attempts']) {
             try {
-                $processor($message, $options);
+                $this->processor->process($message, $options);
 
                 return;
             } catch (\Exception $e) {

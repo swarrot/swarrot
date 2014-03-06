@@ -25,11 +25,10 @@ class AckProcessor implements ConfigurableInterface
     /**
      * {@inheritDoc}
      */
-    public function __invoke(Message $message, array $options)
+    public function process(Message $message, array $options)
     {
-        $processor = $this->processor;
         try {
-            $processor($message, $options);
+            $this->processor->process($message, $options);
             $this->messageProvider->ack($message);
 
             if (null !== $this->logger) {

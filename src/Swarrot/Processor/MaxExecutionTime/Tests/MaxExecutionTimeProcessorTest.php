@@ -41,7 +41,7 @@ class MaxExecutionTimeProcessorTest extends \PHPUnit_Framework_TestCase
     {
         $maxExecutionTime = 2;
         $processor = $this->prophet->prophesize('Swarrot\Processor\ProcessorInterface');
-        $processor->__invoke(
+        $processor->process(
             Argument::type('Swarrot\Broker\Message'),
             Argument::exact(array(
                 'max_execution_time' => $maxExecutionTime,
@@ -65,7 +65,7 @@ class MaxExecutionTimeProcessorTest extends \PHPUnit_Framework_TestCase
 
         $startTime = microtime(true);
         while (true) {
-            if (false === $processor->__invoke($message, array('max_execution_time' => $maxExecutionTime))) {
+            if (false === $processor->process($message, array('max_execution_time' => $maxExecutionTime))) {
                 break;
             }
         }

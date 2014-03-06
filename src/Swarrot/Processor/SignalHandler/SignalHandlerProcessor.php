@@ -52,10 +52,9 @@ class SignalHandlerProcessor implements InitializableInterface, ConfigurableInte
     /**
      * {@inheritDoc}
      */
-    public function __invoke(Message $message, array $options)
+    public function process(Message $message, array $options)
     {
-        $processor = $this->processor;
-        $return = $processor($message, $options);
+        $return = $this->processor->process($message, $options);
 
         if (!extension_loaded('pcntl')) {
             return $return;

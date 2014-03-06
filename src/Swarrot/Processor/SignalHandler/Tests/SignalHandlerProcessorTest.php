@@ -44,7 +44,7 @@ class SignalHandlerProcessorTest extends \PHPUnit_Framework_TestCase
 
         $message = new Message(1, 'body');
         $processor = new SignalHandlerProcessor($processor->reveal(), $logger->reveal());
-        $this->assertNull($processor->__invoke($message, array()));
+        $this->assertNull($processor->process($message, array()));
     }
 
     public function test_it_should_throw_an_exception_after_consecutive_failed()
@@ -54,7 +54,7 @@ class SignalHandlerProcessorTest extends \PHPUnit_Framework_TestCase
 
         $message = new Message(1, 'body');
 
-        $processor->__invoke(
+        $processor->process(
             Argument::exact($message),
             Argument::exact(array())
         )
@@ -63,6 +63,6 @@ class SignalHandlerProcessorTest extends \PHPUnit_Framework_TestCase
         $processor = new SignalHandlerProcessor($processor->reveal(), $logger->reveal());
 
         $this->setExpectedException('\BadMethodCallException');
-        $processor->__invoke($message, array());
+        $processor->process($message, array());
     }
 }

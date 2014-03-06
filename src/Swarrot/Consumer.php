@@ -6,6 +6,7 @@ use Swarrot\Broker\MessageProviderInterface;
 use Swarrot\Broker\Message;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Swarrot\Processor\ProcessorInterface;
 use Swarrot\Processor\ConfigurableInterface;
 use Swarrot\Processor\InitializableInterface;
 use Swarrot\Processor\TerminableInterface;
@@ -17,7 +18,7 @@ class Consumer
     protected $processor;
     protected $optionsResolver;
 
-    public function __construct(MessageProviderInterface $messageProvider, $processor, OptionsResolverInterface $optionsResolver = null)
+    public function __construct(MessageProviderInterface $messageProvider, ProcessorInterface $processor, OptionsResolverInterface $optionsResolver = null)
     {
         $this->messageProvider = $messageProvider;
         $this->processor       = $processor;
@@ -37,27 +38,25 @@ class Consumer
             'poll_interval' => 50000
         ));
 
-        $processor = $this->processor;
-
-        if ($processor instanceof ConfigurableInterface) {
-            $processor->setDefaultOptions($this->optionsResolver);
+        if ($this->processor instanceof ConfigurableInterface) {
+            $this->processor->setDefaultOptions($this->optionsResolver);
         }
 
         $options = $this->optionsResolver->resolve($options);
 
-        if ($processor instanceof InitializableInterface) {
-            $processor->initialize($options);
+        if ($this->processor instanceof InitializableInterface) {
+            $this->processor->initialize($options);
         }
 
         while (true) {
             while (null !== $message = $this->messageProvider->get()) {
-                if (false === $processor($message, $options)) {
+                if (false === $this->processor->process($message, $options)) {
                     break 2;
                 }
             }
 
-            if ($processor instanceof SleepyInterface) {
-                if (false === $processor->sleep($options)) {
+            if ($this->processor instanceof SleepyInterface) {
+                if (false === $this->processor->sleep($options)) {
                     break;
                 }
             }
@@ -65,8 +64,8 @@ class Consumer
             usleep($options['poll_interval']);
         }
 
-        if ($processor instanceof TerminableInterface) {
-            $processor->terminate($options);
+        if ($this->processor instanceof TerminableInterface) {
+            $this->processor->terminate($options);
         }
     }
 

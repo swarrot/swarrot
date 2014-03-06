@@ -2,6 +2,7 @@
 
 namespace Swarrot\Processor\Stack;
 
+use Swarrot\Processor\ProcessorInterface;
 use Swarrot\Processor\ConfigurableInterface;
 use Swarrot\Processor\InitializableInterface;
 use Swarrot\Processor\TerminableInterface;
@@ -51,12 +52,19 @@ class StackedProcessor implements ConfigurableInterface, InitializableInterface,
     /**
      * {@inheritDoc}
      */
-    public function __invoke(Message $message, array $options)
+    public function process(Message $message, array $options)
     {
-        return call_user_func_array(
-            $this->processor,
-            array($message, $options)
-        );
+        if ($this->processor instanceof ProcessorInterface) {
+            return $this->processor->process($message, $options);
+        } elseif (is_callable($this->processor)) {
+            $processor = $this->processor;
+
+            return $processor($message, $options);
+        } else {
+            throw new \InvalidArgumentException(
+                'Processor MUST implement ProcessorInterface or be a valid callable.'
+            );
+        }
     }
 
     /**

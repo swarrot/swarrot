@@ -32,31 +32,45 @@ First, you need to create a message provider to retrieve message from you're
 broker. For example, with A PeclPackageMessageProvider (retrieve message from
 an AMQP broker with the [pecl amqp package](http://pecl.php.net/package/amqp):
 
-    // Create connection
-    $connection = new \AMQPConnection();
-    $connection->connect();
-    $channel = new \AMQPChannel($connection);
-    // Get the queue to consume
-    $queue = new \AMQPQueue($channel);
-    $queue->setName('global');
+```php
+use Swarrot\Broker\PeclPackageMessageProvider;
 
-    $messageProvider = new PeclPackageMessageProvider($queue);
+// Create connection
+$connection = new \AMQPConnection();
+$connection->connect();
+$channel = new \AMQPChannel($connection);
+// Get the queue to consume
+$queue = new \AMQPQueue($channel);
+$queue->setName('global');
+
+$messageProvider = new PeclPackageMessageProvider($queue);
+```
 
 Once it's done you need to create a Processor to process messages retrieved
-from the broker. This processor can be a callback, a
-`Swarrot\Processor\ProcessorInterface` or a
-`Swarrot\Processor\Stack\StackedProcessor` (see [Using a
-stack](#using-a-stack)). For the example, let's use a simple callback:
+from the broker. This processor must implement
+`Swarrot\Processor\ProcessorInterface`. For example:
 
-    $processor = function (Message $message, array $options) {
+```php
+use Swarrot\Processor\ProcessorInterface;
+use Swarrot\Broker\Message;
+
+class Processor implements ProcessorInterface {
+    public function process(Message $message, array $options) {
         echo sprintf("Consume message #%d\n", $message->getId());
-    });
+    }
+}
+```
+
 
 You now have a `Swarrot\Broker\MessageProviderInterface` to retrieve messages
 and a Processor to process them. So, ask the `Swarrot\Consumer`to do it's job :
 
-    $consumer = new Consumer($messageProvider, $processor);
-    $consumer->consume();
+```php
+use Swarrot\Message;
+
+$consumer = new Consumer($messageProvider, $processor);
+$consumer->consume();
+```
 
 ### Decorate your processor
 
@@ -67,13 +81,19 @@ the consumer to stop in production environment, you can use the
 [ExceptionCatcherProcessor](https://github.com/swarrot/exception-catcher-processor)
 like this:
 
-    use Swarrot\Processor\ExceptionCatcherProcessor;
+```php
+use Swarrot\Processor\ExceptionCatcherProcessor;
+use Swarrot\Processor\ProcessorInterface;
+use Swarrot\Broker\Message;
 
-    $myCallback = function (Message $message, array $options) {
+class Processor implements ProcessorInterface {
+    public function process(Message $message, array $options) {
         echo sprintf("Consume message #%d\n", $message->getId());
-    });
+    }
+}
 
-    $processor = new ExceptionCatcherProcessor($myCallback);
+$processor = new ExceptionCatcherProcessor(new Processor());
+```
 
 Take a look at [this processor's
 code](https://github.com/swarrot/exception-catcher-processor/blob/master/src/Swarrot/Processor/ExceptionCatcherProcessor.php#L23).
@@ -86,16 +106,23 @@ can use `Swarrot\Processor\Stack\Builder` to stack your processors.
 Because it can be annoying to chain all you're processors, you can use the
 Builder like this:
 
-    $stack = (new \Swarrot\Processor\Stack\Builder())
-        ->push('Swarrot\Processor\ExceptionCatcherProcessor')
-        ->push('Swarrot\Processor\MaxMessagesProcessor', new Logger())
-    ;
+```php
+use Swarrot\Processor\ProcessorInterface;
+use Swarrot\Broker\Message;
 
-    $myCallback = function (Message $message, array $options) {
+class Processor implements ProcessorInterface {
+    public function process(Message $message, array $options) {
         echo sprintf("Consume message #%d\n", $message->getId());
-    });
+    }
+}
 
-    $processor = $stack->resolve($myCallback);
+$stack = (new \Swarrot\Processor\Stack\Builder())
+    ->push('Swarrot\Processor\ExceptionCatcherProcessor')
+    ->push('Swarrot\Processor\MaxMessagesProcessor', new Logger())
+;
+
+$processor = $stack->resolve(new Processor());
+```
 
 ## Processors
 

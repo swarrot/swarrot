@@ -53,10 +53,10 @@ class StackedProcessorSpec extends \PHPUnit_Framework_TestCase
         $p3->terminate(Argument::type('array'))->willReturn(null);
         $p4->sleep(Argument::type('array'))->willReturn(null);
 
-        $p1->__invoke(Argument::type('Swarrot\Broker\Message'), Argument::type('array'))->willReturn(null);
-        $p2->__invoke(Argument::type('Swarrot\Broker\Message'), Argument::type('array'))->willReturn(null);
-        $p3->__invoke(Argument::type('Swarrot\Broker\Message'), Argument::type('array'))->willReturn(null);
-        $p4->__invoke(Argument::type('Swarrot\Broker\Message'), Argument::type('array'))->willReturn(null);
+        $p1->process(Argument::type('Swarrot\Broker\Message'), Argument::type('array'))->willReturn(null);
+        $p2->process(Argument::type('Swarrot\Broker\Message'), Argument::type('array'))->willReturn(null);
+        $p3->process(Argument::type('Swarrot\Broker\Message'), Argument::type('array'))->willReturn(null);
+        $p4->process(Argument::type('Swarrot\Broker\Message'), Argument::type('array'))->willReturn(null);
 
         $stackedProcessor = new StackedProcessor(
             $p1->reveal(), array(
@@ -70,7 +70,7 @@ class StackedProcessorSpec extends \PHPUnit_Framework_TestCase
         $this->assertNull($stackedProcessor->terminate(array()));
         $this->assertNull($stackedProcessor->sleep(array()));
 
-        $this->assertNull($stackedProcessor->__invoke(
+        $this->assertNull($stackedProcessor->process(
             new Message(1, 'body'),
             array()
         ));

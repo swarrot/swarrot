@@ -23,10 +23,8 @@ class MaxMessagesProcessor implements ConfigurableInterface
     /**
      * {@inheritDoc}
      */
-    public function __invoke(Message $message, array $options)
+    public function process(Message $message, array $options)
     {
-        $processor = $this->processor;
-
         if (++$this->messagesProcessed > $options['max_messages']) {
             if (null !== $this->logger) {
                 $this->logger->debug(sprintf(
@@ -39,7 +37,7 @@ class MaxMessagesProcessor implements ConfigurableInterface
             return false;
         }
 
-        return $processor($message, $options);
+        return $this->processor->process($message, $options);
     }
 
     /**

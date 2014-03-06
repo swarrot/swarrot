@@ -47,7 +47,7 @@ class InstantRetryProcessorTest extends \PHPUnit_Framework_TestCase
         $processor = new InstantRetryProcessor($processor->reveal(), $logger->reveal());
 
         $this->assertNull(
-            $processor->__invoke($message, array(
+            $processor->process($message, array(
                 'instant_retry_attempts' => 3,
                 'instant_retry_delay' => 1000
             ))
@@ -61,7 +61,7 @@ class InstantRetryProcessorTest extends \PHPUnit_Framework_TestCase
 
         $message = new Message(1, 'body');
 
-        $processor->__invoke(
+        $processor->process(
             Argument::type('Swarrot\Broker\Message'),
             Argument::exact(array(
                 'instant_retry_attempts' => 3,
@@ -74,7 +74,7 @@ class InstantRetryProcessorTest extends \PHPUnit_Framework_TestCase
         $processor = new InstantRetryProcessor($processor->reveal(), $logger->reveal());
 
         $this->setExpectedException('\BadMethodCallException');
-        $processor->__invoke($message, array(
+        $processor->process($message, array(
             'instant_retry_attempts' => 3,
             'instant_retry_delay' => 1000
         ));

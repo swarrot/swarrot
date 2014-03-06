@@ -42,7 +42,7 @@ class ConsumerTest extends \PHPUnit_Framework_TestCase
         $message = new Message(1, 'body');
 
         $provider->get()->willReturn($message);
-        $processor->__invoke(
+        $processor->process(
             Argument::type('Swarrot\Broker\Message'),
             Argument::type('array')
         )->willReturn(false);
@@ -62,7 +62,7 @@ class ConsumerTest extends \PHPUnit_Framework_TestCase
         $processor->setDefaultOptions(
             Argument::type('Symfony\Component\OptionsResolver\OptionsResolverInterface')
         )->willReturn(null);
-        $processor->__invoke(
+        $processor->process(
             Argument::type('Swarrot\Broker\Message'),
             Argument::type('array')
         )->willReturn(false);
@@ -80,7 +80,7 @@ class ConsumerTest extends \PHPUnit_Framework_TestCase
 
         $provider->get()->willReturn($message);
         $processor->initialize(Argument::type('array'))->willReturn(null);
-        $processor->__invoke(
+        $processor->process(
             Argument::type('Swarrot\Broker\Message'),
             Argument::type('array')
         )->willReturn(false);
@@ -98,7 +98,7 @@ class ConsumerTest extends \PHPUnit_Framework_TestCase
 
         $provider->get()->willReturn($message);
         $processor->terminate(Argument::type('array'))->willReturn(null);
-        $processor->__invoke(
+        $processor->process(
             Argument::type('Swarrot\Broker\Message'),
             Argument::type('array')
         )->willReturn(false);
@@ -116,7 +116,7 @@ class ConsumerTest extends \PHPUnit_Framework_TestCase
 
         $provider->get()->willReturn($message);
         $processor->sleep(Argument::type('array'))->willReturn(null);
-        $processor->__invoke(
+        $processor->process(
             Argument::type('Swarrot\Broker\Message'),
             Argument::type('array')
         )->willReturn(false);

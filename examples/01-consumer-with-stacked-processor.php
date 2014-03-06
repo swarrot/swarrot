@@ -15,16 +15,19 @@ class Processor implements ProcessorInterface {
         $this->processor = $processor;
         $this->num       = (int) $num;
     }
-    public function __invoke(Message $message, array $options)
+    public function process(Message $message, array $options)
     {
         echo sprintf("Start processing message #%d in processor #%d\n", $message->getId(), $this->num);
-        $return = call_user_func_array(
-            $this->processor,
-            array($message, $options)
-        );
+        $return = $this->processor->process($message, $options);
         echo sprintf("End processing message #%d in processor #%d\n", $message->getId(), $this->num);
 
         return $return;
+    }
+}
+
+class FinalProcessor implements ProcessorInterface {
+    public function process(Message $message, array $options) {
+        echo sprintf("Consume message #%d\n", $message->getId());
     }
 }
 
@@ -40,9 +43,7 @@ $stack = (new \Swarrot\Processor\Stack\Builder())
     ->push('Processor', 1)
     ->push('Processor', 2)
 ;
-$processor = $stack->resolve(function(Message $message) {
-    echo sprintf("Processing message #%d in callback.\n", $message->getId());
-});
+$processor = $stack->resolve(new FinalProcessor());
 
 $consumer = new Consumer($messageProvider, $processor);
 $consumer->consume();

@@ -45,11 +45,11 @@ class AckProcessorTest extends \PHPUnit_Framework_TestCase
 
         $message = new Message(1, 'body');
 
-        $processor->__invoke(Argument::exact($message), Argument::exact(array()))->willReturn(null);
+        $processor->process(Argument::exact($message), Argument::exact(array()))->willReturn(null);
         $messageProvider->ack(Argument::exact($message))->willReturn(null);
 
         $processor = new AckProcessor($processor->reveal(), $messageProvider->reveal(), $logger->reveal());
-        $this->assertNull($processor->__invoke($message, array()));
+        $this->assertNull($processor->process($message, array()));
     }
 
     public function test_it_should_nack_when_an_exception_is_thrown()
@@ -60,13 +60,13 @@ class AckProcessorTest extends \PHPUnit_Framework_TestCase
 
         $message = new Message(1, 'body');
 
-        $processor->__invoke(Argument::exact($message), Argument::exact(array()))->willThrow('\BadMethodCallException');
+        $processor->process(Argument::exact($message), Argument::exact(array()))->willThrow('\BadMethodCallException');
         $messageProvider->nack(Argument::exact($message), Argument::exact(false))->willReturn(null);
 
         $processor = new AckProcessor($processor->reveal(), $messageProvider->reveal(), $logger->reveal());
 
         $this->setExpectedException('\BadMethodCallException');
-        $this->assertNull($processor->__invoke($message, array()));
+        $this->assertNull($processor->process($message, array()));
     }
 
     public function test_it_should_nack_and_requeue_when_an_exception_is_thrown_and_conf_updated()
@@ -77,12 +77,12 @@ class AckProcessorTest extends \PHPUnit_Framework_TestCase
 
         $message = new Message(1, 'body');
 
-        $processor->__invoke(Argument::exact($message), Argument::exact(array('requeue_on_error' => true)))->willThrow('\BadMethodCallException');
+        $processor->process(Argument::exact($message), Argument::exact(array('requeue_on_error' => true)))->willThrow('\BadMethodCallException');
         $messageProvider->nack(Argument::exact($message), Argument::exact(true))->willReturn(null);
 
         $processor = new AckProcessor($processor->reveal(), $messageProvider->reveal(), $logger->reveal());
 
         $this->setExpectedException('\BadMethodCallException');
-        $this->assertNull($processor->__invoke($message, array('requeue_on_error' => true)));
+        $this->assertNull($processor->process($message, array('requeue_on_error' => true)));
     }
 }

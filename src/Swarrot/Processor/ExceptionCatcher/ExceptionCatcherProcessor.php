@@ -21,11 +21,10 @@ class ExceptionCatcherProcessor implements ProcessorInterface
     /**
      * {@inheritDoc}
      */
-    public function __invoke(Message $message, array $options)
+    public function process(Message $message, array $options)
     {
-        $processor = $this->processor;
         try {
-            $processor($message, $options);
+            $this->processor->process($message, $options);
         } catch (\Exception $e) {
             if (null !== $this->logger) {
                 $this->logger->warning(sprintf(
