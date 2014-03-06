@@ -3,7 +3,7 @@
         "This file locks the dependencies of your project to a known state",
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
     ],
-    "hash": "60ff90f8601a2e7ccde7bc5c51461ca2",
+    "hash": "3e7a0d98cb004d4bdc5c8b1fe2d5dfe2",
     "packages": [
         {
             "name": "psr/log",
@@ -49,12 +49,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/swarrot/swarrot.git",
-                "reference": "3e8c66655216d7f3913b8ca501f7a3e2329de7d0"
+                "reference": "e1e8a23d90501b83589053f38c1a23da4f2a4843"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/swarrot/swarrot/zipball/3e8c66655216d7f3913b8ca501f7a3e2329de7d0",
-                "reference": "3e8c66655216d7f3913b8ca501f7a3e2329de7d0",
+                "url": "https://api.github.com/repos/swarrot/swarrot/zipball/e1e8a23d90501b83589053f38c1a23da4f2a4843",
+                "reference": "e1e8a23d90501b83589053f38c1a23da4f2a4843",
                 "shasum": ""
             },
             "require": {
@@ -90,7 +90,7 @@
                 "swarrot",
                 "worker"
             ],
-            "time": "2014-03-03 08:44:21"
+            "time": "2014-03-06 11:12:47"
         },
         {
             "name": "symfony/options-resolver",

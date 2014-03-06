@@ -1,8 +1,8 @@
 <?php
 
-namespace Swarrot\Processor;
+namespace Swarrot\Processor\AckProcessor;
 
-use Swarrot\Processor\AckProcessor;
+use Swarrot\Processor\AckProcessor\AckProcessor;
 use Prophecy\Argument;
 use Swarrot\Broker\Message;
 
@@ -20,11 +20,11 @@ class AckProcessorTest extends \PHPUnit_Framework_TestCase
 
     public function test_it_is_initializable_without_a_logger()
     {
-        $processor = $this->prophet->prophesize('Swarrot\Processor\ProcessorInterface');
-        $messageProvider    = $this->prophet->prophesize('Swarrot\Broker\MessageProviderInterface');
+        $processor       = $this->prophet->prophesize('Swarrot\Processor\ProcessorInterface');
+        $messageProvider = $this->prophet->prophesize('Swarrot\Broker\MessageProviderInterface');
 
         $processor = new AckProcessor($processor->reveal(), $messageProvider->reveal());
-        $this->assertInstanceOf('Swarrot\Processor\AckProcessor', $processor);
+        $this->assertInstanceOf('Swarrot\Processor\AckProcessor\AckProcessor', $processor);
     }
 
     public function test_it_is_initializable_with_a_logger()
@@ -34,7 +34,7 @@ class AckProcessorTest extends \PHPUnit_Framework_TestCase
         $logger             = $this->prophet->prophesize('Psr\Log\LoggerInterface');
 
         $processor = new AckProcessor($processor->reveal(), $messageProvider->reveal(), $logger->reveal());
-        $this->assertInstanceOf('Swarrot\Processor\AckProcessor', $processor);
+        $this->assertInstanceOf('Swarrot\Processor\AckProcessor\AckProcessor', $processor);
     }
 
     public function test_it_should_ack_when_no_exception_is_thrown()
