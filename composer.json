@@ -16,7 +16,8 @@
         "psr/log": "~1.0"
     },
     "require-dev": {
-        "phpspec/phpspec": "2.0.*@dev"
+        "phpunit/phpunit": "~3.7",
+        "phpspec/prophecy": "~1.1"
     },
     "replace": {
         "swarrot/ack-processor": "self.version",

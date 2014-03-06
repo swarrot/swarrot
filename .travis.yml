@@ -5,9 +5,3 @@ php: [5.3.3, 5.3, 5.4, 5.5, hhvm]
 before_script:
   - composer selfupdate
   - composer install --prefer-source
-
-script: bin/phpspec run
-
-notifications:
-  email:
-    - odolbeau@gmail.com
