@@ -1,8 +1,8 @@
 <?php
 
-namespace Swarrot\Processor;
+namespace Swarrot\Processor\MaxMessages;
 
-use Swarrot\Processor\MaxMessagesProcessor;
+use Swarrot\Processor\MaxMessages\MaxMessagesProcessor;
 use Prophecy\Argument;
 use Swarrot\Broker\Message;
 
@@ -24,7 +24,7 @@ class MaxMessagesProcessorTest extends \PHPUnit_Framework_TestCase
         $messageProvider    = $this->prophet->prophesize('Swarrot\Broker\MessageProviderInterface');
 
         $processor = new MaxMessagesProcessor($processor->reveal(), $messageProvider->reveal());
-        $this->assertInstanceOf('Swarrot\Processor\MaxMessagesProcessor', $processor);
+        $this->assertInstanceOf('Swarrot\Processor\MaxMessages\MaxMessagesProcessor', $processor);
     }
 
     public function test_it_is_initializable_with_a_logger()
@@ -34,7 +34,7 @@ class MaxMessagesProcessorTest extends \PHPUnit_Framework_TestCase
         $logger             = $this->prophet->prophesize('Psr\Log\LoggerInterface');
 
         $processor = new MaxMessagesProcessor($processor->reveal(), $messageProvider->reveal(), $logger->reveal());
-        $this->assertInstanceOf('Swarrot\Processor\MaxMessagesProcessor', $processor);
+        $this->assertInstanceOf('Swarrot\Processor\MaxMessages\MaxMessagesProcessor', $processor);
     }
 
     public function test_count_default_messages_processed()
