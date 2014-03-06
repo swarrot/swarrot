@@ -1,12 +1,14 @@
 <?php
 
-namespace Swarrot\Processor;
+namespace Swarrot\Processor\InstantRetry;
 
 use Swarrot\Broker\Message;
+use Swarrot\Processor\ConfigurableInterface;
+use Swarrot\Processor\ProcessorInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class InstantRetryProcessor implements ProcessorInterface, ConfigurableInterface
+class InstantRetryProcessor implements ConfigurableInterface
 {
     protected $processor;
     protected $logger;

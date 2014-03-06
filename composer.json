@@ -23,8 +23,8 @@
         "bin-dir": "bin"
     },
     "autoload": {
-        "psr-0": {
-            "Swarrot": "src"
+        "psr-4": {
+            "Swarrot\\Processor\\InstantRetry\\": ""
         }
     },
     "extra": {

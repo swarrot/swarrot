@@ -1,9 +1,9 @@
 <?php
 
-namespace spec\Swarrot\Processor;
+namespace spec\Swarrot\Processor\InstantRetry;
 
 use Prophecy\Argument;
-use Swarrot\Processor\InstantRetryProcessor;
+use Swarrot\Processor\InstantRetry\InstantRetryProcessor;
 use Swarrot\Broker\Message;
 
 class InstantRetryProcessorTest extends \PHPUnit_Framework_TestCase
@@ -23,7 +23,7 @@ class InstantRetryProcessorTest extends \PHPUnit_Framework_TestCase
         $processor = $this->prophet->prophesize('Swarrot\Processor\ProcessorInterface');
 
         $processor = new InstantRetryProcessor($processor->reveal());
-        $this->assertInstanceOf('Swarrot\Processor\InstantRetryProcessor', $processor);
+        $this->assertInstanceOf('Swarrot\Processor\InstantRetry\InstantRetryProcessor', $processor);
     }
 
     function test_it_is_initializable_with_a_logger()
@@ -32,7 +32,7 @@ class InstantRetryProcessorTest extends \PHPUnit_Framework_TestCase
         $logger    = $this->prophet->prophesize('Psr\Log\LoggerInterface');
 
         $processor = new InstantRetryProcessor($processor->reveal(), $logger->reveal());
-        $this->assertInstanceOf('Swarrot\Processor\InstantRetryProcessor', $processor);
+        $this->assertInstanceOf('Swarrot\Processor\InstantRetry\InstantRetryProcessor', $processor);
     }
 
     function test_it_should_return_void_when_no_exception_is_thrown()
