@@ -62,8 +62,8 @@ class AckProcessor implements ConfigurableInterface
             ->setDefaults(array(
                 'requeue_on_error' => false
             ))
-            ->setAllowedValues(array(
-                'requeue_on_error' => array(true, false),
+            ->setAllowedTypes(array(
+                'requeue_on_error' => 'bool',
             ))
         ;
     }
