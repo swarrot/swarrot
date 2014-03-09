@@ -2,6 +2,13 @@ language: php
 
 php: [5.3.3, 5.3, 5.4, 5.5, hhvm]
 
+services: [rabbitmq]
+
 before_script:
+  - sh -c "git clone git://github.com/alanxz/rabbitmq-c.git"
+  - sh -c "cd rabbitmq-c && git checkout ${LIBRABBITMQ_VERSION}"
+  - sh -c "cd rabbitmq-c && git submodule init && git submodule update"
+  - sh -c "cd rabbitmq-c && autoreconf -i && ./configure && make && sudo make install"
+  - echo "extension=amqp.so" >> `php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||"`
   - composer selfupdate
   - composer install --prefer-source
