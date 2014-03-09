@@ -5,6 +5,7 @@ namespace Swarrot\Processor\Ack;
 use Swarrot\Processor\Ack\AckProcessor;
 use Prophecy\Argument;
 use Swarrot\Broker\Message;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class AckProcessorTest extends \PHPUnit_Framework_TestCase
 {
@@ -29,9 +30,9 @@ class AckProcessorTest extends \PHPUnit_Framework_TestCase
 
     public function test_it_is_initializable_with_a_logger()
     {
-        $processor = $this->prophet->prophesize('Swarrot\Processor\ProcessorInterface');
-        $messageProvider    = $this->prophet->prophesize('Swarrot\Broker\MessageProviderInterface');
-        $logger             = $this->prophet->prophesize('Psr\Log\LoggerInterface');
+        $processor       = $this->prophet->prophesize('Swarrot\Processor\ProcessorInterface');
+        $messageProvider = $this->prophet->prophesize('Swarrot\Broker\MessageProviderInterface');
+        $logger          = $this->prophet->prophesize('Psr\Log\LoggerInterface');
 
         $processor = new AckProcessor($processor->reveal(), $messageProvider->reveal(), $logger->reveal());
         $this->assertInstanceOf('Swarrot\Processor\Ack\AckProcessor', $processor);
@@ -39,9 +40,9 @@ class AckProcessorTest extends \PHPUnit_Framework_TestCase
 
     public function test_it_should_ack_when_no_exception_is_thrown()
     {
-        $processor = $this->prophet->prophesize('Swarrot\Processor\ProcessorInterface');
-        $messageProvider    = $this->prophet->prophesize('Swarrot\Broker\MessageProviderInterface');
-        $logger             = $this->prophet->prophesize('Psr\Log\LoggerInterface');
+        $processor       = $this->prophet->prophesize('Swarrot\Processor\ProcessorInterface');
+        $messageProvider = $this->prophet->prophesize('Swarrot\Broker\MessageProviderInterface');
+        $logger          = $this->prophet->prophesize('Psr\Log\LoggerInterface');
 
         $message = new Message(1, 'body');
 
@@ -54,9 +55,9 @@ class AckProcessorTest extends \PHPUnit_Framework_TestCase
 
     public function test_it_should_nack_when_an_exception_is_thrown()
     {
-        $processor = $this->prophet->prophesize('Swarrot\Processor\ProcessorInterface');
-        $messageProvider    = $this->prophet->prophesize('Swarrot\Broker\MessageProviderInterface');
-        $logger             = $this->prophet->prophesize('Psr\Log\LoggerInterface');
+        $processor       = $this->prophet->prophesize('Swarrot\Processor\ProcessorInterface');
+        $messageProvider = $this->prophet->prophesize('Swarrot\Broker\MessageProviderInterface');
+        $logger          = $this->prophet->prophesize('Psr\Log\LoggerInterface');
 
         $message = new Message(1, 'body');
 
@@ -71,18 +72,40 @@ class AckProcessorTest extends \PHPUnit_Framework_TestCase
 
     public function test_it_should_nack_and_requeue_when_an_exception_is_thrown_and_conf_updated()
     {
-        $processor = $this->prophet->prophesize('Swarrot\Processor\ProcessorInterface');
-        $messageProvider    = $this->prophet->prophesize('Swarrot\Broker\MessageProviderInterface');
-        $logger             = $this->prophet->prophesize('Psr\Log\LoggerInterface');
+        $processor       = $this->prophet->prophesize('Swarrot\Processor\ProcessorInterface');
+        $messageProvider = $this->prophet->prophesize('Swarrot\Broker\MessageProviderInterface');
+        $logger          = $this->prophet->prophesize('Psr\Log\LoggerInterface');
 
         $message = new Message(1, 'body');
 
-        $processor->process(Argument::exact($message), Argument::exact(array('requeue_on_error' => true)))->willThrow('\BadMethodCallException');
+        $processor->process(
+            Argument::exact($message),
+            Argument::exact(array('requeue_on_error' => true))
+        )->willThrow('\BadMethodCallException');
         $messageProvider->nack(Argument::exact($message), Argument::exact(true))->willReturn(null);
 
         $processor = new AckProcessor($processor->reveal(), $messageProvider->reveal(), $logger->reveal());
 
         $this->setExpectedException('\BadMethodCallException');
         $this->assertNull($processor->process($message, array('requeue_on_error' => true)));
+    }
+
+    public function test_it_should_return_a_valid_array_of_option()
+    {
+        $processor       = $this->prophet->prophesize('Swarrot\Processor\ProcessorInterface');
+        $messageProvider = $this->prophet->prophesize('Swarrot\Broker\MessageProviderInterface');
+
+        $processor = new AckProcessor($processor->reveal(), $messageProvider->reveal());
+
+        $optionsResolver = new OptionsResolver();
+        $processor->setDefaultOptions($optionsResolver);
+
+        $config = $optionsResolver->resolve(array(
+            'requeue_on_error' => false
+        ));
+
+        $this->assertEquals(array(
+            'requeue_on_error' => false
+        ), $config);
     }
 }
