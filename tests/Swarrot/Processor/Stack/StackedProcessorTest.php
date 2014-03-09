@@ -68,11 +68,33 @@ class StackedProcessorSpec extends \PHPUnit_Framework_TestCase
 
         $this->assertNull($stackedProcessor->initialize(array()));
         $this->assertNull($stackedProcessor->terminate(array()));
-        $this->assertNull($stackedProcessor->sleep(array()));
+        $this->assertTrue($stackedProcessor->sleep(array()));
 
         $this->assertNull($stackedProcessor->process(
             new Message(1, 'body'),
             array()
         ));
+    }
+
+    public function test_sleep_return_false_if_at_least_a_processor_return_false()
+    {
+        $p1  = $this->prophet->prophesize('Swarrot\Processor\SleepyInterface');
+        $p2  = $this->prophet->prophesize('Swarrot\Processor\SleepyInterface');
+        $p3  = $this->prophet->prophesize('Swarrot\Processor\SleepyInterface');
+        $p4  = $this->prophet->prophesize('Swarrot\Processor\SleepyInterface');
+
+        $p2->sleep(Argument::type('array'))->willReturn(true);
+        $p3->sleep(Argument::type('array'))->willReturn(true);
+        $p4->sleep(Argument::type('array'))->willReturn(false);
+
+        $stackedProcessor = new StackedProcessor(
+            $p1->reveal(), array(
+                $p2->reveal(),
+                $p3->reveal(),
+                $p4->reveal()
+            )
+        );
+
+        $this->assertFalse($stackedProcessor->sleep(array()));
     }
 }

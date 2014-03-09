@@ -86,8 +86,12 @@ class StackedProcessor implements ConfigurableInterface, InitializableInterface,
     {
         foreach ($this->middlewares as $middleware) {
             if ($middleware instanceof SleepyInterface) {
-                $middleware->sleep($options);
+                if (false === $middleware->sleep($options)) {
+                    return false;
+                }
             }
         }
+
+        return true;
     }
 }
