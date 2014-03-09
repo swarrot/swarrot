@@ -28,9 +28,7 @@ class InstantRetryProcessor implements ConfigurableInterface
 
         while ($retry++ < $options['instant_retry_attempts']) {
             try {
-                $this->processor->process($message, $options);
-
-                return;
+                return $this->processor->process($message, $options);
             } catch (\Exception $e) {
                 if (null !== $this->logger) {
                     $this->logger->warning(sprintf(

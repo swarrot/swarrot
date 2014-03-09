@@ -24,7 +24,7 @@ class ExceptionCatcherProcessor implements ProcessorInterface
     public function process(Message $message, array $options)
     {
         try {
-            $this->processor->process($message, $options);
+            return $this->processor->process($message, $options);
         } catch (\Exception $e) {
             if (null !== $this->logger) {
                 $this->logger->warning(sprintf(

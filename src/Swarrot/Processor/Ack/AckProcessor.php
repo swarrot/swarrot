@@ -28,7 +28,7 @@ class AckProcessor implements ConfigurableInterface
     public function process(Message $message, array $options)
     {
         try {
-            $this->processor->process($message, $options);
+            $return = $this->processor->process($message, $options);
             $this->messageProvider->ack($message);
 
             if (null !== $this->logger) {
@@ -37,6 +37,8 @@ class AckProcessor implements ConfigurableInterface
                     $message->getId()
                 ));
             }
+
+            return $return;
         } catch (\Exception $e) {
             $requeue = isset($options['requeue_on_error'])? (boolean) $options['requeue_on_error'] : false;
             $this->messageProvider->nack($message, $requeue);
