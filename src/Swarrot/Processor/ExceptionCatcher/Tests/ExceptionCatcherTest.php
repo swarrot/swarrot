@@ -2,7 +2,6 @@
 
 namespace Swarrot\Processor\ExceptionCatcher;
 
-use Swarrot\Processor\ExceptionCatcher\ExceptionCatcherProcessor;
 use Prophecy\Argument;
 use Swarrot\Broker\Message;
 

@@ -2,7 +2,6 @@
 
 namespace Swarrot\Processor\MaxMessages;
 
-use Swarrot\Processor\MaxMessages\MaxMessagesProcessor;
 use Prophecy\Argument;
 use Swarrot\Broker\Message;
 

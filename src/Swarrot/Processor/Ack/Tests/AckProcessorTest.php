@@ -2,7 +2,6 @@
 
 namespace Swarrot\Processor\Ack;
 
-use Swarrot\Processor\Ack\AckProcessor;
 use Prophecy\Argument;
 use Swarrot\Broker\Message;
 use Symfony\Component\OptionsResolver\OptionsResolver;

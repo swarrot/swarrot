@@ -2,7 +2,6 @@
 
 namespace Swarrot\Processor\MaxExecutionTime;
 
-use Swarrot\Processor\MaxExecutionTime\MaxExecutionTimeProcessor;
 use Prophecy\Argument;
 use Swarrot\Broker\Message;
 

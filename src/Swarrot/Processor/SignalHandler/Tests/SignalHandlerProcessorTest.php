@@ -2,7 +2,6 @@
 
 namespace Swarrot\Processor\SignalHandler;
 
-use Swarrot\Processor\ExceptionCatcher;
 use Prophecy\Argument;
 use Swarrot\Broker\Message;
 
