@@ -18,3 +18,4 @@ before_script:
   - echo "extension=amqp.so" >> `php --ini | grep "Loaded Configuration" | sed -e "s|.*:\s*||"`
   - composer selfupdate
   - composer install --prefer-source
+  - sh -c "sudo ./tests/bin/prepare_rabbit.sh"
