@@ -24,34 +24,6 @@ class MaxExecutionTimeProcessor implements ConfigurableInterface, InitializableI
     /**
      * {@inheritDoc}
      */
-    public function process(Message $message, array $options)
-    {
-        if (true === $this->isTimeExceeded($options)) {
-            return false;
-        }
-
-        return $this->processor->process($message, $options);
-    }
-
-    protected function isTimeExceeded(array $options)
-    {
-        if (microtime(true) - $this->startTime > $options['max_execution_time']) {
-            if (null !== $this->logger) {
-                $this->logger->info(sprintf(
-                    '[MaxExecutionTime] Max execution time have been reached (%d)',
-                    $options['max_execution_time']
-                ));
-            }
-
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
@@ -74,9 +46,43 @@ class MaxExecutionTimeProcessor implements ConfigurableInterface, InitializableI
     /**
      * {@inheritDoc}
      */
-
     public function sleep(array $options)
     {
         return !$this->isTimeExceeded($options);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function process(Message $message, array $options)
+    {
+        if (true === $this->isTimeExceeded($options)) {
+            return false;
+        }
+
+        return $this->processor->process($message, $options);
+    }
+
+    /**
+     * isTimeExceeded
+     *
+     * @param array $options
+     *
+     * @return boolean
+     */
+    protected function isTimeExceeded(array $options)
+    {
+        if (microtime(true) - $this->startTime > $options['max_execution_time']) {
+            if (null !== $this->logger) {
+                $this->logger->info(sprintf(
+                    '[MaxExecutionTime] Max execution time have been reached (%d)',
+                    $options['max_execution_time']
+                ));
+            }
+
+            return true;
+        }
+
+        return false;
     }
 }
