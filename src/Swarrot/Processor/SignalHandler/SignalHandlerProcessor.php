@@ -6,10 +6,11 @@ use Swarrot\Broker\Message;
 use Swarrot\Processor\ProcessorInterface;
 use Swarrot\Processor\InitializableInterface;
 use Swarrot\Processor\ConfigurableInterface;
+use Swarrot\Processor\SleepyInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class SignalHandlerProcessor implements InitializableInterface, ConfigurableInterface
+class SignalHandlerProcessor implements InitializableInterface, ConfigurableInterface, SleepyInterface
 {
     static protected $shouldExit = false;
 
@@ -52,12 +53,34 @@ class SignalHandlerProcessor implements InitializableInterface, ConfigurableInte
     /**
      * {@inheritDoc}
      */
+    public function sleep(array $options)
+    {
+        return !$this->shouldStop();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function process(Message $message, array $options)
     {
         $return = $this->processor->process($message, $options);
 
+        if ($this->shouldStop()) {
+            return false;
+        }
+
+        return $return;
+    }
+
+    /**
+     * shouldStop
+     *
+     * @return boolean
+     */
+    protected function shouldStop()
+    {
         if (!extension_loaded('pcntl')) {
-            return $return;
+            return false;
         }
 
         pcntl_signal_dispatch();
@@ -68,11 +91,11 @@ class SignalHandlerProcessor implements InitializableInterface, ConfigurableInte
         }
 
         if ($this::$shouldExit) {
-            $this->logger->info('[SignalHandler] Signal received.');
+            $this->logger->info('[SignalHandler] Signal received. Stop consumer now.');
 
-            return false;
+            return true;
         }
 
-        return $return;
+        return false;
     }
 }
