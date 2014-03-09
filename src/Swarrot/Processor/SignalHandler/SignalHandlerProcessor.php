@@ -68,6 +68,8 @@ class SignalHandlerProcessor implements InitializableInterface, ConfigurableInte
         }
 
         if ($this::$shouldExit) {
+            $this->logger->info('[SignalHandler] Signal received.');
+
             return false;
         }
 

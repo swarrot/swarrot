@@ -28,7 +28,7 @@ class ExceptionCatcherProcessor implements ProcessorInterface
         } catch (\Exception $e) {
             if (null !== $this->logger) {
                 $this->logger->warning(sprintf(
-                    'An exception occurred. This exception have been catch. Exception message: %s',
+                    '[ExceptionCatcher] An exception occurred. This exception have been catch. Exception message: %s',
                     $e->getMessage()
                 ));
             }

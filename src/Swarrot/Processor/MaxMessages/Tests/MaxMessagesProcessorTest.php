@@ -49,9 +49,9 @@ class MaxMessagesProcessorTest extends \PHPUnit_Framework_TestCase
         )
         ->shouldBeCalledTimes(2);
 
-        $logger    = $this->prophet->prophesize('Psr\Log\LoggerInterface');
-        $logger->debug(
-            Argument::exact(sprintf('Max messages have been reached (%d)', $maxMessages))
+        $logger = $this->prophet->prophesize('Psr\Log\LoggerInterface');
+        $logger->info(
+            Argument::exact(sprintf('[MaxMessages] Max messages have been reached (%d)', $maxMessages))
         )
         ->shouldBeCalledTimes(1);
 

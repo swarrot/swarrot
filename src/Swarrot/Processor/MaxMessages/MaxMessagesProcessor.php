@@ -27,12 +27,11 @@ class MaxMessagesProcessor implements ConfigurableInterface
     {
         if (++$this->messagesProcessed > $options['max_messages']) {
             if (null !== $this->logger) {
-                $this->logger->debug(sprintf(
-                    'Max messages have been reached (%d)',
+                $this->logger->info(sprintf(
+                    '[MaxMessages] Max messages have been reached (%d)',
                     $options['max_messages']
                 ));
             }
-
 
             return false;
         }

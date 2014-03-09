@@ -37,8 +37,8 @@ class MaxExecutionTimeProcessor implements ConfigurableInterface, InitializableI
     {
         if (microtime(true) - $this->startTime > $options['max_execution_time']) {
             if (null !== $this->logger) {
-                $this->logger->debug(sprintf(
-                    'Max execution time have been reached (%d)',
+                $this->logger->info(sprintf(
+                    '[MaxExecutionTime] Max execution time have been reached (%d)',
                     $options['max_execution_time']
                 ));
             }

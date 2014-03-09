@@ -31,7 +31,7 @@ class MaxExecutionTimeProcessorTest extends \PHPUnit_Framework_TestCase
     public function test_it_is_initializable_with_a_logger()
     {
         $processor = $this->prophet->prophesize('Swarrot\Processor\ProcessorInterface');
-        $logger             = $this->prophet->prophesize('Psr\Log\LoggerInterface');
+        $logger    = $this->prophet->prophesize('Psr\Log\LoggerInterface');
 
         $processor = new MaxExecutionTimeProcessor($processor->reveal(), $logger->reveal());
         $this->assertInstanceOf('Swarrot\Processor\MaxExecutionTime\MaxExecutionTimeProcessor', $processor);
@@ -39,7 +39,7 @@ class MaxExecutionTimeProcessorTest extends \PHPUnit_Framework_TestCase
 
     public function test_count_default_messages_processed()
     {
-        $maxExecutionTime = 2;
+        $maxExecutionTime = 1;
         $processor = $this->prophet->prophesize('Swarrot\Processor\ProcessorInterface');
         $processor->process(
             Argument::type('Swarrot\Broker\Message'),
@@ -49,8 +49,8 @@ class MaxExecutionTimeProcessorTest extends \PHPUnit_Framework_TestCase
         );
 
         $logger    = $this->prophet->prophesize('Psr\Log\LoggerInterface');
-        $logger->debug(
-            Argument::exact(sprintf('Max execution time have been reached (%d)', $maxExecutionTime))
+        $logger->info(
+            Argument::exact(sprintf('[MaxExecutionTime] Max execution time have been reached (%d)', $maxExecutionTime))
         )
         ->shouldBeCalledTimes(1);
 

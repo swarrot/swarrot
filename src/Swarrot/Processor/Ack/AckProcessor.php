@@ -33,7 +33,7 @@ class AckProcessor implements ConfigurableInterface
 
             if (null !== $this->logger) {
                 $this->logger->debug(sprintf(
-                    'Message #%d have been correctly ack\'ed',
+                    '[Ack] Message #%d have been correctly ack\'ed',
                     $message->getId()
                 ));
             }
@@ -42,8 +42,8 @@ class AckProcessor implements ConfigurableInterface
             $this->messageProvider->nack($message, $requeue);
 
             if (null !== $this->logger) {
-                $this->logger->warning(sprintf(
-                    'An exception occured. Message #%d have been nack\'ed. Exception message: "%s"',
+                $this->logger->info(sprintf(
+                    '[Ack] An exception occured. Message #%d have been nack\'ed. Exception message: "%s"',
                     $message->getId(),
                     $e->getMessage()
                 ));
