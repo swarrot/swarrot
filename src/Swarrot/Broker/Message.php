@@ -5,7 +5,12 @@ namespace Swarrot\Broker;
 class Message
 {
     protected $id;
+
     protected $body;
+
+    /**
+     * @var array
+     */
     protected $headers;
 
     public function __construct($id, $body, array $headers = array())

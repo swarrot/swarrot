@@ -8,7 +8,14 @@ use Psr\Log\LoggerInterface;
 
 class ExceptionCatcherProcessor implements ProcessorInterface
 {
+    /**
+     * @var ProcessorInterface
+     */
     protected $processor;
+
+    /**
+     * @var LoggerInterface
+     */
     protected $logger;
 
     public function __construct(ProcessorInterface $processor, LoggerInterface $logger = null)

@@ -2,8 +2,6 @@
 
 namespace Swarrot\Broker;
 
-use Swarrot\Broker\PeclPackageMessageProvider;
-
 class PeclPackageMessageProviderTest extends \PHPUnit_Framework_TestCase
 {
     public function test_get_with_messages_in_queue_return_message()

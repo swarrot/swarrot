@@ -25,7 +25,7 @@ class ConsumerTest extends \PHPUnit_Framework_TestCase
         $this->prophet->checkPredictions();
     }
 
-    function test_it_is_initializable()
+    public function test_it_is_initializable()
     {
         $provider  = $this->prophet->prophesize('Swarrot\Broker\MessageProviderInterface');
         $processor = $this->prophet->prophesize('Swarrot\Processor\ProcessorInterface');
@@ -34,7 +34,7 @@ class ConsumerTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Swarrot\Consumer', $consumer);
     }
 
-    function test_it_returns_null_if_no_error_occured()
+    public function test_it_returns_null_if_no_error_occured()
     {
         $provider  = $this->prophet->prophesize('Swarrot\Broker\MessageProviderInterface');
         $processor = $this->prophet->prophesize('Swarrot\Processor\ProcessorInterface');
@@ -51,7 +51,7 @@ class ConsumerTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($consumer->consume());
     }
 
-    function test_it_call_processor_if_its_configurable()
+    public function test_it_call_processor_if_its_configurable()
     {
         $provider  = $this->prophet->prophesize('Swarrot\Broker\MessageProviderInterface');
         $processor = $this->prophet->prophesize('Swarrot\Processor\ConfigurableInterface');
@@ -71,7 +71,7 @@ class ConsumerTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($consumer->consume());
     }
 
-    function test_it_call_processor_if_its_initializable()
+    public function test_it_call_processor_if_its_initializable()
     {
         $provider  = $this->prophet->prophesize('Swarrot\Broker\MessageProviderInterface');
         $processor = $this->prophet->prophesize('Swarrot\Processor\InitializableInterface');
@@ -89,7 +89,7 @@ class ConsumerTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($consumer->consume());
     }
 
-    function test_it_call_processor_if_its_terminable()
+    public function test_it_call_processor_if_its_terminable()
     {
         $provider  = $this->prophet->prophesize('Swarrot\Broker\MessageProviderInterface');
         $processor = $this->prophet->prophesize('Swarrot\Processor\TerminableInterface');
@@ -107,7 +107,7 @@ class ConsumerTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($consumer->consume());
     }
 
-    function test_it_call_processor_if_its_Sleepy()
+    public function test_it_call_processor_if_its_Sleepy()
     {
         $provider  = $this->prophet->prophesize('Swarrot\Broker\MessageProviderInterface');
         $processor = $this->prophet->prophesize('Swarrot\Processor\SleepyInterface');

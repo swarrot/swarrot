@@ -4,8 +4,14 @@ namespace Swarrot\Broker;
 
 class PeclPackageMessageProvider implements MessageProviderInterface
 {
+    /**
+     * @var \AMQPQueue
+     */
     protected $queue;
 
+    /**
+     * @param \AMQPQueue $queue
+     */
     public function __construct(\AMQPQueue $queue)
     {
         $this->queue = $queue;
@@ -17,6 +23,7 @@ class PeclPackageMessageProvider implements MessageProviderInterface
     public function get()
     {
         $envelope = $this->queue->get();
+
         if (!$envelope) {
             return null;
         }

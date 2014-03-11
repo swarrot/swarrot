@@ -10,7 +10,14 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class InstantRetryProcessor implements ConfigurableInterface
 {
+    /**
+     * @var ProcessorInterface
+     */
     protected $processor;
+
+    /**
+     * @var LoggerInterface
+     */
     protected $logger;
 
     public function __construct(ProcessorInterface $processor, LoggerInterface $logger = null)

@@ -3,7 +3,6 @@
 namespace Swarrot;
 
 use Swarrot\Broker\MessageProviderInterface;
-use Swarrot\Broker\Message;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Swarrot\Processor\ProcessorInterface;
@@ -14,10 +13,27 @@ use Swarrot\Processor\SleepyInterface;
 
 class Consumer
 {
+    /**
+     * @var MessageProviderInterface
+     */
     protected $messageProvider;
+
+    /**
+     * @var ProcessorInterface
+     */
     protected $processor;
+
+    /**
+     * @var OptionsResolverInterface
+     */
     protected $optionsResolver;
 
+    /**
+     *
+     * @param MessageProviderInterface $messageProvider
+     * @param ProcessorInterface       $processor
+     * @param OptionsResolverInterface $optionsResolver
+     */
     public function __construct(MessageProviderInterface $messageProvider, ProcessorInterface $processor, OptionsResolverInterface $optionsResolver = null)
     {
         $this->messageProvider = $messageProvider;
@@ -69,33 +85,64 @@ class Consumer
         }
     }
 
+    /**
+     * @return MessageProviderInterface
+     */
     public function getMessageProvider()
     {
         return $this->messageProvider;
     }
 
+    /**
+     *
+     * @param MessageProviderInterface $messageProvider Message provider
+     *
+     * @return self
+     */
     public function setMessageProvider(MessageProviderInterface $messageProvider)
     {
         $this->messageProvider = $messageProvider;
+
+        return $this;
     }
 
+    /**
+     * @return ProcessorInterface
+     */
     public function getProcessor()
     {
         return $this->processor;
     }
 
+    /**
+     * @param ProcessorInterface $processor
+     *
+     * @return self
+     */
     public function setProcessor($processor)
     {
         $this->processor = $processor;
+
+        return $this;
     }
 
+    /**
+     * @return OptionsResolverInterface
+     */
     public function getOptionsResolver()
     {
         return $this->optionsResolver;
     }
 
+    /**
+     * @param OptionsResolverInterface $optionsResolver
+     *
+     * @return self
+     */
     public function setOptionsResolver(OptionsResolverInterface $optionsResolver)
     {
         $this->optionsResolver = $optionsResolver;
+
+        return $this;
     }
 }

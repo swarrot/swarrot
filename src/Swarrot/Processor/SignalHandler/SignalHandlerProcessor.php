@@ -12,11 +12,25 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 class SignalHandlerProcessor implements InitializableInterface, ConfigurableInterface, SleepyInterface
 {
-    static protected $shouldExit = false;
+    /**
+     * @var boolean
+     */
+    protected static $shouldExit = false;
 
+    /**
+     * @var ProcessorInterface
+     */
     protected $processor;
+
+    /**
+     * @var LoggerInterface
+     */
     protected $logger;
 
+    /**
+     * @param ProcessorInterface $processor Processor
+     * @param LoggerInterface    $logger    Logger
+     */
     public function __construct(ProcessorInterface $processor, LoggerInterface $logger = null)
     {
         $this->processor = $processor;
@@ -51,7 +65,9 @@ class SignalHandlerProcessor implements InitializableInterface, ConfigurableInte
     }
 
     /**
-     * {@inheritDoc}
+     * @param array $options
+     *
+     * @return boolean
      */
     public function sleep(array $options)
     {
