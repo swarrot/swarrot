@@ -7,9 +7,12 @@ use Swarrot\Broker\PeclPackageMessageProvider;
 use Swarrot\Broker\Message;
 use Swarrot\Processor\ProcessorInterface;
 
-class Processor implements ProcessorInterface {
+class Processor implements ProcessorInterface
+{
     protected $processor;
+
     protected $num;
+
     public function __construct($processor, $num = 1)
     {
         $this->processor = $processor;
@@ -17,17 +20,19 @@ class Processor implements ProcessorInterface {
     }
     public function process(Message $message, array $options)
     {
-        echo sprintf("Start processing message #%d in processor #%d\n", $message->getId(), $this->num);
+        printf("Start processing message #%d in processor #%d\n", $message->getId(), $this->num);
         $return = $this->processor->process($message, $options);
-        echo sprintf("End processing message #%d in processor #%d\n", $message->getId(), $this->num);
+        printf("End processing message #%d in processor #%d\n", $message->getId(), $this->num);
 
         return $return;
     }
 }
 
-class FinalProcessor implements ProcessorInterface {
-    public function process(Message $message, array $options) {
-        echo sprintf("Consume message #%d\n", $message->getId());
+class FinalProcessor implements ProcessorInterface
+{
+    public function process(Message $message, array $options)
+    {
+        printf("Consume message #%d\n", $message->getId());
     }
 }
 

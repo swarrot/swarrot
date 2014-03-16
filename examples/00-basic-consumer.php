@@ -7,9 +7,11 @@ use Swarrot\Broker\PeclPackageMessageProvider;
 use Swarrot\Broker\Message;
 use Swarrot\Processor\ProcessorInterface;
 
-class Processor implements ProcessorInterface {
-    public function process(Message $message, array $options) {
-        echo sprintf("Consume message #%d\n", $message->getId());
+class Processor implements ProcessorInterface
+{
+    public function process(Message $message, array $options)
+    {
+        printf("Consume message #%d\n", $message->getId());
     }
 }
 

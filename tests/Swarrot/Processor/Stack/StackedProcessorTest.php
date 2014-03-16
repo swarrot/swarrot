@@ -6,11 +6,10 @@ use Swarrot\Processor\InitializableInterface;
 use Swarrot\Processor\TerminableInterface;
 use Swarrot\Processor\ProcessorInterface;
 use Swarrot\Processor\SleepyInterface;
-use Swarrot\Processor\Stack\StackedProcessor;
 use Swarrot\Broker\Message;
 use Prophecy\Argument;
 
-class StackedProcessorSpec extends \PHPUnit_Framework_TestCase
+class StackedProcessorTest extends \PHPUnit_Framework_TestCase
 {
     protected $prophet;
 
@@ -24,7 +23,7 @@ class StackedProcessorSpec extends \PHPUnit_Framework_TestCase
         $this->prophet->checkPredictions();
     }
 
-    function test_it_is_initializable()
+    public function test_it_is_initializable()
     {
         $p1  = $this->prophet->prophesize('Swarrot\Processor\ProcessorInterface');
         $p2  = $this->prophet->prophesize('Swarrot\Processor\InitializableInterface');

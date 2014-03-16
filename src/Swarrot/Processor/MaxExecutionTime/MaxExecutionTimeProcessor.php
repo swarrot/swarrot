@@ -11,14 +11,30 @@ use Swarrot\Processor\ConfigurableInterface;
 
 class MaxExecutionTimeProcessor implements ConfigurableInterface, InitializableInterface
 {
+    /**
+     * @var ProcessorInterface
+     */
     protected $processor;
+
+    /**
+     * @var LoggerInterface
+     */
     protected $logger;
+
+    /**
+     * @var float
+     */
     protected $startTime;
 
+    /**
+     *
+     * @param ProcessorInterface $processor Processor
+     * @param LoggerInterface    $logger    Logger
+     */
     public function __construct(ProcessorInterface $processor, LoggerInterface $logger = null)
     {
-        $this->processor       = $processor;
-        $this->logger          = $logger;
+        $this->processor = $processor;
+        $this->logger    = $logger;
     }
 
     /**
@@ -36,7 +52,7 @@ class MaxExecutionTimeProcessor implements ConfigurableInterface, InitializableI
     }
 
     /**
-     * {@inheritDoc}
+     * @param array $options
      */
     public function initialize(array $options)
     {
@@ -44,7 +60,9 @@ class MaxExecutionTimeProcessor implements ConfigurableInterface, InitializableI
     }
 
     /**
-     * {@inheritDoc}
+     * @param array $options
+     *
+     * @return boolean
      */
     public function sleep(array $options)
     {

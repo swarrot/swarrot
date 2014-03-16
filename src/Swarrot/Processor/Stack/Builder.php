@@ -4,6 +4,9 @@ namespace Swarrot\Processor\Stack;
 
 class Builder
 {
+    /**
+     * @var \SplStack
+     */
     private $specs;
 
     public function __construct()
@@ -11,6 +14,11 @@ class Builder
         $this->specs = new \SplStack();
     }
 
+    /**
+     * @return self
+     *
+     * @throws \InvalidArgumentException Missing argument(s) when calling unshift
+     */
     public function unshift()
     {
         if (func_num_args() === 0) {
@@ -23,6 +31,11 @@ class Builder
         return $this;
     }
 
+    /**
+     * @return self
+     *
+     * @throws \InvalidArgumentException Missing argument(s) when calling push
+     */
     public function push()
     {
         if (func_num_args() === 0) {
@@ -35,6 +48,11 @@ class Builder
         return $this;
     }
 
+    /**
+     * @param mixed $processor
+     *
+     * @return StackedProcessor
+     */
     public function resolve($processor)
     {
         $middlewares = array($processor);

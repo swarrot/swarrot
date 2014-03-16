@@ -20,7 +20,7 @@ class InstantRetryProcessorTest extends \PHPUnit_Framework_TestCase
         $this->prophet->checkPredictions();
     }
 
-    function test_it_is_initializable_without_a_logger()
+    public function test_it_is_initializable_without_a_logger()
     {
         $processor = $this->prophet->prophesize('Swarrot\Processor\ProcessorInterface');
 
@@ -28,7 +28,7 @@ class InstantRetryProcessorTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Swarrot\Processor\InstantRetry\InstantRetryProcessor', $processor);
     }
 
-    function test_it_is_initializable_with_a_logger()
+    public function test_it_is_initializable_with_a_logger()
     {
         $processor = $this->prophet->prophesize('Swarrot\Processor\ProcessorInterface');
         $logger    = $this->prophet->prophesize('Psr\Log\LoggerInterface');
@@ -37,7 +37,7 @@ class InstantRetryProcessorTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Swarrot\Processor\InstantRetry\InstantRetryProcessor', $processor);
     }
 
-    function test_it_should_return_void_when_no_exception_is_thrown()
+    public function test_it_should_return_void_when_no_exception_is_thrown()
     {
         $processor = $this->prophet->prophesize('Swarrot\Processor\ProcessorInterface');
         $logger    = $this->prophet->prophesize('Psr\Log\LoggerInterface');
@@ -54,7 +54,7 @@ class InstantRetryProcessorTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    function test_it_should_throw_an_exception_after_consecutive_failed()
+    public function test_it_should_throw_an_exception_after_consecutive_failed()
     {
         $processor = $this->prophet->prophesize('Swarrot\Processor\ProcessorInterface');
         $logger    = $this->prophet->prophesize('Psr\Log\LoggerInterface');
