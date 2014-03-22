@@ -4,13 +4,12 @@ namespace Swarrot\Processor\SignalHandler;
 
 use Swarrot\Broker\Message;
 use Swarrot\Processor\ProcessorInterface;
-use Swarrot\Processor\InitializableInterface;
 use Swarrot\Processor\ConfigurableInterface;
 use Swarrot\Processor\SleepyInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
-class SignalHandlerProcessor implements InitializableInterface, ConfigurableInterface, SleepyInterface
+class SignalHandlerProcessor implements ConfigurableInterface, SleepyInterface
 {
     /**
      * @var boolean
@@ -50,25 +49,6 @@ class SignalHandlerProcessor implements InitializableInterface, ConfigurableInte
     /**
      * {@inheritDoc}
      */
-    public function initialize(array $options)
-    {
-        if (!extension_loaded('pcntl')) {
-            return;
-        }
-
-        $signals = isset($options['signal_handler_signals']) ? $options['signal_handler_signals'] : array();
-        foreach ($signals as $signal) {
-            pcntl_signal($signal, function () {
-                SignalHandlerProcessor::$shouldExit = true;
-            });
-        }
-    }
-
-    /**
-     * @param array $options
-     *
-     * @return boolean
-     */
     public function sleep(array $options)
     {
         return !$this->shouldStop();
@@ -79,6 +59,21 @@ class SignalHandlerProcessor implements InitializableInterface, ConfigurableInte
      */
     public function process(Message $message, array $options)
     {
+        if (!extension_loaded('pcntl')) {
+            if (null !== $this->logger) {
+                $this->logger->warning('The SignalHandlerProcessor needs the pcntl extension to work');
+            }
+
+            return $this->processor->process($message, $options);
+        }
+
+        $signals = isset($options['signal_handler_signals']) ? $options['signal_handler_signals'] : array();
+        foreach ($signals as $signal) {
+            pcntl_signal($signal, function () {
+                SignalHandlerProcessor::$shouldExit = true;
+            });
+        }
+
         $return = $this->processor->process($message, $options);
 
         if ($this->shouldStop()) {
@@ -95,10 +90,6 @@ class SignalHandlerProcessor implements InitializableInterface, ConfigurableInte
      */
     protected function shouldStop()
     {
-        if (!extension_loaded('pcntl')) {
-            return false;
-        }
-
         pcntl_signal_dispatch();
 
         $signals = isset($options['signal_handler_signals']) ? $options['signal_handler_signals'] : array();
