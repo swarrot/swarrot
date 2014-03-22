@@ -70,4 +70,12 @@ class PhpAmqpLibMessageProviderTest extends \PHPUnit_Framework_TestCase
 
         $provider->nack(new Message('5', 'foobar'), true);
     }
+
+    public function test_get_name()
+    {
+        $channel = $this->prophet->prophesize('PhpAmqpLib\Channel\AMQPChannel');
+        $provider = new PhpAmqpLibMessageProvider($channel->reveal(), 'foobar');
+
+        $this->assertEquals('foobar', $provider->getQueueName());
+    }
 }

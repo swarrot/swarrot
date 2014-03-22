@@ -20,6 +20,13 @@ class PeclPackageMessageProviderTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($message);
     }
 
+    public function test_get_name()
+    {
+        $provider = new PeclPackageMessageProvider($this->getAMQPQueue('foobar'));
+
+        $this->assertEquals('foobar', $provider->getQueueName());
+    }
+
     protected function getAMQPQueue($name)
     {
         $connection = new \AMQPConnection(array(

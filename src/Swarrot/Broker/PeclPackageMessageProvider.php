@@ -46,4 +46,12 @@ class PeclPackageMessageProvider implements MessageProviderInterface
     {
         $this->queue->nack($message->getId(), $requeue ? AMQP_REQUEUE : null);
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getQueueName()
+    {
+        return $this->queue->getName();
+    }
 }

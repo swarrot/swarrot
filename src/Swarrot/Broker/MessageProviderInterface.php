@@ -29,4 +29,11 @@ interface MessageProviderInterface
      * @return void
      */
     public function nack(Message $message, $requeue = false);
+
+    /**
+     * getQueueName
+     *
+     * @return string
+     */
+    public function getQueueName();
 }

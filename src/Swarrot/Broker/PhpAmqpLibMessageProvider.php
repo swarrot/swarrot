@@ -57,4 +57,12 @@ class PhpAmqpLibMessageProvider implements MessageProviderInterface
     {
         $this->channel->basic_nack($message->getId(), false, $requeue);
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getQueueName()
+    {
+        return $this->queueName;
+    }
 }

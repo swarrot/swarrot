@@ -10,6 +10,7 @@ use Swarrot\Processor\ConfigurableInterface;
 use Swarrot\Processor\InitializableInterface;
 use Swarrot\Processor\TerminableInterface;
 use Swarrot\Processor\SleepyInterface;
+use Psr\Log\LoggerInterface;
 
 class Consumer
 {
@@ -29,16 +30,22 @@ class Consumer
     protected $optionsResolver;
 
     /**
+     * @var LoggerInterface
+     */
+    protected $logger;
+
+    /**
      *
      * @param MessageProviderInterface $messageProvider
      * @param ProcessorInterface       $processor
      * @param OptionsResolverInterface $optionsResolver
      */
-    public function __construct(MessageProviderInterface $messageProvider, ProcessorInterface $processor, OptionsResolverInterface $optionsResolver = null)
+    public function __construct(MessageProviderInterface $messageProvider, ProcessorInterface $processor, OptionsResolverInterface $optionsResolver = null, LoggerInterface $logger = null)
     {
         $this->messageProvider = $messageProvider;
         $this->processor       = $processor;
         $this->optionsResolver = $optionsResolver ?: new OptionsResolver();
+        $this->logger          = $logger;
     }
 
     /**
@@ -50,6 +57,12 @@ class Consumer
      */
     public function consume(array $options = array())
     {
+        if (null !== $this->logger) {
+            $this->logger->debug(sprintf(
+                'Start consuming queue %s.',
+                $this->messageProvider->getQueueName()
+            ));
+        }
         $this->optionsResolver->setDefaults(array(
             'poll_interval' => 50000
         ));
