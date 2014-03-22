@@ -8,6 +8,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class AckProcessorTest extends \PHPUnit_Framework_TestCase
 {
+    protected $prophet;
+
     protected function setUp()
     {
         $this->prophet = new \Prophecy\Prophet;
