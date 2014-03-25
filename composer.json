@@ -30,7 +30,8 @@
     },
     "suggest": {
         "pecl-amqp": "*",
-        "videlalvaro/php-amqplib": "~2.0"
+        "videlalvaro/php-amqplib": "~2.0",
+        "symfony/console": "~2.4"
     },
     "config": {
         "bin-dir": "bin"
