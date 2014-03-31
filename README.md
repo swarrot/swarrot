@@ -141,6 +141,16 @@ To create your own processor and be able to use it with the StackProcessor, you
 just need to implement `ProcessorInterface` and to take another
 `ProcessorInterface` as first argument in constructor.
 
+## Subsplits
+
+Thanks to [dflydev/git-subsplit](https://github.com/dflydev/git-subsplit).
+
+To create a new subsplit:
+
+    git subtree add --prefix=src/Swarrot/Processor/{name} git@github.com:swarrot/{name}-processor.git master
+
+Then update the `bin/subsplits-publish.sh` script.
+
 ## Inspiration
 
 * [stackphp/builder](https://github.com/stackphp/builder)
