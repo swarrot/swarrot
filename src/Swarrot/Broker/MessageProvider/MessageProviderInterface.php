@@ -1,6 +1,8 @@
 <?php
 
-namespace Swarrot\Broker;
+namespace Swarrot\Broker\MessageProvider;
+
+use Swarrot\Broker\Message;
 
 interface MessageProviderInterface
 {

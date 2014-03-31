@@ -2,7 +2,7 @@
 
 namespace Swarrot;
 
-use Swarrot\Broker\MessageProviderInterface;
+use Swarrot\Broker\MessageProvider\MessageProviderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Swarrot\Processor\ProcessorInterface;

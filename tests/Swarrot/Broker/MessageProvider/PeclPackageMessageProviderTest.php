@@ -1,6 +1,6 @@
 <?php
 
-namespace Swarrot\Broker;
+namespace Swarrot\Broker\MessageProvider;
 
 class PeclPackageMessageProviderTest extends \PHPUnit_Framework_TestCase
 {

@@ -1,9 +1,10 @@
 <?php
 
-namespace Swarrot\Broker;
+namespace Swarrot\Broker\MessageProvider;
 
 use PhpAmqpLib\Message\AMQPMessage;
 use Prophecy\Prophet;
+use Swarrot\Broker\Message;
 
 class PhpAmqpLibMessageProviderTest extends \PHPUnit_Framework_TestCase
 {
