@@ -57,7 +57,7 @@ class PhpAmqpLibMessageProviderTest extends \PHPUnit_Framework_TestCase
 
         $provider = new PhpAmqpLibMessageProvider($channel->reveal(), 'my_queue');
 
-        $provider->ack(new Message('5', 'foobar'));
+        $provider->ack(new Message('foobar', array(), 5));
     }
 
     public function test_nack()
@@ -68,7 +68,7 @@ class PhpAmqpLibMessageProviderTest extends \PHPUnit_Framework_TestCase
 
         $provider = new PhpAmqpLibMessageProvider($channel->reveal(), 'my_queue');
 
-        $provider->nack(new Message('5', 'foobar'), true);
+        $provider->nack(new Message('foobar', array(), 5), true);
     }
 
     public function test_get_name()

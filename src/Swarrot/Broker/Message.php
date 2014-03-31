@@ -4,8 +4,9 @@ namespace Swarrot\Broker;
 
 class Message
 {
-    protected $id;
-
+    /**
+     * @var string
+     */
     protected $body;
 
     /**
@@ -13,16 +14,16 @@ class Message
      */
     protected $headers;
 
-    public function __construct($id, $body, array $headers = array())
+    /**
+     * @var int
+     */
+    protected $id;
+
+    public function __construct($body, array $headers = array(), $id = null)
     {
-        $this->id      = $id;
         $this->body    = $body;
         $this->headers = $headers;
-    }
-
-    public function getId()
-    {
-        return $this->id;
+        $this->id      = $id;
     }
 
     public function getBody()
@@ -33,5 +34,10 @@ class Message
     public function getHeaders()
     {
         return $this->headers;
+    }
+
+    public function getId()
+    {
+        return $this->id;
     }
 }

@@ -45,7 +45,7 @@ class AckProcessorTest extends \PHPUnit_Framework_TestCase
         $messageProvider = $this->prophet->prophesize('Swarrot\Broker\MessageProviderInterface');
         $logger          = $this->prophet->prophesize('Psr\Log\LoggerInterface');
 
-        $message = new Message(1, 'body');
+        $message = new Message('body', array(), 1);
 
         $processor->process(Argument::exact($message), Argument::exact(array()))->willReturn(null);
         $messageProvider->ack(Argument::exact($message))->willReturn(null);
@@ -60,7 +60,7 @@ class AckProcessorTest extends \PHPUnit_Framework_TestCase
         $messageProvider = $this->prophet->prophesize('Swarrot\Broker\MessageProviderInterface');
         $logger          = $this->prophet->prophesize('Psr\Log\LoggerInterface');
 
-        $message = new Message(1, 'body');
+        $message = new Message('body', array(), 1);
 
         $processor->process(Argument::exact($message), Argument::exact(array()))->willThrow('\BadMethodCallException');
         $messageProvider->nack(Argument::exact($message), Argument::exact(false))->willReturn(null);
@@ -77,7 +77,7 @@ class AckProcessorTest extends \PHPUnit_Framework_TestCase
         $messageProvider = $this->prophet->prophesize('Swarrot\Broker\MessageProviderInterface');
         $logger          = $this->prophet->prophesize('Psr\Log\LoggerInterface');
 
-        $message = new Message(1, 'body');
+        $message = new Message('body', array(), 1);
 
         $processor->process(
             Argument::exact($message),

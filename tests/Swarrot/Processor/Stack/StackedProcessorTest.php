@@ -70,7 +70,7 @@ class StackedProcessorTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($stackedProcessor->sleep(array()));
 
         $this->assertNull($stackedProcessor->process(
-            new Message(1, 'body'),
+            new Message('body', array(), 1),
             array()
         ));
     }

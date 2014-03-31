@@ -42,7 +42,7 @@ class InstantRetryProcessorTest extends \PHPUnit_Framework_TestCase
         $processor = $this->prophet->prophesize('Swarrot\Processor\ProcessorInterface');
         $logger    = $this->prophet->prophesize('Psr\Log\LoggerInterface');
 
-        $message = new Message(1, 'body');
+        $message = new Message('body', array(), 1);
 
         $processor = new InstantRetryProcessor($processor->reveal(), $logger->reveal());
 
@@ -59,7 +59,7 @@ class InstantRetryProcessorTest extends \PHPUnit_Framework_TestCase
         $processor = $this->prophet->prophesize('Swarrot\Processor\ProcessorInterface');
         $logger    = $this->prophet->prophesize('Psr\Log\LoggerInterface');
 
-        $message = new Message(1, 'body');
+        $message = new Message('body', array(), 1);
 
         $processor->process(
             Argument::type('Swarrot\Broker\Message'),

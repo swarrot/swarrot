@@ -39,7 +39,7 @@ class ConsumerTest extends \PHPUnit_Framework_TestCase
         $provider  = $this->prophet->prophesize('Swarrot\Broker\MessageProviderInterface');
         $processor = $this->prophet->prophesize('Swarrot\Processor\ProcessorInterface');
 
-        $message = new Message(1, 'body');
+        $message = new Message('body', array(), 1);
 
         $provider->get()->willReturn($message);
         $processor->process(
@@ -56,7 +56,7 @@ class ConsumerTest extends \PHPUnit_Framework_TestCase
         $provider  = $this->prophet->prophesize('Swarrot\Broker\MessageProviderInterface');
         $processor = $this->prophet->prophesize('Swarrot\Processor\ConfigurableInterface');
 
-        $message = new Message(1, 'body');
+        $message = new Message('body', array(), 1);
 
         $provider->get()->willReturn($message);
         $processor->setDefaultOptions(
@@ -76,7 +76,7 @@ class ConsumerTest extends \PHPUnit_Framework_TestCase
         $provider  = $this->prophet->prophesize('Swarrot\Broker\MessageProviderInterface');
         $processor = $this->prophet->prophesize('Swarrot\Processor\InitializableInterface');
 
-        $message = new Message(1, 'body');
+        $message = new Message('body', array(), 1);
 
         $provider->get()->willReturn($message);
         $processor->initialize(Argument::type('array'))->willReturn(null);
@@ -94,7 +94,7 @@ class ConsumerTest extends \PHPUnit_Framework_TestCase
         $provider  = $this->prophet->prophesize('Swarrot\Broker\MessageProviderInterface');
         $processor = $this->prophet->prophesize('Swarrot\Processor\TerminableInterface');
 
-        $message = new Message(1, 'body');
+        $message = new Message('body', array(), 1);
 
         $provider->get()->willReturn($message);
         $processor->terminate(Argument::type('array'))->willReturn(null);
@@ -112,7 +112,7 @@ class ConsumerTest extends \PHPUnit_Framework_TestCase
         $provider  = $this->prophet->prophesize('Swarrot\Broker\MessageProviderInterface');
         $processor = $this->prophet->prophesize('Swarrot\Processor\SleepyInterface');
 
-        $message = new Message(1, 'body');
+        $message = new Message('body', array(), 1);
 
         $provider->get()->willReturn($message);
         $processor->sleep(Argument::type('array'))->willReturn(null);

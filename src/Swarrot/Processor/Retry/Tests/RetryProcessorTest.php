@@ -1,0 +1,183 @@
+<?php
+
+namespace Swarrot\Processor\Retry;
+
+use Prophecy\Argument;
+use Swarrot\Broker\Message;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Swarrot\Broker\MessagePublisher\MessagePublisherInterface;
+
+class RetryProcessorTest extends \PHPUnit_Framework_TestCase
+{
+    protected $prophet;
+
+    protected function setUp()
+    {
+        $this->prophet = new \Prophecy\Prophet;
+    }
+
+    protected function tearDown()
+    {
+        $this->prophet->checkPredictions();
+    }
+
+    public function test_it_is_initializable_without_a_logger()
+    {
+        $processor        = $this->prophet->prophesize('Swarrot\Processor\ProcessorInterface');
+        $messagePublisher = $this->prophet->prophesize('Swarrot\Broker\MessagePublisher\MessagePublisherInterface');
+
+        $processor = new RetryProcessor($processor->reveal(), $messagePublisher->reveal());
+        $this->assertInstanceOf('Swarrot\Processor\Retry\RetryProcessor', $processor);
+    }
+
+    public function test_it_is_initializable_with_a_logger()
+    {
+        $processor        = $this->prophet->prophesize('Swarrot\Processor\ProcessorInterface');
+        $messagePublisher = $this->prophet->prophesize('Swarrot\Broker\MessagePublisher\MessagePublisherInterface');
+        $logger           = $this->prophet->prophesize('Psr\Log\LoggerInterface');
+
+        $processor = new RetryProcessor($processor->reveal(), $messagePublisher->reveal(), $logger->reveal());
+        $this->assertInstanceOf('Swarrot\Processor\Retry\RetryProcessor', $processor);
+    }
+
+    public function test_it_should_return_result_when_all_is_right()
+    {
+        $processor        = $this->prophet->prophesize('Swarrot\Processor\ProcessorInterface');
+        $messagePublisher = $this->prophet->prophesize('Swarrot\Broker\MessagePublisher\MessagePublisherInterface');
+        $logger           = $this->prophet->prophesize('Psr\Log\LoggerInterface');
+
+        $message = new Message('body', array(), 1);
+
+        $processor->process(Argument::exact($message), Argument::exact(array()))->willReturn(null);
+        $messagePublisher
+            ->publish(Argument::exact($message))
+            ->shouldNotBeCalled(null)
+        ;
+
+        $processor = new RetryProcessor($processor->reveal(), $messagePublisher->reveal(), $logger->reveal());
+        $this->assertNull($processor->process($message, array()));
+    }
+
+    public function test_it_should_republished_message_when_an_exception_occured()
+    {
+        $processor        = $this->prophet->prophesize('Swarrot\Processor\ProcessorInterface');
+        $messagePublisher = $this->prophet->prophesize('Swarrot\Broker\MessagePublisher\MessagePublisherInterface');
+        $logger           = $this->prophet->prophesize('Psr\Log\LoggerInterface');
+
+        $message = new Message('body', array(), 1);
+        $options = array(
+            'retry_attempts' => 3,
+            'retry_key_pattern' => 'key_%attempts%',
+        );
+
+        $processor
+            ->process(
+                Argument::exact($message),
+                Argument::exact($options)
+            )->willThrow('\BadMethodCallException')
+            ->shouldBeCalledTimes(1)
+        ;
+        $messagePublisher
+            ->publish(
+                Argument::type('Swarrot\Broker\Message'),
+                Argument::exact('key_1')
+            )
+            ->willReturn(null)
+            ->shouldBeCalledTimes(1)
+        ;
+
+        $processor = new RetryProcessor($processor->reveal(), $messagePublisher->reveal(), $logger->reveal());
+
+        $this->assertNull(
+            $processor->process($message, $options)
+        );
+    }
+
+    public function test_it_should_republished_message_with_incremented_attempts()
+    {
+        $processor        = $this->prophet->prophesize('Swarrot\Processor\ProcessorInterface');
+        $messagePublisher = $this->prophet->prophesize('Swarrot\Broker\MessagePublisher\MessagePublisherInterface');
+        $logger           = $this->prophet->prophesize('Psr\Log\LoggerInterface');
+
+        $message = new Message('body', array('swarrot_retry_attempts' => 1), 1);
+        $options = array(
+            'retry_attempts' => 3,
+            'retry_key_pattern' => 'key_%attempts%',
+        );
+
+        $processor
+            ->process(
+                Argument::exact($message),
+                Argument::exact($options)
+            )->willThrow('\BadMethodCallException')
+            ->shouldBeCalledTimes(1)
+        ;
+        $messagePublisher
+            ->publish(
+                Argument::type('Swarrot\Broker\Message'),
+                Argument::exact('key_2')
+            )
+            ->willReturn(null)
+            ->shouldBeCalledTimes(1)
+        ;
+
+        $processor = new RetryProcessor($processor->reveal(), $messagePublisher->reveal(), $logger->reveal());
+
+        $this->assertNull(
+            $processor->process($message, $options)
+        );
+    }
+
+    public function test_it_should_throw_exception_if_max_attempts_is_reached()
+    {
+        $processor        = $this->prophet->prophesize('Swarrot\Processor\ProcessorInterface');
+        $messagePublisher = $this->prophet->prophesize('Swarrot\Broker\MessagePublisher\MessagePublisherInterface');
+        $logger           = $this->prophet->prophesize('Psr\Log\LoggerInterface');
+
+        $message = new Message('body', array('swarrot_retry_attempts' => 3), 1);
+        $options = array(
+            'retry_attempts' => 3,
+            'retry_key_pattern' => 'key_%attempts%',
+        );
+
+        $processor
+            ->process(
+                Argument::exact($message),
+                Argument::exact($options)
+            )->willThrow('\BadMethodCallException')
+            ->shouldBeCalledTimes(1)
+        ;
+        $messagePublisher
+            ->publish(
+                Argument::type('Swarrot\Broker\Message'),
+                Argument::exact('key_2')
+            )
+            ->shouldNotBeCalled()
+        ;
+
+        $this->setExpectedException('\BadMethodCallException');
+        $processor = new RetryProcessor($processor->reveal(), $messagePublisher->reveal(), $logger->reveal());
+
+        $processor->process($message, $options);
+    }
+
+    public function test_it_should_return_a_valid_array_of_option()
+    {
+        $processor        = $this->prophet->prophesize('Swarrot\Processor\ProcessorInterface');
+        $messagePublisher = $this->prophet->prophesize('Swarrot\Broker\MessagePublisher\MessagePublisherInterface');
+
+        $processor = new RetryProcessor($processor->reveal(), $messagePublisher->reveal());
+
+        $optionsResolver = new OptionsResolver();
+        $processor->setDefaultOptions($optionsResolver);
+
+        $config = $optionsResolver->resolve(array(
+            'retry_key_pattern' => 'key_%attempts%'
+        ));
+
+        $this->assertEquals(array(
+            'retry_key_pattern' => 'key_%attempts%',
+            'retry_attempts'    => 3
+        ), $config);
+    }
+}

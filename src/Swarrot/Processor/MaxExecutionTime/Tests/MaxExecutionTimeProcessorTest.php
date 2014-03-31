@@ -53,7 +53,7 @@ class MaxExecutionTimeProcessorTest extends \PHPUnit_Framework_TestCase
         )
         ->shouldBeCalledTimes(1);
 
-        $message = new Message(1, 'body');
+        $message = new Message('body', array(), 1);
         $processor = new MaxExecutionTimeProcessor(
             $processor->reveal(),
             $logger->reveal()

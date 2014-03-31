@@ -133,6 +133,7 @@ $processor = $stack->resolve(new Processor());
 * [InstantRetryProcessor](https://github.com/swarrot/instant-retry-processor)
 * [MaxExecutionTimeProcessor](https://github.com/swarrot/max-execution-time-processor) (thanks to [Remy Lemeunier](https://github.com/remyLemeunier))
 * [MaxMessagesProcessor](https://github.com/swarrot/max-messages-processor) (thanks to [Remy Lemeunier](https://github.com/remyLemeunier))
+* [RetryProcessor](https://github.com/swarrot/retry-processor)
 * [SignalHandlerProcessor](https://github.com/swarrot/signal-handler-processor)
 
 ### Create your own processor

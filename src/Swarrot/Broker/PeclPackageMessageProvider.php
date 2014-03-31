@@ -28,7 +28,7 @@ class PeclPackageMessageProvider implements MessageProviderInterface
             return null;
         }
 
-        return new Message($envelope->getDeliveryTag(), $envelope->getBody(), $envelope->getHeaders());
+        return new Message($envelope->getBody(), $envelope->getHeaders(), $envelope->getDeliveryTag());
     }
 
     /**
