@@ -27,9 +27,10 @@ See [swarrot documentation](https://github.com/swarrot/swarrot).
 
 ## Configuration
 
-|Key             |Default|Description                                            |
-|:--------------:|:-----:|-------------------------------------------------------|
-|requeue_on_error|false  |If true, the message will be requeued in the same queue|
+|Key              |Default|Description                                                                   |
+|:---------------:|:-----:|------------------------------------------------------------------------------|
+|retry_key_pattern|       |[MANDATORY] The pattern to use to construct routing key (ie: `key_%attempts%`)|
+|retry_attempts   |3      |The number of attempts before raising an exception.                           |
 
 ## License
 
