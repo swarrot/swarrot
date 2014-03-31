@@ -15,5 +15,6 @@ $GIT_SUBSPLIT publish "
     src/Swarrot/Processor/InstantRetry:git@github.com:swarrot/instant-retry-processor.git
     src/Swarrot/Processor/MaxExecutionTime:git@github.com:swarrot/max-execution-time-processor.git
     src/Swarrot/Processor/MaxMessages:git@github.com:swarrot/max-messages-processor.git
+    src/Swarrot/Processor/Retry:git@github.com:swarrot/retry-processor.git
     src/Swarrot/Processor/SignalHandler:git@github.com:swarrot/signal-handler-processor.git
 " --heads=master
