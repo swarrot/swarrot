@@ -51,12 +51,13 @@ class RetryProcessor implements ConfigurableInterface
                 array_merge($message->getHeaders(), array('swarrot_retry_attempts' => $attempts))
             );
 
-            $key = str_replace('%attempts%', $attempts, $options['retry_key_pattern']);
+            $key = str_replace('%attempt%', $attempts, $options['retry_key_pattern']);
 
             if (null !== $this->logger) {
                 $this->logger->warning(sprintf(
-                    'An exception occured. Republish message for the %d times',
-                    $attempts
+                    'An exception occured. Republish message for the %d times (in %s)',
+                    $attempts,
+                    $key
                 ));
             }
 
