@@ -67,7 +67,7 @@ class RetryProcessorTest extends \PHPUnit_Framework_TestCase
         $message = new Message('body', array(), 1);
         $options = array(
             'retry_attempts' => 3,
-            'retry_key_pattern' => 'key_%attempts%',
+            'retry_key_pattern' => 'key_%attempt%',
         );
 
         $processor
@@ -102,7 +102,7 @@ class RetryProcessorTest extends \PHPUnit_Framework_TestCase
         $message = new Message('body', array('swarrot_retry_attempts' => 1), 1);
         $options = array(
             'retry_attempts' => 3,
-            'retry_key_pattern' => 'key_%attempts%',
+            'retry_key_pattern' => 'key_%attempt%',
         );
 
         $processor
@@ -137,7 +137,7 @@ class RetryProcessorTest extends \PHPUnit_Framework_TestCase
         $message = new Message('body', array('swarrot_retry_attempts' => 3), 1);
         $options = array(
             'retry_attempts' => 3,
-            'retry_key_pattern' => 'key_%attempts%',
+            'retry_key_pattern' => 'key_%attempt%',
         );
 
         $processor
@@ -172,11 +172,11 @@ class RetryProcessorTest extends \PHPUnit_Framework_TestCase
         $processor->setDefaultOptions($optionsResolver);
 
         $config = $optionsResolver->resolve(array(
-            'retry_key_pattern' => 'key_%attempts%'
+            'retry_key_pattern' => 'key_%attempt%'
         ));
 
         $this->assertEquals(array(
-            'retry_key_pattern' => 'key_%attempts%',
+            'retry_key_pattern' => 'key_%attempt%',
             'retry_attempts'    => 3
         ), $config);
     }
