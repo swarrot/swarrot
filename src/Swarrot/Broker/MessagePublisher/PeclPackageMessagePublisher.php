@@ -24,9 +24,7 @@ class PeclPackageMessagePublisher implements MessagePublisherInterface
             $message->getBody(),
             $key,
             $this->flags,
-            array(
-                'headers' => $message->getHeaders()
-            )
+            $message->getHeaders()
         );
     }
 }

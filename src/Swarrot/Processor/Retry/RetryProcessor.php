@@ -46,16 +46,22 @@ class RetryProcessor implements ConfigurableInterface
                 throw $e;
             }
 
+            $headers = $message->getHeaders();
+            if (!isset($headers['headers'])) {
+                $headers['headers'] = array();
+            }
+            $headers['headers']['swarrot_retry_attempts'] = $attempts;
+
             $message = new Message(
                 $message->getBody(),
-                array_merge($message->getHeaders(), array('swarrot_retry_attempts' => $attempts))
+                $headers
             );
 
             $key = str_replace('%attempt%', $attempts, $options['retry_key_pattern']);
 
             if (null !== $this->logger) {
                 $this->logger->warning(sprintf(
-                    'An exception occured. Republish message for the %d times (in %s)',
+                    'An exception occured. Republish message for the %d times (key: %s)',
                     $attempts,
                     $key
                 ));
