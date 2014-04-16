@@ -31,7 +31,7 @@ class RetryProcessor implements ConfigurableInterface
         try {
             return $this->processor->process($message, $options);
         } catch (\Exception $e) {
-            $headers = $message->getHeaders();
+            $headers = $message->getProperties();
             $attempts = isset($headers['swarrot_retry_attempts']) ? (int)$headers['swarrot_retry_attempts']++ : 0;
             $attempts++;
 
@@ -46,7 +46,7 @@ class RetryProcessor implements ConfigurableInterface
                 throw $e;
             }
 
-            $headers = $message->getHeaders();
+            $headers = $message->getProperties();
             if (!isset($headers['headers'])) {
                 $headers['headers'] = array();
             }
