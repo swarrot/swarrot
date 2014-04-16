@@ -75,7 +75,7 @@ $consumer->consume();
 ### Decorate your processor
 
 Using the [built in processors](#official-processors) or by [creating your
-own](#create-your-own-processor), you can extend the bahavior of your
+own](#create-your-own-processor), you can extend the behavior of your
 processor. Let's imagine you want to catch exception during execution to avoid
 the consumer to stop in production environment, you can use the
 [ExceptionCatcherProcessor](https://github.com/swarrot/exception-catcher-processor)
