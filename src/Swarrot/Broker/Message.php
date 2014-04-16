@@ -10,20 +10,22 @@ class Message
     protected $body;
 
     /**
+     * Properties are similar to headers when using an \AMQPEnvelope object.
+     *
      * @var array
      */
-    protected $headers;
+    protected $properties;
 
     /**
      * @var int
      */
     protected $id;
 
-    public function __construct($body, array $headers = array(), $id = null)
+    public function __construct($body, array $properties = array(), $id = null)
     {
-        $this->body    = $body;
-        $this->headers = $headers;
-        $this->id      = $id;
+        $this->body       = $body;
+        $this->properties = $properties;
+        $this->id         = $id;
     }
 
     public function getBody()
@@ -33,7 +35,14 @@ class Message
 
     public function getHeaders()
     {
-        return $this->headers;
+        trigger_error('getHeaders() method is deprecated. Use getProperties().', E_USER_DEPRECATED);
+
+        return $this->getProperties();
+    }
+
+    public function getProperties()
+    {
+        return $this->properties;
     }
 
     public function getId()

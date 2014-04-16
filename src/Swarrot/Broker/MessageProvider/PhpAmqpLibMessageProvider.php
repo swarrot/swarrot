@@ -38,9 +38,9 @@ class PhpAmqpLibMessageProvider implements MessageProviderInterface
             return null;
         }
 
-        $headers = $envelope->has('application_headers') ? $envelope->get('application_headers') : array();
+        $properties = $envelope->has('application_headers') ? $envelope->get('application_headers') : array();
 
-        return new Message($envelope->body, $headers, $envelope->get('delivery_tag'));
+        return new Message($envelope->body, $properties, $envelope->get('delivery_tag'));
     }
 
     /**
