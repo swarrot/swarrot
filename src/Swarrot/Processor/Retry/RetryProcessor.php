@@ -33,15 +33,11 @@ class RetryProcessor implements ConfigurableInterface
         } catch (\Exception $e) {
             $properties = $message->getProperties();
 
-            if (!isset($properties['headers'])) {
-                $properties['headers'] = array();
+            $attempts = 0;
+            if (isset($properties['swarrot_retry_attempts'])) {
+                $attempts = $properties['swarrot_retry_attempts'];
             }
-
-            if (!isset($properties['headers']['swarrot_retry_attempts'])) {
-                $properties['headers']['swarrot_retry_attempts'] = 0;
-            }
-
-            $attempts = ++$properties['headers']['swarrot_retry_attempts'];
+            $attempts++;
 
             if ($attempts > $options['retry_attempts']) {
                 if (null !== $this->logger) {
@@ -53,6 +49,12 @@ class RetryProcessor implements ConfigurableInterface
 
                 throw $e;
             }
+
+            // We have to put this key in the "headers" property.
+            if (!isset($properties['headers'])) {
+                $properties['headers'] = array();
+            }
+            $properties['headers']['swarrot_retry_attempts'] = $attempts;
 
             $message = new Message(
                 $message->getBody(),
