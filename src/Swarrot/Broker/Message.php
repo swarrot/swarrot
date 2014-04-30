@@ -44,7 +44,7 @@ class Message
      *
      * @return void
      */
-    public function __construct($body, array $properties = array(), $id = null)
+    public function __construct($body = null, array $properties = array(), $id = null)
     {
         $this->body       = $body;
         $this->properties = $properties;
