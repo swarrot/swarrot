@@ -20,14 +20,6 @@
         "phpspec/prophecy": "~1.1",
         "videlalvaro/php-amqplib": "~2.0"
     },
-    "replace": {
-        "swarrot/ack-processor": "self.version",
-        "swarrot/exception-catcher-processor": "self.version",
-        "swarrot/instant-retry-processor": "self.version",
-        "swarrot/max-messages-processor": "self.version",
-        "swarrot/max-execution-time-processor": "self.version",
-        "swarrot/signal-handler-processor": "self.version"
-    },
     "suggest": {
         "pecl-amqp": "*",
         "videlalvaro/php-amqplib": "~2.0",
