@@ -3,10 +3,6 @@
 InstantRetryProcessor is a [swarrot](https://github.com/swarrot/swarrot) processor.
 Its goal is to recall the processor when an error occured.
 
-## Usage
-
-See [swarrot documentation](https://github.com/swarrot/swarrot).
-
 ## Configuration
 
 |Key                   |Default|Description                                            |
