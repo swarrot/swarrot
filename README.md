@@ -78,7 +78,7 @@ Using the [built in processors](#official-processors) or by [creating your
 own](#create-your-own-processor), you can extend the behavior of your
 processor. Let's imagine you want to catch exception during execution to avoid
 the consumer to stop in production environment, you can use the
-[ExceptionCatcherProcessor](https://github.com/swarrot/swarrot/tree/master/src/Swarrot/Processor/ExceptionCatcher)
+[ExceptionCatcherProcessor](src/Swarrot/Processor/ExceptionCatcher)
 like this:
 
 ```php
@@ -96,7 +96,7 @@ $processor = new ExceptionCatcherProcessor(new Processor());
 ```
 
 Take a look at [this processor's
-code](https://github.com/swarrot/swarrot/blob/master/src/Swarrot/Processor/ExceptionCatcher/ExceptionCatcherProcessor.php#L21).
+code](src/Swarrot/Processor/ExceptionCatcher/ExceptionCatcherProcessor.php#L21).
 It just decorate your own processor with a try/catch block.
 
 ### Using a stack
@@ -128,13 +128,13 @@ $processor = $stack->resolve(new Processor());
 
 ### Official processors
 
-* [AckProcessor](https://github.com/swarrot/swarrot/tree/master/src/Swarrot/Processor/Ack)
-* [ExceptionCatcherProcessor](https://github.com/swarrot/swarrot/tree/master/src/Swarrot/Processor/ExceptionCatcher)
-* [InstantRetryProcessor](https://github.com/swarrot/swarrot/tree/master/src/Swarrot/Processor/InstantRetry)
-* [MaxExecutionTimeProcessor](https://github.com/swarrot/swarrot/tree/master/src/Swarrot/Processor/MaxExecutionTime) (thanks to [Remy Lemeunier](https://github.com/remyLemeunier))
-* [MaxMessagesProcessor](https://github.com/swarrot/swarrot/tree/master/src/Swarrot/Processor/MaxMessages) (thanks to [Remy Lemeunier](https://github.com/remyLemeunier))
-* [RetryProcessor](https://github.com/swarrot/swarrot/tree/master/src/Swarrot/Processor/Retry)
-* [SignalHandlerProcessor](https://github.com/swarrot/swarrot/tree/master/src/Swarrot/Processor/SignalHandler)
+* [AckProcessor](src/Swarrot/Processor/Ack)
+* [ExceptionCatcherProcessor](src/Swarrot/Processor/ExceptionCatcher)
+* [InstantRetryProcessor](src/Swarrot/Processor/InstantRetry)
+* [MaxExecutionTimeProcessor](src/Swarrot/Processor/MaxExecutionTime) (thanks to [Remy Lemeunier](https://github.com/remyLemeunier))
+* [MaxMessagesProcessor](src/Swarrot/Processor/MaxMessages) (thanks to [Remy Lemeunier](https://github.com/remyLemeunier))
+* [RetryProcessor](src/Swarrot/Processor/Retry)
+* [SignalHandlerProcessor](src/Swarrot/Processor/SignalHandler)
 
 ### Create your own processor
 
