@@ -9,7 +9,7 @@ interface MessageProviderInterface
     /**
      * get
      *
-     * @return void
+     * @return Message|null
      */
     public function get();
 
