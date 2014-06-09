@@ -99,7 +99,8 @@ class RetryProcessorTest extends \PHPUnit_Framework_TestCase
         $messagePublisher = $this->prophet->prophesize('Swarrot\Broker\MessagePublisher\MessagePublisherInterface');
         $logger           = $this->prophet->prophesize('Psr\Log\LoggerInterface');
 
-        $message = new Message('body', array('swarrot_retry_attempts' => 1), 1);
+        $message = new Message('body', array('headers' => array('swarrot_retry_attempts' => 1)), 1);
+
         $options = array(
             'retry_attempts' => 3,
             'retry_key_pattern' => 'key_%attempt%',
@@ -139,7 +140,7 @@ class RetryProcessorTest extends \PHPUnit_Framework_TestCase
         $messagePublisher = $this->prophet->prophesize('Swarrot\Broker\MessagePublisher\MessagePublisherInterface');
         $logger           = $this->prophet->prophesize('Psr\Log\LoggerInterface');
 
-        $message = new Message('body', array('swarrot_retry_attempts' => 3), 1);
+        $message = new Message('body', array('headers' => array('swarrot_retry_attempts' => 3)), 1);
         $options = array(
             'retry_attempts' => 3,
             'retry_key_pattern' => 'key_%attempt%',
