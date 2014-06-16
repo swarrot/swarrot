@@ -8,8 +8,9 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Swarrot\Processor\InitializableInterface;
 use Swarrot\Processor\ConfigurableInterface;
+use Swarrot\Processor\SleepyInterface;
 
-class MaxExecutionTimeProcessor implements ConfigurableInterface, InitializableInterface
+class MaxExecutionTimeProcessor implements ConfigurableInterface, InitializableInterface, SleepyInterface
 {
     /**
      * @var ProcessorInterface
