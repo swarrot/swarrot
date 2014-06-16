@@ -33,8 +33,8 @@ class RetryProcessor implements ConfigurableInterface
             $properties = $message->getProperties();
 
             $attempts = 0;
-            if (isset($properties['swarrot_retry_attempts'])) {
-                $attempts = $properties['swarrot_retry_attempts'];
+            if (isset($properties['headers']['swarrot_retry_attempts'])) {
+                $attempts = $properties['headers']['swarrot_retry_attempts'];
             }
             $attempts++;
 
