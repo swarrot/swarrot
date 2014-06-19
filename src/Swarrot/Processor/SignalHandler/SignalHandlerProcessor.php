@@ -61,7 +61,9 @@ class SignalHandlerProcessor implements ConfigurableInterface, SleepyInterface
     {
         if (!extension_loaded('pcntl')) {
             if (null !== $this->logger) {
-                $this->logger->warning('The SignalHandlerProcessor needs the pcntl extension to work');
+                $this->logger->warning(
+                    '[SignalHandler] The SignalHandlerProcessor needs the pcntl extension to work'
+                );
             }
 
             return $this->processor->process($message, $options);

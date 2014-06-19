@@ -41,7 +41,7 @@ class RetryProcessor implements ConfigurableInterface
             if ($attempts > $options['retry_attempts']) {
                 if (null !== $this->logger) {
                     $this->logger->warning(sprintf(
-                        'Stop attempting to process message after %d attempts',
+                        '[Retry] Stop attempting to process message after %d attempts',
                         $attempts
                     ));
                 }
@@ -64,7 +64,7 @@ class RetryProcessor implements ConfigurableInterface
 
             if (null !== $this->logger) {
                 $this->logger->warning(sprintf(
-                    'An exception occured: "%s". Republish message for the %d times (key: %s)',
+                    '[Retry] An exception occured: "%s". Republish message for the %d times (key: %s)',
                     $e->getMessage(),
                     $attempts,
                     $key
