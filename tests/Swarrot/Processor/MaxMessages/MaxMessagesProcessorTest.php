@@ -62,8 +62,6 @@ class MaxMessagesProcessorTest extends \PHPUnit_Framework_TestCase
 
         // Process
         $this->assertNull($processor->process($message, array('max_messages' => $maxMessages)));
-        // Process
-        $this->assertNull($processor->process($message, array('max_messages' => $maxMessages)));
 
         // Too much messages processed, return false
         $this->assertFalse($processor->process($message, array('max_messages' => $maxMessages)));
