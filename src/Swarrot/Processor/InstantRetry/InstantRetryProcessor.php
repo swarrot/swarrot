@@ -39,7 +39,7 @@ class InstantRetryProcessor implements ConfigurableInterface
             } catch (\Exception $e) {
                 if (null !== $this->logger) {
                     $this->logger->warning(sprintf(
-                        '[InstantRetry] An exception occured. Message #%d will be processed again in %d ms',
+                        '[InstantRetry] An exception occurred. Message #%d will be processed again in %d ms',
                         $message->getId(),
                         $options['instant_retry_delay']/1000
                     ));

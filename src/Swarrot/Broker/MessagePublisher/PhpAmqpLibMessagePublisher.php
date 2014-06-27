@@ -29,4 +29,3 @@ class PhpAmqpLibMessagePublisher implements MessagePublisherInterface
         $this->channel->basic_publish($message, $this->exchange, (string) $key);
     }
 }
-

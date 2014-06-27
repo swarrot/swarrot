@@ -62,7 +62,7 @@ class AckProcessor implements ConfigurableInterface
 
             if (null !== $this->logger) {
                 $this->logger->warning(sprintf(
-                    '[Ack] An exception occured. Message #%d have been %s. Exception message: "%s"',
+                    '[Ack] An exception occurred. Message #%d have been %s. Exception message: "%s"',
                     $message->getId(),
                     $requeue ? 'requeued' : 'nack\'ed',
                     $e->getMessage()
