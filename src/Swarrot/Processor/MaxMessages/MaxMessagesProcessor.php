@@ -40,7 +40,9 @@ class MaxMessagesProcessor implements ConfigurableInterface
      */
     public function process(Message $message, array $options)
     {
-        if (++$this->messagesProcessed > $options['max_messages']) {
+        $return = $this->processor->process($message, $options);
+
+        if (++$this->messagesProcessed >= $options['max_messages']) {
             if (null !== $this->logger) {
                 $this->logger->info(sprintf(
                     '[MaxMessages] Max messages have been reached (%d)',
@@ -51,7 +53,7 @@ class MaxMessagesProcessor implements ConfigurableInterface
             return false;
         }
 
-        return $this->processor->process($message, $options);
+        return $return;
     }
 
     /**
