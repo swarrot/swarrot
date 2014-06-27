@@ -34,7 +34,7 @@ class ConsumerTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Swarrot\Consumer', $consumer);
     }
 
-    public function test_it_returns_null_if_no_error_occured()
+    public function test_it_returns_null_if_no_error_occurred()
     {
         $provider  = $this->prophet->prophesize('Swarrot\Broker\MessageProvider\MessageProviderInterface');
         $processor = $this->prophet->prophesize('Swarrot\Processor\ProcessorInterface');

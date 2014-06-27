@@ -39,6 +39,7 @@ class Consumer
      * @param MessageProviderInterface $messageProvider
      * @param ProcessorInterface       $processor
      * @param OptionsResolverInterface $optionsResolver
+     * @param LoggerInterface          $logger
      */
     public function __construct(MessageProviderInterface $messageProvider, ProcessorInterface $processor, OptionsResolverInterface $optionsResolver = null, LoggerInterface $logger = null)
     {

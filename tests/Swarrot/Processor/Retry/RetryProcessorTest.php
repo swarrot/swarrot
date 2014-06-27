@@ -58,7 +58,7 @@ class RetryProcessorTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($processor->process($message, array()));
     }
 
-    public function test_it_should_republished_message_when_an_exception_occured()
+    public function test_it_should_republished_message_when_an_exception_occurred()
     {
         $processor        = $this->prophet->prophesize('Swarrot\Processor\ProcessorInterface');
         $messagePublisher = $this->prophet->prophesize('Swarrot\Broker\MessagePublisher\MessagePublisherInterface');
