@@ -33,7 +33,7 @@ class ExceptionCatcherProcessor implements ProcessorInterface
             return $this->processor->process($message, $options);
         } catch (\Exception $e) {
             if (null !== $this->logger) {
-                $this->logger->warning(sprintf(
+                $this->logger->error(sprintf(
                     '[ExceptionCatcher] An exception occurred. This exception have been catch. Exception message: %s',
                     $e->getMessage()
                 ));
