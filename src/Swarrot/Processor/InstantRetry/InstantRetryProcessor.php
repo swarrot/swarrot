@@ -45,8 +45,7 @@ class InstantRetryProcessor implements ConfigurableInterface
                             $options['instant_retry_delay']/1000
                         ),
                         array(
-                            'message'    => $e->getMessage(),
-                            'stacktrace' => $e->getTraceAsString(),
+                            'exception' => $e,
                         )
                     );
                 }

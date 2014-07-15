@@ -68,8 +68,7 @@ class RetryProcessor implements ConfigurableInterface
                         $key
                     ),
                     array(
-                        'message'    => $e->getMessage(),
-                        'stacktrace' => $e->getTraceAsString(),
+                        'exception' => $e,
                     )
                 );
             }

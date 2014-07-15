@@ -68,8 +68,7 @@ class AckProcessor implements ConfigurableInterface
                         $requeue ? 'requeued' : 'nack\'ed'
                     ),
                     array(
-                        'message'    => $e->getMessage(),
-                        'stacktrace' => $e->getTraceAsString(),
+                        'exception' => $e,
                     )
                 );
             }
