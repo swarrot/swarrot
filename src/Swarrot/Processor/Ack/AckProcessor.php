@@ -61,12 +61,17 @@ class AckProcessor implements ConfigurableInterface
             $this->messageProvider->nack($message, $requeue);
 
             if (null !== $this->logger) {
-                $this->logger->warning(sprintf(
-                    '[Ack] An exception occurred. Message #%d have been %s. Exception message: "%s"',
-                    $message->getId(),
-                    $requeue ? 'requeued' : 'nack\'ed',
-                    $e->getMessage()
-                ));
+                $this->logger->warning(
+                    sprintf(
+                        '[Ack] An exception occurred. Message #%d have been %s.',
+                        $message->getId(),
+                        $requeue ? 'requeued' : 'nack\'ed'
+                    ),
+                    array(
+                        'message'    => $e->getMessage(),
+                        'stacktrace' => $e->getTraceAsString(),
+                    )
+                );
             }
 
             throw $e;
