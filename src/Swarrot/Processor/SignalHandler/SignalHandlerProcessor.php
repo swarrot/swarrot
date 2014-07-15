@@ -100,7 +100,9 @@ class SignalHandlerProcessor implements ConfigurableInterface, SleepyInterface
         }
 
         if ($this::$shouldExit) {
-            $this->logger->info('[SignalHandler] Signal received. Stop consumer now.');
+            if (null !== $this->logger) {
+                $this->logger->info('[SignalHandler] Signal received. Stop consumer now.');
+            }
 
             return true;
         }
