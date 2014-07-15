@@ -74,39 +74,18 @@ $consumer = new Consumer($messageProvider, $processor);
 $consumer->consume();
 ```
 
-### Decorate your processor
-
-Using the [built in processors](#official-processors) or by [creating your
-own](#create-your-own-processor), you can extend the behavior of your
-processor. Let's imagine you want to catch exception during execution to avoid
-the consumer to stop in production environment, you can use the
-[ExceptionCatcherProcessor](src/Swarrot/Processor/ExceptionCatcher)
-like this:
-
-```php
-use Swarrot\Processor\ExceptionCatcherProcessor;
-use Swarrot\Processor\ProcessorInterface;
-use Swarrot\Broker\Message;
-
-class Processor implements ProcessorInterface {
-    public function process(Message $message, array $options) {
-        echo sprintf("Consume message #%d\n", $message->getId());
-    }
-}
-
-$processor = new ExceptionCatcherProcessor(new Processor());
-```
-
-Take a look at [this processor's
-code](src/Swarrot/Processor/ExceptionCatcher/ExceptionCatcherProcessor.php#L21).
-It just decorate your own processor with a try/catch block.
-
 ### Using a stack
 
 Heavily inspired by [stackphp/builder](https://github.com/stackphp/builder) you
 can use `Swarrot\Processor\Stack\Builder` to stack your processors.
-Because it can be annoying to chain all you're processors, you can use the
-Builder like this:
+Using the [built in processors](#official-processors) or by [creating your
+own](#create-your-own-processor), you can extend the behavior of your
+base processor.
+In this example, your processor is decorated by 2 others one. The
+[ExceptionCatcherProcessor](src/Swarrot/Processor/ExceptionCatcher/ExceptionCatcherProcessor.php)
+which decorate your own with a try/catch block and the
+[MaxMessagesProcessor](src/Swarrot/Processor/MaxMessages/MaxMessagesProcessor.php)
+which stop your worker when some messages have been consumed.
 
 ```php
 use Swarrot\Processor\ProcessorInterface;
