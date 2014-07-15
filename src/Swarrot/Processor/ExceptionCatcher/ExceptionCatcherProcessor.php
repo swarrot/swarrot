@@ -36,8 +36,7 @@ class ExceptionCatcherProcessor implements ProcessorInterface
                 $this->logger->error(
                     '[ExceptionCatcher] An exception occurred. This exception have been catch.',
                     array(
-                        'message'    => $e->getMessage(),
-                        'stacktrace' => $e->getTraceAsString(),
+                        'exception' => $e,
                     )
                 );
             }
