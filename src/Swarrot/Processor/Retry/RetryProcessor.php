@@ -61,12 +61,17 @@ class RetryProcessor implements ConfigurableInterface
             $key = str_replace('%attempt%', $attempts, $options['retry_key_pattern']);
 
             if (null !== $this->logger) {
-                $this->logger->warning(sprintf(
-                    '[Retry] An exception occurred: "%s". Republish message for the %d times (key: %s)',
-                    $e->getMessage(),
-                    $attempts,
-                    $key
-                ));
+                $this->logger->warning(
+                    sprintf(
+                        '[Retry] An exception occurred. Republish message for the %d times (key: %s)',
+                        $attempts,
+                        $key
+                    ),
+                    array(
+                        'message'    => $e->getMessage(),
+                        'stacktrace' => $e->getTraceAsString(),
+                    )
+                );
             }
 
             $this->publisher->publish($message, $key);
