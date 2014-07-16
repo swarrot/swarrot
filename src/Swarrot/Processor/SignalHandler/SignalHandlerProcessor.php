@@ -14,7 +14,7 @@ class SignalHandlerProcessor implements ConfigurableInterface, SleepyInterface
     /**
      * @var boolean
      */
-    protected static $shouldExit = false;
+    public static $shouldExit = false;
 
     /**
      * @var ProcessorInterface
