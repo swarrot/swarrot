@@ -4,6 +4,13 @@ namespace Swarrot\Broker\MessageProvider;
 
 class PeclPackageMessageProviderTest extends \PHPUnit_Framework_TestCase
 {
+    protected function setUp()
+    {
+        if (!class_exists('AMQPConnection')) {
+            $this->markTestSkipped('The AMQP extension is not available');
+        }
+    }
+
     public function test_get_with_messages_in_queue_return_message()
     {
         $provider = new PeclPackageMessageProvider($this->getAMQPQueue('queue_with_messages'));
