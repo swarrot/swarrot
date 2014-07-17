@@ -3,27 +3,16 @@
 namespace Swarrot\Processor\Ack;
 
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTestCase;
 use Swarrot\Broker\Message;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class AckProcessorTest extends \PHPUnit_Framework_TestCase
+class AckProcessorTest extends ProphecyTestCase
 {
-    protected $prophet;
-
-    protected function setUp()
-    {
-        $this->prophet = new \Prophecy\Prophet;
-    }
-
-    protected function tearDown()
-    {
-        $this->prophet->checkPredictions();
-    }
-
     public function test_it_is_initializable_without_a_logger()
     {
-        $processor       = $this->prophet->prophesize('Swarrot\Processor\ProcessorInterface');
-        $messageProvider = $this->prophet->prophesize('Swarrot\Broker\MessageProvider\MessageProviderInterface');
+        $processor       = $this->prophesize('Swarrot\Processor\ProcessorInterface');
+        $messageProvider = $this->prophesize('Swarrot\Broker\MessageProvider\MessageProviderInterface');
 
         $processor = new AckProcessor($processor->reveal(), $messageProvider->reveal());
         $this->assertInstanceOf('Swarrot\Processor\Ack\AckProcessor', $processor);
@@ -31,9 +20,9 @@ class AckProcessorTest extends \PHPUnit_Framework_TestCase
 
     public function test_it_is_initializable_with_a_logger()
     {
-        $processor       = $this->prophet->prophesize('Swarrot\Processor\ProcessorInterface');
-        $messageProvider = $this->prophet->prophesize('Swarrot\Broker\MessageProvider\MessageProviderInterface');
-        $logger          = $this->prophet->prophesize('Psr\Log\LoggerInterface');
+        $processor       = $this->prophesize('Swarrot\Processor\ProcessorInterface');
+        $messageProvider = $this->prophesize('Swarrot\Broker\MessageProvider\MessageProviderInterface');
+        $logger          = $this->prophesize('Psr\Log\LoggerInterface');
 
         $processor = new AckProcessor($processor->reveal(), $messageProvider->reveal(), $logger->reveal());
         $this->assertInstanceOf('Swarrot\Processor\Ack\AckProcessor', $processor);
@@ -41,9 +30,9 @@ class AckProcessorTest extends \PHPUnit_Framework_TestCase
 
     public function test_it_should_ack_when_no_exception_is_thrown()
     {
-        $processor       = $this->prophet->prophesize('Swarrot\Processor\ProcessorInterface');
-        $messageProvider = $this->prophet->prophesize('Swarrot\Broker\MessageProvider\MessageProviderInterface');
-        $logger          = $this->prophet->prophesize('Psr\Log\LoggerInterface');
+        $processor       = $this->prophesize('Swarrot\Processor\ProcessorInterface');
+        $messageProvider = $this->prophesize('Swarrot\Broker\MessageProvider\MessageProviderInterface');
+        $logger          = $this->prophesize('Psr\Log\LoggerInterface');
 
         $message = new Message('body', array(), 1);
 
@@ -56,9 +45,9 @@ class AckProcessorTest extends \PHPUnit_Framework_TestCase
 
     public function test_it_should_nack_when_an_exception_is_thrown()
     {
-        $processor       = $this->prophet->prophesize('Swarrot\Processor\ProcessorInterface');
-        $messageProvider = $this->prophet->prophesize('Swarrot\Broker\MessageProvider\MessageProviderInterface');
-        $logger          = $this->prophet->prophesize('Psr\Log\LoggerInterface');
+        $processor       = $this->prophesize('Swarrot\Processor\ProcessorInterface');
+        $messageProvider = $this->prophesize('Swarrot\Broker\MessageProvider\MessageProviderInterface');
+        $logger          = $this->prophesize('Psr\Log\LoggerInterface');
 
         $message = new Message('body', array(), 1);
 
@@ -73,9 +62,9 @@ class AckProcessorTest extends \PHPUnit_Framework_TestCase
 
     public function test_it_should_nack_and_requeue_when_an_exception_is_thrown_and_conf_updated()
     {
-        $processor       = $this->prophet->prophesize('Swarrot\Processor\ProcessorInterface');
-        $messageProvider = $this->prophet->prophesize('Swarrot\Broker\MessageProvider\MessageProviderInterface');
-        $logger          = $this->prophet->prophesize('Psr\Log\LoggerInterface');
+        $processor       = $this->prophesize('Swarrot\Processor\ProcessorInterface');
+        $messageProvider = $this->prophesize('Swarrot\Broker\MessageProvider\MessageProviderInterface');
+        $logger          = $this->prophesize('Psr\Log\LoggerInterface');
 
         $message = new Message('body', array(), 1);
 
@@ -93,8 +82,8 @@ class AckProcessorTest extends \PHPUnit_Framework_TestCase
 
     public function test_it_should_return_a_valid_array_of_option()
     {
-        $processor       = $this->prophet->prophesize('Swarrot\Processor\ProcessorInterface');
-        $messageProvider = $this->prophet->prophesize('Swarrot\Broker\MessageProvider\MessageProviderInterface');
+        $processor       = $this->prophesize('Swarrot\Processor\ProcessorInterface');
+        $messageProvider = $this->prophesize('Swarrot\Broker\MessageProvider\MessageProviderInterface');
 
         $processor = new AckProcessor($processor->reveal(), $messageProvider->reveal());
 

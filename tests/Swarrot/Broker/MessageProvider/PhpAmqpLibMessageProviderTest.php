@@ -3,29 +3,14 @@
 namespace Swarrot\Broker\MessageProvider;
 
 use PhpAmqpLib\Message\AMQPMessage;
-use Prophecy\Prophet;
+use Prophecy\PhpUnit\ProphecyTestCase;
 use Swarrot\Broker\Message;
 
-class PhpAmqpLibMessageProviderTest extends \PHPUnit_Framework_TestCase
+class PhpAmqpLibMessageProviderTest extends ProphecyTestCase
 {
-    /**
-     * @var Prophet
-     */
-    protected $prophet;
-
-    protected function setUp()
-    {
-        $this->prophet = new Prophet;
-    }
-
-    protected function tearDown()
-    {
-        $this->prophet->checkPredictions();
-    }
-
     public function test_get_with_messages_in_queue_return_message()
     {
-        $channel     = $this->prophet->prophesize('PhpAmqpLib\Channel\AMQPChannel');
+        $channel     = $this->prophesize('PhpAmqpLib\Channel\AMQPChannel');
         $amqpMessage = new AMQPMessage('foobar');
 
         $amqpMessage->delivery_info['delivery_tag'] =  '1';
@@ -40,7 +25,7 @@ class PhpAmqpLibMessageProviderTest extends \PHPUnit_Framework_TestCase
 
     public function test_get_without_messages_in_queue_return_null()
     {
-        $channel = $this->prophet->prophesize('PhpAmqpLib\Channel\AMQPChannel');
+        $channel = $this->prophesize('PhpAmqpLib\Channel\AMQPChannel');
 
         $channel->basic_get('my_queue')->shouldBeCalled()->willReturn(null);
 
@@ -52,7 +37,7 @@ class PhpAmqpLibMessageProviderTest extends \PHPUnit_Framework_TestCase
 
     public function test_ack()
     {
-        $channel = $this->prophet->prophesize('PhpAmqpLib\Channel\AMQPChannel');
+        $channel = $this->prophesize('PhpAmqpLib\Channel\AMQPChannel');
 
         $channel->basic_ack('5')->shouldBeCalled();
 
@@ -63,7 +48,7 @@ class PhpAmqpLibMessageProviderTest extends \PHPUnit_Framework_TestCase
 
     public function test_nack()
     {
-        $channel = $this->prophet->prophesize('PhpAmqpLib\Channel\AMQPChannel');
+        $channel = $this->prophesize('PhpAmqpLib\Channel\AMQPChannel');
 
         $channel->basic_nack('5', false, true)->shouldBeCalled();
 
@@ -74,7 +59,7 @@ class PhpAmqpLibMessageProviderTest extends \PHPUnit_Framework_TestCase
 
     public function test_get_name()
     {
-        $channel = $this->prophet->prophesize('PhpAmqpLib\Channel\AMQPChannel');
+        $channel = $this->prophesize('PhpAmqpLib\Channel\AMQPChannel');
         $provider = new PhpAmqpLibMessageProvider($channel->reveal(), 'foobar');
 
         $this->assertEquals('foobar', $provider->getQueueName());
