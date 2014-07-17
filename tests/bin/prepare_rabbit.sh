@@ -1,7 +1,5 @@
 #!/bin/sh
 
-set -e
-
 echo "# Preparing vhost"
 rabbitmqctl delete_vhost swarrot
 rabbitmqctl add_vhost swarrot
