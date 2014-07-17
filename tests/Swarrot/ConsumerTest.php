@@ -3,32 +3,15 @@
 namespace Swarrot;
 
 use Prophecy\Argument;
-use Swarrot\Broker\MessageProvider\MessageProviderInterface;
-use Swarrot\Processor\ProcessorInterface;
-use Swarrot\Processor\ConfigurableInterface;
-use Swarrot\Processor\InitializableInterface;
-use Swarrot\Processor\TerminableInterface;
-use Swarrot\Processor\SleepyInterface;
+use Prophecy\PhpUnit\ProphecyTestCase;
 use Swarrot\Broker\Message;
 
-class ConsumerTest extends \PHPUnit_Framework_TestCase
+class ConsumerTest extends ProphecyTestCase
 {
-    protected $prophet;
-
-    protected function setUp()
-    {
-        $this->prophet = new \Prophecy\Prophet;
-    }
-
-    protected function tearDown()
-    {
-        $this->prophet->checkPredictions();
-    }
-
     public function test_it_is_initializable()
     {
-        $provider  = $this->prophet->prophesize('Swarrot\Broker\MessageProvider\MessageProviderInterface');
-        $processor = $this->prophet->prophesize('Swarrot\Processor\ProcessorInterface');
+        $provider  = $this->prophesize('Swarrot\Broker\MessageProvider\MessageProviderInterface');
+        $processor = $this->prophesize('Swarrot\Processor\ProcessorInterface');
 
         $consumer = new Consumer($provider->reveal(), $processor->reveal());
         $this->assertInstanceOf('Swarrot\Consumer', $consumer);
@@ -36,8 +19,8 @@ class ConsumerTest extends \PHPUnit_Framework_TestCase
 
     public function test_it_returns_null_if_no_error_occurred()
     {
-        $provider  = $this->prophet->prophesize('Swarrot\Broker\MessageProvider\MessageProviderInterface');
-        $processor = $this->prophet->prophesize('Swarrot\Processor\ProcessorInterface');
+        $provider  = $this->prophesize('Swarrot\Broker\MessageProvider\MessageProviderInterface');
+        $processor = $this->prophesize('Swarrot\Processor\ProcessorInterface');
 
         $message = new Message('body', array(), 1);
 
@@ -53,8 +36,8 @@ class ConsumerTest extends \PHPUnit_Framework_TestCase
 
     public function test_it_call_processor_if_its_configurable()
     {
-        $provider  = $this->prophet->prophesize('Swarrot\Broker\MessageProvider\MessageProviderInterface');
-        $processor = $this->prophet->prophesize('Swarrot\Processor\ConfigurableInterface');
+        $provider  = $this->prophesize('Swarrot\Broker\MessageProvider\MessageProviderInterface');
+        $processor = $this->prophesize('Swarrot\Processor\ConfigurableInterface');
 
         $message = new Message('body', array(), 1);
 
@@ -73,8 +56,8 @@ class ConsumerTest extends \PHPUnit_Framework_TestCase
 
     public function test_it_call_processor_if_its_initializable()
     {
-        $provider  = $this->prophet->prophesize('Swarrot\Broker\MessageProvider\MessageProviderInterface');
-        $processor = $this->prophet->prophesize('Swarrot\Processor\InitializableInterface');
+        $provider  = $this->prophesize('Swarrot\Broker\MessageProvider\MessageProviderInterface');
+        $processor = $this->prophesize('Swarrot\Processor\InitializableInterface');
 
         $message = new Message('body', array(), 1);
 
@@ -91,8 +74,8 @@ class ConsumerTest extends \PHPUnit_Framework_TestCase
 
     public function test_it_call_processor_if_its_terminable()
     {
-        $provider  = $this->prophet->prophesize('Swarrot\Broker\MessageProvider\MessageProviderInterface');
-        $processor = $this->prophet->prophesize('Swarrot\Processor\TerminableInterface');
+        $provider  = $this->prophesize('Swarrot\Broker\MessageProvider\MessageProviderInterface');
+        $processor = $this->prophesize('Swarrot\Processor\TerminableInterface');
 
         $message = new Message('body', array(), 1);
 
@@ -109,8 +92,8 @@ class ConsumerTest extends \PHPUnit_Framework_TestCase
 
     public function test_it_call_processor_if_its_Sleepy()
     {
-        $provider  = $this->prophet->prophesize('Swarrot\Broker\MessageProvider\MessageProviderInterface');
-        $processor = $this->prophet->prophesize('Swarrot\Processor\SleepyInterface');
+        $provider  = $this->prophesize('Swarrot\Broker\MessageProvider\MessageProviderInterface');
+        $processor = $this->prophesize('Swarrot\Processor\SleepyInterface');
 
         $message = new Message('body', array(), 1);
 

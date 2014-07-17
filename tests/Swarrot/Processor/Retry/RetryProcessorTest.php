@@ -3,28 +3,16 @@
 namespace Swarrot\Processor\Retry;
 
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTestCase;
 use Swarrot\Broker\Message;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Swarrot\Broker\MessagePublisher\MessagePublisherInterface;
 
-class RetryProcessorTest extends \PHPUnit_Framework_TestCase
+class RetryProcessorTest extends ProphecyTestCase
 {
-    protected $prophet;
-
-    protected function setUp()
-    {
-        $this->prophet = new \Prophecy\Prophet;
-    }
-
-    protected function tearDown()
-    {
-        $this->prophet->checkPredictions();
-    }
-
     public function test_it_is_initializable_without_a_logger()
     {
-        $processor        = $this->prophet->prophesize('Swarrot\Processor\ProcessorInterface');
-        $messagePublisher = $this->prophet->prophesize('Swarrot\Broker\MessagePublisher\MessagePublisherInterface');
+        $processor        = $this->prophesize('Swarrot\Processor\ProcessorInterface');
+        $messagePublisher = $this->prophesize('Swarrot\Broker\MessagePublisher\MessagePublisherInterface');
 
         $processor = new RetryProcessor($processor->reveal(), $messagePublisher->reveal());
         $this->assertInstanceOf('Swarrot\Processor\Retry\RetryProcessor', $processor);
@@ -32,9 +20,9 @@ class RetryProcessorTest extends \PHPUnit_Framework_TestCase
 
     public function test_it_is_initializable_with_a_logger()
     {
-        $processor        = $this->prophet->prophesize('Swarrot\Processor\ProcessorInterface');
-        $messagePublisher = $this->prophet->prophesize('Swarrot\Broker\MessagePublisher\MessagePublisherInterface');
-        $logger           = $this->prophet->prophesize('Psr\Log\LoggerInterface');
+        $processor        = $this->prophesize('Swarrot\Processor\ProcessorInterface');
+        $messagePublisher = $this->prophesize('Swarrot\Broker\MessagePublisher\MessagePublisherInterface');
+        $logger           = $this->prophesize('Psr\Log\LoggerInterface');
 
         $processor = new RetryProcessor($processor->reveal(), $messagePublisher->reveal(), $logger->reveal());
         $this->assertInstanceOf('Swarrot\Processor\Retry\RetryProcessor', $processor);
@@ -42,9 +30,9 @@ class RetryProcessorTest extends \PHPUnit_Framework_TestCase
 
     public function test_it_should_return_result_when_all_is_right()
     {
-        $processor        = $this->prophet->prophesize('Swarrot\Processor\ProcessorInterface');
-        $messagePublisher = $this->prophet->prophesize('Swarrot\Broker\MessagePublisher\MessagePublisherInterface');
-        $logger           = $this->prophet->prophesize('Psr\Log\LoggerInterface');
+        $processor        = $this->prophesize('Swarrot\Processor\ProcessorInterface');
+        $messagePublisher = $this->prophesize('Swarrot\Broker\MessagePublisher\MessagePublisherInterface');
+        $logger           = $this->prophesize('Psr\Log\LoggerInterface');
 
         $message = new Message('body', array(), 1);
 
@@ -60,9 +48,9 @@ class RetryProcessorTest extends \PHPUnit_Framework_TestCase
 
     public function test_it_should_republished_message_when_an_exception_occurred()
     {
-        $processor        = $this->prophet->prophesize('Swarrot\Processor\ProcessorInterface');
-        $messagePublisher = $this->prophet->prophesize('Swarrot\Broker\MessagePublisher\MessagePublisherInterface');
-        $logger           = $this->prophet->prophesize('Psr\Log\LoggerInterface');
+        $processor        = $this->prophesize('Swarrot\Processor\ProcessorInterface');
+        $messagePublisher = $this->prophesize('Swarrot\Broker\MessagePublisher\MessagePublisherInterface');
+        $logger           = $this->prophesize('Psr\Log\LoggerInterface');
 
         $message = new Message('body', array(), 1);
         $options = array(
@@ -95,9 +83,9 @@ class RetryProcessorTest extends \PHPUnit_Framework_TestCase
 
     public function test_it_should_republished_message_with_incremented_attempts()
     {
-        $processor        = $this->prophet->prophesize('Swarrot\Processor\ProcessorInterface');
-        $messagePublisher = $this->prophet->prophesize('Swarrot\Broker\MessagePublisher\MessagePublisherInterface');
-        $logger           = $this->prophet->prophesize('Psr\Log\LoggerInterface');
+        $processor        = $this->prophesize('Swarrot\Processor\ProcessorInterface');
+        $messagePublisher = $this->prophesize('Swarrot\Broker\MessagePublisher\MessagePublisherInterface');
+        $logger           = $this->prophesize('Psr\Log\LoggerInterface');
 
         $message = new Message('body', array('headers' => array('swarrot_retry_attempts' => 1)), 1);
 
@@ -136,9 +124,9 @@ class RetryProcessorTest extends \PHPUnit_Framework_TestCase
 
     public function test_it_should_throw_exception_if_max_attempts_is_reached()
     {
-        $processor        = $this->prophet->prophesize('Swarrot\Processor\ProcessorInterface');
-        $messagePublisher = $this->prophet->prophesize('Swarrot\Broker\MessagePublisher\MessagePublisherInterface');
-        $logger           = $this->prophet->prophesize('Psr\Log\LoggerInterface');
+        $processor        = $this->prophesize('Swarrot\Processor\ProcessorInterface');
+        $messagePublisher = $this->prophesize('Swarrot\Broker\MessagePublisher\MessagePublisherInterface');
+        $logger           = $this->prophesize('Psr\Log\LoggerInterface');
 
         $message = new Message('body', array('headers' => array('swarrot_retry_attempts' => 3)), 1);
         $options = array(
@@ -169,8 +157,8 @@ class RetryProcessorTest extends \PHPUnit_Framework_TestCase
 
     public function test_it_should_return_a_valid_array_of_option()
     {
-        $processor        = $this->prophet->prophesize('Swarrot\Processor\ProcessorInterface');
-        $messagePublisher = $this->prophet->prophesize('Swarrot\Broker\MessagePublisher\MessagePublisherInterface');
+        $processor        = $this->prophesize('Swarrot\Processor\ProcessorInterface');
+        $messagePublisher = $this->prophesize('Swarrot\Broker\MessagePublisher\MessagePublisherInterface');
 
         $processor = new RetryProcessor($processor->reveal(), $messagePublisher->reveal());
 

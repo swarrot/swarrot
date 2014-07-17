@@ -2,33 +2,18 @@
 
 namespace Swarrot\Processor\Stack;
 
-use Swarrot\Processor\InitializableInterface;
-use Swarrot\Processor\TerminableInterface;
-use Swarrot\Processor\ProcessorInterface;
-use Swarrot\Processor\SleepyInterface;
+use Prophecy\PhpUnit\ProphecyTestCase;
 use Swarrot\Broker\Message;
 use Prophecy\Argument;
 
-class StackedProcessorTest extends \PHPUnit_Framework_TestCase
+class StackedProcessorTest extends ProphecyTestCase
 {
-    protected $prophet;
-
-    protected function setUp()
-    {
-        $this->prophet = new \Prophecy\Prophet;
-    }
-
-    protected function tearDown()
-    {
-        $this->prophet->checkPredictions();
-    }
-
     public function test_it_is_initializable()
     {
-        $p1  = $this->prophet->prophesize('Swarrot\Processor\ProcessorInterface');
-        $p2  = $this->prophet->prophesize('Swarrot\Processor\InitializableInterface');
-        $p3  = $this->prophet->prophesize('Swarrot\Processor\TerminableInterface');
-        $p4  = $this->prophet->prophesize('Swarrot\Processor\SleepyInterface');
+        $p1  = $this->prophesize('Swarrot\Processor\ProcessorInterface');
+        $p2  = $this->prophesize('Swarrot\Processor\InitializableInterface');
+        $p3  = $this->prophesize('Swarrot\Processor\TerminableInterface');
+        $p4  = $this->prophesize('Swarrot\Processor\SleepyInterface');
 
         $stackedProcessor = new StackedProcessor(
             $p1->reveal(), array(
@@ -43,10 +28,10 @@ class StackedProcessorTest extends \PHPUnit_Framework_TestCase
 
     public function test_it_is_callable()
     {
-        $p1  = $this->prophet->prophesize('Swarrot\Processor\ProcessorInterface');
-        $p2  = $this->prophet->prophesize('Swarrot\Processor\InitializableInterface');
-        $p3  = $this->prophet->prophesize('Swarrot\Processor\TerminableInterface');
-        $p4  = $this->prophet->prophesize('Swarrot\Processor\SleepyInterface');
+        $p1  = $this->prophesize('Swarrot\Processor\ProcessorInterface');
+        $p2  = $this->prophesize('Swarrot\Processor\InitializableInterface');
+        $p3  = $this->prophesize('Swarrot\Processor\TerminableInterface');
+        $p4  = $this->prophesize('Swarrot\Processor\SleepyInterface');
 
         $p2->initialize(Argument::type('array'))->willReturn(null);
         $p3->terminate(Argument::type('array'))->willReturn(null);
@@ -77,10 +62,10 @@ class StackedProcessorTest extends \PHPUnit_Framework_TestCase
 
     public function test_sleep_return_false_if_at_least_a_processor_return_false()
     {
-        $p1  = $this->prophet->prophesize('Swarrot\Processor\SleepyInterface');
-        $p2  = $this->prophet->prophesize('Swarrot\Processor\SleepyInterface');
-        $p3  = $this->prophet->prophesize('Swarrot\Processor\SleepyInterface');
-        $p4  = $this->prophet->prophesize('Swarrot\Processor\SleepyInterface');
+        $p1  = $this->prophesize('Swarrot\Processor\SleepyInterface');
+        $p2  = $this->prophesize('Swarrot\Processor\SleepyInterface');
+        $p3  = $this->prophesize('Swarrot\Processor\SleepyInterface');
+        $p4  = $this->prophesize('Swarrot\Processor\SleepyInterface');
 
         $p2->sleep(Argument::type('array'))->willReturn(true);
         $p3->sleep(Argument::type('array'))->willReturn(true);

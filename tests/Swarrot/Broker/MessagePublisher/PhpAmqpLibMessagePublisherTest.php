@@ -2,32 +2,16 @@
 
 namespace Swarrot\Broker\MessagePublisher;
 
-use Prophecy\Prophet;
+use Prophecy\PhpUnit\ProphecyTestCase;
 use Prophecy\Argument;
-
 use PhpAmqpLib\Message\AMQPMessage;
-
-use Swarrot\Broker\MessagePublisher\PhpAmqpLibMessagePublisher;
 use Swarrot\Broker\Message;
 
-class PhpAmqpLibMessagePublisherTest extends \PHPUnit_Framework_TestCase
+class PhpAmqpLibMessagePublisherTest extends ProphecyTestCase
 {
-    /** @var Prophet */
-    protected $prophet;
-
-    public function setUp()
-    {
-        $this->prophet = new Prophet;
-    }
-
-    public function tearDown()
-    {
-        $this->prophet->checkPredictions();
-    }
-
     public function test_publish_with_valid_message()
     {
-        $channel = $this->prophet->prophesize('PhpAmqpLib\Channel\AMQPChannel');
+        $channel = $this->prophesize('PhpAmqpLib\Channel\AMQPChannel');
 
         $channel->basic_publish(
             Argument::that(function(AMQPMessage $message) {
