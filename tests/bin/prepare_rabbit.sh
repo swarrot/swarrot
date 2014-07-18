@@ -1,7 +1,9 @@
 #!/bin/sh
 
+set -e
+
 echo "# Preparing vhost"
-rabbitmqctl delete_vhost swarrot
+rabbitmqctl delete_vhost swarrot || true
 rabbitmqctl add_vhost swarrot
 rabbitmqctl set_permissions -p swarrot guest ".*" ".*" ".*"
 
