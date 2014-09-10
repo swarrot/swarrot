@@ -98,8 +98,8 @@ class Processor implements ProcessorInterface {
 }
 
 $stack = (new \Swarrot\Processor\Stack\Builder())
-    ->push('Swarrot\Processor\ExceptionCatcherProcessor')
-    ->push('Swarrot\Processor\MaxMessagesProcessor', new Logger())
+    ->push('Swarrot\Processor\ExceptionCatcher\ExceptionCatcherProcessor')
+    ->push('Swarrot\Processor\MaxMessages\MaxMessagesProcessor', new Logger())
 ;
 
 $processor = $stack->resolve(new Processor());
