@@ -30,7 +30,7 @@ page to choose a stable version to use, avoid the `@stable` meta constraint.
 
 ### Basic usage
 
-First, you need to create a message provider to retrieve message from you're
+First, you need to create a message provider to retrieve message from your
 broker. For example, with A PeclPackageMessageProvider (retrieve message from
 an AMQP broker with the [pecl amqp package](http://pecl.php.net/package/amqp):
 
