@@ -49,6 +49,10 @@ class PeclPackageMessageProvider implements MessageProviderInterface
                 'reply_to'          => $envelope->getReplyTo(),
                 'correlation_id'    => $envelope->getCorrelationId(),
                 'headers'           => $envelope->getHeaders(),
+                'user_id'           => $envelope->getUserId(),
+                'cluster_id'        => 0,
+                'channel'           => '',
+                'consumer_tag'      => ''
             ),
             $envelope->getDeliveryTag()
         );
