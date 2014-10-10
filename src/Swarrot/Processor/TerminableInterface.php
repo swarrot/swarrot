@@ -2,7 +2,7 @@
 
 namespace Swarrot\Processor;
 
-interface TerminableInterface extends ProcessorInterface
+interface TerminableInterface
 {
     /**
      * terminate
