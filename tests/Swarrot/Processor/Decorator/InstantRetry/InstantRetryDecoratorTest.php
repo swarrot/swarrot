@@ -6,7 +6,7 @@ use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTestCase;
 use Swarrot\Broker\Message;
 
-class InstantRetryProcessorTest extends ProphecyTestCase
+class InstantRetryDecoratorTest extends ProphecyTestCase
 {
     public function test_it_is_initializable_without_a_logger()
     {
