@@ -48,7 +48,16 @@ class RetryDecoratorTest extends ProphecyTestCase
         $messagePublisher   = $this->prophesize('Swarrot\Broker\MessagePublisher\MessagePublisherInterface');
         $logger             = $this->prophesize('Psr\Log\LoggerInterface');
 
-        $message = new Message('body', array(), 1);
+        $message = new Message(
+            'body',
+            [
+                'content_type' => 'application/json',
+                'headers' => [
+                    'foo' => 'bar',
+                ]
+            ],
+            1
+        );
         $options = array(
             'retry_attempts' => 3,
             'retry_key_pattern' => 'key_%attempt%',
@@ -63,7 +72,22 @@ class RetryDecoratorTest extends ProphecyTestCase
         ;
         $messagePublisher
             ->publish(
-                Argument::type('Swarrot\Broker\Message'),
+                Argument::allOf(
+                    Argument::type('Swarrot\Broker\Message'),
+                    Argument::which('getBody', $message->getBody()),
+                    Argument::which(
+                        'getProperties',
+                        array_merge(
+                            $message->getProperties(),
+                            [
+                                'headers' => [
+                                    'swarrot_retry_attempts' => 1,
+                                    'foo' => 'bar',
+                                ]
+                            ]
+                        )
+                    )
+                ),
                 Argument::exact('key_1')
             )
             ->willReturn(null)
@@ -99,11 +123,17 @@ class RetryDecoratorTest extends ProphecyTestCase
         ;
         $messagePublisher
             ->publish(
-                Argument::that(function(Message $message) {
-                    $properties = $message->getProperties();
-
-                    return 2 === $properties['headers']['swarrot_retry_attempts'] && 'body' === $message->getBody();
-                }),
+                Argument::allOf(
+                    Argument::type('Swarrot\Broker\Message'),
+                    Argument::which('getBody', $message->getBody()),
+                    Argument::which(
+                        'getProperties',
+                        array_merge(
+                            $message->getProperties(),
+                            ['headers' => ['swarrot_retry_attempts' => 2]]
+                        )
+                    )
+                ),
 
                 Argument::exact('key_2')
             )

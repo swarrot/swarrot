@@ -48,14 +48,9 @@ class RetryDecorator implements DecoratorInterface, ConfigurableInterface
                 throw $e;
             }
 
-            $message = new Message(
-                $message->getBody(),
-                array(
-                    'headers' => array(
-                        'swarrot_retry_attempts' => $attempts
-                    )
-                )
-            );
+            $properties = $message->getProperties();
+            $properties['headers']['swarrot_retry_attempts'] = $attempts;
+            $message = new Message($message->getBody(), $properties);
 
             $key = str_replace('%attempt%', $attempts, $options['retry_key_pattern']);
 
