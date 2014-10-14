@@ -2,23 +2,21 @@
 
 namespace Swarrot\Processor\Decorator\Retry;
 
+use Swarrot\Broker\MessagePublisher\MessagePublisherInterface;
 use Swarrot\Processor\ProcessorInterface;
 use Swarrot\Processor\ConfigurableInterface;
 use Swarrot\Broker\Message;
 use Psr\Log\LoggerInterface;
 use Swarrot\Processor\Decorator\DecoratorInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-use Swarrot\Broker\MessagePublisher\MessagePublisherInterface;
 
 class RetryDecorator implements DecoratorInterface, ConfigurableInterface
 {
-    protected $publisher;
     protected $logger;
 
-    public function __construct(MessagePublisherInterface $publisher, LoggerInterface $logger = null)
+    public function __construct(LoggerInterface $logger = null)
     {
-        $this->publisher = $publisher;
-        $this->logger    = $logger;
+        $this->logger = $logger;
     }
 
     /**
@@ -67,7 +65,9 @@ class RetryDecorator implements DecoratorInterface, ConfigurableInterface
                 );
             }
 
-            $this->publisher->publish($message, $key);
+            /** @var MessagePublisherInterface $retryPublisher */
+            $retryPublisher = $options['retry_publisher'];
+            $retryPublisher->publish($message, $key);
         }
     }
 
@@ -81,11 +81,13 @@ class RetryDecorator implements DecoratorInterface, ConfigurableInterface
                 'retry_attempts' => 3,
             ))
             ->setRequired(array(
-                'retry_key_pattern'
+                'retry_key_pattern',
+                'retry_publisher',
             ))
             ->setAllowedTypes(array(
                 'retry_attempts' => 'integer',
                 'retry_key_pattern' => 'string',
+                'retry_publisher' => 'Swarrot\Broker\MessagePublisher\MessagePublisherInterface',
             ))
         ;
     }

@@ -11,17 +11,14 @@ class RetryDecoratorTest extends ProphecyTestCase
 {
     public function test_it_is_initializable_without_a_logger()
     {
-        $messagePublisher = $this->prophesize('Swarrot\Broker\MessagePublisher\MessagePublisherInterface');
-
-        $processor = new RetryDecorator($messagePublisher->reveal());
+        $processor = new RetryDecorator();
     }
 
     public function test_it_is_initializable_with_a_logger()
     {
-        $messagePublisher = $this->prophesize('Swarrot\Broker\MessagePublisher\MessagePublisherInterface');
-        $logger           = $this->prophesize('Psr\Log\LoggerInterface');
+        $logger = $this->prophesize('Psr\Log\LoggerInterface');
 
-        $processor = new RetryDecorator($messagePublisher->reveal(), $logger->reveal());
+        $processor = new RetryDecorator($logger->reveal());
     }
 
     public function test_it_should_return_result_when_all_is_right()
@@ -31,15 +28,16 @@ class RetryDecoratorTest extends ProphecyTestCase
         $logger             = $this->prophesize('Psr\Log\LoggerInterface');
 
         $message = new Message('body', array(), 1);
+        $options = ['retry_publisher' => $messagePublisher->reveal()];
 
-        $decoratedProcessor->process(Argument::exact($message), Argument::exact(array()))->willReturn(null);
+        $decoratedProcessor->process($message, $options)->willReturn(null);
         $messagePublisher
-            ->publish(Argument::exact($message))
+            ->publish($message)
             ->shouldNotBeCalled(null)
         ;
 
-        $processor = new RetryDecorator($messagePublisher->reveal(), $logger->reveal());
-        $this->assertNull($processor->decorate($decoratedProcessor->reveal(), $message, array()));
+        $processor = new RetryDecorator($logger->reveal());
+        $this->assertNull($processor->decorate($decoratedProcessor->reveal(), $message, $options));
     }
 
     public function test_it_should_republished_message_when_an_exception_occurred()
@@ -61,13 +59,12 @@ class RetryDecoratorTest extends ProphecyTestCase
         $options = array(
             'retry_attempts' => 3,
             'retry_key_pattern' => 'key_%attempt%',
+            'retry_publisher' => $messagePublisher->reveal(),
         );
 
         $decoratedProcessor
-            ->process(
-                Argument::exact($message),
-                Argument::exact($options)
-            )->willThrow('\BadMethodCallException')
+            ->process($message, $options)
+            ->willThrow('\BadMethodCallException')
             ->shouldBeCalledTimes(1)
         ;
         $messagePublisher
@@ -88,13 +85,13 @@ class RetryDecoratorTest extends ProphecyTestCase
                         )
                     )
                 ),
-                Argument::exact('key_1')
+                'key_1'
             )
             ->willReturn(null)
             ->shouldBeCalledTimes(1)
         ;
 
-        $processor = new RetryDecorator($messagePublisher->reveal(), $logger->reveal());
+        $processor = new RetryDecorator($logger->reveal());
 
         $this->assertNull(
             $processor->decorate($decoratedProcessor->reveal(), $message, $options)
@@ -112,13 +109,12 @@ class RetryDecoratorTest extends ProphecyTestCase
         $options = array(
             'retry_attempts' => 3,
             'retry_key_pattern' => 'key_%attempt%',
+            'retry_publisher' => $messagePublisher->reveal(),
         );
 
         $decoratedProcessor
-            ->process(
-                Argument::exact($message),
-                Argument::exact($options)
-            )->willThrow('\BadMethodCallException')
+            ->process($message, $options)
+            ->willThrow('\BadMethodCallException')
             ->shouldBeCalledTimes(1)
         ;
         $messagePublisher
@@ -141,7 +137,7 @@ class RetryDecoratorTest extends ProphecyTestCase
             ->shouldBeCalledTimes(1)
         ;
 
-        $processor = new RetryDecorator($messagePublisher->reveal(), $logger->reveal());
+        $processor = new RetryDecorator($logger->reveal());
 
         $this->assertNull(
             $processor->decorate($decoratedProcessor->reveal(), $message, $options)
@@ -158,25 +154,24 @@ class RetryDecoratorTest extends ProphecyTestCase
         $options = array(
             'retry_attempts' => 3,
             'retry_key_pattern' => 'key_%attempt%',
+            'retry_publisher' => $messagePublisher->reveal(),
         );
 
         $decoratedProcessor
-            ->process(
-                Argument::exact($message),
-                Argument::exact($options)
-            )->willThrow('\BadMethodCallException')
+            ->process($message, $options)
+            ->willThrow('\BadMethodCallException')
             ->shouldBeCalledTimes(1)
         ;
         $messagePublisher
             ->publish(
                 Argument::type('Swarrot\Broker\Message'),
-                Argument::exact('key_1')
+                'key_1'
             )
             ->shouldNotBeCalled()
         ;
 
         $this->setExpectedException('\BadMethodCallException');
-        $processor = new RetryDecorator($messagePublisher->reveal(), $logger->reveal());
+        $processor = new RetryDecorator($logger->reveal());
 
         $processor->decorate($decoratedProcessor->reveal(), $message, $options);
     }
@@ -185,18 +180,20 @@ class RetryDecoratorTest extends ProphecyTestCase
     {
         $messagePublisher = $this->prophesize('Swarrot\Broker\MessagePublisher\MessagePublisherInterface');
 
-        $processor = new RetryDecorator($messagePublisher->reveal());
+        $processor = new RetryDecorator();
 
         $optionsResolver = new OptionsResolver();
         $processor->setDefaultOptions($optionsResolver);
 
         $config = $optionsResolver->resolve(array(
-            'retry_key_pattern' => 'key_%attempt%'
+            'retry_key_pattern' => 'key_%attempt%',
+            'retry_publisher'   => $messagePublisher->reveal(),
         ));
 
         $this->assertEquals(array(
             'retry_key_pattern' => 'key_%attempt%',
-            'retry_attempts'    => 3
+            'retry_attempts'    => 3,
+            'retry_publisher'   => $messagePublisher->reveal(),
         ), $config);
     }
 }
