@@ -6,16 +6,17 @@ use Swarrot\Processor\ProcessorInterface;
 
 class DecoratorStackBuilder
 {
-    public static function createStack(ProcessorInterface $processor, array $decorators)
-    {
-        while (null !== ($decorator = array_pop($decorators))) {
-            $processor = new DecoratorProcessor($decorator, $processor);
-        }
-
-        return $processor;
-    }
+    /**
+     * @var DecoratorStackFactory
+     */
+    private $stackFactory;
 
     private $decorators = [];
+
+    public function __construct(DecoratorStackFactory $stackFactory = null)
+    {
+        $this->stackFactory = $stackFactory ?: new DecoratorStackFactory;
+    }
 
     public function addDecorator(DecoratorInterface $decorator, $priority = 0)
     {
@@ -33,6 +34,6 @@ class DecoratorStackBuilder
             }
         }
 
-        return static::createStack($processor, $flattenedDecorators);
+        return $this->stackFactory->create($processor, $flattenedDecorators);
     }
 }

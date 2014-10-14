@@ -3,8 +3,9 @@
 require_once __DIR__ . '/../vendor/autoload.php';
 
 use Swarrot\Consumer;
-use Swarrot\Broker\PeclPackageMessageProvider;
+use Swarrot\Broker\MessageProvider\PeclPackageMessageProvider;
 use Swarrot\Broker\Message;
+use Swarrot\Processor\Decorator\DecoratorStackBuilder;
 use Swarrot\Processor\ProcessorInterface;
 use Swarrot\Processor\Decorator\DecoratorInterface;
 
@@ -42,13 +43,12 @@ $queue->setName('global');
 
 $messageProvider = new PeclPackageMessageProvider($queue);
 
-$processor = \Swarrot\Processor\Decorator\DecoratorStackFactory::create(
-    new FinalProcessor(),
-    [
-        new Processor(1),
-        new Processor(2),
-    ]
-);
+$processor = (new DecoratorStackBuilder())
+    ->addDecorator(new Decorator(42), 100)
+    ->addDecorator(new Decorator(1))
+    ->addDecorator(new Decorator(2))
+    ->build(new FinalProcessor())
+;
 
 $consumer = new Consumer($messageProvider, $processor);
 $consumer->consume();
