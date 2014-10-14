@@ -23,7 +23,10 @@ class DecoratorStackBuilder
         $this->decorators[$priority][] = $decorator;
     }
 
-    public function build(ProcessorInterface $processor)
+    /**
+     * @return DecoratorInterface[] From the lowest priority to the highest
+     */
+    public function getDecorators()
     {
         ksort($this->decorators);
 
@@ -34,6 +37,11 @@ class DecoratorStackBuilder
             }
         }
 
-        return $this->stackFactory->create($processor, $flattenedDecorators);
+        return $flattenedDecorators;
+    }
+
+    public function build(ProcessorInterface $processor)
+    {
+        return $this->stackFactory->create($processor, $this->getDecorators());
     }
 }

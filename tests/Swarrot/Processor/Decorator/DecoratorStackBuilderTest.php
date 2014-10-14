@@ -14,17 +14,16 @@ class DecoratorStackBuilderTest extends ProphecyTestCase
         $decorator3 = $this->prophesize('Swarrot\Processor\Decorator\DecoratorInterface')->reveal();
         $decorator4 = $this->prophesize('Swarrot\Processor\Decorator\DecoratorInterface')->reveal();
 
+        $expectedDecoratorList = [
+            $decorator4,
+            $decorator1,
+            $decorator2,
+            $decorator3
+        ];
+
         $decoratorStackFactoryProphecy = $this->prophesize('Swarrot\Processor\Decorator\DecoratorStackFactory');
         $decoratorStackFactoryProphecy
-            ->create(
-                $processor,
-                [
-                    $decorator4,
-                    $decorator1,
-                    $decorator2,
-                    $decorator3
-                ]
-            )
+            ->create($processor, $expectedDecoratorList)
             ->willReturn(
                 $expectedDecoratorStack = $this->prophesize('Swarrot\Processor\ProcessorInterface')->reveal()
             )
@@ -39,5 +38,6 @@ class DecoratorStackBuilderTest extends ProphecyTestCase
         $decoratorStack = $builder->build($processor);
 
         $this->assertSame($expectedDecoratorStack, $decoratorStack);
+        $this->assertSame($expectedDecoratorList, $builder->getDecorators());
     }
 }
