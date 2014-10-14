@@ -11,17 +11,14 @@ class AckDecoratorTest extends ProphecyTestCase
 {
     public function test_it_is_initializable_without_a_logger()
     {
-        $messageProvider = $this->prophesize('Swarrot\Broker\MessageProvider\MessageProviderInterface');
-
-        $processor = new AckDecorator($messageProvider->reveal());
+        $processor = new AckDecorator();
     }
 
     public function test_it_is_initializable_with_a_logger()
     {
-        $messageProvider = $this->prophesize('Swarrot\Broker\MessageProvider\MessageProviderInterface');
         $logger          = $this->prophesize('Psr\Log\LoggerInterface');
 
-        $processor = new AckDecorator($messageProvider->reveal(), $logger->reveal());
+        $processor = new AckDecorator($logger->reveal());
     }
 
     public function test_it_should_ack_when_no_exception_is_thrown()
@@ -31,12 +28,13 @@ class AckDecoratorTest extends ProphecyTestCase
         $logger             = $this->prophesize('Psr\Log\LoggerInterface');
 
         $message = new Message('body', array(), 1);
+        $options = ['message_provider' => $messageProvider->reveal()];
 
-        $decoratedProcessor->process(Argument::exact($message), Argument::exact(array()))->willReturn(null);
-        $messageProvider->ack(Argument::exact($message))->willReturn(null);
+        $decoratedProcessor->process($message, $options)->willReturn(null);
+        $messageProvider->ack($message)->willReturn(null);
 
-        $processor = new AckDecorator($messageProvider->reveal(), $logger->reveal());
-        $this->assertNull($processor->decorate($decoratedProcessor->reveal(), $message, array()));
+        $processor = new AckDecorator($logger->reveal());
+        $this->assertNull($processor->decorate($decoratedProcessor->reveal(), $message, $options));
     }
 
     public function test_it_should_nack_when_an_exception_is_thrown()
@@ -46,14 +44,15 @@ class AckDecoratorTest extends ProphecyTestCase
         $logger             = $this->prophesize('Psr\Log\LoggerInterface');
 
         $message = new Message('body', array(), 1);
+        $options = ['message_provider' => $messageProvider->reveal()];
 
-        $decoratedProcessor->process(Argument::exact($message), Argument::exact(array()))->willThrow('\BadMethodCallException');
-        $messageProvider->nack(Argument::exact($message), Argument::exact(false))->willReturn(null);
+        $decoratedProcessor->process($message, $options)->willThrow('\BadMethodCallException');
+        $messageProvider->nack($message, false)->willReturn(null);
 
-        $processor = new AckDecorator($messageProvider->reveal(), $logger->reveal());
+        $processor = new AckDecorator($logger->reveal());
 
         $this->setExpectedException('\BadMethodCallException');
-        $this->assertNull($processor->decorate($decoratedProcessor->reveal(), $message, array()));
+        $this->assertNull($processor->decorate($decoratedProcessor->reveal(), $message, $options));
     }
 
     public function test_it_should_nack_and_requeue_when_an_exception_is_thrown_and_conf_updated()
@@ -63,34 +62,46 @@ class AckDecoratorTest extends ProphecyTestCase
         $logger             = $this->prophesize('Psr\Log\LoggerInterface');
 
         $message = new Message('body', array(), 1);
+        $options = [
+            'requeue_on_error' => true,
+            'message_provider' => $messageProvider->reveal(),
+        ];
 
-        $decoratedProcessor->process(
-            Argument::exact($message),
-            Argument::exact(array('requeue_on_error' => true))
-        )->willThrow('\BadMethodCallException');
-        $messageProvider->nack(Argument::exact($message), Argument::exact(true))->willReturn(null);
+        $decoratedProcessor->process($message, $options)->willThrow('\BadMethodCallException');
+        $messageProvider->nack($message, true)->willReturn(null);
 
-        $processor = new AckDecorator($messageProvider->reveal(), $logger->reveal());
+        $processor = new AckDecorator($logger->reveal());
+
+
 
         $this->setExpectedException('\BadMethodCallException');
-        $this->assertNull($processor->decorate($decoratedProcessor->reveal(), $message, array('requeue_on_error' => true)));
+        $this->assertNull($processor->decorate($decoratedProcessor->reveal(), $message, $options));
     }
 
-    public function test_it_should_return_a_valid_array_of_option()
+    public function test_it_should_configure_options_resolver()
     {
-        $messageProvider = $this->prophesize('Swarrot\Broker\MessageProvider\MessageProviderInterface');
+        $optionsResolver = $this->prophesize('Symfony\Component\OptionsResolver\OptionsResolver');
 
-        $processor = new AckDecorator($messageProvider->reveal());
+        $optionsResolver
+            ->setDefaults(['requeue_on_error' => false])
+            ->willReturn($optionsResolver)
+            ->shouldBeCalled()
+        ;
+        $optionsResolver
+            ->setAllowedTypes([
+                'requeue_on_error' => 'bool',
+                'message_provider' => 'Swarrot\Broker\MessageProvider\MessageProviderInterface'
+            ])
+            ->willReturn($optionsResolver)
+            ->shouldBeCalled()
+        ;
+        $optionsResolver
+            ->setRequired(['message_provider'])
+            ->willReturn($optionsResolver)
+            ->shouldBeCalled()
+        ;
 
-        $optionsResolver = new OptionsResolver();
-        $processor->setDefaultOptions($optionsResolver);
-
-        $config = $optionsResolver->resolve(array(
-            'requeue_on_error' => false
-        ));
-
-        $this->assertEquals(array(
-            'requeue_on_error' => false
-        ), $config);
+        $processor = new AckDecorator();
+        $processor->setDefaultOptions($optionsResolver->reveal());
     }
 }

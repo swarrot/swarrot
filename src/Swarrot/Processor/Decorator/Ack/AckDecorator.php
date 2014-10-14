@@ -2,9 +2,9 @@
 
 namespace Swarrot\Processor\Decorator\Ack;
 
+use Swarrot\Broker\MessageProvider\MessageProviderInterface;
 use Swarrot\Processor\ProcessorInterface;
 use Swarrot\Processor\ConfigurableInterface;
-use Swarrot\Broker\MessageProvider\MessageProviderInterface;
 use Swarrot\Broker\Message;
 use Psr\Log\LoggerInterface;
 use Swarrot\Processor\Decorator\DecoratorInterface;
@@ -13,24 +13,16 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 class AckDecorator implements DecoratorInterface, ConfigurableInterface
 {
     /**
-     * @var MessageProviderInterface
-     */
-    protected $messageProvider;
-
-    /**
      * @var LoggerInterface
      */
     protected $logger;
 
     /**
-     *
-     * @param MessageProviderInterface $messageProvider Message provider
-     * @param LoggerInterface          $logger          Logger
+     * @param LoggerInterface $logger Logger
      */
-    public function __construct(MessageProviderInterface $messageProvider, LoggerInterface $logger = null)
+    public function __construct(LoggerInterface $logger = null)
     {
-        $this->messageProvider = $messageProvider;
-        $this->logger          = $logger;
+        $this->logger = $logger;
     }
 
     /**
@@ -38,9 +30,12 @@ class AckDecorator implements DecoratorInterface, ConfigurableInterface
      */
     public function decorate(ProcessorInterface $processor, Message $message, array $options)
     {
+        /** @var MessageProviderInterface $messageProvider */
+        $messageProvider = $options['message_provider'];
+
         try {
             $return = $processor->process($message, $options);
-            $this->messageProvider->ack($message);
+            $messageProvider->ack($message);
 
             if (null !== $this->logger) {
                 $this->logger->info(sprintf(
@@ -52,7 +47,7 @@ class AckDecorator implements DecoratorInterface, ConfigurableInterface
             return $return;
         } catch (\Exception $e) {
             $requeue = isset($options['requeue_on_error'])? (boolean) $options['requeue_on_error'] : false;
-            $this->messageProvider->nack($message, $requeue);
+            $messageProvider->nack($message, $requeue);
 
             if (null !== $this->logger) {
                 $this->logger->warning(
@@ -77,12 +72,16 @@ class AckDecorator implements DecoratorInterface, ConfigurableInterface
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver
-            ->setDefaults(array(
-                'requeue_on_error' => false
-            ))
-            ->setAllowedTypes(array(
+            ->setDefaults([
+                'requeue_on_error' => false,
+            ])
+            ->setAllowedTypes([
                 'requeue_on_error' => 'bool',
-            ))
+                'message_provider' => 'Swarrot\Broker\MessageProvider\MessageProviderInterface',
+            ])
+            ->setRequired([
+                'message_provider',
+            ])
         ;
     }
 }
