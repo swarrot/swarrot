@@ -65,7 +65,8 @@ class Consumer
             ));
         }
         $this->optionsResolver->setDefaults(array(
-            'poll_interval' => 50000
+            'poll_interval'    => 50000,
+            'message_provider' => $this->messageProvider,
         ));
 
         if ($this->processor instanceof ConfigurableInterface) {

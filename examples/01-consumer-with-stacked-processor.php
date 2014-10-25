@@ -3,25 +3,24 @@
 require_once __DIR__ . '/../vendor/autoload.php';
 
 use Swarrot\Consumer;
-use Swarrot\Broker\PeclPackageMessageProvider;
+use Swarrot\Broker\MessageProvider\PeclPackageMessageProvider;
 use Swarrot\Broker\Message;
+use Swarrot\Processor\Decorator\DecoratorStackBuilder;
 use Swarrot\Processor\ProcessorInterface;
+use Swarrot\Processor\Decorator\DecoratorInterface;
 
-class Processor implements ProcessorInterface
+class Decorator implements DecoratorInterface
 {
-    protected $processor;
-
     protected $num;
 
-    public function __construct($processor, $num = 1)
+    public function __construct($num = 1)
     {
-        $this->processor = $processor;
-        $this->num       = (int) $num;
+        $this->num = (int) $num;
     }
-    public function process(Message $message, array $options)
+    public function decorate(ProcessorInterface $processor, Message $message, array $options)
     {
         printf("Start processing message #%d in processor #%d\n", $message->getId(), $this->num);
-        $return = $this->processor->process($message, $options);
+        $return = $processor->process($message, $options);
         printf("End processing message #%d in processor #%d\n", $message->getId(), $this->num);
 
         return $return;
@@ -44,11 +43,12 @@ $queue->setName('global');
 
 $messageProvider = new PeclPackageMessageProvider($queue);
 
-$stack = (new \Swarrot\Processor\Stack\Builder())
-    ->push('Processor', 1)
-    ->push('Processor', 2)
+$processor = (new DecoratorStackBuilder())
+    ->addDecorator(new Decorator(42), 100)
+    ->addDecorator(new Decorator(1))
+    ->addDecorator(new Decorator(2))
+    ->build(new FinalProcessor())
 ;
-$processor = $stack->resolve(new FinalProcessor());
 
 $consumer = new Consumer($messageProvider, $processor);
 $consumer->consume();

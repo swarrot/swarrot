@@ -2,7 +2,7 @@
 
 namespace Swarrot\Processor;
 
-interface SleepyInterface extends ProcessorInterface
+interface SleepyInterface
 {
     /**
      * sleep
