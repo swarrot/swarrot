@@ -98,12 +98,17 @@ class Processor implements ProcessorInterface {
 }
 
 $stack = (new \Swarrot\Processor\Stack\Builder())
-    ->push('Swarrot\Processor\ExceptionCatcher\ExceptionCatcherProcessor')
     ->push('Swarrot\Processor\MaxMessages\MaxMessagesProcessor', new Logger())
+    ->push('Swarrot\Processor\ExceptionCatcher\ExceptionCatcherProcessor')
+    ->push('Swarrot\Processor\Ack\AckProcessor', $messageProvider)
 ;
 
 $processor = $stack->resolve(new Processor());
 ```
+
+Here is an illustration to show you what append when this order is used:
+
+![this](https://docs.google.com/drawings/d/1Ea_QJHo-9p7YW8l_by7S4NID0e-AGpXRzzitAlYY5Cc/pub?w=960&h=720)
 
 ## Processors
 
