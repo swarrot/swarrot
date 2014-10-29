@@ -60,7 +60,7 @@ class SignalHandlerProcessor implements ConfigurableInterface, SleepyInterface
     public function process(Message $message, array $options)
     {
         if (!extension_loaded('pcntl')) {
-            $this->logger && $this->logger->warning(
+            $this->logger and $this->logger->warning(
                 '[SignalHandler] The SignalHandlerProcessor needs the pcntl extension to work',
                 [
                     'swarrot_processor' => 'signal_handler'
@@ -101,7 +101,7 @@ class SignalHandlerProcessor implements ConfigurableInterface, SleepyInterface
         }
 
         if ($this::$shouldExit) {
-            $this->logger && $this->logger->info(
+            $this->logger and $this->logger->info(
                 '[SignalHandler] Signal received. Stop consumer now.',
                 [
                     'swarrot_processor' => 'signal_handler'

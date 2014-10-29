@@ -32,7 +32,7 @@ class ExceptionCatcherProcessor implements ProcessorInterface
         try {
             return $this->processor->process($message, $options);
         } catch (\Exception $e) {
-            $this->logger && $this->logger->error(
+            $this->logger and $this->logger->error(
                 '[ExceptionCatcher] An exception occurred. This exception have been catch.',
                 [
                     'swarrot_processor' => 'exception',

@@ -48,7 +48,7 @@ class AckProcessor implements ConfigurableInterface
             $return = $this->processor->process($message, $options);
             $this->messageProvider->ack($message);
 
-            $this->logger && $this->logger->info(
+            $this->logger and $this->logger->info(
                 '[Ack] Message #' . $message->getId() .' have been correctly ack\'ed',
                 [
                     'swarrot_processor' => 'ack'
@@ -60,7 +60,7 @@ class AckProcessor implements ConfigurableInterface
             $requeue = isset($options['requeue_on_error'])? (boolean) $options['requeue_on_error'] : false;
             $this->messageProvider->nack($message, $requeue);
 
-            $this->logger && $this->logger->warning(
+            $this->logger and $this->logger->warning(
                 sprintf(
                     '[Ack] An exception occurred. Message #%d have been %s.',
                     $message->getId(),
