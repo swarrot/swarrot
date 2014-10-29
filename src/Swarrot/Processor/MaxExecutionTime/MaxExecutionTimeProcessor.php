@@ -92,12 +92,15 @@ class MaxExecutionTimeProcessor implements ConfigurableInterface, InitializableI
     protected function isTimeExceeded(array $options)
     {
         if (microtime(true) - $this->startTime > $options['max_execution_time']) {
-            if (null !== $this->logger) {
-                $this->logger->info(sprintf(
+            $this->logger && $this->logger->info(
+                sprintf(
                     '[MaxExecutionTime] Max execution time have been reached (%d)',
                     $options['max_execution_time']
-                ));
-            }
+                ),
+                [
+                    'swarrot_processor' => 'max_execution_time'
+                ]
+            );
 
             return true;
         }

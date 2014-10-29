@@ -39,12 +39,15 @@ class RetryProcessor implements ConfigurableInterface
             $attempts++;
 
             if ($attempts > $options['retry_attempts']) {
-                if (null !== $this->logger) {
-                    $this->logger->warning(sprintf(
+                $this->logger && $this->logger->warning(
+                    sprintf(
                         '[Retry] Stop attempting to process message after %d attempts',
                         $attempts
-                    ));
-                }
+                    ),
+                    [
+                        'swarrot_processor' => 'retry'
+                    ]
+                );
 
                 throw $e;
             }
@@ -60,18 +63,17 @@ class RetryProcessor implements ConfigurableInterface
 
             $key = str_replace('%attempt%', $attempts, $options['retry_key_pattern']);
 
-            if (null !== $this->logger) {
-                $this->logger->warning(
-                    sprintf(
-                        '[Retry] An exception occurred. Republish message for the %d times (key: %s)',
-                        $attempts,
-                        $key
-                    ),
-                    array(
-                        'exception' => $e,
-                    )
-                );
-            }
+            $this->logger && $this->logger->warning(
+                sprintf(
+                    '[Retry] An exception occurred. Republish message for the %d times (key: %s)',
+                    $attempts,
+                    $key
+                ),
+                [
+                    'swarrot_processor' => 'retry',
+                    'exception' => $e,
+                ]
+            );
 
             $this->publisher->publish($message, $key);
         }
