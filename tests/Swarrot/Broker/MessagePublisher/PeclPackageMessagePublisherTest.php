@@ -3,19 +3,33 @@
 namespace Swarrot\Broker\MessagePublisher;
 
 use Swarrot\Broker\Message;
+use Prophecy\PhpUnit\ProphecyTestCase;
+use Prophecy\Argument;
 
-class PeclPackageMessagePublisherTest extends \PHPUnit_Framework_TestCase
+class PeclPackageMessagePublisherTest extends ProphecyTestCase
 {
     protected function setUp()
     {
         if (!class_exists('AMQPConnection')) {
             $this->markTestSkipped('The AMQP extension is not available');
         }
+        parent::setUp();
     }
 
     public function test_publish_with_valid_message()
     {
-        $provider = new PeclPackageMessagePublisher($this->getAMQPExchange());
+        $exchange = $this->prophesize('\AMQPExchange');
+        $exchange
+            ->publish(
+                Argument::exact('body'),
+                Argument::exact(null),
+                Argument::exact(0),
+                Argument::exact([])
+            )
+            ->shouldBeCalledTimes(1)
+        ;
+
+        $provider = new PeclPackageMessagePublisher($exchange->reveal());
         $return = $provider->publish(
             new Message('body')
         );
@@ -23,16 +37,39 @@ class PeclPackageMessagePublisherTest extends \PHPUnit_Framework_TestCase
         $this->assertNull($return);
     }
 
-    protected function getAMQPExchange()
+    public function test_publish_with_application_headers()
     {
-        $connection = new \AMQPConnection(array(
-            'vhost' => 'swarrot'
-        ));
-        $connection->connect();
-        $channel = new \AMQPChannel($connection);
-        $exchange = new \AMQPExchange($channel);
-        $exchange->setName('exchange');
+        $exchange = $this->prophesize('\AMQPExchange');
+        $exchange
+            ->publish(
+                Argument::exact('body'),
+                Argument::exact(null),
+                Argument::exact(0),
+                Argument::exact([
+                    'headers' => [
+                        'another_header' => 'another_value',
+                        'string' => 'foobar',
+                        'integer' => 42,
+                        'array' => ['foo', 'bar']
+                    ]
+                ])
+            )
+            ->shouldBeCalledTimes(1)
+        ;
+        $provider = new PeclPackageMessagePublisher($exchange->reveal());
+        $return = $provider->publish(
+            new Message('body', [
+                'application_headers' => [
+                    'string' => ['S', 'foobar'],
+                    'integer' => ['I', 42],
+                    'array' => ['A', ['foo', 'bar']]
+                ],
+                'headers' => [
+                    'another_header' => 'another_value'
+                ]
+            ])
+        );
 
-        return $exchange;
+        $this->assertNull($return);
     }
 }
