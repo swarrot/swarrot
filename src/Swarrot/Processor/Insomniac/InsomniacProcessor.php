@@ -9,6 +9,8 @@ use Psr\Log\LoggerInterface;
 
 class InsomniacProcessor implements SleepyInterface
 {
+    protected $logger;
+
     /**
      * @var ProcessorInterface
      */
