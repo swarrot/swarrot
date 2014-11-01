@@ -37,18 +37,17 @@ class InstantRetryProcessor implements ConfigurableInterface
             try {
                 return $this->processor->process($message, $options);
             } catch (\Exception $e) {
-                if (null !== $this->logger) {
-                    $this->logger->warning(
-                        sprintf(
-                            '[InstantRetry] An exception occurred. Message #%d will be processed again in %d ms',
-                            $message->getId(),
-                            $options['instant_retry_delay']/1000
-                        ),
-                        array(
-                            'exception' => $e,
-                        )
-                    );
-                }
+                $this->logger and $this->logger->warning(
+                    sprintf(
+                        '[InstantRetry] An exception occurred. Message #%d will be processed again in %d ms',
+                        $message->getId(),
+                        $options['instant_retry_delay']/1000
+                    ),
+                    [
+                        'swarrot_processor' => 'instant_retry',
+                        'exception'         => $e,
+                    ]
+                );
 
                 usleep($options['instant_retry_delay']);
             }

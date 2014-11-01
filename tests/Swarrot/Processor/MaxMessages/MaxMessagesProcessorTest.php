@@ -39,7 +39,8 @@ class MaxMessagesProcessorTest extends ProphecyTestCase
 
         $logger = $this->prophesize('Psr\Log\LoggerInterface');
         $logger->info(
-            Argument::exact(sprintf('[MaxMessages] Max messages have been reached (%d)', $maxMessages))
+            Argument::exact(sprintf('[MaxMessages] Max messages have been reached (%d)', $maxMessages)),
+            Argument::exact(['swarrot_processor' => 'max_messages'])
         )
         ->shouldBeCalledTimes(1);
 
