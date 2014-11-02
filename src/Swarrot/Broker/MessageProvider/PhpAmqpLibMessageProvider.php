@@ -53,7 +53,6 @@ class PhpAmqpLibMessageProvider implements MessageProviderInterface
             'message_id'       => $envelope->has('message_id')          ? $envelope->get('message_id')          : '',
             'reply_to'         => $envelope->has('reply_to')            ? $envelope->get('reply_to')            : '',
             'correlation_id'   => $envelope->has('correlation_id')      ? $envelope->get('correlation_id')      : '',
-            'headers'          => $envelope->has('application_headers') ? $envelope->get('application_headers') : array(),
             'user_id'          => $envelope->has('user_id')             ? $envelope->get('user_id')             : 0,
             'cluster_id'       => $envelope->has('cluster_id')          ? $envelope->get('cluster_id')          : 0,
 
@@ -65,6 +64,13 @@ class PhpAmqpLibMessageProvider implements MessageProviderInterface
             'exchange_name' => isset($envelope->delivery_info['exchange'])     ? $envelope->delivery_info['exchange']     : '',
             'routing_key'   => isset($envelope->delivery_info['routing_key'])  ? $envelope->delivery_info['routing_key']  : ''
         );
+
+        $properties['headers'] = [];
+        if ($envelope->has('application_headers')) {
+            foreach ($envelope->get('application_headers') as $key => $value) {
+                $properties['headers'][$key] = $value[1];
+            }
+        }
 
         return new Message($envelope->body, $properties, $envelope->get('delivery_tag'));
     }
