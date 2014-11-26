@@ -64,7 +64,8 @@ class Consumer
             ));
         }
         $this->optionsResolver->setDefaults(array(
-            'poll_interval' => 50000
+            'poll_interval' => 50000,
+            'queue'         => $this->messageProvider->getQueueName(),
         ));
 
         if ($this->processor instanceof ConfigurableInterface) {
