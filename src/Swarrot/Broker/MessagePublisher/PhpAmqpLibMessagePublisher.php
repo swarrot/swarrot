@@ -24,7 +24,26 @@ class PhpAmqpLibMessagePublisher implements MessagePublisherInterface
     /** {@inheritDoc} */
     public function publish(Message $message, $key = null)
     {
-        $message = new AMQPMessage($message->getBody(), $message->getProperties());
+        $properties = $message->getProperties();
+        if (isset($properties['headers'])) {
+            if (!isset($properties['application_headers'])) {
+                $properties['application_headers'] = [];
+            }
+            foreach ($properties['headers'] as $header => $value) {
+                if (is_array($value)) {
+                    $type = 'A';
+                } elseif(is_int($value)) {
+                    $type = 'I';
+                } else {
+                    $type = 'S';
+                }
+
+                $properties['application_headers'][$header] = [$type, $value];
+            }
+
+        }
+
+        $message = new AMQPMessage($message->getBody(), $properties);
 
         $this->channel->basic_publish($message, $this->exchange, (string) $key);
     }
