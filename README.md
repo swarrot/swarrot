@@ -115,6 +115,7 @@ Here is an illustration to show you what append when this order is used:
 ### Official processors
 
 * [AckProcessor](src/Swarrot/Processor/Ack)
+* [Doctrine related processors](src/Swarrot/Processor/Doctrine) (thanks to [Adrien Brault](https://github.com/adrienbrault))
 * [ExceptionCatcherProcessor](src/Swarrot/Processor/ExceptionCatcher)
 * [InstantRetryProcessor](src/Swarrot/Processor/InstantRetry)
 * [MaxExecutionTimeProcessor](src/Swarrot/Processor/MaxExecutionTime) (thanks to [Remy Lemeunier](https://github.com/remyLemeunier))
