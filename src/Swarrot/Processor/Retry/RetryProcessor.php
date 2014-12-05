@@ -44,9 +44,9 @@ class RetryProcessor implements ConfigurableInterface
                         '[Retry] Stop attempting to process message after %d attempts',
                         $attempts
                     ),
-                    [
+                    array(
                         'swarrot_processor' => 'retry'
-                    ]
+                    )
                 );
 
                 throw $e;
@@ -69,10 +69,10 @@ class RetryProcessor implements ConfigurableInterface
                     $attempts,
                     $key
                 ),
-                [
+                array(
                     'swarrot_processor' => 'retry',
                     'exception' => $e,
-                ]
+                )
             );
 
             $this->publisher->publish($message, $key);

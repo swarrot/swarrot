@@ -24,7 +24,7 @@ class PeclPackageMessagePublisherTest extends ProphecyTestCase
                 Argument::exact('body'),
                 Argument::exact(null),
                 Argument::exact(0),
-                Argument::exact([])
+                Argument::exact(array())
             )
             ->shouldBeCalledTimes(1)
         ;
@@ -45,29 +45,29 @@ class PeclPackageMessagePublisherTest extends ProphecyTestCase
                 Argument::exact('body'),
                 Argument::exact(null),
                 Argument::exact(0),
-                Argument::exact([
-                    'headers' => [
+                Argument::exact(array(
+                    'headers' => array(
                         'another_header' => 'another_value',
                         'string' => 'foobar',
                         'integer' => 42,
-                        'array' => ['foo', 'bar']
-                    ]
-                ])
+                        'array' => array('foo', 'bar')
+                    )
+                ))
             )
             ->shouldBeCalledTimes(1)
         ;
         $provider = new PeclPackageMessagePublisher($exchange->reveal());
         $return = $provider->publish(
-            new Message('body', [
-                'application_headers' => [
-                    'string' => ['S', 'foobar'],
-                    'integer' => ['I', 42],
-                    'array' => ['A', ['foo', 'bar']]
-                ],
-                'headers' => [
+            new Message('body', array(
+                'application_headers' => array(
+                    'string' => array('S', 'foobar'),
+                    'integer' => array('I', 42),
+                    'array' => array('A', array('foo', 'bar'))
+                ),
+                'headers' => array(
                     'another_header' => 'another_value'
-                ]
-            ])
+                )
+            ))
         );
 
         $this->assertNull($return);

@@ -42,9 +42,9 @@ class PhpAmqpLibMessagePublisherTest extends ProphecyTestCase
 
                 return
                     'body' === $message->body &&
-                    ['I', 42] === $properties['application_headers']['int_header'] &&
-                    ['S', 'my_value'] === $properties['application_headers']['string_header'] &&
-                    ['A', ['foo' => 'bar']] === $properties['application_headers']['array_header'] &&
+                    array('I', 42) === $properties['application_headers']['int_header'] &&
+                    array('S', 'my_value') === $properties['application_headers']['string_header'] &&
+                    array('A', array('foo' => 'bar')) === $properties['application_headers']['array_header'] &&
                     !isset($properties['headers']) &&
                     $message->serialize_properties()
                 ;
@@ -57,15 +57,15 @@ class PhpAmqpLibMessagePublisherTest extends ProphecyTestCase
         $return = $provider->publish(
             new Message(
                 'body',
-                [
-                    'headers' => [
+                array(
+                    'headers' => array(
                         'string_header' => 'my_value',
-                        'array_header' => ['foo' => 'bar']
-                    ],
-                    'application_headers' => [
-                        'int_header' => ['I', 42]
-                    ]
-                ]
+                        'array_header' => array('foo' => 'bar')
+                    ),
+                    'application_headers' => array(
+                        'int_header' => array('I', 42)
+                    )
+                )
             )
         );
 

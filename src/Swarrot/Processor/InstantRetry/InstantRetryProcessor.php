@@ -43,10 +43,10 @@ class InstantRetryProcessor implements ConfigurableInterface
                         $message->getId(),
                         $options['instant_retry_delay']/1000
                     ),
-                    [
+                    array(
                         'swarrot_processor' => 'instant_retry',
                         'exception'         => $e,
-                    ]
+                    )
                 );
 
                 usleep($options['instant_retry_delay']);

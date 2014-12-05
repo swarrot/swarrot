@@ -39,9 +39,9 @@ class InsomniacProcessor implements SleepyInterface
         // it means that the queue is empty, so we can simply return false to force the consumer to stop
         $this->logger and $this->logger->info(
             '[InsomniacProcessor] No more messages in queue.',
-            [
+            array(
                 'swarrot_processor' => 'insomniac',
-            ]
+            )
         );
 
         return false;

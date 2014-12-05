@@ -27,7 +27,7 @@ class PhpAmqpLibMessagePublisher implements MessagePublisherInterface
         $properties = $message->getProperties();
         if (isset($properties['headers'])) {
             if (!isset($properties['application_headers'])) {
-                $properties['application_headers'] = [];
+                $properties['application_headers'] = array();
             }
             foreach ($properties['headers'] as $header => $value) {
                 if (is_array($value)) {
@@ -38,7 +38,7 @@ class PhpAmqpLibMessagePublisher implements MessagePublisherInterface
                     $type = 'S';
                 }
 
-                $properties['application_headers'][$header] = [$type, $value];
+                $properties['application_headers'][$header] = array($type, $value);
             }
 
         }
