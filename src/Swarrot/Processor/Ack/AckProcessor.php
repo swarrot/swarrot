@@ -50,9 +50,9 @@ class AckProcessor implements ConfigurableInterface
 
             $this->logger and $this->logger->info(
                 '[Ack] Message #' . $message->getId() .' have been correctly ack\'ed',
-                [
+                array(
                     'swarrot_processor' => 'ack'
-                ]
+                )
             );
 
             return $return;
@@ -66,10 +66,10 @@ class AckProcessor implements ConfigurableInterface
                     $message->getId(),
                     $requeue ? 'requeued' : 'nack\'ed'
                 ),
-                [
+                array(
                     'swarrot_processor' => 'ack',
                     'exception'         => $e,
-                ]
+                )
             );
 
             throw $e;

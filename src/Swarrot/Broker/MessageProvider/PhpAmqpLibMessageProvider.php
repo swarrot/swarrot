@@ -65,7 +65,7 @@ class PhpAmqpLibMessageProvider implements MessageProviderInterface
             'routing_key'   => isset($envelope->delivery_info['routing_key'])  ? $envelope->delivery_info['routing_key']  : ''
         );
 
-        $properties['headers'] = [];
+        $properties['headers'] = array();
         if ($envelope->has('application_headers')) {
             foreach ($envelope->get('application_headers') as $key => $value) {
                 $properties['headers'][$key] = $value[1];

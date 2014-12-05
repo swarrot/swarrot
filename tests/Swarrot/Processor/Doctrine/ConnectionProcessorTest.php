@@ -13,27 +13,29 @@ class ConnectionProcessorTest extends ProphecyTestCase
     public function test()
     {
         $message = new Message();
-        $options = [
+        $options = array(
             'doctrine_ping' => false,
             'doctrine_close_master' => true,
-        ];
+        );
 
         $innerProcessorProphecy = $this->prophesize('Swarrot\Processor\ProcessorInterface');
         $innerProcessorProphecy->process($message, $options)->willReturn(true);
 
-        $createConnections = function () {
-            $connections = [];
+        $test = $this;
 
-            $connectionProphecy = $this->prophesizeConnection();
+        $createConnections = function () use ($test) {
+            $connections = array();
+
+            $connectionProphecy = $test->prophesizeConnection();
             $connectionProphecy->close()->shouldNotBeCalled();
             $connections[] = $connectionProphecy->reveal();
 
-            $connectionProphecy = $this->prophesizeMasterSlaveConnection();
+            $connectionProphecy = $test->prophesizeMasterSlaveConnection();
             $connectionProphecy->isConnectedToMaster()->willReturn(false);
             $connectionProphecy->close()->shouldNotBeCalled();
             $connections[] = $connectionProphecy->reveal();
 
-            $connectionProphecy = $this->prophesizeMasterSlaveConnection();
+            $connectionProphecy = $test->prophesizeMasterSlaveConnection();
             $connectionProphecy->isConnectedToMaster()->willReturn(true);
             $connectionProphecy->close()->shouldBeCalled();
             $connections[] = $connectionProphecy->reveal();
@@ -67,11 +69,11 @@ class ConnectionProcessorTest extends ProphecyTestCase
         $connectionProphecy->query($dummySql)->willThrow(new DBALException());
         $connectionProphecy->close()->shouldBeCalled();
 
-        $options = [
+        $options = array(
             'doctrine_ping' => true,
             'doctrine_close_master' => true,
-        ];
-        $processor = new ConnectionProcessor($innerProcessorProphecy->reveal(), [$connectionProphecy->reveal()], true);
+        );
+        $processor = new ConnectionProcessor($innerProcessorProphecy->reveal(), array($connectionProphecy->reveal()), true);
         $processor->process(new Message(), $options);
     }
 
@@ -83,7 +85,7 @@ class ConnectionProcessorTest extends ProphecyTestCase
     {
         $innerProcessorProphecy = $this->prophesize('Swarrot\Processor\ProcessorInterface');
 
-        new ConnectionProcessor($innerProcessorProphecy->reveal(), [new \StdClass]);
+        new ConnectionProcessor($innerProcessorProphecy->reveal(), array(new \StdClass));
     }
 
     public function testAcceptEmptyConnections()
@@ -91,20 +93,20 @@ class ConnectionProcessorTest extends ProphecyTestCase
         $innerProcessorProphecy = $this->prophesize('Swarrot\Processor\ProcessorInterface');
         $innerProcessorProphecy->process(Argument::cetera())->willReturn(true);
 
-        $options = [
+        $options = array(
             'doctrine_ping' => false,
             'doctrine_close_master' => true,
-        ];
-        $processor = new ConnectionProcessor($innerProcessorProphecy->reveal(), []);
+        );
+        $processor = new ConnectionProcessor($innerProcessorProphecy->reveal(), array());
         $processor->process(new Message(), $options);
     }
 
-    private function prophesizeConnection()
+    public function prophesizeConnection()
     {
         return $this->prophesize('Doctrine\DBAL\Connection');
     }
 
-    private function prophesizeMasterSlaveConnection()
+    public function prophesizeMasterSlaveConnection()
     {
         return $this->prophesize('Doctrine\DBAL\Connections\MasterSlaveConnection');
     }

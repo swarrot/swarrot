@@ -97,9 +97,9 @@ class MaxExecutionTimeProcessor implements ConfigurableInterface, InitializableI
                     '[MaxExecutionTime] Max execution time have been reached (%d)',
                     $options['max_execution_time']
                 ),
-                [
+                array(
                     'swarrot_processor' => 'max_execution_time'
-                ]
+                )
             );
 
             return true;

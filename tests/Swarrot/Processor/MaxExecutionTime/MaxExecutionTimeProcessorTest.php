@@ -39,7 +39,7 @@ class MaxExecutionTimeProcessorTest extends ProphecyTestCase
         $logger    = $this->prophesize('Psr\Log\LoggerInterface');
         $logger->info(
             Argument::exact(sprintf('[MaxExecutionTime] Max execution time have been reached (%d)', $maxExecutionTime)),
-            Argument::exact(['swarrot_processor' => 'max_execution_time'])
+            Argument::exact(array('swarrot_processor' => 'max_execution_time'))
         )
         ->shouldBeCalledTimes(1);
 

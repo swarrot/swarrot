@@ -23,7 +23,7 @@ class PeclPackageMessagePublisher implements MessagePublisherInterface
         $properties = $message->getProperties();
         if (isset($properties['application_headers'])) {
             if (!isset($properties['headers'])) {
-                $properties['headers'] = [];
+                $properties['headers'] = array();
             }
 
             foreach ($properties['application_headers'] as $header => $value) {

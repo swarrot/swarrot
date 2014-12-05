@@ -88,9 +88,9 @@ class ConnectionProcessor implements ConfigurableInterface
      */
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
-        $resolver->setDefaults([
+        $resolver->setDefaults(array(
             'doctrine_ping' => true,
             'doctrine_close_master' => true,
-        ]);
+        ));
     }
 }

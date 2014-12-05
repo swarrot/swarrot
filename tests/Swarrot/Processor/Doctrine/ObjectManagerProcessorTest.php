@@ -13,12 +13,12 @@ class ObjectManagerProcessorTest extends ProphecyTestCase
     public function test()
     {
         $message = new Message();
-        $options = [];
+        $options = array();
 
         $innerProcessorProphecy = $this->prophesize('Swarrot\Processor\ProcessorInterface');
         $innerProcessorProphecy->process($message, $options)->willReturn(true);
 
-        $objectManagers = [];
+        $objectManagers = array();
 
         $objectManagerProphecy = $this->prophesize('Doctrine\Common\Persistence\ObjectManager');
         $objectManagerProphecy->clear()->shouldBeCalled();

@@ -10,7 +10,7 @@ class InsomniacProcessorTest extends ProphecyTestCase
     public function test()
     {
         $message = new Message();
-        $options = [];
+        $options = array();
 
         $decoratedProcessorProphecy = $this->prophesize('Swarrot\Processor\ProcessorInterface');
         $decoratedProcessorProphecy
@@ -23,6 +23,6 @@ class InsomniacProcessorTest extends ProphecyTestCase
 
         $this->assertEquals(true, $processor->process($message, $options));
 
-        $this->assertFalse($processor->sleep([]));
+        $this->assertFalse($processor->sleep(array()));
     }
 }
