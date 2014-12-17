@@ -4,7 +4,6 @@ namespace Swarrot\Broker\MessagePublisher;
 
 use PhpAmqpLib\Message\AMQPMessage;
 use PhpAmqpLib\Channel\AMQPChannel;
-
 use Swarrot\Broker\Message;
 
 class PhpAmqpLibMessagePublisher implements MessagePublisherInterface
@@ -15,10 +14,34 @@ class PhpAmqpLibMessagePublisher implements MessagePublisherInterface
     /** @var string $exchange Exchange's name. Required by php-amqplib */
     private $exchange;
 
+    /**
+     * @param AMQPChannel $channel
+     * @param string $exchange
+     */
     public function __construct(AMQPChannel $channel, $exchange)
     {
-        $this->channel  = $channel;
+        $this->setChannel($channel);
+        $this->setExchange($exchange);
+    }
+
+    /**
+     * @param  AMQPChannel $channel
+     * @return self
+     */
+    public function setChannel(AMQPChannel $channel)
+    {
+        $this->channel = $channel;
+        return $this;
+    }
+
+    /**
+     * @param  string $exchange
+     * @return self
+     */
+    public function setExchange($exchange)
+    {
         $this->exchange = $exchange;
+        return $this;
     }
 
     /** {@inheritDoc} */
