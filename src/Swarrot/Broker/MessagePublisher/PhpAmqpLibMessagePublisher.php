@@ -32,7 +32,7 @@ class PhpAmqpLibMessagePublisher implements MessagePublisherInterface
             foreach ($properties['headers'] as $header => $value) {
                 if (is_array($value)) {
                     $type = 'A';
-                } elseif(is_int($value)) {
+                } elseif (is_int($value)) {
                     $type = 'I';
                 } else {
                     $type = 'S';
@@ -43,8 +43,8 @@ class PhpAmqpLibMessagePublisher implements MessagePublisherInterface
 
         }
 
-        $message = new AMQPMessage($message->getBody(), $properties);
+        $amqpMessage = new AMQPMessage($message->getBody(), $properties);
 
-        $this->channel->basic_publish($message, $this->exchange, (string) $key);
+        $this->channel->basic_publish($amqpMessage, $this->exchange, (string) $key);
     }
 }
