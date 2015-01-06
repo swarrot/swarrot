@@ -47,4 +47,12 @@ class PhpAmqpLibMessagePublisher implements MessagePublisherInterface
 
         $this->channel->basic_publish($amqpMessage, $this->exchange, (string) $key);
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getExchangeName()
+    {
+        return $this->exchange;
+    }
 }

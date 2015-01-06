@@ -15,4 +15,13 @@ interface MessagePublisherInterface
      * @return void
      */
     public function publish(Message $message, $key = null);
+
+    /**
+     * getExchangeName
+     *
+     * Return the name of the exchange where the message will be published
+     *
+     * @return string
+     */
+    public function getExchangeName();
 }

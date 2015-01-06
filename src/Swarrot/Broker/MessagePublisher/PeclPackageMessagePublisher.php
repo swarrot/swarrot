@@ -46,4 +46,12 @@ class PeclPackageMessagePublisher implements MessagePublisherInterface
             $properties
         );
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getExchangeName()
+    {
+        return $this->exchange->getName();
+    }
 }
