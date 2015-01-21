@@ -174,4 +174,46 @@ class RetryProcessorTest extends ProphecyTestCase
             'retry_attempts'    => 3
         ), $config);
     }
+
+    public function test_it_should_keep_original_message_properties()
+    {
+        $processor        = $this->prophesize('Swarrot\Processor\ProcessorInterface');
+        $messagePublisher = $this->prophesize('Swarrot\Broker\MessagePublisher\MessagePublisherInterface');
+        $logger           = $this->prophesize('Psr\Log\LoggerInterface');
+
+        $message = new Message('body', array('delivery_mode' => 2, 'app_id' => 'applicationId', 'headers' => array('swarrot_retry_attempts' => 1)), 1);
+
+        $options = array(
+            'retry_attempts' => 3,
+            'retry_key_pattern' => 'key_%attempt%',
+        );
+
+        $processor
+            ->process(
+                Argument::exact($message),
+                Argument::exact($options)
+            )->willThrow('\BadMethodCallException')
+            ->shouldBeCalledTimes(1)
+        ;
+
+        $messagePublisher
+            ->publish(
+                Argument::that(function(Message $message) {
+                    $properties = $message->getProperties();
+
+                    return 2 === $properties['delivery_mode'] && 'applicationId' === $properties['app_id'];
+                }),
+
+                Argument::exact('key_2')
+            )
+            ->willReturn(null)
+            ->shouldBeCalledTimes(1)
+        ;
+
+        $processor = new RetryProcessor($processor->reveal(), $messagePublisher->reveal(), $logger->reveal());
+
+        $this->assertNull(
+            $processor->process($message, $options)
+        );
+    }
 }
