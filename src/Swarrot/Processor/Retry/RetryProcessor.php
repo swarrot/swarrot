@@ -52,13 +52,13 @@ class RetryProcessor implements ConfigurableInterface
                 throw $e;
             }
 
+            $properties['headers'] = array(
+                'swarrot_retry_attempts' => $attempts
+            );
+
             $message = new Message(
                 $message->getBody(),
-                array(
-                    'headers' => array(
-                        'swarrot_retry_attempts' => $attempts
-                    )
-                )
+                $properties
             );
 
             $key = str_replace('%attempt%', $attempts, $options['retry_key_pattern']);

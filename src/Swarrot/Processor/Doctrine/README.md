@@ -1,6 +1,6 @@
 # ConnectionProcessor
 
-AckProcessor is a [swarrot](https://github.com/swarrot/swarrot) processor.
+ConnectionProcessor is a [swarrot](https://github.com/swarrot/swarrot) processor.
 
 The `doctrine_close_master` option is useful because otherwise once connected
 to the master the connection would never switch back to the slave.
@@ -14,7 +14,7 @@ to the master the connection would never switch back to the slave.
 
 # ObjectManagerProcessor
 
-AckProcessor is a [swarrot](https://github.com/swarrot/swarrot) processor.
+ObjectManagerProcessor is a [swarrot](https://github.com/swarrot/swarrot) processor.
 
 It resets closed object managers after the processor ran, which is required
 after a failed transaction.
