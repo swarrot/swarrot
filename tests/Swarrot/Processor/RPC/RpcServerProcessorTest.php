@@ -44,12 +44,15 @@ class RpcServerProcessorTest extends ProphecyTestCase
     {
         return [[[]],
                 [['reply_to' => 'foo']],
-                [['correlation_id' => 0]]];
+                [['correlation_id' => 0]],
+                [['reply_to' => '', 'correlation_id' => 0]],
+                [['reply_to' => '', 'correlation_id' => 42]],
+                [['reply_to' => 'foo', 'correlation_id' => 0]]];
     }
 
     public function test_it_should_publish_a_new_message_when_done()
     {
-        $message = new Message('', ['reply_to' => 'foo', 'correlation_id' => 0]);
+        $message = new Message('', ['reply_to' => 'foo', 'correlation_id' => 42]);
 
         $processor = $this->prophesize('Swarrot\\Processor\\ProcessorInterface');
         $processor->process($message, [])->willReturn('bar');

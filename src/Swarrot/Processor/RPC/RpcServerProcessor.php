@@ -41,7 +41,7 @@ class RpcServerProcessor implements ProcessorInterface
 
         $properties = $message->getProperties();
 
-        if (!isset($properties['reply_to'], $properties['correlation_id'])) {
+        if (!isset($properties['reply_to'], $properties['correlation_id']) || empty($properties['reply_to']) || empty($properties['correlation_id'])) {
             return $result;
         }
 
