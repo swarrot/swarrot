@@ -7,7 +7,7 @@ Its goal is to re-published messages in broker when an error occurred.
 
 |Key              |Default|Description                                                                   |
 |:---------------:|:-----:|------------------------------------------------------------------------------|
-|retry_key_pattern|       |[MANDATORY] The pattern to use to construct routing key (ie: `key_%attempts%`)|
+|retry_key_pattern|       |[MANDATORY] The pattern to use to construct routing key (ie: `key_%attempt%`)|
 |retry_attempts   |3      |The number of attempts before raising an exception.                           |
 
 ## How it works
