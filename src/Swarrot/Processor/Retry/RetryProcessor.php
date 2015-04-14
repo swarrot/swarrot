@@ -6,7 +6,7 @@ use Swarrot\Processor\ProcessorInterface;
 use Swarrot\Processor\ConfigurableInterface;
 use Swarrot\Broker\Message;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Swarrot\Broker\MessagePublisher\MessagePublisherInterface;
 
 class RetryProcessor implements ConfigurableInterface
@@ -82,7 +82,7 @@ class RetryProcessor implements ConfigurableInterface
     /**
      * {@inheritDoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function setDefaultOptions(OptionsResolver $resolver)
     {
         $resolver
             ->setDefaults(array(

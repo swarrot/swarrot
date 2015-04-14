@@ -7,7 +7,7 @@ use Swarrot\Processor\ConfigurableInterface;
 use Swarrot\Broker\MessageProvider\MessageProviderInterface;
 use Swarrot\Broker\Message;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class AckProcessor implements ConfigurableInterface
 {
@@ -79,7 +79,7 @@ class AckProcessor implements ConfigurableInterface
     /**
      * {@inheritDoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function setDefaultOptions(OptionsResolver $resolver)
     {
         $resolver
             ->setDefaults(array(

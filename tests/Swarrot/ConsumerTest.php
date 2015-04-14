@@ -43,7 +43,7 @@ class ConsumerTest extends ProphecyTestCase
 
         $provider->get()->willReturn($message);
         $processor->setDefaultOptions(
-            Argument::type('Symfony\Component\OptionsResolver\OptionsResolverInterface')
+            Argument::type('Symfony\Component\OptionsResolver\OptionsResolver')
         )->willReturn(null);
         $processor->process(
             Argument::type('Swarrot\Broker\Message'),

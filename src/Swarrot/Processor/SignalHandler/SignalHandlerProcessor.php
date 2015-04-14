@@ -7,7 +7,7 @@ use Swarrot\Processor\ProcessorInterface;
 use Swarrot\Processor\ConfigurableInterface;
 use Swarrot\Processor\SleepyInterface;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SignalHandlerProcessor implements ConfigurableInterface, SleepyInterface
 {
@@ -39,7 +39,7 @@ class SignalHandlerProcessor implements ConfigurableInterface, SleepyInterface
     /**
      * {@inheritDoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function setDefaultOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'signal_handler_signals' => array(SIGTERM, SIGINT, SIGQUIT)

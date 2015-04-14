@@ -8,7 +8,7 @@ use Swarrot\Processor\InitializableInterface;
 use Swarrot\Processor\TerminableInterface;
 use Swarrot\Processor\SleepyInterface;
 use Swarrot\Broker\Message;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class StackedProcessor implements ConfigurableInterface, InitializableInterface, TerminableInterface, SleepyInterface
 {
@@ -35,11 +35,11 @@ class StackedProcessor implements ConfigurableInterface, InitializableInterface,
     /**
      * setDefaultOptions
      *
-     * @param OptionsResolverInterface $resolver
+     * @param OptionsResolver $resolver
      *
      * @return void
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function setDefaultOptions(OptionsResolver $resolver)
     {
         foreach ($this->middlewares as $middleware) {
             if ($middleware instanceof ConfigurableInterface) {
