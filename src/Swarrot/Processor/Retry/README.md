@@ -19,7 +19,7 @@ with the `retry_key_pattern`.
 For example if the given `MessagePublisherInterface` is configured to publish
 in the exchange named `retry` and if the `retry_key_pattern` is
 `key_%attempts%`, when an exception is thrown, the `RetryProcessor` will
-publish a new message (simmilar to the first one) in the exchange `retry` with
+publish a new message (similar to the first one) in the exchange `retry` with
 the routing_key `key_1`.
 
 ## Real example
