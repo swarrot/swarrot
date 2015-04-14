@@ -42,7 +42,7 @@ class SignalHandlerProcessor implements ConfigurableInterface, SleepyInterface
     public function setDefaultOptions(OptionsResolverInterface $resolver)
     {
         $resolver->setDefaults(array(
-            'signal_handler_signals' => array(SIGTERM, SIGINT, SIGQUIT)
+            'signal_handler_signals' => extension_loaded('pcntl') ? [SIGTERM, SIGINT, SIGQUIT] : []
         ));
     }
 
@@ -51,6 +51,10 @@ class SignalHandlerProcessor implements ConfigurableInterface, SleepyInterface
      */
     public function sleep(array $options)
     {
+        if (!extension_loaded('pcntl')) {
+            return true;
+        }
+
         return !$this->shouldStop();
     }
 
