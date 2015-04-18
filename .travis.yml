@@ -6,6 +6,8 @@ matrix:
     include:
         # Test against librabbitmq cutting-edge
         - { php: 5.5, env: LIBRABBITMQ_VERSION=master }
+    allow_failures:
+        - php: hhvm
 
 services: [rabbitmq]
 
