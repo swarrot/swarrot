@@ -117,10 +117,12 @@ Here is an illustration to show you what append when this order is used:
 * [AckProcessor](src/Swarrot/Processor/Ack)
 * [Doctrine related processors](src/Swarrot/Processor/Doctrine) (thanks to [Adrien Brault](https://github.com/adrienbrault))
 * [ExceptionCatcherProcessor](src/Swarrot/Processor/ExceptionCatcher)
+* [InsomniacProcessor](src/Swarrot/Processor/Insomniac) (thanks to [Adrien Brault](https://github.com/adrienbrault))
 * [InstantRetryProcessor](src/Swarrot/Processor/InstantRetry)
 * [MaxExecutionTimeProcessor](src/Swarrot/Processor/MaxExecutionTime) (thanks to [Remy Lemeunier](https://github.com/remyLemeunier))
 * [MaxMessagesProcessor](src/Swarrot/Processor/MaxMessages) (thanks to [Remy Lemeunier](https://github.com/remyLemeunier))
 * [RetryProcessor](src/Swarrot/Processor/Retry)
+* [RPC related processors](src/Swarrot/Processor/RPC) (thanks to [Baptiste Clavié](https://github.com/Taluu))
 * [SignalHandlerProcessor](src/Swarrot/Processor/SignalHandler)
 
 ### Create your own processor
