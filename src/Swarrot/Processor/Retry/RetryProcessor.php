@@ -91,10 +91,8 @@ class RetryProcessor implements ConfigurableInterface
             ->setRequired(array(
                 'retry_key_pattern'
             ))
-            ->setAllowedTypes(array(
-                'retry_attempts' => 'integer',
-                'retry_key_pattern' => 'string',
-            ))
+            ->setAllowedTypes('retry_attempts', 'integer')
+            ->setAllowedTypes('retry_key_pattern', 'string')
         ;
     }
 }
