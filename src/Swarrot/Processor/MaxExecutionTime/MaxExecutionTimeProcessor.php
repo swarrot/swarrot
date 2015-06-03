@@ -47,9 +47,7 @@ class MaxExecutionTimeProcessor implements ConfigurableInterface, InitializableI
             'max_execution_time' => 300
         ));
 
-        $resolver->setAllowedTypes(array(
-            'max_execution_time' => 'integer',
-        ));
+        $resolver->setAllowedTypes('max_execution_time', 'integer');
     }
 
     /**
