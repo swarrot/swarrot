@@ -19,13 +19,13 @@
         "phpunit/phpunit": "~4.0",
         "phpspec/prophecy-phpunit": "~1.0",
         "phpspec/prophecy": "~1.4",
-        "videlalvaro/php-amqplib": "~2.0",
+        "videlalvaro/php-amqplib": "~2.1",
         "doctrine/common": "~2.3",
         "doctrine/dbal": "~2.0"
     },
     "suggest": {
         "pecl-amqp": "*",
-        "videlalvaro/php-amqplib": "~2.0",
+        "videlalvaro/php-amqplib": "~2.1",
         "symfony/console": "~2.4"
     },
     "config": {
