@@ -3,7 +3,6 @@
 namespace Swarrot;
 
 use Swarrot\Broker\MessageProvider\MessageProviderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Swarrot\Processor\ProcessorInterface;
 use Swarrot\Processor\ConfigurableInterface;
@@ -25,7 +24,7 @@ class Consumer
     protected $processor;
 
     /**
-     * @var OptionsResolverInterface
+     * @var OptionsResolver
      */
     protected $optionsResolver;
 
@@ -38,10 +37,10 @@ class Consumer
      *
      * @param MessageProviderInterface $messageProvider
      * @param ProcessorInterface       $processor
-     * @param OptionsResolverInterface $optionsResolver
+     * @param OptionsResolver $optionsResolver
      * @param LoggerInterface          $logger
      */
-    public function __construct(MessageProviderInterface $messageProvider, ProcessorInterface $processor, OptionsResolverInterface $optionsResolver = null, LoggerInterface $logger = null)
+    public function __construct(MessageProviderInterface $messageProvider, ProcessorInterface $processor, OptionsResolver $optionsResolver = null, LoggerInterface $logger = null)
     {
         $this->messageProvider = $messageProvider;
         $this->processor       = $processor;
@@ -141,7 +140,7 @@ class Consumer
     }
 
     /**
-     * @return OptionsResolverInterface
+     * @return OptionsResolver
      */
     public function getOptionsResolver()
     {
@@ -149,11 +148,11 @@ class Consumer
     }
 
     /**
-     * @param OptionsResolverInterface $optionsResolver
+     * @param OptionsResolver $optionsResolver
      *
      * @return self
      */
-    public function setOptionsResolver(OptionsResolverInterface $optionsResolver)
+    public function setOptionsResolver(OptionsResolver $optionsResolver)
     {
         $this->optionsResolver = $optionsResolver;
 

@@ -9,7 +9,7 @@ use Doctrine\DBAL\DBALException;
 use Swarrot\Broker\Message;
 use Swarrot\Processor\ConfigurableInterface;
 use Swarrot\Processor\ProcessorInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @author Adrien Brault <adrien.brault@gmail.com>
@@ -86,7 +86,7 @@ class ConnectionProcessor implements ConfigurableInterface
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function setDefaultOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'doctrine_ping' => true,

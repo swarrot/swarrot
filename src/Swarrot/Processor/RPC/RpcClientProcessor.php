@@ -3,7 +3,7 @@ namespace Swarrot\Processor\RPC;
 
 use Psr\Log\LoggerInterface;
 
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 use Swarrot\Broker\Message;
 use Swarrot\Processor\ProcessorInterface;
@@ -67,7 +67,7 @@ class RpcClientProcessor implements ProcessorInterface, ConfigurableInterface, S
     }
 
     /** {@inheritDoc} */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function setDefaultOptions(OptionsResolver $resolver)
     {
         $resolver->setRequired(['rpc_client_correlation_id']);
     }

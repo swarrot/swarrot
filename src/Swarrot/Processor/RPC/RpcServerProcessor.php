@@ -3,8 +3,6 @@ namespace Swarrot\Processor\RPC;
 
 use Psr\Log\LoggerInterface;
 
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
-
 use Swarrot\Broker\Message;
 use Swarrot\Broker\MessagePublisher\MessagePublisherInterface;
 
