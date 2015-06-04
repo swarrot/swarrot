@@ -91,8 +91,17 @@ class RetryProcessor implements ConfigurableInterface
             ->setRequired(array(
                 'retry_key_pattern'
             ))
-            ->setAllowedTypes('retry_attempts', 'integer')
-            ->setAllowedTypes('retry_key_pattern', 'string')
         ;
+
+        if (method_exists($resolver, 'setDefined')) {
+            $resolver->setAllowedTypes('retry_attempts', 'int');
+            $resolver->setAllowedTypes('retry_key_pattern', 'string');
+        } else {
+            // BC for OptionsResolver < 2.6
+            $resolver->setAllowedTypes(array(
+                'retry_attempts' => 'int',
+                'retry_key_pattern' => 'string',
+            ));
+        }
     }
 }

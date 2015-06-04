@@ -65,6 +65,13 @@ class MaxMessagesProcessor implements ConfigurableInterface
             'max_messages' => 100
         ));
 
-        $resolver->setAllowedTypes('max_messages', 'integer');
+        if (method_exists($resolver, 'setDefined')) {
+            $resolver->setAllowedTypes('max_messages', 'int');
+        } else {
+            // BC for OptionsResolver < 2.6
+            $resolver->setAllowedTypes(array(
+                'max_messages' => 'int',
+            ));
+        }
     }
 }
