@@ -21,7 +21,7 @@
         "phpspec/prophecy": "~1.4",
         "videlalvaro/php-amqplib": "~2.1",
         "doctrine/common": "~2.3",
-        "doctrine/dbal": "~2.0"
+        "doctrine/dbal": "~2.2"
     },
     "suggest": {
         "pecl-amqp": "*",
