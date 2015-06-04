@@ -46,7 +46,7 @@ class MaxMessagesProcessor implements ConfigurableInterface
             $this->logger and $this->logger->info(
                 sprintf('[MaxMessages] Max messages have been reached (%d)', $options['max_messages']),
                 [
-                    'swarrot_processor' => 'max_messages'
+                    'swarrot_processor' => 'max_messages',
                 ]
             );
 
@@ -62,7 +62,7 @@ class MaxMessagesProcessor implements ConfigurableInterface
     public function setDefaultOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'max_messages' => 100
+            'max_messages' => 100,
         ));
 
         if (method_exists($resolver, 'setDefined')) {

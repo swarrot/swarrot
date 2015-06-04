@@ -33,11 +33,9 @@ class StackedProcessor implements ConfigurableInterface, InitializableInterface,
     }
 
     /**
-     * setDefaultOptions
+     * setDefaultOptions.
      *
      * @param OptionsResolver $resolver
-     *
-     * @return void
      */
     public function setDefaultOptions(OptionsResolver $resolver)
     {

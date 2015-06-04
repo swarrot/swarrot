@@ -4,7 +4,6 @@ namespace Swarrot\Broker\MessagePublisher;
 
 use PhpAmqpLib\Message\AMQPMessage;
 use PhpAmqpLib\Channel\AMQPChannel;
-
 use Swarrot\Broker\Message;
 
 class PhpAmqpLibMessagePublisher implements MessagePublisherInterface
@@ -40,7 +39,6 @@ class PhpAmqpLibMessagePublisher implements MessagePublisherInterface
 
                 $properties['application_headers'][$header] = [$type, $value];
             }
-
         }
 
         $amqpMessage = new AMQPMessage($message->getBody(), $properties);

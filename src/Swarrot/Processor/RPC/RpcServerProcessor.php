@@ -1,16 +1,14 @@
 <?php
+
 namespace Swarrot\Processor\RPC;
 
 use Psr\Log\LoggerInterface;
-
 use Swarrot\Broker\Message;
 use Swarrot\Broker\MessagePublisher\MessagePublisherInterface;
-
 use Swarrot\Processor\ProcessorInterface;
-use Swarrot\Processor\ConfigurableInterface;
 
 /**
- * Act as a RPC server when processing am amqp message
+ * Act as a RPC server when processing am amqp message.
  *
  * @author Baptiste Clavié <clavie.b@gmail.com>
  */
@@ -51,4 +49,3 @@ class RpcServerProcessor implements ProcessorInterface
         return $result;
     }
 }
-

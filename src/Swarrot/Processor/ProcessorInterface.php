@@ -7,12 +7,12 @@ use Swarrot\Broker\Message;
 interface ProcessorInterface
 {
     /**
-     * process
+     * process.
      *
      * @param Message $message The message given by a MessageProvider
      * @param array   $options An array containing all parameters
      *
-     * @return boolean
+     * @return bool
      */
     public function process(Message $message, array $options);
 }

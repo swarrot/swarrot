@@ -45,7 +45,7 @@ class RetryProcessor implements ConfigurableInterface
                         $attempts
                     ),
                     [
-                        'swarrot_processor' => 'retry'
+                        'swarrot_processor' => 'retry',
                     ]
                 );
 
@@ -53,7 +53,7 @@ class RetryProcessor implements ConfigurableInterface
             }
 
             $properties['headers'] = array(
-                'swarrot_retry_attempts' => $attempts
+                'swarrot_retry_attempts' => $attempts,
             );
 
             $message = new Message(
@@ -89,7 +89,7 @@ class RetryProcessor implements ConfigurableInterface
                 'retry_attempts' => 3,
             ))
             ->setRequired(array(
-                'retry_key_pattern'
+                'retry_key_pattern',
             ))
         ;
 

@@ -29,7 +29,7 @@ class PeclPackageMessagePublisher implements MessagePublisherInterface
             foreach ($properties['application_headers'] as $header => $value) {
                 if (!is_array($value) || 2 !== count($value)) {
                     throw new \InvalidArgumentException(
-                        'Unexpected value for application_headers "' . $header . '"'
+                        'Unexpected value for application_headers "'.$header.'"'
                     );
                 }
 

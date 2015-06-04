@@ -22,7 +22,7 @@ class Builder
     public function unshift()
     {
         if (func_num_args() === 0) {
-            throw new \InvalidArgumentException("Missing argument(s) when calling unshift");
+            throw new \InvalidArgumentException('Missing argument(s) when calling unshift');
         }
 
         $spec = func_get_args();
@@ -39,7 +39,7 @@ class Builder
     public function push()
     {
         if (func_num_args() === 0) {
-            throw new \InvalidArgumentException("Missing argument(s) when calling push");
+            throw new \InvalidArgumentException('Missing argument(s) when calling push');
         }
 
         $spec = func_get_args();
