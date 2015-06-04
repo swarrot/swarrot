@@ -28,7 +28,6 @@ class MaxExecutionTimeProcessor implements ConfigurableInterface, InitializableI
     protected $startTime;
 
     /**
-     *
      * @param ProcessorInterface $processor Processor
      * @param LoggerInterface    $logger    Logger
      */
@@ -44,7 +43,7 @@ class MaxExecutionTimeProcessor implements ConfigurableInterface, InitializableI
     public function setDefaultOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'max_execution_time' => 300
+            'max_execution_time' => 300,
         ));
 
         if (method_exists($resolver, 'setDefined')) {
@@ -68,7 +67,7 @@ class MaxExecutionTimeProcessor implements ConfigurableInterface, InitializableI
     /**
      * @param array $options
      *
-     * @return boolean
+     * @return bool
      */
     public function sleep(array $options)
     {
@@ -88,11 +87,11 @@ class MaxExecutionTimeProcessor implements ConfigurableInterface, InitializableI
     }
 
     /**
-     * isTimeExceeded
+     * isTimeExceeded.
      *
      * @param array $options
      *
-     * @return boolean
+     * @return bool
      */
     protected function isTimeExceeded(array $options)
     {
@@ -103,7 +102,7 @@ class MaxExecutionTimeProcessor implements ConfigurableInterface, InitializableI
                     $options['max_execution_time']
                 ),
                 [
-                    'swarrot_processor' => 'max_execution_time'
+                    'swarrot_processor' => 'max_execution_time',
                 ]
             );
 

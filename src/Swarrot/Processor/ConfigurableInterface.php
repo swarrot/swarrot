@@ -7,11 +7,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 interface ConfigurableInterface extends ProcessorInterface
 {
     /**
-     * setDefaultOptions
+     * setDefaultOptions.
      *
      * @param OptionsResolver $resolver
-     *
-     * @return void
      */
     public function setDefaultOptions(OptionsResolver $resolver);
 }

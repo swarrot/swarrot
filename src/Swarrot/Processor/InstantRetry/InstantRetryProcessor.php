@@ -41,7 +41,7 @@ class InstantRetryProcessor implements ConfigurableInterface
                     sprintf(
                         '[InstantRetry] An exception occurred. Message #%d will be processed again in %d ms',
                         $message->getId(),
-                        $options['instant_retry_delay']/1000
+                        $options['instant_retry_delay'] / 1000
                     ),
                     [
                         'swarrot_processor' => 'instant_retry',

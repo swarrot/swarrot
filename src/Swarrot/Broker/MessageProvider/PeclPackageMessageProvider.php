@@ -27,7 +27,7 @@ class PeclPackageMessageProvider implements MessageProviderInterface
         $envelope = $this->queue->get();
 
         if (!$envelope) {
-            return null;
+            return;
         }
 
         return new Message(
@@ -52,7 +52,7 @@ class PeclPackageMessageProvider implements MessageProviderInterface
                 'user_id'           => $envelope->getUserId(),
                 'cluster_id'        => 0,
                 'channel'           => '',
-                'consumer_tag'      => ''
+                'consumer_tag'      => '',
             ),
             $envelope->getDeliveryTag()
         );

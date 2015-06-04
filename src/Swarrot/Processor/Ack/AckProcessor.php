@@ -27,7 +27,6 @@ class AckProcessor implements ConfigurableInterface
     protected $logger;
 
     /**
-     *
      * @param ProcessorInterface       $processor       Processor
      * @param MessageProviderInterface $messageProvider Message provider
      * @param LoggerInterface          $logger          Logger
@@ -49,15 +48,15 @@ class AckProcessor implements ConfigurableInterface
             $this->messageProvider->ack($message);
 
             $this->logger and $this->logger->info(
-                '[Ack] Message #' . $message->getId() .' have been correctly ack\'ed',
+                '[Ack] Message #'.$message->getId().' have been correctly ack\'ed',
                 [
-                    'swarrot_processor' => 'ack'
+                    'swarrot_processor' => 'ack',
                 ]
             );
 
             return $return;
         } catch (\Exception $e) {
-            $requeue = isset($options['requeue_on_error'])? (boolean) $options['requeue_on_error'] : false;
+            $requeue = isset($options['requeue_on_error']) ? (boolean) $options['requeue_on_error'] : false;
             $this->messageProvider->nack($message, $requeue);
 
             $this->logger and $this->logger->warning(
@@ -82,7 +81,7 @@ class AckProcessor implements ConfigurableInterface
     public function setDefaultOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'requeue_on_error' => false
+            'requeue_on_error' => false,
         ));
 
         if (method_exists($resolver, 'setDefined')) {

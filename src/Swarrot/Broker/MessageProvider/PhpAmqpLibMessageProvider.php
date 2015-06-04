@@ -35,7 +35,7 @@ class PhpAmqpLibMessageProvider implements MessageProviderInterface
         $envelope = $this->channel->basic_get($this->queueName);
 
         if (null === $envelope) {
-            return null;
+            return;
         }
 
         // Explanation on these properties can be found at:
@@ -62,7 +62,7 @@ class PhpAmqpLibMessageProvider implements MessageProviderInterface
             'delivery_tag'  => isset($envelope->delivery_info['delivery_tag']) ? $envelope->delivery_info['delivery_tag'] : '',
             'is_redelivery' => isset($envelope->delivery_info['redelivered'])  ? $envelope->delivery_info['redelivered']  : false,
             'exchange_name' => isset($envelope->delivery_info['exchange'])     ? $envelope->delivery_info['exchange']     : '',
-            'routing_key'   => isset($envelope->delivery_info['routing_key'])  ? $envelope->delivery_info['routing_key']  : ''
+            'routing_key'   => isset($envelope->delivery_info['routing_key'])  ? $envelope->delivery_info['routing_key']  : '',
         );
 
         $properties['headers'] = [];

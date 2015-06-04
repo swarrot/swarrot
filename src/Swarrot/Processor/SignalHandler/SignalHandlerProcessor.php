@@ -12,7 +12,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class SignalHandlerProcessor implements ConfigurableInterface, SleepyInterface
 {
     /**
-     * @var boolean
+     * @var bool
      */
     protected static $shouldExit = false;
 
@@ -42,7 +42,7 @@ class SignalHandlerProcessor implements ConfigurableInterface, SleepyInterface
     public function setDefaultOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'signal_handler_signals' => extension_loaded('pcntl') ? [SIGTERM, SIGINT, SIGQUIT] : []
+            'signal_handler_signals' => extension_loaded('pcntl') ? [SIGTERM, SIGINT, SIGQUIT] : [],
         ));
     }
 
@@ -67,7 +67,7 @@ class SignalHandlerProcessor implements ConfigurableInterface, SleepyInterface
             $this->logger and $this->logger->warning(
                 '[SignalHandler] The SignalHandlerProcessor needs the pcntl extension to work',
                 [
-                    'swarrot_processor' => 'signal_handler'
+                    'swarrot_processor' => 'signal_handler',
                 ]
             );
 
@@ -91,9 +91,9 @@ class SignalHandlerProcessor implements ConfigurableInterface, SleepyInterface
     }
 
     /**
-     * shouldStop
+     * shouldStop.
      *
-     * @return boolean
+     * @return bool
      */
     protected function shouldStop()
     {
@@ -108,7 +108,7 @@ class SignalHandlerProcessor implements ConfigurableInterface, SleepyInterface
             $this->logger and $this->logger->info(
                 '[SignalHandler] Signal received. Stop consumer now.',
                 [
-                    'swarrot_processor' => 'signal_handler'
+                    'swarrot_processor' => 'signal_handler',
                 ]
             );
 

@@ -1,17 +1,16 @@
 <?php
+
 namespace Swarrot\Processor\RPC;
 
 use Psr\Log\LoggerInterface;
-
 use Symfony\Component\OptionsResolver\OptionsResolver;
-
 use Swarrot\Broker\Message;
 use Swarrot\Processor\ProcessorInterface;
 use Swarrot\Processor\ConfigurableInterface;
 use Swarrot\Processor\SleepyInterface;
 
 /**
- * Act as a RPC client that waits for a certain message to terminate
+ * Act as a RPC client that waits for a certain message to terminate.
  *
  * This processor is a leaf processor ; other processors cannot be nested under
  * this processor.
@@ -30,7 +29,7 @@ class RpcClientProcessor implements ProcessorInterface, ConfigurableInterface, S
     /** @var ProcessorInterface */
     private $processor;
 
-    /** @var boolean */
+    /** @var bool */
     private $awoken = false;
 
     public function __construct(ProcessorInterface $processor = null, LoggerInterface $logger = null)
@@ -78,4 +77,3 @@ class RpcClientProcessor implements ProcessorInterface, ConfigurableInterface, S
         return !$this->awoken;
     }
 }
-

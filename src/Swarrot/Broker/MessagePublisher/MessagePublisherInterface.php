@@ -7,17 +7,15 @@ use Swarrot\Broker\Message;
 interface MessagePublisherInterface
 {
     /**
-     * publish
+     * publish.
      *
      * @param Message $message The message to publish
      * @param string  $key     A routing key to use
-     *
-     * @return void
      */
     public function publish(Message $message, $key = null);
 
     /**
-     * getExchangeName
+     * getExchangeName.
      *
      * Return the name of the exchange where the message will be published
      *

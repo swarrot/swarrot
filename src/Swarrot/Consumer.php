@@ -34,10 +34,9 @@ class Consumer
     protected $logger;
 
     /**
-     *
      * @param MessageProviderInterface $messageProvider
      * @param ProcessorInterface       $processor
-     * @param OptionsResolver $optionsResolver
+     * @param OptionsResolver          $optionsResolver
      * @param LoggerInterface          $logger
      */
     public function __construct(MessageProviderInterface $messageProvider, ProcessorInterface $processor, OptionsResolver $optionsResolver = null, LoggerInterface $logger = null)
@@ -49,11 +48,9 @@ class Consumer
     }
 
     /**
-     * consume
+     * consume.
      *
      * @param array $options Parameters sent to the processor
-     *
-     * @return void
      */
     public function consume(array $options = array())
     {
@@ -64,7 +61,7 @@ class Consumer
             ));
         }
         $this->optionsResolver->setDefaults(array(
-            'poll_interval' => 50000
+            'poll_interval' => 50000,
         ));
 
         if ($this->processor instanceof ConfigurableInterface) {
@@ -107,7 +104,6 @@ class Consumer
     }
 
     /**
-     *
      * @param MessageProviderInterface $messageProvider Message provider
      *
      * @return self
