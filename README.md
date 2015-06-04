@@ -6,7 +6,7 @@
 [![Latest Stable Version](https://poser.pugx.org/swarrot/swarrot/v/stable.svg)](https://packagist.org/packages/swarrot/swarrot)
 [![Latest Unstable Version](https://poser.pugx.org/swarrot/swarrot/v/unstable.svg)](https://packagist.org/packages/swarrot/swarrot)
 
-Swarrot is PHP library to consume messages from a broker.
+Swarrot is PHP library to consume messages from any broker.
 
 ## Installation
 
