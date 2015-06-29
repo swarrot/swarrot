@@ -122,7 +122,7 @@ class RetryProcessorTest extends ProphecyTestCase
         );
     }
 
-    public function test_it_should_republish_message_to_last_queue_with_keep_retrying()
+    public function test_it_should_republish_message_with_final_key()
     {
         $processor        = $this->prophesize('Swarrot\Processor\ProcessorInterface');
         $messagePublisher = $this->prophesize('Swarrot\Broker\MessagePublisher\MessagePublisherInterface');
@@ -131,9 +131,9 @@ class RetryProcessorTest extends ProphecyTestCase
         $message = new Message('body', array('headers' => array('swarrot_retry_attempts' => 3)), 1);
 
         $options = array(
-            'retry_attempts' => 3,
+            'retry_attempts'    => 3,
             'retry_key_pattern' => 'key_%attempt%',
-            'keep_retrying' => true
+            'retry_final_key'   => 'key_final'
         );
 
         $processor
@@ -141,21 +141,19 @@ class RetryProcessorTest extends ProphecyTestCase
                 Argument::exact($message),
                 Argument::exact($options)
             )->willThrow('\BadMethodCallException')
-            ->shouldBeCalledTimes(1)
-        ;
+            ->shouldBeCalledTimes(1);
         $messagePublisher
             ->publish(
-                Argument::that(function(Message $message) {
+                Argument::that(function (Message $message) {
                     $properties = $message->getProperties();
 
                     return 4 === $properties['headers']['swarrot_retry_attempts'] && 'body' === $message->getBody();
                 }),
 
-                Argument::exact('key_3')
+                Argument::exact('key_final')
             )
             ->willReturn(null)
-            ->shouldBeCalledTimes(1)
-        ;
+            ->shouldBeCalledTimes(1);
 
         $processor = new RetryProcessor($processor->reveal(), $messagePublisher->reveal(), $logger->reveal());
 
@@ -174,7 +172,6 @@ class RetryProcessorTest extends ProphecyTestCase
         $options = array(
             'retry_attempts' => 3,
             'retry_key_pattern' => 'key_%attempt%',
-            'keep_retrying' => false,
         );
 
         $processor
@@ -214,8 +211,7 @@ class RetryProcessorTest extends ProphecyTestCase
 
         $this->assertEquals(array(
             'retry_key_pattern' => 'key_%attempt%',
-            'retry_attempts'    => 3,
-            'keep_retrying'     => false,
+            'retry_attempts'    => 3
         ), $config);
     }
 
