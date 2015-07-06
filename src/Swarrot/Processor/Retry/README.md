@@ -25,8 +25,8 @@ the routing_key `key_1`.
 
 If `retry_final_key` is set and `retry_attempts` is reached, the message will be 
 published to the exchange `retry` with the routing key `retry_final_key`.
-If `retry_final_key` is not set and `retry_attempts` is reached, the message will be 
-lost and an exception thrown.
+If `retry_final_key` is not set and `retry_attempts` is reached an exception will
+be thrown.
 
 ## Real example
 
