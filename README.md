@@ -74,6 +74,35 @@ $consumer = new Consumer($messageProvider, $processor);
 $consumer->consume();
 ```
 
+### Using options
+
+You can configure processor behaviour with options
+
+```php
+use Swarrot\Processor\ProcessorInterface;
+use Swarrot\Broker\Message;
+
+class Processor implements ProcessorInterface {
+    public function process(Message $message, array $options) {
+        $string = sprintf("Consume message #%d\n", $message->getId());
+        str_repeat($string, $this->getMultiplier($options));
+    }
+
+    private function getMultiplier(array $options) {
+        return isset($options['multiplier']) ? $options['multiplier'] : 1;
+    }
+}
+```
+
+Now pass options to processor through consumer:
+
+```php
+use Swarrot\Message;
+
+$consumer = new Consumer($messageProvider, $processor);
+$consumer->consume(array('multiplier' => 3));
+```
+
 ### Using a stack
 
 Heavily inspired by [stackphp/builder](https://github.com/stackphp/builder) you
