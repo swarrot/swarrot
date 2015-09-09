@@ -6,7 +6,7 @@ use Psr\Log\LoggerInterface;
 use Swarrot\Broker\Message;
 use Swarrot\Processor\ConfigurableInterface;
 use Swarrot\Processor\ProcessorInterface;
-use Symfony\Component\OptionsResolver\OptionsResolverInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class MemoryLimitProcessor implements ConfigurableInterface
 {
@@ -53,7 +53,7 @@ class MemoryLimitProcessor implements ConfigurableInterface
     /**
      * {@inheritDoc}
      */
-    public function setDefaultOptions(OptionsResolverInterface $resolver)
+    public function setDefaultOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'memory_limit' => null
