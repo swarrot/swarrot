@@ -68,7 +68,7 @@ You now have a `Swarrot\Broker\MessageProviderInterface` to retrieve messages
 and a Processor to process them. So, ask the `Swarrot\Consumer`to do it's job :
 
 ```php
-use Swarrot\Message;
+use Swarrot\Consumer;
 
 $consumer = new Consumer($messageProvider, $processor);
 $consumer->consume();
