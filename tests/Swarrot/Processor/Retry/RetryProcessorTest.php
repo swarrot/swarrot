@@ -216,4 +216,58 @@ class RetryProcessorTest extends ProphecyTestCase
             $processor->process($message, $options)
         );
     }
+    
+    public function test_it_should_keep_original_message_headers_except_nested_arrays()
+    {
+        $processor        = $this->prophesize('Swarrot\Processor\ProcessorInterface');
+        $messagePublisher = $this->prophesize('Swarrot\Broker\MessagePublisher\MessagePublisherInterface');
+        $logger           = $this->prophesize('Psr\Log\LoggerInterface');
+    
+        $message = new Message('body',array('headers' => array(
+            'swarrot_retry_attempts' => 1,
+            'x-death' => array(
+                array (
+                    'reason' => 'rejected',
+                    'queue' => 'my_queue',
+                    'time' => 1410527691,
+                    'exchange' => 'my_exchange',
+                    'routing-keys' => array ('my_routing_key')
+                )
+            ),
+            'my_header' => 'my_header_value',
+        )), 1);
+    
+        $options = array(
+            'retry_attempts' => 3,
+            'retry_key_pattern' => 'key_%attempt%',
+        );
+    
+        $processor
+            ->process(
+                Argument::exact($message),
+                Argument::exact($options)
+            )->willThrow('\BadMethodCallException')
+            ->shouldBeCalledTimes(1)
+        ;
+        
+        $messagePublisher
+            ->publish(
+                Argument::that(function(Message $message) {
+                    $properties = $message->getProperties();
+    
+                    return 2 === $properties['headers']['swarrot_retry_attempts'] && ! isset($properties['headers']['x-death']) && 'my_header_value' === $properties['headers']['my_header'];
+                }),
+    
+                Argument::exact('key_2')
+            )
+            ->willReturn(null)
+            ->shouldBeCalledTimes(1)
+        ;
+    
+        $processor = new RetryProcessor($processor->reveal(), $messagePublisher->reveal(), $logger->reveal());
+    
+        $this->assertNull(
+            $processor->process($message, $options)
+        );
+    }
 }
