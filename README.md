@@ -121,6 +121,8 @@ Here is an illustration to show you what append when this order is used:
 * [InstantRetryProcessor](src/Swarrot/Processor/InstantRetry)
 * [MaxExecutionTimeProcessor](src/Swarrot/Processor/MaxExecutionTime) (thanks to [Remy Lemeunier](https://github.com/remyLemeunier))
 * [MaxMessagesProcessor](src/Swarrot/Processor/MaxMessages) (thanks to [Remy Lemeunier](https://github.com/remyLemeunier))
+* [MemoryLimitProcessor](src/Swarrot/Processor/MemoryLimit) (thanks to [Christophe Coevoet](https://github.com/stof))
+* [NewRelicProcessor](src/Swarrot/Processor/NewRelic) (thanks to [Adrien Brault](https://github.com/adrienbrault))
 * [RetryProcessor](src/Swarrot/Processor/Retry)
 * [RPC related processors](src/Swarrot/Processor/RPC) (thanks to [Baptiste Clavié](https://github.com/Taluu))
 * [SignalHandlerProcessor](src/Swarrot/Processor/SignalHandler)
