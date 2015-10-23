@@ -43,8 +43,19 @@ class PeclPackageMessagePublisher implements MessagePublisherInterface
             $message->getBody(),
             $key,
             $this->flags,
-            $properties
+            $this->sanitizeProperties($properties)
         );
+    }
+    
+    private function sanitizeProperties(array $properties)
+    {
+        if (isset($properties['headers'])) {
+            $properties['headers'] = array_filter($properties['headers'], function($headerValue) {
+                return ! is_array($headerValue);
+            });
+        }
+        
+        return $properties;
     }
 
     /**
