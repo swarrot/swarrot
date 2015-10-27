@@ -103,4 +103,26 @@ class PeclPackageMessagePublisherTest extends ProphecyTestCase
 
         $this->assertNull($return);
     }
+
+    public function test_it_should_remove_delivery_mode_property_if_equal_to_zero()
+    {
+        $exchange = $this->prophesize('\AMQPExchange');
+        $exchange
+            ->publish(
+                Argument::exact('body'),
+                Argument::exact(null),
+                Argument::exact(0),
+                Argument::exact([])
+            )
+            ->shouldBeCalledTimes(1)
+        ;
+        $provider = new PeclPackageMessagePublisher($exchange->reveal());
+        $return = $provider->publish(
+            new Message('body', [
+                'delivery_mode' => 0
+            ])
+        );
+    
+        $this->assertNull($return);
+    }
 }
