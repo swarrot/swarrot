@@ -52,14 +52,10 @@ class RetryProcessor implements ConfigurableInterface
                 throw $e;
             }
 
-            $properties['headers'] = array(
-                'swarrot_retry_attempts' => $attempts,
-            );
-
-            // workaround for https://github.com/pdezwart/php-amqp/issues/170. See https://github.com/swarrot/swarrot/issues/103
-            if (isset($properties['delivery_mode']) && 0 === $properties['delivery_mode']) {
-                unset($properties['delivery_mode']);
+            if (!isset($properties['headers'])) {
+                $properties['headers'] = array();
             }
+            $properties['headers']['swarrot_retry_attempts'] = $attempts;
 
             $message = new Message(
                 $message->getBody(),

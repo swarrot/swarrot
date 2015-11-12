@@ -43,8 +43,24 @@ class PeclPackageMessagePublisher implements MessagePublisherInterface
             $message->getBody(),
             $key,
             $this->flags,
-            $properties
+            $this->sanitizeProperties($properties)
         );
+    }
+    
+    private function sanitizeProperties(array $properties)
+    {
+        if (isset($properties['headers'])) {
+            $properties['headers'] = array_filter($properties['headers'], function($headerValue) {
+                return ! is_array($headerValue);
+            });
+        }
+        
+        // workaround for https://github.com/pdezwart/php-amqp/issues/170. See https://github.com/swarrot/swarrot/issues/103
+        if (isset($properties['delivery_mode']) && 0 === $properties['delivery_mode']) {
+            unset($properties['delivery_mode']);
+        }
+        
+        return $properties;
     }
 
     /**

@@ -36,6 +36,38 @@ class PeclPackageMessagePublisherTest extends ProphecyTestCase
 
         $this->assertNull($return);
     }
+    
+    public function test_it_should_remove_nested_arrays_from_headers()
+    {
+        $exchange = $this->prophesize('\AMQPExchange');
+        $exchange
+            ->publish(
+                Argument::exact('body'),
+                Argument::exact(null),
+                Argument::exact(0),
+                Argument::exact([
+                    'headers' => [
+                        'header' => 'value',
+                        'integer' => 42,
+                    ]
+                ])
+            )
+            ->shouldBeCalledTimes(1)
+        ;
+        $provider = new PeclPackageMessagePublisher($exchange->reveal());
+        $return = $provider->publish(
+            new Message('body', [
+                'headers' => [
+                    'header' => 'value',
+                    'integer' => 42,
+                    'array' => ['foo', 'bar'],
+                    'another_array' => ['foo' => ['bar', 'burger']],
+                ]
+            ])
+        );
+        
+        $this->assertNull($return);
+    }
 
     public function test_publish_with_application_headers()
     {
@@ -50,7 +82,6 @@ class PeclPackageMessagePublisherTest extends ProphecyTestCase
                         'another_header' => 'another_value',
                         'string' => 'foobar',
                         'integer' => 42,
-                        'array' => ['foo', 'bar']
                     ]
                 ])
             )
@@ -70,6 +101,28 @@ class PeclPackageMessagePublisherTest extends ProphecyTestCase
             ])
         );
 
+        $this->assertNull($return);
+    }
+
+    public function test_it_should_remove_delivery_mode_property_if_equal_to_zero()
+    {
+        $exchange = $this->prophesize('\AMQPExchange');
+        $exchange
+            ->publish(
+                Argument::exact('body'),
+                Argument::exact(null),
+                Argument::exact(0),
+                Argument::exact([])
+            )
+            ->shouldBeCalledTimes(1)
+        ;
+        $provider = new PeclPackageMessagePublisher($exchange->reveal());
+        $return = $provider->publish(
+            new Message('body', [
+                'delivery_mode' => 0
+            ])
+        );
+    
         $this->assertNull($return);
     }
 }
