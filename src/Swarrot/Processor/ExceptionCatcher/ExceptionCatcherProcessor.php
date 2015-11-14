@@ -6,11 +6,6 @@ use Swarrot\Broker\Message;
 use Swarrot\Processor\ProcessorInterface;
 use Psr\Log\LoggerInterface;
 
-/**
- * Class ExceptionCatcherProcessor
- *
- * @package Swarrot\Processor\ExceptionCatcher
- */
 class ExceptionCatcherProcessor implements ProcessorInterface
 {
     /**
