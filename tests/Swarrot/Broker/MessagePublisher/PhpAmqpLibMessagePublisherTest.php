@@ -2,12 +2,11 @@
 
 namespace Swarrot\Broker\MessagePublisher;
 
-use Prophecy\PhpUnit\ProphecyTestCase;
 use Prophecy\Argument;
 use PhpAmqpLib\Message\AMQPMessage;
 use Swarrot\Broker\Message;
 
-class PhpAmqpLibMessagePublisherTest extends ProphecyTestCase
+class PhpAmqpLibMessagePublisherTest extends \PHPUnit_Framework_TestCase
 {
     public function test_publish_with_valid_message()
     {

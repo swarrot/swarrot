@@ -3,10 +3,9 @@
 namespace Swarrot\Processor\ExceptionCatcher;
 
 use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTestCase;
 use Swarrot\Broker\Message;
 
-class ExceptionCatcherTest extends ProphecyTestCase
+class ExceptionCatcherTest extends \PHPUnit_Framework_TestCase
 {
     public function test_it_is_initializable_without_a_logger()
     {

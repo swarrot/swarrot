@@ -3,10 +3,9 @@
 namespace Swarrot\Broker\MessageProvider;
 
 use PhpAmqpLib\Message\AMQPMessage;
-use Prophecy\PhpUnit\ProphecyTestCase;
 use Swarrot\Broker\Message;
 
-class PhpAmqpLibMessageProviderTest extends ProphecyTestCase
+class PhpAmqpLibMessageProviderTest extends \PHPUnit_Framework_TestCase
 {
     public function test_get_with_messages_in_queue_return_message()
     {

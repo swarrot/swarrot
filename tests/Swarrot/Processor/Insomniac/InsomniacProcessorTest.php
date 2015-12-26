@@ -2,10 +2,9 @@
 
 namespace Swarrot\Processor\Insomniac;
 
-use Prophecy\PhpUnit\ProphecyTestCase;
 use Swarrot\Broker\Message;
 
-class InsomniacProcessorTest extends ProphecyTestCase
+class InsomniacProcessorTest extends \PHPUnit_Framework_TestCase
 {
     public function test()
     {

@@ -3,11 +3,10 @@
 namespace spec\Swarrot\Processor\InstantRetry;
 
 use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTestCase;
 use Swarrot\Processor\InstantRetry\InstantRetryProcessor;
 use Swarrot\Broker\Message;
 
-class InstantRetryProcessorTest extends ProphecyTestCase
+class InstantRetryProcessorTest extends \PHPUnit_Framework_TestCase
 {
     public function test_it_is_initializable_without_a_logger()
     {

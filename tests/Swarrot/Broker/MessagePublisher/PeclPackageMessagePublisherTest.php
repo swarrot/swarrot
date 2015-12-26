@@ -3,10 +3,9 @@
 namespace Swarrot\Broker\MessagePublisher;
 
 use Swarrot\Broker\Message;
-use Prophecy\PhpUnit\ProphecyTestCase;
 use Prophecy\Argument;
 
-class PeclPackageMessagePublisherTest extends ProphecyTestCase
+class PeclPackageMessagePublisherTest extends \PHPUnit_Framework_TestCase
 {
     protected function setUp()
     {
