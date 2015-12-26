@@ -27,10 +27,10 @@ class MemoryLimitProcessor implements ConfigurableInterface
     public function __construct(ProcessorInterface $processor, LoggerInterface $logger = null)
     {
         $this->processor = $processor;
-        $this->logger    = $logger;
+        $this->logger = $logger;
     }
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function process(Message $message, array $options)
     {
@@ -40,7 +40,7 @@ class MemoryLimitProcessor implements ConfigurableInterface
             $this->logger and $this->logger->info(
                 sprintf('[MemoryLimit] Memory limit has been reached (%d MB)', $options['memory_limit']),
                 [
-                    'swarrot_processor' => 'memory_limit'
+                    'swarrot_processor' => 'memory_limit',
                 ]
             );
 
@@ -51,12 +51,12 @@ class MemoryLimitProcessor implements ConfigurableInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setDefaultOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'memory_limit' => null
+            'memory_limit' => null,
         ));
 
         $resolver->setAllowedTypes(array(

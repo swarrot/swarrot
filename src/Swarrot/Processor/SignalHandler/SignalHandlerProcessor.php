@@ -33,11 +33,11 @@ class SignalHandlerProcessor implements ConfigurableInterface, SleepyInterface
     public function __construct(ProcessorInterface $processor, LoggerInterface $logger = null)
     {
         $this->processor = $processor;
-        $this->logger    = $logger;
+        $this->logger = $logger;
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setDefaultOptions(OptionsResolver $resolver)
     {
@@ -47,7 +47,7 @@ class SignalHandlerProcessor implements ConfigurableInterface, SleepyInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function sleep(array $options)
     {
@@ -59,7 +59,7 @@ class SignalHandlerProcessor implements ConfigurableInterface, SleepyInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function process(Message $message, array $options)
     {

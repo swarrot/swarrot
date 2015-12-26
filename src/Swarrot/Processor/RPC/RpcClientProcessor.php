@@ -38,7 +38,7 @@ class RpcClientProcessor implements ProcessorInterface, ConfigurableInterface, S
         $this->logger = $logger;
     }
 
-    /** {@inheritDoc} */
+    /** {@inheritdoc} */
     public function process(Message $message, array $options)
     {
         $properties = $message->getProperties();
@@ -65,13 +65,13 @@ class RpcClientProcessor implements ProcessorInterface, ConfigurableInterface, S
         return $result;
     }
 
-    /** {@inheritDoc} */
+    /** {@inheritdoc} */
     public function setDefaultOptions(OptionsResolver $resolver)
     {
         $resolver->setRequired(['rpc_client_correlation_id']);
     }
 
-    /** {@inheritDoc} */
+    /** {@inheritdoc} */
     public function sleep(array $options)
     {
         return !$this->awoken;

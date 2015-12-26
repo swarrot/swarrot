@@ -42,9 +42,9 @@ class Consumer
     public function __construct(MessageProviderInterface $messageProvider, ProcessorInterface $processor, OptionsResolver $optionsResolver = null, LoggerInterface $logger = null)
     {
         $this->messageProvider = $messageProvider;
-        $this->processor       = $processor;
+        $this->processor = $processor;
         $this->optionsResolver = $optionsResolver ?: new OptionsResolver();
-        $this->logger          = $logger;
+        $this->logger = $logger;
     }
 
     /**
@@ -62,7 +62,7 @@ class Consumer
         }
         $this->optionsResolver->setDefaults(array(
             'poll_interval' => 50000,
-            'queue'         => $this->messageProvider->getQueueName(),
+            'queue' => $this->messageProvider->getQueueName(),
         ));
 
         if ($this->processor instanceof ConfigurableInterface) {

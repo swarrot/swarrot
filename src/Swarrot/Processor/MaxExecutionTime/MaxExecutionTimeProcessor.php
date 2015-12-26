@@ -34,11 +34,11 @@ class MaxExecutionTimeProcessor implements ConfigurableInterface, InitializableI
     public function __construct(ProcessorInterface $processor, LoggerInterface $logger = null)
     {
         $this->processor = $processor;
-        $this->logger    = $logger;
+        $this->logger = $logger;
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setDefaultOptions(OptionsResolver $resolver)
     {
@@ -75,7 +75,7 @@ class MaxExecutionTimeProcessor implements ConfigurableInterface, InitializableI
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function process(Message $message, array $options)
     {

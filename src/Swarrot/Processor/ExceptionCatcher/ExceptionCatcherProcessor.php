@@ -21,11 +21,11 @@ class ExceptionCatcherProcessor implements ProcessorInterface
     public function __construct(ProcessorInterface $processor, LoggerInterface $logger = null)
     {
         $this->processor = $processor;
-        $this->logger    = $logger;
+        $this->logger = $logger;
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function process(Message $message, array $options)
     {
@@ -36,7 +36,7 @@ class ExceptionCatcherProcessor implements ProcessorInterface
                 '[ExceptionCatcher] An exception occurred. This exception have been catch.',
                 [
                     'swarrot_processor' => 'exception',
-                    'exception'         => $e,
+                    'exception' => $e,
                 ]
             );
         }

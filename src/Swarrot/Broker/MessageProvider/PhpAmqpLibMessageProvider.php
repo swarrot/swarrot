@@ -23,12 +23,12 @@ class PhpAmqpLibMessageProvider implements MessageProviderInterface
      */
     public function __construct(AMQPChannel $channel, $queueName)
     {
-        $this->channel   = $channel;
+        $this->channel = $channel;
         $this->queueName = $queueName;
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function get()
     {
@@ -42,10 +42,10 @@ class PhpAmqpLibMessageProvider implements MessageProviderInterface
         $propertyKeys = [
             'content_type', 'delivery_mode', 'content_encoding', 'type', 'timestamp', 'priority', 'expiration',
             'app_id', 'message_id', 'reply_to', 'correlation_id', 'user_id', 'cluster_id', 'channel', 'consumer_tag',
-            'delivery_tag', 'redelivered', 'exchange', 'routing_key'
+            'delivery_tag', 'redelivered', 'exchange', 'routing_key',
         ];
 
-        foreach($propertyKeys as $key) {
+        foreach ($propertyKeys as $key) {
             if ($envelope->has($key)) {
                 $properties[$key] = $envelope->get($key);
             }
@@ -62,7 +62,7 @@ class PhpAmqpLibMessageProvider implements MessageProviderInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function ack(Message $message)
     {
@@ -70,7 +70,7 @@ class PhpAmqpLibMessageProvider implements MessageProviderInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function nack(Message $message, $requeue = false)
     {
@@ -78,7 +78,7 @@ class PhpAmqpLibMessageProvider implements MessageProviderInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getQueueName()
     {

@@ -20,7 +20,7 @@ class PeclPackageMessageProvider implements MessageProviderInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function get()
     {
@@ -33,33 +33,33 @@ class PeclPackageMessageProvider implements MessageProviderInterface
         return new Message(
             $envelope->getBody(),
             array(
-                'content_type'      => $envelope->getContentType(),
-                'routing_key'       => $envelope->getRoutingKey(),
-                'delivery_tag'      => $envelope->getDeliveryTag(),
-                'delivery_mode'     => $envelope->getDeliveryMode(),
-                'exchange_name'     => $envelope->getExchangeName(),
-                'is_redelivery'     => $envelope->isRedelivery(),
-                'content_encoding'  => $envelope->getContentEncoding(),
-                'type'              => $envelope->getType(),
-                'timestamp'         => $envelope->getTimeStamp(),
-                'priority'          => $envelope->getPriority(),
-                'expiration'        => $envelope->getExpiration(),
-                'app_id'            => $envelope->getAppId(),
-                'message_id'        => $envelope->getMessageId(),
-                'reply_to'          => $envelope->getReplyTo(),
-                'correlation_id'    => $envelope->getCorrelationId(),
-                'headers'           => $envelope->getHeaders(),
-                'user_id'           => $envelope->getUserId(),
-                'cluster_id'        => 0,
-                'channel'           => '',
-                'consumer_tag'      => '',
+                'content_type' => $envelope->getContentType(),
+                'routing_key' => $envelope->getRoutingKey(),
+                'delivery_tag' => $envelope->getDeliveryTag(),
+                'delivery_mode' => $envelope->getDeliveryMode(),
+                'exchange_name' => $envelope->getExchangeName(),
+                'is_redelivery' => $envelope->isRedelivery(),
+                'content_encoding' => $envelope->getContentEncoding(),
+                'type' => $envelope->getType(),
+                'timestamp' => $envelope->getTimeStamp(),
+                'priority' => $envelope->getPriority(),
+                'expiration' => $envelope->getExpiration(),
+                'app_id' => $envelope->getAppId(),
+                'message_id' => $envelope->getMessageId(),
+                'reply_to' => $envelope->getReplyTo(),
+                'correlation_id' => $envelope->getCorrelationId(),
+                'headers' => $envelope->getHeaders(),
+                'user_id' => $envelope->getUserId(),
+                'cluster_id' => 0,
+                'channel' => '',
+                'consumer_tag' => '',
             ),
             $envelope->getDeliveryTag()
         );
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function ack(Message $message)
     {
@@ -67,7 +67,7 @@ class PeclPackageMessageProvider implements MessageProviderInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function nack(Message $message, $requeue = false)
     {
@@ -75,7 +75,7 @@ class PeclPackageMessageProvider implements MessageProviderInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getQueueName()
     {
