@@ -33,13 +33,13 @@ class AckProcessor implements ConfigurableInterface
      */
     public function __construct(ProcessorInterface $processor, MessageProviderInterface $messageProvider, LoggerInterface $logger = null)
     {
-        $this->processor       = $processor;
+        $this->processor = $processor;
         $this->messageProvider = $messageProvider;
-        $this->logger          = $logger;
+        $this->logger = $logger;
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function process(Message $message, array $options)
     {
@@ -67,7 +67,7 @@ class AckProcessor implements ConfigurableInterface
                 ),
                 [
                     'swarrot_processor' => 'ack',
-                    'exception'         => $e,
+                    'exception' => $e,
                 ]
             );
 
@@ -76,7 +76,7 @@ class AckProcessor implements ConfigurableInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setDefaultOptions(OptionsResolver $resolver)
     {

@@ -28,7 +28,7 @@ class StackedProcessor implements ConfigurableInterface, InitializableInterface,
      */
     public function __construct($processor, array $middlewares)
     {
-        $this->processor   = $processor;
+        $this->processor = $processor;
         $this->middlewares = $middlewares;
     }
 
@@ -47,7 +47,7 @@ class StackedProcessor implements ConfigurableInterface, InitializableInterface,
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function initialize(array $options)
     {
@@ -59,7 +59,7 @@ class StackedProcessor implements ConfigurableInterface, InitializableInterface,
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function process(Message $message, array $options)
     {
@@ -77,7 +77,7 @@ class StackedProcessor implements ConfigurableInterface, InitializableInterface,
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function terminate(array $options)
     {
@@ -89,7 +89,7 @@ class StackedProcessor implements ConfigurableInterface, InitializableInterface,
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function sleep(array $options)
     {

@@ -19,7 +19,7 @@ class InsomniacProcessor implements SleepyInterface
     public function __construct(ProcessorInterface $decoratedProcessor, LoggerInterface $logger = null)
     {
         $this->decoratedProcessor = $decoratedProcessor;
-        $this->logger             = $logger;
+        $this->logger = $logger;
     }
 
     /**

@@ -16,11 +16,11 @@ class PhpAmqpLibMessagePublisher implements MessagePublisherInterface
 
     public function __construct(AMQPChannel $channel, $exchange)
     {
-        $this->channel  = $channel;
+        $this->channel = $channel;
         $this->exchange = $exchange;
     }
 
-    /** {@inheritDoc} */
+    /** {@inheritdoc} */
     public function publish(Message $message, $key = null)
     {
         $properties = $message->getProperties();
@@ -47,7 +47,7 @@ class PhpAmqpLibMessagePublisher implements MessagePublisherInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getExchangeName()
     {

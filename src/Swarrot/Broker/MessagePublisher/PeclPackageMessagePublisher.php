@@ -12,11 +12,11 @@ class PeclPackageMessagePublisher implements MessagePublisherInterface
     public function __construct(\AMQPExchange $exchange, $flags = AMQP_NOPARAM)
     {
         $this->exchange = $exchange;
-        $this->flags    = $flags;
+        $this->flags = $flags;
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function publish(Message $message, $key = null)
     {
@@ -46,25 +46,25 @@ class PeclPackageMessagePublisher implements MessagePublisherInterface
             $this->sanitizeProperties($properties)
         );
     }
-    
+
     private function sanitizeProperties(array $properties)
     {
         if (isset($properties['headers'])) {
-            $properties['headers'] = array_filter($properties['headers'], function($headerValue) {
-                return ! is_array($headerValue);
+            $properties['headers'] = array_filter($properties['headers'], function ($headerValue) {
+                return !is_array($headerValue);
             });
         }
-        
+
         // workaround for https://github.com/pdezwart/php-amqp/issues/170. See https://github.com/swarrot/swarrot/issues/103
         if (isset($properties['delivery_mode']) && 0 === $properties['delivery_mode']) {
             unset($properties['delivery_mode']);
         }
-        
+
         return $properties;
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function getExchangeName()
     {

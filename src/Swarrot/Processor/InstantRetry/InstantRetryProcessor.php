@@ -23,11 +23,11 @@ class InstantRetryProcessor implements ConfigurableInterface
     public function __construct(ProcessorInterface $processor, LoggerInterface $logger = null)
     {
         $this->processor = $processor;
-        $this->logger    = $logger;
+        $this->logger = $logger;
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function process(Message $message, array $options)
     {
@@ -45,7 +45,7 @@ class InstantRetryProcessor implements ConfigurableInterface
                     ),
                     [
                         'swarrot_processor' => 'instant_retry',
-                        'exception'         => $e,
+                        'exception' => $e,
                     ]
                 );
 
@@ -57,7 +57,7 @@ class InstantRetryProcessor implements ConfigurableInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setDefaultOptions(OptionsResolver $resolver)
     {

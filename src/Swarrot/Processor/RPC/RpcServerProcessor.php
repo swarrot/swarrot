@@ -30,7 +30,7 @@ class RpcServerProcessor implements ProcessorInterface
         $this->logger = $logger;
     }
 
-    /** {@inheritDoc} */
+    /** {@inheritdoc} */
     public function process(Message $message, array $options)
     {
         $result = $this->processor->process($message, $options);

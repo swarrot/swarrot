@@ -45,9 +45,9 @@ class Message
      */
     public function __construct($body = null, array $properties = array(), $id = null)
     {
-        $this->body       = $body;
+        $this->body = $body;
         $this->properties = $properties;
-        $this->id         = $id;
+        $this->id = $id;
     }
 
     public function getBody()

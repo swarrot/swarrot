@@ -19,11 +19,11 @@ class RetryProcessor implements ConfigurableInterface
     {
         $this->processor = $processor;
         $this->publisher = $publisher;
-        $this->logger    = $logger;
+        $this->logger = $logger;
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function process(Message $message, array $options)
     {
@@ -36,7 +36,7 @@ class RetryProcessor implements ConfigurableInterface
             if (isset($properties['headers']['swarrot_retry_attempts'])) {
                 $attempts = $properties['headers']['swarrot_retry_attempts'];
             }
-            $attempts++;
+            ++$attempts;
 
             if ($attempts > $options['retry_attempts']) {
                 $this->logger and $this->logger->warning(
@@ -81,7 +81,7 @@ class RetryProcessor implements ConfigurableInterface
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function setDefaultOptions(OptionsResolver $resolver)
     {
