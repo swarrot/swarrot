@@ -3,16 +3,20 @@
 namespace Swarrot\Broker\MessagePublisher;
 
 use Swarrot\Broker\Message;
+use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 
 class PeclPackageMessagePublisher implements MessagePublisherInterface
 {
     protected $exchange;
     protected $flags;
+    protected $logger;
 
-    public function __construct(\AMQPExchange $exchange, $flags = AMQP_NOPARAM)
+    public function __construct(\AMQPExchange $exchange, $flags = AMQP_NOPARAM, LoggerInterface $logger = null)
     {
         $this->exchange = $exchange;
         $this->flags = $flags;
+        $this->logger = $logger ?: new NullLogger();
     }
 
     /**
@@ -37,6 +41,15 @@ class PeclPackageMessagePublisher implements MessagePublisherInterface
             }
 
             unset($properties['application_headers']);
+        }
+
+        $body = $message->getBody();
+        if (empty($body)) {
+            $this->logger->notice('Publishing empty message.', [
+                'message' => $body,
+                'exchange' => $this->exchange->getName(),
+                'key' => $key
+            ]);
         }
 
         $this->exchange->publish(
