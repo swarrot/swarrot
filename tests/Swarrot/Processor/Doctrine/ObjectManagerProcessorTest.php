@@ -4,11 +4,10 @@ namespace Swarrot\Processor\Ack;
 
 use Doctrine\Common\Persistence\ObjectManager;
 use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTestCase;
 use Swarrot\Broker\Message;
 use Swarrot\Processor\Doctrine\ObjectManagerProcessor;
 
-class ObjectManagerProcessorTest extends ProphecyTestCase
+class ObjectManagerProcessorTest extends \PHPUnit_Framework_TestCase
 {
     public function test()
     {

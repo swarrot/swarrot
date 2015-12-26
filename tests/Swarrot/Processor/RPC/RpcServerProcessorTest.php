@@ -3,10 +3,9 @@
 namespace Swarrot\Processor\RPC;
 
 use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTestCase;
 use Swarrot\Broker\Message;
 
-class RpcServerProcessorTest extends ProphecyTestCase
+class RpcServerProcessorTest extends \PHPUnit_Framework_TestCase
 {
     public function test_it_is_initializable_without_a_logger()
     {

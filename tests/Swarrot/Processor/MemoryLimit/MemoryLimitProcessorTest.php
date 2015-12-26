@@ -3,10 +3,9 @@
 namespace Swarrot\Processor\MemoryLimit;
 
 use Prophecy\Argument;
-use Prophecy\PhpUnit\ProphecyTestCase;
 use Swarrot\Broker\Message;
 
-class MemoryLimitProcessorTest extends ProphecyTestCase
+class MemoryLimitProcessorTest extends \PHPUnit_Framework_TestCase
 {
     public function test_it_is_initializable_without_a_logger()
     {
