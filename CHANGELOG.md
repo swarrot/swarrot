@@ -5,6 +5,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [2.1.2] - 2015-12-27
+
 ### Fixed
 
 - `RetryProcessor` now keep previous headers when publishing a message.
@@ -109,9 +111,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [1.1.0] - 2014-04-01
 
-## [1.0.0] - 2014-03-25
-
-[Unreleased]: https://github.com/swarrot/swarrot/compare/v2.1.1...HEAD
+[Unreleased]: https://github.com/swarrot/swarrot/compare/v2.1.2...HEAD
+[2.1.2]: https://github.com/swarrot/swarrot/compare/v2.1.1...v2.1.2
 [2.1.1]: https://github.com/swarrot/swarrot/compare/v2.1.0...v2.1.1
 [2.1.0]: https://github.com/swarrot/swarrot/compare/v2.0.3...v2.1.0
 [2.0.3]: https://github.com/swarrot/swarrot/compare/v2.0.2...v2.0.3
