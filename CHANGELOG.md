@@ -13,6 +13,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 - Support for sf3.
+- Log when publihing empty message with `PeclPackageMessagePublisher`.
 
 ### Removed
 
