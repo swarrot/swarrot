@@ -59,7 +59,7 @@ class AckProcessor implements ConfigurableInterface
             $requeue = isset($options['requeue_on_error']) ? (boolean) $options['requeue_on_error'] : false;
             $this->messageProvider->nack($message, $requeue);
 
-            $this->logger and $this->logger->warning(
+            $this->logger and $this->logger->error(
                 sprintf(
                     '[Ack] An exception occurred. Message #%d have been %s.',
                     $message->getId(),
