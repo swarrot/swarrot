@@ -4,16 +4,18 @@ namespace Swarrot\Processor\MemoryLimit;
 
 use Psr\Log\LoggerInterface;
 use Swarrot\Broker\Message;
-use Swarrot\Processor\ConfigurableInterface;
+use Swarrot\Processor\InitializableInterface;
+use Swarrot\Processor\DecoratorTrait;
+use Swarrot\Processor\SleepyInterface;
+use Swarrot\Processor\TerminableInterface;
 use Swarrot\Processor\ProcessorInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class MemoryLimitProcessor implements ConfigurableInterface
+class MemoryLimitProcessor implements ProcessorInterface, ConfigurableInterface, InitializableInterface, SleepyInterface, TerminableInterface
 {
-    /**
-     * @var ProcessorInterface
-     */
-    private $processor;
+    use DecoratorTrait {
+        DecoratorTrait::setDefaultOptions as decoratorOptions;
+    }
 
     /**
      * @var LoggerInterface
@@ -55,6 +57,8 @@ class MemoryLimitProcessor implements ConfigurableInterface
      */
     public function setDefaultOptions(OptionsResolver $resolver)
     {
+        $this->decoratorOptions($resolver);
+
         $resolver->setDefaults(array(
             'memory_limit' => null,
         ));

@@ -3,22 +3,22 @@
 namespace Swarrot\Processor\Insomniac;
 
 use Swarrot\Broker\Message;
+use Swarrot\Processor\InitializableInterface;
 use Swarrot\Processor\ProcessorInterface;
+use Swarrot\Processor\DecoratorTrait;
 use Swarrot\Processor\SleepyInterface;
+use Swarrot\Processor\TerminableInterface;
 use Psr\Log\LoggerInterface;
 
-class InsomniacProcessor implements SleepyInterface
+class InsomniacProcessor implements ProcessorInterface, ConfigurableInterface, InitializableInterface, SleepyInterface, TerminableInterface
 {
-    protected $logger;
+    use DecoratorTrait;
 
-    /**
-     * @var ProcessorInterface
-     */
-    private $decoratedProcessor;
+    protected $logger;
 
     public function __construct(ProcessorInterface $decoratedProcessor, LoggerInterface $logger = null)
     {
-        $this->decoratedProcessor = $decoratedProcessor;
+        $this->processor = $decoratedProcessor;
         $this->logger = $logger;
     }
 
@@ -27,7 +27,7 @@ class InsomniacProcessor implements SleepyInterface
      */
     public function process(Message $message, array $options)
     {
-        return $this->decoratedProcessor->process($message, $options);
+        return $this->processor->process($message, $options);
     }
 
     /**

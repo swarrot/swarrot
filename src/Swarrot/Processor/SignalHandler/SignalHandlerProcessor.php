@@ -3,14 +3,21 @@
 namespace Swarrot\Processor\SignalHandler;
 
 use Swarrot\Broker\Message;
-use Swarrot\Processor\ProcessorInterface;
-use Swarrot\Processor\ConfigurableInterface;
+use Swarrot\Processor\InitializableInterface;
+use Swarrot\Processor\DecoratorTrait;
 use Swarrot\Processor\SleepyInterface;
+use Swarrot\Processor\TerminableInterface;
+use Swarrot\Processor\ProcessorInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class SignalHandlerProcessor implements ConfigurableInterface, SleepyInterface
+class SignalHandlerProcessor implements ProcessorInterface, ConfigurableInterface, InitializableInterface, SleepyInterface, TerminableInterface
 {
+    use DecoratorTrait {
+        DecoratorTrait::setDefaultOptions as decoratorOptions;
+        DecoratorTrait::sleep as decoratorSleep;
+    }
+
     /**
      * @var bool
      */
@@ -52,10 +59,10 @@ class SignalHandlerProcessor implements ConfigurableInterface, SleepyInterface
     public function sleep(array $options)
     {
         if (!extension_loaded('pcntl')) {
-            return true;
+            return $this->decoratorSleep($options);
         }
 
-        return !$this->shouldStop();
+        return !$this->shouldStop() && $this->decoratorSleep($options);
     }
 
     /**

@@ -3,17 +3,19 @@
 namespace Swarrot\Processor\NewRelic;
 
 use Swarrot\Broker\Message;
-use Swarrot\Processor\ConfigurableInterface;
+use Swarrot\Processor\InitializableInterface;
+use Swarrot\Processor\DecoratorTrait;
+use Swarrot\Processor\SleepyInterface;
+use Swarrot\Processor\TerminableInterface;
 use Swarrot\Processor\ProcessorInterface;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class NewRelicProcessor implements ConfigurableInterface
+class NewRelicProcessor implements ProcessorInterface, ConfigurableInterface, InitializableInterface, SleepyInterface, TerminableInterface
 {
-    /**
-     * @var ProcessorInterface
-     */
-    private $processor;
+    use DecoratorTrait {
+        DecoratorTrait::setDefaultOptions as decoratorOptions;
+    }
 
     /**
      * @var bool
@@ -64,6 +66,8 @@ class NewRelicProcessor implements ConfigurableInterface
      */
     public function setDefaultOptions(OptionsResolver $resolver)
     {
+        $this->decoratorOptions($resolver);
+
         $resolver->setRequired([
             'new_relic_app_name',
         ]);

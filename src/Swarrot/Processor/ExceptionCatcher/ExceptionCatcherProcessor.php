@@ -3,15 +3,16 @@
 namespace Swarrot\Processor\ExceptionCatcher;
 
 use Swarrot\Broker\Message;
+use Swarrot\Processor\InitializableInterface;
 use Swarrot\Processor\ProcessorInterface;
+use Swarrot\Processor\DecoratorTrait;
+use Swarrot\Processor\SleepyInterface;
+use Swarrot\Processor\TerminableInterface;
 use Psr\Log\LoggerInterface;
 
-class ExceptionCatcherProcessor implements ProcessorInterface
+class ExceptionCatcherProcessor implements ProcessorInterface, ConfigurableInterface, InitializableInterface, SleepyInterface, TerminableInterface
 {
-    /**
-     * @var ProcessorInterface
-     */
-    protected $processor;
+    use DecoratorTrait;
 
     /**
      * @var LoggerInterface

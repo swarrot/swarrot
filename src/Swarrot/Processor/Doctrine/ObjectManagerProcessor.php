@@ -4,17 +4,18 @@ namespace Swarrot\Processor\Doctrine;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Swarrot\Broker\Message;
+use Swarrot\Processor\InitializableInterface;
 use Swarrot\Processor\ProcessorInterface;
+use Swarrot\Processor\DecoratorTrait;
+use Swarrot\Processor\SleepyInterface;
+use Swarrot\Processor\TerminableInterface;
 
 /**
  * @author Adrien Brault <adrien.brault@gmail.com>
  */
-class ObjectManagerProcessor implements ProcessorInterface
+class ObjectManagerProcessor implements ProcessorInterface, ConfigurableInterface, InitializableInterface, SleepyInterface, TerminableInterface
 {
-    /**
-     * @var ProcessorInterface
-     */
-    private $processor;
+    use DecoratorTrait;
 
     /**
      * @var ManagerRegistry
