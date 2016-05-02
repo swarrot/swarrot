@@ -35,7 +35,7 @@ broker. For example, with A PeclPackageMessageProvider (retrieve message from
 an AMQP broker with the [pecl amqp package](http://pecl.php.net/package/amqp):
 
 ```php
-use Swarrot\Broker\PeclPackageMessageProvider;
+use Swarrot\Broker\MessageProvider\PeclPackageMessageProvider;
 
 // Create connection
 $connection = new \AMQPConnection();
