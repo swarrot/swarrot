@@ -38,7 +38,7 @@ class RetryProcessor implements ConfigurableInterface
             }
             ++$attempts;
 
-            if ($attempts > $options['retry_attempts']) {
+            if ($attempts > $options['retry_attempts'] && !isset($options['retry_final_key'])) {
                 $this->logger and $this->logger->warning(
                     sprintf(
                         '[Retry] Stop attempting to process message after %d attempts',
@@ -62,7 +62,11 @@ class RetryProcessor implements ConfigurableInterface
                 $properties
             );
 
-            $key = str_replace('%attempt%', $attempts, $options['retry_key_pattern']);
+            if ($attempts > $options['retry_attempts']) {
+                $key = $options['retry_final_key'];
+            } else {
+                $key = str_replace('%attempt%', $attempts, $options['retry_key_pattern']);
+            }
 
             $this->logger and $this->logger->warning(
                 sprintf(
@@ -95,12 +99,20 @@ class RetryProcessor implements ConfigurableInterface
         ;
 
         if (method_exists($resolver, 'setDefined')) {
+            $resolver->setDefined(array(
+                'retry_final_key'
+            ));
             $resolver->setAllowedTypes('retry_attempts', 'int');
+            $resolver->setAllowedTypes('retry_final_key', 'string');
             $resolver->setAllowedTypes('retry_key_pattern', 'string');
         } else {
             // BC for OptionsResolver < 2.6
+            $resolver->setOptional(array(
+                'retry_final_key'
+            ));
             $resolver->setAllowedTypes(array(
-                'retry_attempts' => 'int',
+                'retry_attempts'    => 'int',
+                'retry_final_key'   => 'string',
                 'retry_key_pattern' => 'string',
             ));
         }

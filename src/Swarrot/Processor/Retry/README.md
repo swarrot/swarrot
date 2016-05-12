@@ -5,10 +5,11 @@ Its goal is to re-published messages in broker when an error occurred.
 
 ## Configuration
 
-|Key              |Default|Description                                                                   |
-|:---------------:|:-----:|------------------------------------------------------------------------------|
-|retry_key_pattern|       |[MANDATORY] The pattern to use to construct routing key (ie: `key_%attempt%`)|
-|retry_attempts   |3      |The number of attempts before raising an exception.                           |
+|Key              |Default|Description                                                                                 |
+|:---------------:|:-----:|--------------------------------------------------------------------------------------------|
+|retry_key_pattern|       |[MANDATORY] The pattern to use to construct routing key (ie: `key_%attempt%`)               |
+|retry_attempts   |3      |The number of attempts before raising an exception.                                         |
+|retry_final_key  |       |If set and retry_attempts was reached, republish message with that routing key instead of raising an exception|
 
 ## How it works
 
@@ -21,6 +22,11 @@ in the exchange named `retry` and if the `retry_key_pattern` is
 `key_%attempts%`, when an exception is thrown, the `RetryProcessor` will
 publish a new message (similar to the first one) in the exchange `retry` with
 the routing_key `key_1`.
+
+If `retry_final_key` is set and `retry_attempts` is reached, the message will be 
+published to the exchange `retry` with the routing key `retry_final_key`.
+If `retry_final_key` is not set and `retry_attempts` is reached an exception will
+be thrown.
 
 ## Real example
 

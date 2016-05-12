@@ -121,6 +121,46 @@ class RetryProcessorTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    public function test_it_should_republish_message_with_final_key()
+    {
+        $processor        = $this->prophesize('Swarrot\Processor\ProcessorInterface');
+        $messagePublisher = $this->prophesize('Swarrot\Broker\MessagePublisher\MessagePublisherInterface');
+        $logger           = $this->prophesize('Psr\Log\LoggerInterface');
+
+        $message = new Message('body', array('headers' => array('swarrot_retry_attempts' => 3)), 1);
+
+        $options = array(
+            'retry_attempts'    => 3,
+            'retry_key_pattern' => 'key_%attempt%',
+            'retry_final_key'   => 'key_final'
+        );
+
+        $processor
+            ->process(
+                Argument::exact($message),
+                Argument::exact($options)
+            )->willThrow('\BadMethodCallException')
+            ->shouldBeCalledTimes(1);
+        $messagePublisher
+            ->publish(
+                Argument::that(function (Message $message) {
+                    $properties = $message->getProperties();
+
+                    return 4 === $properties['headers']['swarrot_retry_attempts'] && 'body' === $message->getBody();
+                }),
+
+                Argument::exact('key_final')
+            )
+            ->willReturn(null)
+            ->shouldBeCalledTimes(1);
+
+        $processor = new RetryProcessor($processor->reveal(), $messagePublisher->reveal(), $logger->reveal());
+
+        $this->assertNull(
+            $processor->process($message, $options)
+        );
+    }
+
     public function test_it_should_throw_exception_if_max_attempts_is_reached()
     {
         $processor        = $this->prophesize('Swarrot\Processor\ProcessorInterface');
