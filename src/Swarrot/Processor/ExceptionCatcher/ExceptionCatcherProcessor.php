@@ -31,16 +31,28 @@ class ExceptionCatcherProcessor implements ProcessorInterface
     {
         try {
             return $this->processor->process($message, $options);
+        } catch (\Throwable $e) {
+            $this->handleException($e, $message, $options);
         } catch (\Exception $e) {
-            $this->logger and $this->logger->error(
-                '[ExceptionCatcher] An exception occurred. This exception has been caught.',
-                [
-                    'swarrot_processor' => 'exception',
-                    'exception' => $e,
-                ]
-            );
+            $this->handleException($e, $message, $options);
         }
 
         return;
+    }
+
+    /**
+     * @param Throwable|Exception  $exception
+     * @param Message              $message
+     * @param array                $options
+     */
+    private function handleException($exception, Message $message, array $options)
+    {
+        $this->logger and $this->logger->error(
+            '[ExceptionCatcher] An exception occurred. This exception has been caught.',
+            [
+                'swarrot_processor' => 'exception',
+                'exception' => $exception,
+            ]
+        );
     }
 }
