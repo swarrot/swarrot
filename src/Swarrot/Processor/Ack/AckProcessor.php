@@ -55,23 +55,10 @@ class AckProcessor implements ConfigurableInterface
             );
 
             return $return;
+        } catch (\Throwable $e) {
+            $this->handleException($e, $message, $options);
         } catch (\Exception $e) {
-            $requeue = isset($options['requeue_on_error']) ? (boolean) $options['requeue_on_error'] : false;
-            $this->messageProvider->nack($message, $requeue);
-
-            $this->logger and $this->logger->error(
-                sprintf(
-                    '[Ack] An exception occurred. Message #%d has been %s.',
-                    $message->getId(),
-                    $requeue ? 'requeued' : 'nack\'ed'
-                ),
-                [
-                    'swarrot_processor' => 'ack',
-                    'exception' => $e,
-                ]
-            );
-
-            throw $e;
+            $this->handleException($e, $message, $options);
         }
     }
 
@@ -92,5 +79,30 @@ class AckProcessor implements ConfigurableInterface
                 'requeue_on_error' => 'bool',
             ));
         }
+    }
+
+    /**
+     * @param \Exception|\Throwable $exception
+     * @param Message               $message
+     * @param array                 $options
+     */
+    private function handleException($exception, Message $message, array $options)
+    {
+        $requeue = isset($options['requeue_on_error']) ? (boolean) $options['requeue_on_error'] : false;
+        $this->messageProvider->nack($message, $requeue);
+
+        $this->logger and $this->logger->error(
+            sprintf(
+                '[Ack] An exception occurred. Message #%d has been %s.',
+                $message->getId(),
+                $requeue ? 'requeued' : 'nack\'ed'
+            ),
+            [
+                'swarrot_processor' => 'ack',
+                'exception' => $exception,
+            ]
+        );
+
+        throw $exception;
     }
 }
