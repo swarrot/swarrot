@@ -5,9 +5,11 @@ namespace Swarrot\Processor\RPC;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Swarrot\Broker\Message;
-use Swarrot\Processor\ProcessorInterface;
-use Swarrot\Processor\ConfigurableInterface;
+use Swarrot\Processor\InitializableInterface;
+use Swarrot\Processor\DecoratorTrait;
 use Swarrot\Processor\SleepyInterface;
+use Swarrot\Processor\TerminableInterface;
+use Swarrot\Processor\ProcessorInterface;
 
 /**
  * Act as a RPC client that waits for a certain message to terminate.
@@ -21,8 +23,13 @@ use Swarrot\Processor\SleepyInterface;
  *
  * @author Baptiste Clavié <clavie.b@gmail.com>
  */
-class RpcClientProcessor implements ProcessorInterface, ConfigurableInterface, SleepyInterface
+class RpcClientProcessor implements ProcessorInterface, ConfigurableInterface, InitializableInterface, SleepyInterface, TerminableInterface
 {
+    use DecoratorTrait {
+        DecoratorTrait::setDefaultOptions as decoratorOptions;
+        DecoratorTrait::sleep as decoratorSleep;
+    }
+
     /** @var LoggerInterface */
     private $logger;
 
@@ -68,12 +75,14 @@ class RpcClientProcessor implements ProcessorInterface, ConfigurableInterface, S
     /** {@inheritdoc} */
     public function setDefaultOptions(OptionsResolver $resolver)
     {
+        $this->decoratorOptions($resolver);
+
         $resolver->setRequired(['rpc_client_correlation_id']);
     }
 
     /** {@inheritdoc} */
     public function sleep(array $options)
     {
-        return !$this->awoken;
+        return $this->awoken && $this->decoratorSleep($options);
     }
 }

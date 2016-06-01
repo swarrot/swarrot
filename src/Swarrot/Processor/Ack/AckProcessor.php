@@ -4,17 +4,20 @@ namespace Swarrot\Processor\Ack;
 
 use Swarrot\Processor\ProcessorInterface;
 use Swarrot\Processor\ConfigurableInterface;
+use Swarrot\Processor\InitializableInterface;
+use Swarrot\Processor\DecoratorTrait;
+use Swarrot\Processor\SleepyInterface;
+use Swarrot\Processor\TerminableInterface;
 use Swarrot\Broker\MessageProvider\MessageProviderInterface;
 use Swarrot\Broker\Message;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class AckProcessor implements ConfigurableInterface
+class AckProcessor implements ConfigurableInterface, InitializableInterface, SleepyInterface, TerminableInterface
 {
-    /**
-     * @var ProcessorInterface
-     */
-    protected $processor;
+    use DecoratorTrait {
+        DecoratorTrait::setDefaultOptions as traitOptions;
+    }
 
     /**
      * @var MessageProviderInterface
@@ -67,6 +70,8 @@ class AckProcessor implements ConfigurableInterface
      */
     public function setDefaultOptions(OptionsResolver $resolver)
     {
+        $this->traitOptions($resolver);
+
         $resolver->setDefaults(array(
             'requeue_on_error' => false,
         ));

@@ -3,17 +3,19 @@
 namespace Swarrot\Processor\InstantRetry;
 
 use Swarrot\Broker\Message;
-use Swarrot\Processor\ConfigurableInterface;
+use Swarrot\Processor\InitializableInterface;
 use Swarrot\Processor\ProcessorInterface;
+use Swarrot\Processor\DecoratorTrait;
+use Swarrot\Processor\SleepyInterface;
+use Swarrot\Processor\TerminableInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class InstantRetryProcessor implements ConfigurableInterface
+class InstantRetryProcessor implements ProcessorInterface, ConfigurableInterface, InitializableInterface, SleepyInterface, TerminableInterface
 {
-    /**
-     * @var ProcessorInterface
-     */
-    protected $processor;
+    use DecoratorTrait {
+        DecoratorTrait::setDefaultOptions as traitOptions;
+    }
 
     /**
      * @var LoggerInterface
@@ -51,6 +53,8 @@ class InstantRetryProcessor implements ConfigurableInterface
      */
     public function setDefaultOptions(OptionsResolver $resolver)
     {
+        $this->traitOptions($resolver);
+
         $resolver->setDefaults(array(
             'instant_retry_delay' => 2000000,
             'instant_retry_attempts' => 3,

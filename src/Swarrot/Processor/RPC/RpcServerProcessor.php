@@ -5,6 +5,10 @@ namespace Swarrot\Processor\RPC;
 use Psr\Log\LoggerInterface;
 use Swarrot\Broker\Message;
 use Swarrot\Broker\MessagePublisher\MessagePublisherInterface;
+use Swarrot\Processor\InitializableInterface;
+use Swarrot\Processor\DecoratorTrait;
+use Swarrot\Processor\SleepyInterface;
+use Swarrot\Processor\TerminableInterface;
 use Swarrot\Processor\ProcessorInterface;
 
 /**
@@ -12,10 +16,9 @@ use Swarrot\Processor\ProcessorInterface;
  *
  * @author Baptiste Clavié <clavie.b@gmail.com>
  */
-class RpcServerProcessor implements ProcessorInterface
+class RpcServerProcessor implements ProcessorInterface, ConfigurableInterface, InitializableInterface, SleepyInterface, TerminableInterface
 {
-    /** @var ProcessorInterface */
-    private $processor;
+    use DecoratorTrait;
 
     /** @var MessagePublisherInterface */
     private $publisher;

@@ -39,6 +39,10 @@ class StackedProcessor implements ConfigurableInterface, InitializableInterface,
      */
     public function setDefaultOptions(OptionsResolver $resolver)
     {
+        if ($this->processor instanceof ConfigurableInterface) {
+            $this->processor->setDefaultOptions($resolver);
+        }
+
         foreach ($this->middlewares as $middleware) {
             if ($middleware instanceof ConfigurableInterface) {
                 $middleware->setDefaultOptions($resolver);
@@ -51,6 +55,10 @@ class StackedProcessor implements ConfigurableInterface, InitializableInterface,
      */
     public function initialize(array $options)
     {
+        if ($this->processor instanceof InitializableInterface) {
+            $this->processor->initialize($options);
+        }
+
         foreach ($this->middlewares as $middleware) {
             if ($middleware instanceof InitializableInterface) {
                 $middleware->initialize($options);
@@ -81,6 +89,10 @@ class StackedProcessor implements ConfigurableInterface, InitializableInterface,
      */
     public function terminate(array $options)
     {
+        if ($this->processor instanceof TerminableInterface) {
+            $this->processor->terminate($options);
+        }
+
         foreach ($this->middlewares as $middleware) {
             if ($middleware instanceof TerminableInterface) {
                 $middleware->terminate($options);
@@ -93,6 +105,10 @@ class StackedProcessor implements ConfigurableInterface, InitializableInterface,
      */
     public function sleep(array $options)
     {
+        if (!$this->processor->sleep($options)) {
+            return false;
+        }
+
         foreach ($this->middlewares as $middleware) {
             if ($middleware instanceof SleepyInterface) {
                 if (false === $middleware->sleep($options)) {

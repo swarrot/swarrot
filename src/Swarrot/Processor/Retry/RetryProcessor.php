@@ -2,16 +2,22 @@
 
 namespace Swarrot\Processor\Retry;
 
+use Swarrot\Processor\InitializableInterface;
+use Swarrot\Processor\DecoratorTrait;
+use Swarrot\Processor\SleepyInterface;
+use Swarrot\Processor\TerminableInterface;
 use Swarrot\Processor\ProcessorInterface;
-use Swarrot\Processor\ConfigurableInterface;
 use Swarrot\Broker\Message;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Swarrot\Broker\MessagePublisher\MessagePublisherInterface;
 
-class RetryProcessor implements ConfigurableInterface
+class RetryProcessor implements ProcessorInterface, ConfigurableInterface, InitializableInterface, SleepyInterface, TerminableInterface
 {
-    protected $processor;
+    use DecoratorTrait {
+        DecoratorTrait::setDefaultOptions as decoratorOptions;
+    }
+
     protected $publisher;
     protected $logger;
 
@@ -41,6 +47,8 @@ class RetryProcessor implements ConfigurableInterface
      */
     public function setDefaultOptions(OptionsResolver $resolver)
     {
+        $this->decoratorOptions($resolver);
+
         $resolver
             ->setDefaults(array(
                 'retry_attempts' => 3,

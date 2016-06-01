@@ -7,15 +7,17 @@ use Swarrot\Broker\Message;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Swarrot\Processor\InitializableInterface;
-use Swarrot\Processor\ConfigurableInterface;
+use Swarrot\Processor\DecoratorTrait;
 use Swarrot\Processor\SleepyInterface;
+use Swarrot\Processor\TerminableInterface;
 
-class MaxExecutionTimeProcessor implements ConfigurableInterface, InitializableInterface, SleepyInterface
+class MaxExecutionTimeProcessor implements ProcessorInterface, ConfigurableInterface, InitializableInterface, SleepyInterface, TerminableInterface
 {
-    /**
-     * @var ProcessorInterface
-     */
-    protected $processor;
+    use DecoratorTrait {
+        DecoratorTrait::setDefaultOptions as decoratorOptions;
+        DecoratorTrait::initialize as decoratorInitializer;
+        DecoratorTrait::sleep as decoratorSleep;
+    }
 
     /**
      * @var LoggerInterface
@@ -42,6 +44,8 @@ class MaxExecutionTimeProcessor implements ConfigurableInterface, InitializableI
      */
     public function setDefaultOptions(OptionsResolver $resolver)
     {
+        $this->decoratorOptions($resolver);
+
         $resolver->setDefaults(array(
             'max_execution_time' => 300,
         ));
@@ -61,6 +65,8 @@ class MaxExecutionTimeProcessor implements ConfigurableInterface, InitializableI
      */
     public function initialize(array $options)
     {
+        $this->decoratorInitializer($options);
+
         $this->startTime = microtime(true);
     }
 
@@ -71,7 +77,7 @@ class MaxExecutionTimeProcessor implements ConfigurableInterface, InitializableI
      */
     public function sleep(array $options)
     {
-        return !$this->isTimeExceeded($options);
+        return !$this->isTimeExceeded($options) && $this->decoratorSleep($options);
     }
 
     /**

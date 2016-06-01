@@ -8,18 +8,21 @@ use Doctrine\DBAL\Connections\MasterSlaveConnection;
 use Doctrine\DBAL\DBALException;
 use Swarrot\Broker\Message;
 use Swarrot\Processor\ConfigurableInterface;
+use Swarrot\Processor\InitializableInterface;
 use Swarrot\Processor\ProcessorInterface;
+use Swarrot\Processor\DecoratorTrait;
+use Swarrot\Processor\SleepyInterface;
+use Swarrot\Processor\TerminableInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @author Adrien Brault <adrien.brault@gmail.com>
  */
-class ConnectionProcessor implements ConfigurableInterface
+class ConnectionProcessor implements ConfigurableInterface, InitializableInterface, SleepyInterface, TerminableInterface
 {
-    /**
-     * @var ProcessorInterface
-     */
-    private $processor;
+    use DecoratorTrait {
+        DecoratorTrait::setDefaultOptions as traitOptions;
+    }
 
     /**
      * @var Connection[]
@@ -88,6 +91,8 @@ class ConnectionProcessor implements ConfigurableInterface
      */
     public function setDefaultOptions(OptionsResolver $resolver)
     {
+        $this->traitOptions($resolver);
+
         $resolver->setDefaults([
             'doctrine_ping' => true,
             'doctrine_close_master' => true,
