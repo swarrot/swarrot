@@ -59,8 +59,13 @@ class MemoryLimitProcessor implements ConfigurableInterface
             'memory_limit' => null,
         ));
 
-        $resolver->setAllowedTypes(array(
-            'memory_limit' => array('integer', 'null'),
-        ));
+        if (method_exists($resolver, 'setDefined')) {
+            $resolver->setAllowedTypes('memory_limit', array('integer', 'null'));
+        } else {
+            // BC for OptionsResolver < 2.6
+            $resolver->setAllowedTypes(array(
+                'memory_limit' => array('integer', 'null')
+            ));
+        }
     }
 }
