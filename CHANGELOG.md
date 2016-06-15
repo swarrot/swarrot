@@ -5,6 +5,17 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [2.2.0] - 2016-06-15
+
+### Fixed
+
+- Typos in errors messages, README, ...
+- Deprecated warning with OptionsResolver > 2.8 in MemoryLimitProcessor.
+
+### Added
+
+- Catch of PHP7 Throwable.
+
 ## [2.1.2] - 2015-12-27
 
 ### Fixed
