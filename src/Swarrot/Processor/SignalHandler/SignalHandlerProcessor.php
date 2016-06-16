@@ -6,10 +6,11 @@ use Swarrot\Broker\Message;
 use Swarrot\Processor\ProcessorInterface;
 use Swarrot\Processor\ConfigurableInterface;
 use Swarrot\Processor\SleepyInterface;
+use Swarrot\Processor\InitializableInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class SignalHandlerProcessor implements ConfigurableInterface, SleepyInterface
+class SignalHandlerProcessor implements ConfigurableInterface, SleepyInterface, InitializableInterface
 {
     /**
      * @var bool
@@ -63,6 +64,20 @@ class SignalHandlerProcessor implements ConfigurableInterface, SleepyInterface
      */
     public function process(Message $message, array $options)
     {
+        $return = $this->processor->process($message, $options);
+
+        if (extension_loaded('pcntl') && $this->shouldStop()) {
+            return false;
+        }
+
+        return $return;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function initialize(array $options)
+    {
         if (!extension_loaded('pcntl')) {
             $this->logger and $this->logger->warning(
                 '[SignalHandler] The SignalHandlerProcessor needs the pcntl extension to work',
@@ -71,7 +86,7 @@ class SignalHandlerProcessor implements ConfigurableInterface, SleepyInterface
                 ]
             );
 
-            return $this->processor->process($message, $options);
+            return;
         }
 
         $signals = isset($options['signal_handler_signals']) ? $options['signal_handler_signals'] : array();
@@ -80,14 +95,6 @@ class SignalHandlerProcessor implements ConfigurableInterface, SleepyInterface
                 SignalHandlerProcessor::$shouldExit = true;
             });
         }
-
-        $return = $this->processor->process($message, $options);
-
-        if ($this->shouldStop()) {
-            return false;
-        }
-
-        return $return;
     }
 
     /**
