@@ -48,7 +48,7 @@ class PeclPackageMessagePublisher implements MessagePublisherInterface
             $this->logger->notice('Publishing empty message.', [
                 'message' => $body,
                 'exchange' => $this->exchange->getName(),
-                'key' => $key
+                'key' => $key,
             ]);
         }
 
