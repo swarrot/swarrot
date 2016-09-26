@@ -12,11 +12,11 @@ use Swarrot\Driver\PrefetchMessageCache;
  */
 class SqsMessageProvider implements MessageProviderInterface
 {
-    protected $cache;
-    protected $channel;
-    protected $prefetch;
-    protected $waitTime;
-    protected $queueName;
+    private $cache;
+    private $channel;
+    private $prefetch;
+    private $waitTime;
+    private $queueName;
 
     /**
      * @param SqsClient                  $channel
