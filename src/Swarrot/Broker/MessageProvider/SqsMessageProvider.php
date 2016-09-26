@@ -15,6 +15,7 @@ class SqsMessageProvider implements MessageProviderInterface
     protected $cache;
     protected $channel;
     protected $prefetch;
+    protected $waitTime;
     protected $queueName;
 
     /**
@@ -22,13 +23,20 @@ class SqsMessageProvider implements MessageProviderInterface
      * @param string                     $queueName
      * @param MessageCacheInterface|null $cache
      * @param int                        $prefetch
+     * @param int                        $waitTime
      */
-    public function __construct(SqsClient $channel, $queueName, MessageCacheInterface $cache = null, $prefetch = 9)
-    {
+    public function __construct(
+        SqsClient $channel,
+        $queueName,
+        MessageCacheInterface $cache = null,
+        $prefetch = 9,
+        $waitTime = 5
+    ) {
         $this->channel = $channel;
         $this->queueName = $queueName;
         $this->cache = $cache ?: new PrefetchMessageCache();
         $this->prefetch = $prefetch;
+        $this->waitTime = $waitTime;
     }
 
     /**
@@ -43,7 +51,7 @@ class SqsMessageProvider implements MessageProviderInterface
         $result = $this->channel->receiveMessage([
             'QueueUrl' => $this->getQueueName(),
             'MaxNumberOfMessages' => $this->prefetch,
-            'WaitTimeSeconds' => 5,
+            'WaitTimeSeconds' => $this->waitTime,
         ]);
 
         if (!$result || !$messages = $result->get('Messages')) {
