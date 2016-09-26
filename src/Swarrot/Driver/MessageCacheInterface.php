@@ -10,7 +10,7 @@ use Swarrot\Broker\Message;
 interface MessageCacheInterface
 {
     /**
-     * Pushes a $message to the end of the cache.
+     * Pushes a message to the end of the cache.
      *
      * @param string  $queueName
      * @param Message $message

@@ -12,7 +12,7 @@ class PrefetchMessageCache implements MessageCacheInterface
     protected $caches = [];
 
     /**
-     * Pushes a $message to the end of the cache.
+     * Pushes a message to the end of the cache.
      *
      * @param string  $queueName
      * @param Message $message
