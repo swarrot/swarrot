@@ -18,3 +18,5 @@ before_script:
   - composer selfupdate
   - composer update --prefer-source -n $COMPOSER_FLAGS
   - sh -c "sudo ./tests/bin/prepare_rabbit.sh"
+
+script: vendor/bin/phpunit
