@@ -1,5 +1,5 @@
 {
-    "name":        "swarrot/swarrot",
+    "name": "swarrot/swarrot",
     "description": "A simple lib to consume RabbitMQ queues",
     "keywords": ["swarrot","worker","queue","amqp"],
     "type": "library",
@@ -11,25 +11,30 @@
         }
     ],
     "require": {
-        "php": ">=5.4",
-        "symfony/options-resolver": "~2.3|~3.0",
-        "psr/log": "~1.0"
+        "php": "^5.4 || ^7.0",
+        "symfony/options-resolver": "^2.3 || ^3.0",
+        "psr/log": "^1.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "~4.7|~5.0",
-        "php-amqplib/php-amqplib": "~2.1",
-        "doctrine/common": "~2.3",
-        "doctrine/dbal": "~2.2"
+        "phpunit/phpunit": "^4.7 || ^5.0",
+        "php-amqplib/php-amqplib": "^2.1",
+        "doctrine/common": "^2.3",
+        "doctrine/dbal": "^2.2"
     },
     "suggest": {
         "pecl-amqp": "*",
-        "php-amqplib/php-amqplib": "~2.1",
-        "symfony/console": "~2.4|~3.0"
+        "php-amqplib/php-amqplib": "^2.1",
+        "symfony/console": "^2.4 || ^3.0"
     },
     "autoload": {
-        "psr-0": {
-            "Swarrot": "src"
+        "psr-4": {
+            "Swarrot\\": "src/Swarrot"
         }
+    },
+    "scripts": {
+        "test": [
+            "phpunit --colors=always"
+        ]
     },
     "extra": {
         "branch-alias": {
