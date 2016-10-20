@@ -16,15 +16,17 @@
         "psr/log": "^1.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "^4.7 || ^5.0",
+        "phpunit/phpunit": "^4.8.27 || ^5.0",
         "php-amqplib/php-amqplib": "^2.1",
         "doctrine/common": "^2.3",
-        "doctrine/dbal": "^2.2"
+        "doctrine/dbal": "^2.2",
+        "aws/aws-sdk-php": "^2.8"
     },
     "suggest": {
         "pecl-amqp": "*",
         "php-amqplib/php-amqplib": "^2.1",
-        "symfony/console": "^2.4 || ^3.0"
+        "symfony/console": "^2.4 || ^3.0",
+        "aws/aws-sdk-php": "^2.8"
     },
     "autoload": {
         "psr-4": {
