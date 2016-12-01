@@ -85,6 +85,7 @@ class RetryProcessor implements ConfigurableInterface
                 ),
                 [
                     'swarrot_processor' => 'retry',
+                    'exception' => $exception,
                 ]
             );
 
