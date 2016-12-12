@@ -5,10 +5,12 @@ Its goal is to re-published messages in broker when an error occurred.
 
 ## Configuration
 
-|Key              |Default|Description                                                                   |
-|:---------------:|:-----:|------------------------------------------------------------------------------|
-|retry_key_pattern|       |[MANDATORY] The pattern to use to construct routing key (ie: `key_%attempt%`)|
-|retry_attempts   |3      |The number of attempts before raising an exception.                           |
+|Key                      |Default|Description                                                                  |
+|:-----------------------:|:-----:|-----------------------------------------------------------------------------|
+|retry_key_pattern        |       |[MANDATORY] The pattern to use to construct routing key (ie: `key_%attempt%`)|
+|retry_attempts           |3      |The number of attempts before raising an exception.                          |
+|retry_log_levels_map     |[]     |Map of classes to a log level when retry. (Warning by default)               |
+|retry_fail_log_levels_map|[]     |Map of classes to a log level when all retries failed. (Warning by default)  |
 
 ## How it works
 
