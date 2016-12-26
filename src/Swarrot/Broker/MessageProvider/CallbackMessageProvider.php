@@ -21,15 +21,9 @@ class CallbackMessageProvider implements MessageProviderInterface
      */
     protected $nack;
 
-    /*
-     * @var
-     */
-    protected $queueName;
-
-    public function __construct(\Closure $get, $queueName = '', \Closure $ack = null, \Closure $nack = null)
+    public function __construct(\Closure $get, \Closure $ack = null, \Closure $nack = null)
     {
         $this->get = $get;
-        $this->queueName = '';
         $this->ack = $ack;
         $this->nack = $nack;
     }
@@ -71,6 +65,6 @@ class CallbackMessageProvider implements MessageProviderInterface
      */
     public function getQueueName()
     {
-        return $this->queueName;
+        return '';
     }
 }
