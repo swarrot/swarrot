@@ -8,10 +8,10 @@ use Swarrot\Broker\MessageProvider\CallbackMessageProvider;
 use Swarrot\Processor\Callback\CallbackProcessor;
 
 $i = 0;
-$messageProvider = new CallbackMessageProvider(function () use ($i) {
-    $ispair = $i++ % 2 == 0;
+$messageProvider = new CallbackMessageProvider(function () use (&$i) {
+    $isPair = $i++ % 2 == 0;
 
-    return $ispair ?
+    return $isPair ?
         new Message(
             file_get_contents('https://query.yahooapis.com/v1/public/yql?q=select%20item.condition%20from%20weather.forecast%20where%20woeid%20%3D%20615702&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys')
         ) :
