@@ -6,6 +6,7 @@ use Swarrot\Processor\ProcessorInterface;
 use Swarrot\Processor\ConfigurableInterface;
 use Swarrot\Broker\Message;
 use Psr\Log\LoggerInterface;
+use Psr\Log\LogLevel;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Swarrot\Broker\MessagePublisher\MessagePublisherInterface;
 
@@ -44,6 +45,8 @@ class RetryProcessor implements ConfigurableInterface
         $resolver
             ->setDefaults(array(
                 'retry_attempts' => 3,
+                'retry_log_levels_map' => array(),
+                'retry_fail_log_levels_map' => array(),
             ))
             ->setRequired(array(
                 'retry_key_pattern',
@@ -53,11 +56,15 @@ class RetryProcessor implements ConfigurableInterface
         if (method_exists($resolver, 'setDefined')) {
             $resolver->setAllowedTypes('retry_attempts', 'int');
             $resolver->setAllowedTypes('retry_key_pattern', 'string');
+            $resolver->setAllowedTypes('retry_log_levels_map', 'array');
+            $resolver->setAllowedTypes('retry_fail_log_levels_map', 'array');
         } else {
             // BC for OptionsResolver < 2.6
             $resolver->setAllowedTypes(array(
                 'retry_attempts' => 'int',
                 'retry_key_pattern' => 'string',
+                'retry_log_levels_map' => 'array',
+                'retry_fail_log_levels_map' => 'array',
             ));
         }
     }
@@ -78,15 +85,13 @@ class RetryProcessor implements ConfigurableInterface
         ++$attempts;
 
         if ($attempts > $options['retry_attempts']) {
-            $this->logger and $this->logger->warning(
+            $this->logger and $this->logException(
+                $exception,
                 sprintf(
                     '[Retry] Stop attempting to process message after %d attempts',
                     $attempts
                 ),
-                [
-                    'swarrot_processor' => 'retry',
-                    'exception' => $exception,
-                ]
+                $options['retry_fail_log_levels_map']
             );
 
             throw $exception;
@@ -105,18 +110,43 @@ class RetryProcessor implements ConfigurableInterface
 
         $key = str_replace('%attempt%', $attempts, $options['retry_key_pattern']);
 
-        $this->logger and $this->logger->warning(
+        $this->logger and $this->logException(
+            $exception,
             sprintf(
                 '[Retry] An exception occurred. Republish message for the %d times (key: %s)',
                 $attempts,
                 $key
             ),
+            $options['retry_log_levels_map']
+        );
+
+        $this->publisher->publish($message, $key);
+    }
+
+    /**
+     * @param \Exception|\Throwable $exception
+     * @param string                $logMessage
+     * @param array                 $logLevelsMap
+     */
+    private function logException($exception, $logMessage, array $logLevelsMap)
+    {
+        $logLevel = LogLevel::WARNING;
+
+        foreach ($logLevelsMap as $className => $level) {
+            if ($exception instanceof $className) {
+                $logLevel = $level;
+
+                break;
+            }
+        }
+
+        $this->logger->log(
+            $logLevel,
+            $logMessage,
             [
                 'swarrot_processor' => 'retry',
                 'exception' => $exception,
             ]
         );
-
-        $this->publisher->publish($message, $key);
     }
 }
