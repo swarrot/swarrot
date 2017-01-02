@@ -4,9 +4,8 @@ Their goal is to handle RPC communications between a RPC client and a RPC server
 Their usage is not mutually inclusive ; you can run one without the other.
 
 ## Configuration (Server processor)
-| Key                  | Default   | Required ? | Description                                       |
-| ---                  | -------   | ---------- | -----------                                       |
-| `rpc_server_message` | *(empty)* | no         | Message to send once the nested processor is done |
+
+*No need for specific configuration on server side*
 
 ## Configuration (Client processor)
 | Key                         | Default   | Required ? | Description                                          |
