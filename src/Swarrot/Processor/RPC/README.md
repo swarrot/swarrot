@@ -3,7 +3,7 @@ The RPC processors are [swarrot](https://github.com/swarrot/swarrot)'s processor
 Their goal is to handle RPC communications between a RPC client and a RPC server.
 Their usage is not mutually inclusive ; you can run one without the other.
 
-`reply_to` message property contain the name of the queue on which the server will send the response, if exchange name is empty broker will receiver the message on the default exchange and route on the queue defined in the routing_key
+`reply_to` message property contain the name of the queue on which the server will send the response, if exchange name is empty broker will receive the message on the default exchange and route on the queue defined in the routing_key
 
 ## Configuration (Server processor)
 
