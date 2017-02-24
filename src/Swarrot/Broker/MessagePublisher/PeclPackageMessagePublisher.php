@@ -6,17 +6,71 @@ use Swarrot\Broker\Message;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
-class PeclPackageMessagePublisher implements MessagePublisherInterface
+class PeclPackageMessagePublisher implements MessagePublisherInterface, PublishConfirmPublisherInterface
 {
     protected $exchange;
     protected $flags;
     protected $logger;
+    protected $confirmSelectMode = false;
+    protected $timeout = 0;
+    protected $lastDeliveryTag = 0;
+    protected $pendingMessages = [];
+    protected $ackHandler = null;
+    protected $nackHandler = null;
 
     public function __construct(\AMQPExchange $exchange, $flags = AMQP_NOPARAM, LoggerInterface $logger = null)
     {
         $this->exchange = $exchange;
         $this->flags = $flags;
         $this->logger = $logger ?: new NullLogger();
+    }
+
+    private function getAckHandler()
+    {
+        if (!is_callable($this->ackHandler)) {
+            $this->ackHandler = function ($deliveryTag, $multiple) {
+                //remove acked from pending list
+                if ($multiple) {
+                    for ($tag = 0; $tag <= $multiple; $tag ++) {
+                        unset($this->pendingMessages[$tag]);
+                    }
+                } else {
+                    unset($this->pendingMessages[$deliveryTag]);
+                }
+
+                if (count($this->pendingMessages) > 0) {
+                    return true; //still need to wait
+                }
+                return false;
+            };
+        }
+        return $this->ackHandler;
+    }
+
+    private function getNackHandler()
+    {
+        if (!is_callable($this->ackHandler)) {
+            $this->nackHandler = function ($deliveryTag, $multiple, $requeue) {
+                throw new \Exception("Error publishing deliveryTag: " . $deliveryTag);
+            };
+        }
+        return $this->nackHandler;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function enterConfirmMode($timeout = 0)
+    {
+        if (!(method_exists(\AMQPChannel::class, "confirmSelect"))) {
+            throw new \Exception("Publisher confirms are not supported. Update your pecl amqp package");
+        }
+        if ($this->confirmSelectMode === false) {
+            $this->exchange->getChannel()->confirmSelect();
+            $this->exchange->getChannel()->setConfirmCallback($this->getAckHandler(), $this->getNackHandler());
+            $this->confirmSelectMode = true;
+        }
+        $this->timeout = $timeout;
     }
 
     /**
@@ -58,6 +112,12 @@ class PeclPackageMessagePublisher implements MessagePublisherInterface
             $this->flags,
             $this->sanitizeProperties($properties)
         );
+        if ($this->confirmSelectMode) {
+            //track published to see what needs to be acked
+            $this->lastDeliveryTag += 1;
+            $this->pendingMessages[$this->lastDeliveryTag] = $message;
+            $this->exchange->getChannel()->waitForConfirm($this->timeout);
+        }
     }
 
     private function sanitizeProperties(array $properties)

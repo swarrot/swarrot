@@ -6,7 +6,7 @@ use PhpAmqpLib\Message\AMQPMessage;
 use PhpAmqpLib\Channel\AMQPChannel;
 use Swarrot\Broker\Message;
 
-class PhpAmqpLibMessagePublisher implements MessagePublisherInterface
+class PhpAmqpLibMessagePublisher implements MessagePublisherInterface, PublishConfirmPublisherInterface
 {
     /** @var AMQPChannel $channel */
     private $channel;
@@ -14,10 +14,25 @@ class PhpAmqpLibMessagePublisher implements MessagePublisherInterface
     /** @var string $exchange Exchange's name. Required by php-amqplib */
     private $exchange;
 
+    protected $confirmSelectMode = false;
+
+    protected $timeout = 0;
+
     public function __construct(AMQPChannel $channel, $exchange)
     {
         $this->channel = $channel;
         $this->exchange = $exchange;
+    }
+    /**
+     * {@inheritdoc}
+     */
+    public function enterConfirmMode($timeout = 0)
+    {
+        if ($this->confirmSelectMode === false) {
+            $this->channel->confirm_select();
+            $this->confirmSelectMode = true;
+        }
+        $this->timeout = $timeout;
     }
 
     /** {@inheritdoc} */
@@ -44,6 +59,9 @@ class PhpAmqpLibMessagePublisher implements MessagePublisherInterface
         $amqpMessage = new AMQPMessage($message->getBody(), $properties);
 
         $this->channel->basic_publish($amqpMessage, $this->exchange, (string) $key);
+        if ($this->confirmSelectMode) {
+            $this->channel->wait_for_pending_acks($this->timeout);
+        }
     }
 
     /**
