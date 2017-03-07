@@ -2,11 +2,6 @@
 
 namespace Swarrot\Broker\MessagePublisher;
 
-/**
- * Interface PublishConfirmPublisherInterface
- *
- * @package Swarrot\Broker\MessagePublisher
- */
 interface PublishConfirmPublisherInterface
 {
     /**
