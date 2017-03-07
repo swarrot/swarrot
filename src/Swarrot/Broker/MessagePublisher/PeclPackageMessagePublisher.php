@@ -62,7 +62,7 @@ class PeclPackageMessagePublisher implements MessagePublisherInterface, PublishC
      */
     public function enterConfirmMode($timeout = 0)
     {
-        if (!(method_exists(\AMQPChannel::class, "confirmSelect"))) {
+        if (!(method_exists($this->exchange->getChannel(), "confirmSelect"))) {
             throw new \Exception("Publisher confirms are not supported. Update your pecl amqp package");
         }
         if ($this->confirmSelectMode === false) {
