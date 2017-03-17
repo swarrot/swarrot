@@ -6,7 +6,7 @@
 [![Latest Stable Version](https://poser.pugx.org/swarrot/swarrot/v/stable.svg)](https://packagist.org/packages/swarrot/swarrot)
 [![Latest Unstable Version](https://poser.pugx.org/swarrot/swarrot/v/unstable.svg)](https://packagist.org/packages/swarrot/swarrot)
 
-Swarrot is PHP library to consume messages from any broker.
+Swarrot is a PHP library to consume messages from any broker.
 
 ## Installation
 
@@ -19,8 +19,8 @@ The recommended way to install Swarrot is through
 
 ### Basic usage
 
-First, you need to create a message provider to retrieve message from your
-broker. For example, with A PeclPackageMessageProvider (retrieve message from
+First, you need to create a message provider to retrieve messages from your
+broker. For example, with a `PeclPackageMessageProvider` (retrieves messages from
 an AMQP broker with the [pecl amqp package](http://pecl.php.net/package/amqp):
 
 ```php
@@ -37,7 +37,7 @@ $queue->setName('global');
 $messageProvider = new PeclPackageMessageProvider($queue);
 ```
 
-Once it's done you need to create a Processor to process messages retrieved
+Once it's done you need to create a `Processor` to process messages retrieved
 from the broker. This processor must implement
 `Swarrot\Processor\ProcessorInterface`. For example:
 
@@ -54,7 +54,7 @@ class Processor implements ProcessorInterface {
 
 
 You now have a `Swarrot\Broker\MessageProviderInterface` to retrieve messages
-and a Processor to process them. So, ask the `Swarrot\Consumer`to do it's job :
+and a Processor to process them. So, ask the `Swarrot\Consumer` to do its job :
 
 ```php
 use Swarrot\Consumer;
@@ -70,11 +70,11 @@ can use `Swarrot\Processor\Stack\Builder` to stack your processors.
 Using the [built in processors](#official-processors) or by [creating your
 own](#create-your-own-processor), you can extend the behavior of your
 base processor.
-In this example, your processor is decorated by 2 others one. The
+In this example, your processor is decorated by 2 other processors. The
 [ExceptionCatcherProcessor](src/Swarrot/Processor/ExceptionCatcher/ExceptionCatcherProcessor.php)
-which decorate your own with a try/catch block and the
+which decorates your own with a try/catch block and the
 [MaxMessagesProcessor](src/Swarrot/Processor/MaxMessages/MaxMessagesProcessor.php)
-which stop your worker when some messages have been consumed.
+which stops your worker when some messages have been consumed.
 
 ```php
 use Swarrot\Processor\ProcessorInterface;
@@ -95,7 +95,7 @@ $stack = (new \Swarrot\Processor\Stack\Builder())
 $processor = $stack->resolve(new Processor());
 ```
 
-Here is an illustration to show you what append when this order is used:
+Here is an illustration to show you what happens when this order is used:
 
 ![this](https://docs.google.com/drawings/d/1Ea_QJHo-9p7YW8l_by7S4NID0e-AGpXRzzitAlYY5Cc/pub?w=960&h=720)
 
@@ -118,7 +118,7 @@ Here is an illustration to show you what append when this order is used:
 
 ### Create your own processor
 
-To create your own processor and be able to use it with the StackProcessor, you
+To create your own processor and be able to use it with the `StackProcessor`, you
 just need to implement `ProcessorInterface` and to take another
 `ProcessorInterface` as first argument in constructor.
 
