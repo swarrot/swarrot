@@ -11,20 +11,9 @@ Swarrot is PHP library to consume messages from any broker.
 ## Installation
 
 The recommended way to install Swarrot is through
-[Composer](http://getcomposer.org/). Require the `swarrot/swarrot` package
-into your `composer.json` file:
+[Composer](http://getcomposer.org/). Require the `swarrot/swarrot` package:
 
-```json
-{
-    "require": {
-        "swarrot/swarrot": "@stable"
-    }
-}
-```
-
-**Protip:** you should browse the
-[`swarrot/swarrot`](https://packagist.org/packages/swarrot/swarrot)
-page to choose a stable version to use, avoid the `@stable` meta constraint.
+    $ composer require swarrot/swarrot
 
 ## Usage
 
