@@ -50,6 +50,8 @@ class Processor implements ProcessorInterface
     public function process(Message $message, array $options)
     {
         echo sprintf("Consume message #%d\n", $message->getId());
+
+        return true; // Continue processing other messages
     }
 }
 ```
