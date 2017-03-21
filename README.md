@@ -45,9 +45,13 @@ from the broker. This processor must implement
 use Swarrot\Processor\ProcessorInterface;
 use Swarrot\Broker\Message;
 
-class Processor implements ProcessorInterface {
-    public function process(Message $message, array $options) {
+class Processor implements ProcessorInterface
+{
+    public function process(Message $message, array $options)
+    {
         echo sprintf("Consume message #%d\n", $message->getId());
+
+        return true; // Continue processing other messages
     }
 }
 ```
@@ -80,8 +84,10 @@ which stops your worker when some messages have been consumed.
 use Swarrot\Processor\ProcessorInterface;
 use Swarrot\Broker\Message;
 
-class Processor implements ProcessorInterface {
-    public function process(Message $message, array $options) {
+class Processor implements ProcessorInterface
+{
+    public function process(Message $message, array $options)
+    {
         echo sprintf("Consume message #%d\n", $message->getId());
     }
 }
