@@ -43,7 +43,6 @@ class PhpAmqpLibMessagePublisher implements MessagePublisherInterface
                 throw new \Exception("Error publishing message: " . $message->getBody());
             }
         };
-
     }
 
     /** {@inheritdoc} */
