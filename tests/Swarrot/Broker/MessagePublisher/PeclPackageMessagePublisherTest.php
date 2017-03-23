@@ -127,6 +127,10 @@ class PeclPackageMessagePublisherTest extends \PHPUnit_Framework_TestCase
 
     public function test_publish_with_publisher_confirms()
     {
+        if (version_compare("1.8.0", phpversion('amqp')) === 1) {
+            $this->markTestSkipped("The AMQP Extension version does not support publisher confirms");
+        }
+
         $channel = $this->prophesize('\AMQPChannel');
         $channel
             ->setConfirmCallback(
