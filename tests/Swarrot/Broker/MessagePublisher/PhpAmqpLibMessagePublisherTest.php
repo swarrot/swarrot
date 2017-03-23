@@ -73,6 +73,9 @@ class PhpAmqpLibMessagePublisherTest extends \PHPUnit_Framework_TestCase
 
     public function test_publish_with_publisher_confirms()
     {
+        if (!method_exists('PhpAmqpLib\Channel\AMQPChannel', 'set_nack_handler')) {
+            $this->markTestSkipped("The AMQP library version does not support publisher confirms");
+        }
         $channel = $this->prophesize('PhpAmqpLib\Channel\AMQPChannel');
         $channel->set_nack_handler(
             Argument::type('\Closure')
