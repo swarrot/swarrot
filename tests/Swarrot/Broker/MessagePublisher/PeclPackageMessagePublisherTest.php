@@ -152,7 +152,6 @@ class PeclPackageMessagePublisherTest extends \PHPUnit_Framework_TestCase
         $exchange = $this->prophesize('\AMQPExchange');
         $exchange
             ->getChannel()
-            ->shouldBeCalledTimes(3)
             ->willReturn($channel->reveal())
         ;
         $exchange
