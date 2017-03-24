@@ -52,6 +52,7 @@ class PeclPackageMessagePublisher implements MessagePublisherInterface
             if (count($this->pendingMessages) > 0) {
                 return true; //still need to wait
             }
+
             return false;
         };
     }
