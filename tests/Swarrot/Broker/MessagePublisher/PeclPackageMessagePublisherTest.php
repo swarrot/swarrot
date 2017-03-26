@@ -35,7 +35,7 @@ class PeclPackageMessagePublisherTest extends \PHPUnit_Framework_TestCase
 
         $this->assertNull($return);
     }
-    
+
     public function test_it_should_remove_nested_arrays_from_headers()
     {
         $exchange = $this->prophesize('\AMQPExchange');
@@ -64,7 +64,7 @@ class PeclPackageMessagePublisherTest extends \PHPUnit_Framework_TestCase
                 ]
             ])
         );
-        
+
         $this->assertNull($return);
     }
 
@@ -121,7 +121,55 @@ class PeclPackageMessagePublisherTest extends \PHPUnit_Framework_TestCase
                 'delivery_mode' => 0
             ])
         );
-    
+
+        $this->assertNull($return);
+    }
+
+    public function test_publish_with_publisher_confirms()
+    {
+        if (version_compare("1.8.0", phpversion('amqp')) === 1) {
+            $this->markTestSkipped("The AMQP Extension version does not support publisher confirms");
+        }
+
+        $channel = $this->prophesize('\AMQPChannel');
+        $channel
+            ->setConfirmCallback(
+                Argument::type('\Closure'),
+                Argument::type('\Closure')
+            )
+            ->shouldBeCalledTimes(1)
+        ;
+        $channel
+            ->confirmSelect()
+            ->shouldBeCalledTimes(1)
+        ;
+        $channel
+            ->waitForConfirm(
+                Argument::exact(10)
+            )
+            ->shouldBeCalledTimes(1)
+        ;
+        $exchange = $this->prophesize('\AMQPExchange');
+        $exchange
+            ->getChannel()
+            ->willReturn($channel->reveal())
+        ;
+        $exchange
+            ->publish(
+                Argument::exact('body'),
+                Argument::exact(null),
+                Argument::exact(0),
+                Argument::exact([])
+            )
+            ->shouldBeCalledTimes(1)
+        ;
+        $provider = new PeclPackageMessagePublisher($exchange->reveal(), AMQP_NOPARAM, null, true, 10);
+        $return = $provider->publish(
+            new Message('body', [
+                'delivery_mode' => 0
+            ])
+        );
+
         $this->assertNull($return);
     }
 }
