@@ -35,7 +35,7 @@ class RpcServerProcessor implements ProcessorInterface
     {
         $result = $this->processor->process($message, $options);
 
-        $properties = $message->getProperties();
+        $properties = $this->getProperties($message);
 
         if (!isset($properties['reply_to'], $properties['correlation_id']) || empty($properties['reply_to']) || empty($properties['correlation_id'])) {
             return $result;
@@ -44,8 +44,25 @@ class RpcServerProcessor implements ProcessorInterface
         $this->logger and $this->logger->info(sprintf('sending a new message to the "%s" queue with the id "%s"', $properties['reply_to'], $properties['correlation_id']), ['swarrot_processor' => 'rpc']);
 
         $message = new Message((string) $result, ['correlation_id' => $properties['correlation_id']]);
+
         $this->publisher->publish($message, $properties['reply_to']);
 
         return $result;
+    }
+
+    /**
+     * @param Message $message
+     * @return array
+     */
+    private function getProperties(Message $message)
+    {
+        $properties = $message->getProperties();
+
+        // In AMQP 0.9.1 (RabbitMQ) headers are in a separate key
+        if (isset($properties['headers'])) {
+            $properties = array_merge($properties, $properties['headers']);
+        }
+
+        return $properties;
     }
 }
