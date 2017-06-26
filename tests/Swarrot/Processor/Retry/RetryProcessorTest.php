@@ -2,12 +2,13 @@
 
 namespace Swarrot\Processor\Retry;
 
+use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Psr\Log\LogLevel;
 use Swarrot\Broker\Message;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class RetryProcessorTest extends \PHPUnit_Framework_TestCase
+class RetryProcessorTest extends TestCase
 {
     public function test_it_is_initializable_without_a_logger()
     {
@@ -155,7 +156,7 @@ class RetryProcessorTest extends \PHPUnit_Framework_TestCase
             ->shouldNotBeCalled()
         ;
 
-        $this->setExpectedException('\BadMethodCallException');
+        $this->expectException('\BadMethodCallException');
         $processor = new RetryProcessor($processor->reveal(), $messagePublisher->reveal(), $logger->reveal());
 
         $processor->process($message, $options);
@@ -438,7 +439,7 @@ class RetryProcessorTest extends \PHPUnit_Framework_TestCase
             ->shouldBeCalledTimes(1)
         ;
 
-        $this->setExpectedException('\BadMethodCallException');
+        $this->expectException('\BadMethodCallException');
         $processor = new RetryProcessor($processor->reveal(), $messagePublisher->reveal(), $logger->reveal());
 
         $processor->process($message, $options);
@@ -481,7 +482,7 @@ class RetryProcessorTest extends \PHPUnit_Framework_TestCase
             ->shouldBeCalledTimes(1)
         ;
 
-        $this->setExpectedException('\BadMethodCallException');
+        $this->expectException('\BadMethodCallException');
         $processor = new RetryProcessor($processor->reveal(), $messagePublisher->reveal(), $logger->reveal());
 
         $processor->process($message, $options);
@@ -524,7 +525,7 @@ class RetryProcessorTest extends \PHPUnit_Framework_TestCase
             ->shouldBeCalledTimes(1)
         ;
 
-        $this->setExpectedException('\BadMethodCallException');
+        $this->expectException('\BadMethodCallException');
         $processor = new RetryProcessor($processor->reveal(), $messagePublisher->reveal(), $logger->reveal());
 
         $processor->process($message, $options);

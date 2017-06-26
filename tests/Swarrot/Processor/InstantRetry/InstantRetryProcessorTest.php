@@ -2,12 +2,13 @@
 
 namespace spec\Swarrot\Processor\InstantRetry;
 
+use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Psr\Log\LogLevel;
 use Swarrot\Processor\InstantRetry\InstantRetryProcessor;
 use Swarrot\Broker\Message;
 
-class InstantRetryProcessorTest extends \PHPUnit_Framework_TestCase
+class InstantRetryProcessorTest extends TestCase
 {
     public function test_it_is_initializable_without_a_logger()
     {
@@ -64,7 +65,7 @@ class InstantRetryProcessorTest extends \PHPUnit_Framework_TestCase
 
         $processor = new InstantRetryProcessor($processor->reveal(), $logger->reveal());
 
-        $this->setExpectedException('\BadMethodCallException');
+        $this->expectException('\BadMethodCallException');
         $processor->process($message, array(
             'instant_retry_attempts' => 3,
             'instant_retry_delay' => 1000,
@@ -105,7 +106,7 @@ class InstantRetryProcessorTest extends \PHPUnit_Framework_TestCase
 
         $processor = new InstantRetryProcessor($processor->reveal(), $logger->reveal());
 
-        $this->setExpectedException('\BadMethodCallException');
+        $this->expectException('\BadMethodCallException');
         $processor->process($message, array(
             'instant_retry_attempts' => 3,
             'instant_retry_delay' => 1000,
@@ -148,7 +149,7 @@ class InstantRetryProcessorTest extends \PHPUnit_Framework_TestCase
 
         $processor = new InstantRetryProcessor($processor->reveal(), $logger->reveal());
 
-        $this->setExpectedException('\BadMethodCallException');
+        $this->expectException('\BadMethodCallException');
         $processor->process($message, array(
             'instant_retry_attempts' => 3,
             'instant_retry_delay' => 1000,
@@ -193,7 +194,7 @@ class InstantRetryProcessorTest extends \PHPUnit_Framework_TestCase
 
         $processor = new InstantRetryProcessor($processor->reveal(), $logger->reveal());
 
-        $this->setExpectedException('\BadMethodCallException');
+        $this->expectException('\BadMethodCallException');
         $processor->process($message, array(
             'instant_retry_attempts' => 3,
             'instant_retry_delay' => 1000,

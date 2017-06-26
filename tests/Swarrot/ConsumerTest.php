@@ -2,10 +2,11 @@
 
 namespace Swarrot;
 
+use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Swarrot\Broker\Message;
 
-class ConsumerTest extends \PHPUnit_Framework_TestCase
+class ConsumerTest extends TestCase
 {
     public function test_it_is_initializable()
     {

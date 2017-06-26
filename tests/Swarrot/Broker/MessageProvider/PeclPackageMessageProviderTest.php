@@ -2,7 +2,9 @@
 
 namespace Swarrot\Broker\MessageProvider;
 
-class PeclPackageMessageProviderTest extends \PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+
+class PeclPackageMessageProviderTest extends TestCase
 {
     protected function setUp()
     {

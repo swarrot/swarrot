@@ -2,9 +2,10 @@
 
 namespace Swarrot\Processor\NewRelic;
 
+use PHPUnit\Framework\TestCase;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class NewRelicProcessorTest extends \PHPUnit_Framework_TestCase
+class NewRelicProcessorTest extends TestCase
 {
     public function testOptions()
     {

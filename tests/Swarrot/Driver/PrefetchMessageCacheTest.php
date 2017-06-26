@@ -2,10 +2,12 @@
 
 namespace Swarrot\Driver;
 
+use PHPUnit\Framework\TestCase;
+
 /**
  * Class PrefetchMessageCacheTest.
  */
-class PrefetchMessageCacheTest extends \PHPUnit_Framework_TestCase
+class PrefetchMessageCacheTest extends TestCase
 {
     /**
      * @var PrefetchMessageCache

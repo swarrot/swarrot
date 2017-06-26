@@ -2,10 +2,11 @@
 
 namespace Swarrot\Processor\MaxMessages;
 
+use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Swarrot\Broker\Message;
 
-class MaxMessagesProcessorTest extends \PHPUnit_Framework_TestCase
+class MaxMessagesProcessorTest extends TestCase
 {
     public function test_it_is_initializable_without_a_logger()
     {
