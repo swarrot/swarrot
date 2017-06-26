@@ -51,22 +51,12 @@ class RetryProcessor implements ConfigurableInterface
             ->setRequired(array(
                 'retry_key_pattern',
             ))
+            ->setAllowedTypes('retry_attempts', 'int')
+            ->setAllowedTypes('retry_key_pattern', 'string')
+            ->setAllowedTypes('retry_log_levels_map', 'array')
+            ->setAllowedTypes('retry_fail_log_levels_map', 'array')
         ;
 
-        if (method_exists($resolver, 'setDefined')) {
-            $resolver->setAllowedTypes('retry_attempts', 'int');
-            $resolver->setAllowedTypes('retry_key_pattern', 'string');
-            $resolver->setAllowedTypes('retry_log_levels_map', 'array');
-            $resolver->setAllowedTypes('retry_fail_log_levels_map', 'array');
-        } else {
-            // BC for OptionsResolver < 2.6
-            $resolver->setAllowedTypes(array(
-                'retry_attempts' => 'int',
-                'retry_key_pattern' => 'string',
-                'retry_log_levels_map' => 'array',
-                'retry_fail_log_levels_map' => 'array',
-            ));
-        }
     }
 
     /**

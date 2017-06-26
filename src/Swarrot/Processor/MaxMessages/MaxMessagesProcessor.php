@@ -61,17 +61,11 @@ class MaxMessagesProcessor implements ConfigurableInterface
      */
     public function setDefaultOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
-            'max_messages' => 100,
-        ));
-
-        if (method_exists($resolver, 'setDefined')) {
-            $resolver->setAllowedTypes('max_messages', 'int');
-        } else {
-            // BC for OptionsResolver < 2.6
-            $resolver->setAllowedTypes(array(
-                'max_messages' => 'int',
-            ));
-        }
+        $resolver
+            ->setDefaults(array(
+                'max_messages' => 100,
+            ))
+            ->setAllowedTypes('max_messages', 'int')
+        ;
     }
 }
