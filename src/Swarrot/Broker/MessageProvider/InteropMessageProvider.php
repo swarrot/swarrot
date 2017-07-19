@@ -31,17 +31,22 @@ class InteropMessageProvider implements MessageProviderInterface
     private $consumedMessages = [];
 
     /**
+     * @var float|int
+     */
+    private $waitTimeout;
+
+    /**
      * @param PsrContext $context
      * @param string $queueName
+     * @param float|int $waitTimeout
      */
-    public function __construct(PsrContext $context, $queueName)
+    public function __construct(PsrContext $context, $queueName, $waitTimeout = 1000)
     {
         $this->context = $context;
+        $this->waitTimeout = $waitTimeout;
 
         $this->queue = $context->createQueue($queueName);
         $this->consumer = $context->createConsumer($this->queue);
-        $this->producer = $context->createProducer();
-
         $this->consumedMessages = [];
     }
 
@@ -50,7 +55,7 @@ class InteropMessageProvider implements MessageProviderInterface
      */
     public function get()
     {
-        if (false == $message = $this->consumer->receiveNoWait()) {
+        if (false == $message = $this->consumer->receive($this->waitTimeout)) {
             return;
         }
 
@@ -69,7 +74,14 @@ class InteropMessageProvider implements MessageProviderInterface
      */
     public function ack(Message $message)
     {
-        $this->consumer->acknowledge($this->consumedMessages[$message->getId()]);
+        if (false == isset($this->consumedMessages[$message->getId()])) {
+            return;
+        }
+
+        $psrMessage = $this->consumedMessages[$message->getId()];
+        unset($this->consumedMessages[$message->getId()]);
+
+        $this->consumer->acknowledge($psrMessage);
     }
 
     /**
@@ -77,7 +89,14 @@ class InteropMessageProvider implements MessageProviderInterface
      */
     public function nack(Message $message, $requeue = false)
     {
-        $this->consumer->reject($this->consumedMessages[$message->getId()], $requeue);
+        if (false == isset($this->consumedMessages[$message->getId()])) {
+            return;
+        }
+
+        $psrMessage = $this->consumedMessages[$message->getId()];
+        unset($this->consumedMessages[$message->getId()]);
+
+        $this->consumer->reject($psrMessage, $requeue);
     }
 
     /**
