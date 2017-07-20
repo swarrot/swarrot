@@ -126,7 +126,7 @@ $messagePublisher = new InteropMessagePublisher($context, 'aTopic');
 $messagePublisher->publish(new Message('aBody'));
 ```
 
-_**Note: ** The second argument `key` is not supported at the moment._
+_**Note: ** The second argument `key` is not supported at the moment. For example, [RetryProcessor](https://github.com/swarrot/swarrot/tree/master/src/Swarrot/Processor/Retry) does not work cuz it rely on `key` argument._
 
 Fetch a message:
 
