@@ -33,6 +33,7 @@ class InteropMessagePublisher implements MessagePublisherInterface
         $this->context = $context;
 
         $this->topic = $context->createTopic($topicName);
+        $this->producer = $context->createProducer();
     }
 
     /** {@inheritdoc} */
