@@ -145,9 +145,6 @@ if ($message = $messageProvider->get()) {
 }
 ```
 
-It also provides a [queue-interop](https://github.com/swarrot/swarrot/blob/master/src/Swarrot/Processor/InteropProxyProcessor.php) compatible processor (a proxy). So you can use any Swarrot processor with any
-interop compatible consumers.
-
 ## Processors
 
 ### Official processors
