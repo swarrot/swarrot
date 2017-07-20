@@ -2,10 +2,11 @@
 
 namespace Swarrot\Processor\SignalHandler;
 
+use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Swarrot\Broker\Message;
 
-class SignalHandlerProcessorTest extends \PHPUnit_Framework_TestCase
+class SignalHandlerProcessorTest extends TestCase
 {
     public function test_it_is_initializable_without_a_logger()
     {
@@ -49,7 +50,7 @@ class SignalHandlerProcessorTest extends \PHPUnit_Framework_TestCase
 
         $processor = new SignalHandlerProcessor($processor->reveal(), $logger->reveal());
 
-        $this->setExpectedException('\BadMethodCallException');
+        $this->expectException('\BadMethodCallException');
         $processor->process($message, array());
     }
 }

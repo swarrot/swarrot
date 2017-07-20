@@ -2,10 +2,11 @@
 
 namespace Swarrot\Processor\Stack;
 
-use Swarrot\Broker\Message;
+use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Swarrot\Broker\Message;
 
-class StackedProcessorTest extends \PHPUnit_Framework_TestCase
+class StackedProcessorTest extends TestCase
 {
     public function test_it_is_initializable()
     {

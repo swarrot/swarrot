@@ -2,9 +2,10 @@
 
 namespace Swarrot\Processor\Insomniac;
 
+use PHPUnit\Framework\TestCase;
 use Swarrot\Broker\Message;
 
-class InsomniacProcessorTest extends \PHPUnit_Framework_TestCase
+class InsomniacProcessorTest extends TestCase
 {
     public function test()
     {

@@ -3,11 +3,12 @@
 namespace Swarrot\Processor\Ack;
 
 use Doctrine\Common\Persistence\ObjectManager;
+use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Swarrot\Broker\Message;
 use Swarrot\Processor\Doctrine\ObjectManagerProcessor;
 
-class ObjectManagerProcessorTest extends \PHPUnit_Framework_TestCase
+class ObjectManagerProcessorTest extends TestCase
 {
     public function test()
     {

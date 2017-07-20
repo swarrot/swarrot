@@ -3,11 +3,12 @@
 namespace Swarrot\Processor\Ack;
 
 use Doctrine\DBAL\DBALException;
+use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Swarrot\Broker\Message;
 use Swarrot\Processor\Doctrine\ConnectionProcessor;
 
-class ConnectionProcessorTest extends \PHPUnit_Framework_TestCase
+class ConnectionProcessorTest extends TestCase
 {
     public function test()
     {
@@ -88,7 +89,7 @@ class ConnectionProcessorTest extends \PHPUnit_Framework_TestCase
     public function testAcceptEmptyConnections()
     {
         $innerProcessorProphecy = $this->prophesize('Swarrot\Processor\ProcessorInterface');
-        $innerProcessorProphecy->process(Argument::cetera())->willReturn(true);
+        $innerProcessorProphecy->process(Argument::cetera())->willReturn(true)->shouldBeCalledTimes(1);
 
         $options = [
             'doctrine_ping' => false,

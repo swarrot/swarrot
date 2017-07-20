@@ -2,13 +2,14 @@
 
 namespace Swarrot\Broker\MessageProvider;
 
+use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Swarrot\Driver\PrefetchMessageCache;
 
 /**
  * Class SqsMessageProviderTest.
  */
-class SqsMessageProviderTest extends \PHPUnit_Framework_TestCase
+class SqsMessageProviderTest extends TestCase
 {
     /**
      * @var SqsMessageProvider

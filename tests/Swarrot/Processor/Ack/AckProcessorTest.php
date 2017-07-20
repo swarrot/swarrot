@@ -2,11 +2,12 @@
 
 namespace Swarrot\Processor\Ack;
 
+use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Swarrot\Broker\Message;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class AckProcessorTest extends \PHPUnit_Framework_TestCase
+class AckProcessorTest extends TestCase
 {
     public function test_it_is_initializable_without_a_logger()
     {
@@ -55,7 +56,7 @@ class AckProcessorTest extends \PHPUnit_Framework_TestCase
 
         $processor = new AckProcessor($processor->reveal(), $messageProvider->reveal(), $logger->reveal());
 
-        $this->setExpectedException('\BadMethodCallException');
+        $this->expectException('\BadMethodCallException');
         $this->assertNull($processor->process($message, array()));
     }
 
@@ -75,7 +76,7 @@ class AckProcessorTest extends \PHPUnit_Framework_TestCase
 
         $processor = new AckProcessor($processor->reveal(), $messageProvider->reveal(), $logger->reveal());
 
-        $this->setExpectedException('\BadMethodCallException');
+        $this->expectException('\BadMethodCallException');
         $this->assertNull($processor->process($message, array('requeue_on_error' => true)));
     }
 
