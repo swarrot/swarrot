@@ -47,7 +47,7 @@ class InteropMessagePublisher implements MessagePublisherInterface
         }
 
         $this->producer->send(
-            $this->topic,
+            $key ? $this->context->createQueue($key) : $this->topic,
             $this->context->createMessage($message->getBody(), $properties, $headers)
         );
     }
