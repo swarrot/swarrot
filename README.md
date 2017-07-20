@@ -105,6 +105,49 @@ Here is an illustration to show you what happens when this order is used:
 
 ![this](https://docs.google.com/drawings/d/1Ea_QJHo-9p7YW8l_by7S4NID0e-AGpXRzzitAlYY5Cc/pub?w=960&h=720)
 
+### Queue interop usage
+
+Swarrot supports [queue-interop](https://github.com/queue-interop/queue-interop) compatible MQ transports. 
+It supports both sides: message publishing as well as their consumption. 
+To start using it you have to find and install the queue-interop compatible library of a MQ broker you want to work with. 
+In the library doc find out how to create its context. 
+
+Send a message:
+
+```php
+<?php
+use Swarrot\Broker\MessagePublisher\InteropMessagePublisher;
+use Swarrot\Broker\Message;
+
+/** @var \Interop\Queue\PsrContext $context */
+
+$messagePublisher = new InteropMessagePublisher($context, 'aTopic');
+
+$messagePublisher->publish(new Message('aBody'));
+```
+
+_**Note: ** The second argument `key` is not supported at the moment._
+
+Fetch a message:
+
+```php
+<?php
+use Swarrot\Broker\MessageProvider\InteropMessageProvider;
+
+/** @var \Interop\Queue\PsrContext $context */
+
+$messageProvider = new InteropMessageProvider($context, 'aQueue');
+
+if ($message = $messageProvider->get()) {
+    // do stuff
+    
+    $messageProvider->ack($message);
+}
+```
+
+It also provides a [queue-interop](https://github.com/swarrot/swarrot/blob/master/src/Swarrot/Processor/InteropProxyProcessor.php) compatible processor (a proxy). So you can use any Swarrot processor with any
+interop compatible consumers.
+
 ## Processors
 
 ### Official processors
