@@ -1,8 +1,8 @@
 # SignalHandlerProcessor
 
 SignalHandlerProcessor is a [swarrot](https://github.com/swarrot/swarrot) processor.
-Is goal is to handle signals to avoid the worker to stop during processing.
-
+The goal is to handle signals, in order to avoid worker to stop during processing.
+  
 ## Configuration
 
 |Key                   |Default                        |Description                       |
