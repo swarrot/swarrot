@@ -2,15 +2,19 @@
 
 namespace Swarrot\Processor\Stack;
 
+use Interop\Queue\PsrContext;
+use Interop\Queue\PsrMessage;
 use Interop\Queue\PsrProcessor;
 use Prophecy\Argument;
 use Swarrot\Processor\InteropProxyProcessor;
+use Swarrot\Processor\ProcessorInterface;
+use PHPUnit\Framework\TestCase;
 
-class InteropProxyProcessorTest extends \PHPUnit_Framework_TestCase
+class InteropProxyProcessorTest extends TestCase
 {
     protected function setUp()
     {
-        if (!interface_exists('Interop\Queue\PsrContext')) {
+        if (!interface_exists(PsrContext::class)) {
             $this->markTestSkipped('The queue-interop package is not available');
         }
 
@@ -19,7 +23,7 @@ class InteropProxyProcessorTest extends \PHPUnit_Framework_TestCase
 
     public function testInstance()
     {
-        $swarrotProcessor = $this->prophesize('Swarrot\Processor\ProcessorInterface');
+        $swarrotProcessor = $this->prophesize(ProcessorInterface::class);
         $this->assertInstanceOf(
             'Interop\Queue\PsrProcessor',
             new InteropProxyProcessor($swarrotProcessor->reveal())
@@ -28,7 +32,7 @@ class InteropProxyProcessorTest extends \PHPUnit_Framework_TestCase
 
     public function test_converts_message_and_proxy_it_to_processor()
     {
-        $message = $this->prophesize('Interop\Queue\PsrMessage');
+        $message = $this->prophesize(PsrMessage::class);
         $message
             ->getBody()
             ->shouldBeCalledTimes(1)
@@ -63,14 +67,12 @@ class InteropProxyProcessorTest extends \PHPUnit_Framework_TestCase
             ->shouldBeCalledTimes(1)
         ;
 
-        $context = $this->prophesize('Interop\Queue\PsrContext');
+        $context = $this->prophesize(PsrContext::class);
 
         $processor = new InteropProxyProcessor($swarrotProcessor->reveal(), ['fooOpt' => 'fooOptVal']);
 
         $result = $processor->process($message->reveal(), $context->reveal());
 
         $this->assertSame(PsrProcessor::ACK, $result);
-
-
     }
 }

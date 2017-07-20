@@ -2,14 +2,18 @@
 
 namespace Swarrot\Broker\MessagePublisher;
 
+use Interop\Queue\PsrContext;
+use Interop\Queue\PsrMessage;
+use Interop\Queue\PsrTopic;
 use Swarrot\Broker\Message;
 use Prophecy\Argument;
+use PHPUnit\Framework\TestCase;
 
-class InteropMessagePublisherTest extends \PHPUnit_Framework_TestCase
+class InteropMessagePublisherTest extends TestCase
 {
     protected function setUp()
     {
-        if (!interface_exists('Interop\Queue\PsrContext')) {
+        if (!interface_exists(PsrContext::class)) {
             $this->markTestSkipped('The queue-interop package is not available');
         }
 
@@ -18,19 +22,19 @@ class InteropMessagePublisherTest extends \PHPUnit_Framework_TestCase
 
     public function testInstance()
     {
-        $context = $this->prophesize('Interop\Queue\PsrContext');
+        $context = $this->prophesize(PsrContext::class);
 
         $this->assertInstanceOf(
-            'Swarrot\Broker\MessagePublisher\MessagePublisherInterface',
+            MessagePublisherInterface::class,
             new InteropMessagePublisher($context->reveal(), 'aTopicName')
         );
     }
 
     public function test_publish_with_valid_message()
     {
-        $topic = $this->prophesize('Interop\Queue\PsrTopic');
+        $topic = $this->prophesize(PsrTopic::class);
 
-        $message = $this->prophesize('Interop\Queue\PsrMessage');
+        $message = $this->prophesize(PsrMessage::class);
 
         $producer = $this->prophesize('Interop\Queue\PsrProducer');
         $producer
@@ -39,7 +43,7 @@ class InteropMessagePublisherTest extends \PHPUnit_Framework_TestCase
         ;
 
 
-        $context = $this->prophesize('Interop\Queue\PsrContext');
+        $context = $this->prophesize(PsrContext::class);
         $context
             ->createTopic(Argument::exact('theTopicName'))
             ->shouldBeCalledTimes(1)

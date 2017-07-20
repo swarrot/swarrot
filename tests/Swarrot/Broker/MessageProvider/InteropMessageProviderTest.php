@@ -2,13 +2,18 @@
 
 namespace Swarrot\Broker\MessageProvider;
 
+use Interop\Queue\PsrConsumer;
+use Interop\Queue\PsrContext;
+use Interop\Queue\PsrMessage;
+use Interop\Queue\PsrQueue;
 use Prophecy\Argument;
+use PHPUnit\Framework\TestCase;
 
-class InteropMessageProviderTest extends \PHPUnit_Framework_TestCase
+class InteropMessageProviderTest extends TestCase
 {
     protected function setUp()
     {
-        if (!interface_exists('Interop\Queue\PsrContext')) {
+        if (!interface_exists(PsrContext::class)) {
             $this->markTestSkipped('The queue-interop package is not available');
         }
 
@@ -17,10 +22,10 @@ class InteropMessageProviderTest extends \PHPUnit_Framework_TestCase
 
     public function testInstance()
     {
-        $queue = $this->prophesize('Interop\Queue\PsrQueue');
-        $consumer = $this->prophesize('Interop\Queue\PsrConsumer');
+        $queue = $this->prophesize(PsrQueue::class);
+        $consumer = $this->prophesize(PsrConsumer::class);
 
-        $context = $this->prophesize('Interop\Queue\PsrContext');
+        $context = $this->prophesize(PsrContext::class);
         $context
             ->createQueue(Argument::exact("aQueueName"))
             ->willReturn($queue)
@@ -31,14 +36,14 @@ class InteropMessageProviderTest extends \PHPUnit_Framework_TestCase
         ;
 
         $this->assertInstanceOf(
-            'Swarrot\Broker\MessageProvider\MessageProviderInterface',
+            MessageProviderInterface::class,
             new InteropMessageProvider($context->reveal(), 'aQueueName')
         );
     }
 
     public function test_get_with_messages_in_queue_return_message()
     {
-        $message = $this->prophesize('Interop\Queue\PsrMessage');
+        $message = $this->prophesize(PsrMessage::class);
         $message
             ->getBody()
             ->shouldBeCalledTimes(1)
@@ -60,15 +65,15 @@ class InteropMessageProviderTest extends \PHPUnit_Framework_TestCase
             ->willReturn(['fooHeader' => 'fooHeaderVal'])
         ;
 
-        $queue = $this->prophesize('Interop\Queue\PsrQueue');
-        $consumer = $this->prophesize('Interop\Queue\PsrConsumer');
+        $queue = $this->prophesize(PsrQueue::class);
+        $consumer = $this->prophesize(PsrConsumer::class);
         $consumer
             ->receive(Argument::exact(1234))
             ->shouldBeCalledTimes(1)
             ->willReturn($message)
         ;
 
-        $context = $this->prophesize('Interop\Queue\PsrContext');
+        $context = $this->prophesize(PsrContext::class);
         $context
             ->createQueue(Argument::exact("aQueueName"))
             ->willReturn($queue)
@@ -92,15 +97,15 @@ class InteropMessageProviderTest extends \PHPUnit_Framework_TestCase
 
     public function test_get_without_messages_in_queue_return_null()
     {
-        $queue = $this->prophesize('Interop\Queue\PsrQueue');
-        $consumer = $this->prophesize('Interop\Queue\PsrConsumer');
+        $queue = $this->prophesize(PsrQueue::class);
+        $consumer = $this->prophesize(PsrConsumer::class);
         $consumer
             ->receive(Argument::exact(1234))
             ->shouldBeCalledTimes(1)
             ->willReturn(null)
         ;
 
-        $context = $this->prophesize('Interop\Queue\PsrContext');
+        $context = $this->prophesize(PsrContext::class);
         $context
             ->createQueue(Argument::exact("aQueueName"))
             ->willReturn($queue)
@@ -119,10 +124,10 @@ class InteropMessageProviderTest extends \PHPUnit_Framework_TestCase
 
     public function test_ack_got_message()
     {
-        $message = $this->prophesize('Interop\Queue\PsrMessage');
+        $message = $this->prophesize(PsrMessage::class);
 
-        $queue = $this->prophesize('Interop\Queue\PsrQueue');
-        $consumer = $this->prophesize('Interop\Queue\PsrConsumer');
+        $queue = $this->prophesize(PsrQueue::class);
+        $consumer = $this->prophesize(PsrConsumer::class);
         $consumer
             ->receive(Argument::exact(1234))
             ->shouldBeCalledTimes(1)
@@ -133,7 +138,7 @@ class InteropMessageProviderTest extends \PHPUnit_Framework_TestCase
             ->shouldBeCalledTimes(1)
         ;
 
-        $context = $this->prophesize('Interop\Queue\PsrContext');
+        $context = $this->prophesize(PsrContext::class);
         $context
             ->createQueue(Argument::exact("aQueueName"))
             ->willReturn($queue)
@@ -158,10 +163,10 @@ class InteropMessageProviderTest extends \PHPUnit_Framework_TestCase
 
     public function test_nack_got_message()
     {
-        $message = $this->prophesize('Interop\Queue\PsrMessage');
+        $message = $this->prophesize(PsrMessage::class);
 
-        $queue = $this->prophesize('Interop\Queue\PsrQueue');
-        $consumer = $this->prophesize('Interop\Queue\PsrConsumer');
+        $queue = $this->prophesize(PsrQueue::class);
+        $consumer = $this->prophesize(PsrConsumer::class);
         $consumer
             ->receive(Argument::exact(1234))
             ->shouldBeCalledTimes(1)
@@ -172,7 +177,7 @@ class InteropMessageProviderTest extends \PHPUnit_Framework_TestCase
             ->shouldBeCalledTimes(1)
         ;
 
-        $context = $this->prophesize('Interop\Queue\PsrContext');
+        $context = $this->prophesize(PsrContext::class);
         $context
             ->createQueue(Argument::exact("aQueueName"))
             ->willReturn($queue)
@@ -197,16 +202,16 @@ class InteropMessageProviderTest extends \PHPUnit_Framework_TestCase
 
     public function test_get_name()
     {
-        $queue = $this->prophesize('Interop\Queue\PsrQueue');
+        $queue = $this->prophesize(PsrQueue::class);
         $queue
             ->getQueueName()
             ->shouldBeCalledTimes(1)
             ->willReturn('theQueueName')
         ;
 
-        $consumer = $this->prophesize('Interop\Queue\PsrConsumer');
+        $consumer = $this->prophesize(PsrConsumer::class);
 
-        $context = $this->prophesize('Interop\Queue\PsrContext');
+        $context = $this->prophesize(PsrContext::class);
         $context
             ->createQueue(Argument::exact("theQueueName"))
             ->willReturn($queue)
