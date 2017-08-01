@@ -54,10 +54,7 @@ class InteropMessagePublisher implements MessagePublisherInterface
             $interopMessage->setRoutingKey($key);
         }
 
-        $this->producer->send(
-            $key ? $this->context->createQueue($key) : $this->topic,
-
-        );
+        $this->producer->send($this->topic, $message);
     }
 
     /**
