@@ -8,7 +8,7 @@ use Interop\Queue\PsrProducer;
 use Interop\Queue\PsrTopic;
 use Swarrot\Broker\Message;
 
-class InteropMessagePublisher implements MessagePublisherInterface
+final class InteropMessagePublisher implements MessagePublisherInterface
 {
     /**
      * @var PsrContext

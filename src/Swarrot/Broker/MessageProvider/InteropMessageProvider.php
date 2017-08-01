@@ -8,7 +8,7 @@ use Interop\Queue\PsrMessage;
 use Interop\Queue\PsrQueue;
 use Swarrot\Broker\Message;
 
-class InteropMessageProvider implements MessageProviderInterface
+final class InteropMessageProvider implements MessageProviderInterface
 {
     /**
      * @var PsrContext
