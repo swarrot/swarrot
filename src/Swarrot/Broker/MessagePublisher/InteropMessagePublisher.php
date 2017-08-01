@@ -2,6 +2,7 @@
 
 namespace Swarrot\Broker\MessagePublisher;
 
+use Interop\Amqp\AmqpMessage;
 use Interop\Queue\PsrContext;
 use Interop\Queue\PsrProducer;
 use Interop\Queue\PsrTopic;
@@ -47,9 +48,15 @@ class InteropMessagePublisher implements MessagePublisherInterface
             unset($headers['headers']);
         }
 
+        $interopMessage = $this->context->createMessage($message->getBody(), $properties, $headers);
+
+        if ($key && $interopMessage instanceof AmqpMessage) {
+            $interopMessage->setRoutingKey($key);
+        }
+
         $this->producer->send(
             $key ? $this->context->createQueue($key) : $this->topic,
-            $this->context->createMessage($message->getBody(), $properties, $headers)
+
         );
     }
 
