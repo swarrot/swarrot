@@ -5,6 +5,14 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [3.1.0] - 2017-08-01
+
+- Add queue-interop message provider / publisher
+
+## [3.0.0] - 2017-07-20
+
+- Raise minimal PHP version to 7.1
+
 ## [2.4.0] - 2017-06-20
 
 ### Added
