@@ -41,7 +41,7 @@ class ExceptionCatcherProcessor implements ProcessorInterface
     }
 
     /**
-     * @param Throwable|Exception  $exception
+     * @param \Throwable|\Exception  $exception
      * @param Message              $message
      * @param array                $options
      */
