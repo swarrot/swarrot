@@ -160,6 +160,7 @@ if ($message = $messageProvider->get()) {
 * [NewRelicProcessor](src/Swarrot/Processor/NewRelic) (thanks to [Adrien Brault](https://github.com/adrienbrault))
 * [RetryProcessor](src/Swarrot/Processor/Retry)
 * [RPC related processors](src/Swarrot/Processor/RPC) (thanks to [Baptiste Clavié](https://github.com/Taluu))
+* [SentryProcessor](src/Swarrot/Processor/Sentry) (thanks to [Floran Brutel](https://github.com/notFloran))
 * [SignalHandlerProcessor](src/Swarrot/Processor/SignalHandler)
 
 ### Create your own processor

@@ -22,7 +22,8 @@
         "queue-interop/amqp-interop": "^0.5",
         "doctrine/common": "^2.3",
         "doctrine/dbal": "^2.2",
-        "aws/aws-sdk-php": "^2.8"
+        "aws/aws-sdk-php": "^2.8",
+        "sentry/sentry": ">=1.5.0"
     },
     "suggest": {
         "pecl-amqp": "*",
@@ -30,7 +31,8 @@
         "symfony/console": "^3.0",
         "queue-interop/queue-interop": "^0.5",
         "queue-interop/amqp-interop": "^0.5",
-        "aws/aws-sdk-php": "^2.8"
+        "aws/aws-sdk-php": "^2.8",
+        "sentry/sentry": ">=1.5.0"
     },
     "autoload": {
         "psr-4": {
