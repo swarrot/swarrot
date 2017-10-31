@@ -5,6 +5,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [3.2.0] - 2017-10-31
+
+- Add a sentry processor to capture exceptions
+
 ## [3.1.0] - 2017-08-01
 
 - Add queue-interop message provider / publisher
@@ -149,6 +153,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [1.1.0] - 2014-04-01
 
 [Unreleased]: https://github.com/swarrot/swarrot/compare/v3.1.0...HEAD
+[3.2.0]: https://github.com/swarrot/swarrot/compare/v3.1.0...v3.2.0
 [3.1.0]: https://github.com/swarrot/swarrot/compare/v3.0.0...v3.1.0
 [3.0.0]: https://github.com/swarrot/swarrot/compare/v2.4.0...v3.0.0
 [2.4.0]: https://github.com/swarrot/swarrot/compare/v2.3.0...v2.4.0
