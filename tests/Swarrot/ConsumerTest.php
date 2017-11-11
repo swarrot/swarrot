@@ -5,22 +5,29 @@ namespace Swarrot;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Swarrot\Broker\Message;
+use Swarrot\Broker\MessageProvider\MessageProviderInterface;
+use Swarrot\Processor\InitializableInterface;
+use Swarrot\Processor\ProcessorInterface;
+use Swarrot\Processor\ConfigurableInterface;
+use Swarrot\Processor\SleepyInterface;
+use Swarrot\Processor\TerminableInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ConsumerTest extends TestCase
 {
     public function test_it_is_initializable()
     {
-        $provider  = $this->prophesize('Swarrot\Broker\MessageProvider\MessageProviderInterface');
-        $processor = $this->prophesize('Swarrot\Processor\ProcessorInterface');
+        $provider  = $this->prophesize(MessageProviderInterface::class);
+        $processor = $this->prophesize(ProcessorInterface::class);
 
         $consumer = new Consumer($provider->reveal(), $processor->reveal());
-        $this->assertInstanceOf('Swarrot\Consumer', $consumer);
+        $this->assertInstanceOf(Consumer::class, $consumer);
     }
 
     public function test_it_returns_null_if_no_error_occurred()
     {
-        $provider  = $this->prophesize('Swarrot\Broker\MessageProvider\MessageProviderInterface');
-        $processor = $this->prophesize('Swarrot\Processor\ProcessorInterface');
+        $provider  = $this->prophesize(MessageProviderInterface::class);
+        $processor = $this->prophesize(ProcessorInterface::class);
 
         $message = new Message('body', array(), 1);
 
@@ -43,15 +50,15 @@ class ConsumerTest extends TestCase
 
     public function test_it_call_processor_if_its_configurable()
     {
-        $provider  = $this->prophesize('Swarrot\Broker\MessageProvider\MessageProviderInterface');
-        $processor = $this->prophesize('Swarrot\Processor\ConfigurableInterface');
+        $provider  = $this->prophesize(MessageProviderInterface::class);
+        $processor = $this->prophesize(ConfigurableInterface::class);
 
         $message = new Message('body', array(), 1);
 
         $provider->get()->willReturn($message);
         $provider->getQueueName()->willReturn('');
         $processor->setDefaultOptions(
-            Argument::type('Symfony\Component\OptionsResolver\OptionsResolver')
+            Argument::type(OptionsResolver::class)
         )->willReturn(null);
         $processor->process(
             $message,
@@ -64,8 +71,8 @@ class ConsumerTest extends TestCase
 
     public function test_it_call_processor_if_its_initializable()
     {
-        $provider  = $this->prophesize('Swarrot\Broker\MessageProvider\MessageProviderInterface');
-        $processor = $this->prophesize('Swarrot\Processor\InitializableInterface');
+        $provider  = $this->prophesize(MessageProviderInterface::class);
+        $processor = $this->prophesize(InitializableInterface::class);
 
         $message = new Message('body', array(), 1);
 
@@ -83,8 +90,8 @@ class ConsumerTest extends TestCase
 
     public function test_it_call_processor_if_its_terminable()
     {
-        $provider  = $this->prophesize('Swarrot\Broker\MessageProvider\MessageProviderInterface');
-        $processor = $this->prophesize('Swarrot\Processor\TerminableInterface');
+        $provider  = $this->prophesize(MessageProviderInterface::class);
+        $processor = $this->prophesize(TerminableInterface::class);
 
         $message = new Message('body', array(), 1);
 
@@ -102,8 +109,8 @@ class ConsumerTest extends TestCase
 
     public function test_it_call_processor_if_its_Sleepy()
     {
-        $provider  = $this->prophesize('Swarrot\Broker\MessageProvider\MessageProviderInterface');
-        $processor = $this->prophesize('Swarrot\Processor\SleepyInterface');
+        $provider  = $this->prophesize(MessageProviderInterface::class);
+        $processor = $this->prophesize(SleepyInterface::class);
 
         $message = new Message('body', array(), 1);
 

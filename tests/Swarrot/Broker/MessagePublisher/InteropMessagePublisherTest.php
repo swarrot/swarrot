@@ -4,6 +4,7 @@ namespace Swarrot\Broker\MessagePublisher;
 
 use Interop\Queue\PsrContext;
 use Interop\Queue\PsrMessage;
+use Interop\Queue\PsrProducer;
 use Interop\Queue\PsrTopic;
 use Swarrot\Broker\Message;
 use Prophecy\Argument;
@@ -36,7 +37,7 @@ class InteropMessagePublisherTest extends TestCase
 
         $message = $this->prophesize(PsrMessage::class);
 
-        $producer = $this->prophesize('Interop\Queue\PsrProducer');
+        $producer = $this->prophesize(PsrProducer::class);
         $producer
             ->send(Argument::exact($topic), Argument::exact($message))
             ->shouldBeCalledTimes(1)

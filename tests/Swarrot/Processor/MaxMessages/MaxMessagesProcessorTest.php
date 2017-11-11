@@ -5,39 +5,41 @@ namespace Swarrot\Processor\MaxMessages;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Swarrot\Broker\Message;
+use Psr\Log\LoggerInterface;
+use Swarrot\Processor\ProcessorInterface;
 
 class MaxMessagesProcessorTest extends TestCase
 {
     public function test_it_is_initializable_without_a_logger()
     {
-        $processor = $this->prophesize('Swarrot\Processor\ProcessorInterface');
+        $processor = $this->prophesize(ProcessorInterface::class);
 
         $processor = new MaxMessagesProcessor($processor->reveal());
-        $this->assertInstanceOf('Swarrot\Processor\MaxMessages\MaxMessagesProcessor', $processor);
+        $this->assertInstanceOf(MaxMessagesProcessor::class, $processor);
     }
 
     public function test_it_is_initializable_with_a_logger()
     {
-        $processor = $this->prophesize('Swarrot\Processor\ProcessorInterface');
-        $logger    = $this->prophesize('Psr\Log\LoggerInterface');
+        $processor = $this->prophesize(ProcessorInterface::class);
+        $logger    = $this->prophesize(LoggerInterface::class);
 
         $processor = new MaxMessagesProcessor($processor->reveal(), $logger->reveal());
-        $this->assertInstanceOf('Swarrot\Processor\MaxMessages\MaxMessagesProcessor', $processor);
+        $this->assertInstanceOf(MaxMessagesProcessor::class, $processor);
     }
 
     public function test_count_default_messages_processed()
     {
         $maxMessages = 2;
-        $processor = $this->prophesize('Swarrot\Processor\ProcessorInterface');
+        $processor = $this->prophesize(ProcessorInterface::class);
         $processor->process(
-            Argument::type('Swarrot\Broker\Message'),
+            Argument::type(Message::class),
             Argument::exact(array(
                 'max_messages' => $maxMessages,
             ))
         )
         ->shouldBeCalledTimes(2);
 
-        $logger = $this->prophesize('Psr\Log\LoggerInterface');
+        $logger = $this->prophesize(LoggerInterface::class);
         $logger->info(
             Argument::exact(sprintf('[MaxMessages] Max messages have been reached (%d)', $maxMessages)),
             Argument::exact(['swarrot_processor' => 'max_messages'])

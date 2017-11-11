@@ -6,33 +6,36 @@ use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Swarrot\Broker\Message;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Swarrot\Processor\ProcessorInterface;
+use Swarrot\Broker\MessageProvider\MessageProviderInterface;
+use Psr\Log\LoggerInterface;
 
 class AckProcessorTest extends TestCase
 {
     public function test_it_is_initializable_without_a_logger()
     {
-        $processor       = $this->prophesize('Swarrot\Processor\ProcessorInterface');
-        $messageProvider = $this->prophesize('Swarrot\Broker\MessageProvider\MessageProviderInterface');
+        $processor       = $this->prophesize(ProcessorInterface::class);
+        $messageProvider = $this->prophesize(MessageProviderInterface::class);
 
         $processor = new AckProcessor($processor->reveal(), $messageProvider->reveal());
-        $this->assertInstanceOf('Swarrot\Processor\Ack\AckProcessor', $processor);
+        $this->assertInstanceOf(AckProcessor::class, $processor);
     }
 
     public function test_it_is_initializable_with_a_logger()
     {
-        $processor       = $this->prophesize('Swarrot\Processor\ProcessorInterface');
-        $messageProvider = $this->prophesize('Swarrot\Broker\MessageProvider\MessageProviderInterface');
-        $logger          = $this->prophesize('Psr\Log\LoggerInterface');
+        $processor       = $this->prophesize(ProcessorInterface::class);
+        $messageProvider = $this->prophesize(MessageProviderInterface::class);
+        $logger          = $this->prophesize(LoggerInterface::class);
 
         $processor = new AckProcessor($processor->reveal(), $messageProvider->reveal(), $logger->reveal());
-        $this->assertInstanceOf('Swarrot\Processor\Ack\AckProcessor', $processor);
+        $this->assertInstanceOf(AckProcessor::class, $processor);
     }
 
     public function test_it_should_ack_when_no_exception_is_thrown()
     {
-        $processor       = $this->prophesize('Swarrot\Processor\ProcessorInterface');
-        $messageProvider = $this->prophesize('Swarrot\Broker\MessageProvider\MessageProviderInterface');
-        $logger          = $this->prophesize('Psr\Log\LoggerInterface');
+        $processor       = $this->prophesize(ProcessorInterface::class);
+        $messageProvider = $this->prophesize(MessageProviderInterface::class);
+        $logger          = $this->prophesize(LoggerInterface::class);
 
         $message = new Message('body', array(), 1);
 
@@ -45,9 +48,9 @@ class AckProcessorTest extends TestCase
 
     public function test_it_should_nack_when_an_exception_is_thrown()
     {
-        $processor       = $this->prophesize('Swarrot\Processor\ProcessorInterface');
-        $messageProvider = $this->prophesize('Swarrot\Broker\MessageProvider\MessageProviderInterface');
-        $logger          = $this->prophesize('Psr\Log\LoggerInterface');
+        $processor       = $this->prophesize(ProcessorInterface::class);
+        $messageProvider = $this->prophesize(MessageProviderInterface::class);
+        $logger          = $this->prophesize(LoggerInterface::class);
 
         $message = new Message('body', array(), 1);
 
@@ -62,9 +65,9 @@ class AckProcessorTest extends TestCase
 
     public function test_it_should_nack_and_requeue_when_an_exception_is_thrown_and_conf_updated()
     {
-        $processor       = $this->prophesize('Swarrot\Processor\ProcessorInterface');
-        $messageProvider = $this->prophesize('Swarrot\Broker\MessageProvider\MessageProviderInterface');
-        $logger          = $this->prophesize('Psr\Log\LoggerInterface');
+        $processor       = $this->prophesize(ProcessorInterface::class);
+        $messageProvider = $this->prophesize(MessageProviderInterface::class);
+        $logger          = $this->prophesize(LoggerInterface::class);
 
         $message = new Message('body', array(), 1);
 
@@ -82,8 +85,8 @@ class AckProcessorTest extends TestCase
 
     public function test_it_should_return_a_valid_array_of_option()
     {
-        $processor       = $this->prophesize('Swarrot\Processor\ProcessorInterface');
-        $messageProvider = $this->prophesize('Swarrot\Broker\MessageProvider\MessageProviderInterface');
+        $processor       = $this->prophesize(ProcessorInterface::class);
+        $messageProvider = $this->prophesize(MessageProviderInterface::class);
 
         $processor = new AckProcessor($processor->reveal(), $messageProvider->reveal());
 

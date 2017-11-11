@@ -6,13 +6,15 @@ use Swarrot\Processor\Sentry\SentryProcessor;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Swarrot\Broker\Message;
+use Swarrot\Processor\ProcessorInterface;
+use Raven_Client;
 
 class SentryProcessorTest extends TestCase
 {
     public function test_it_should_return_void_when_no_exception_is_thrown()
     {
-        $processor       = $this->prophesize('Swarrot\Processor\ProcessorInterface');
-        $sentryClient    = $this->prophesize('Raven_Client');
+        $processor       = $this->prophesize(ProcessorInterface::class);
+        $sentryClient    = $this->prophesize(Raven_Client::class);
 
         $message = new Message('my_body', [], 1);
         $processor = new SentryProcessor($processor->reveal(), $sentryClient->reveal());
@@ -24,8 +26,8 @@ class SentryProcessorTest extends TestCase
 
     public function test_it_should_capture_when_an_exception_is_thrown()
     {
-        $processor       = $this->prophesize('Swarrot\Processor\ProcessorInterface');
-        $sentryClient    = $this->prophesize('Raven_Client');
+        $processor       = $this->prophesize(ProcessorInterface::class);
+        $sentryClient    = $this->prophesize(Raven_Client::class);
 
         $message = new Message('my_body', [], 1);
         $options = [

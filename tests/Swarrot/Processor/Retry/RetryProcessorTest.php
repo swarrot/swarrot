@@ -4,36 +4,39 @@ namespace Swarrot\Processor\Retry;
 
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 use Swarrot\Broker\Message;
+use Swarrot\Broker\MessagePublisher\MessagePublisherInterface;
+use Swarrot\Processor\ProcessorInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class RetryProcessorTest extends TestCase
 {
     public function test_it_is_initializable_without_a_logger()
     {
-        $processor        = $this->prophesize('Swarrot\Processor\ProcessorInterface');
-        $messagePublisher = $this->prophesize('Swarrot\Broker\MessagePublisher\MessagePublisherInterface');
+        $processor        = $this->prophesize(ProcessorInterface::class);
+        $messagePublisher = $this->prophesize(MessagePublisherInterface::class);
 
         $processor = new RetryProcessor($processor->reveal(), $messagePublisher->reveal());
-        $this->assertInstanceOf('Swarrot\Processor\Retry\RetryProcessor', $processor);
+        $this->assertInstanceOf(RetryProcessor::class, $processor);
     }
 
     public function test_it_is_initializable_with_a_logger()
     {
-        $processor        = $this->prophesize('Swarrot\Processor\ProcessorInterface');
-        $messagePublisher = $this->prophesize('Swarrot\Broker\MessagePublisher\MessagePublisherInterface');
-        $logger           = $this->prophesize('Psr\Log\LoggerInterface');
+        $processor        = $this->prophesize(ProcessorInterface::class);
+        $messagePublisher = $this->prophesize(MessagePublisherInterface::class);
+        $logger           = $this->prophesize(LoggerInterface::class);
 
         $processor = new RetryProcessor($processor->reveal(), $messagePublisher->reveal(), $logger->reveal());
-        $this->assertInstanceOf('Swarrot\Processor\Retry\RetryProcessor', $processor);
+        $this->assertInstanceOf(RetryProcessor::class, $processor);
     }
 
     public function test_it_should_return_result_when_all_is_right()
     {
-        $processor        = $this->prophesize('Swarrot\Processor\ProcessorInterface');
-        $messagePublisher = $this->prophesize('Swarrot\Broker\MessagePublisher\MessagePublisherInterface');
-        $logger           = $this->prophesize('Psr\Log\LoggerInterface');
+        $processor        = $this->prophesize(ProcessorInterface::class);
+        $messagePublisher = $this->prophesize(MessagePublisherInterface::class);
+        $logger           = $this->prophesize(LoggerInterface::class);
 
         $message = new Message('body', array(), 1);
 
@@ -49,9 +52,9 @@ class RetryProcessorTest extends TestCase
 
     public function test_it_should_republished_message_when_an_exception_occurred()
     {
-        $processor        = $this->prophesize('Swarrot\Processor\ProcessorInterface');
-        $messagePublisher = $this->prophesize('Swarrot\Broker\MessagePublisher\MessagePublisherInterface');
-        $logger           = $this->prophesize('Psr\Log\LoggerInterface');
+        $processor        = $this->prophesize(ProcessorInterface::class);
+        $messagePublisher = $this->prophesize(MessagePublisherInterface::class);
+        $logger           = $this->prophesize(LoggerInterface::class);
 
         $message = new Message('body', array(), 1);
         $options = array(
@@ -70,7 +73,7 @@ class RetryProcessorTest extends TestCase
         ;
         $messagePublisher
             ->publish(
-                Argument::type('Swarrot\Broker\Message'),
+                Argument::type(Message::class),
                 Argument::exact('key_1')
             )
             ->willReturn(null)
@@ -86,9 +89,9 @@ class RetryProcessorTest extends TestCase
 
     public function test_it_should_republished_message_with_incremented_attempts()
     {
-        $processor        = $this->prophesize('Swarrot\Processor\ProcessorInterface');
-        $messagePublisher = $this->prophesize('Swarrot\Broker\MessagePublisher\MessagePublisherInterface');
-        $logger           = $this->prophesize('Psr\Log\LoggerInterface');
+        $processor        = $this->prophesize(ProcessorInterface::class);
+        $messagePublisher = $this->prophesize(MessagePublisherInterface::class);
+        $logger           = $this->prophesize(LoggerInterface::class);
 
         $message = new Message('body', array('headers' => array('swarrot_retry_attempts' => 1)), 1);
 
@@ -129,9 +132,9 @@ class RetryProcessorTest extends TestCase
 
     public function test_it_should_throw_exception_if_max_attempts_is_reached()
     {
-        $processor        = $this->prophesize('Swarrot\Processor\ProcessorInterface');
-        $messagePublisher = $this->prophesize('Swarrot\Broker\MessagePublisher\MessagePublisherInterface');
-        $logger           = $this->prophesize('Psr\Log\LoggerInterface');
+        $processor        = $this->prophesize(ProcessorInterface::class);
+        $messagePublisher = $this->prophesize(MessagePublisherInterface::class);
+        $logger           = $this->prophesize(LoggerInterface::class);
 
         $message = new Message('body', array('headers' => array('swarrot_retry_attempts' => 3)), 1);
         $options = array(
@@ -150,7 +153,7 @@ class RetryProcessorTest extends TestCase
         ;
         $messagePublisher
             ->publish(
-                Argument::type('Swarrot\Broker\Message'),
+                Argument::type(Message::class),
                 Argument::exact('key_1')
             )
             ->shouldNotBeCalled()
@@ -164,8 +167,8 @@ class RetryProcessorTest extends TestCase
 
     public function test_it_should_return_a_valid_array_of_option()
     {
-        $processor        = $this->prophesize('Swarrot\Processor\ProcessorInterface');
-        $messagePublisher = $this->prophesize('Swarrot\Broker\MessagePublisher\MessagePublisherInterface');
+        $processor        = $this->prophesize(ProcessorInterface::class);
+        $messagePublisher = $this->prophesize(MessagePublisherInterface::class);
 
         $processor = new RetryProcessor($processor->reveal(), $messagePublisher->reveal());
 
@@ -186,9 +189,9 @@ class RetryProcessorTest extends TestCase
 
     public function test_it_should_keep_original_message_properties()
     {
-        $processor        = $this->prophesize('Swarrot\Processor\ProcessorInterface');
-        $messagePublisher = $this->prophesize('Swarrot\Broker\MessagePublisher\MessagePublisherInterface');
-        $logger           = $this->prophesize('Psr\Log\LoggerInterface');
+        $processor        = $this->prophesize(ProcessorInterface::class);
+        $messagePublisher = $this->prophesize(MessagePublisherInterface::class);
+        $logger           = $this->prophesize(LoggerInterface::class);
 
         $message = new Message('body', array('delivery_mode' => 2, 'app_id' => 'applicationId', 'headers' => array('swarrot_retry_attempts' => 1)), 1);
 
@@ -230,9 +233,9 @@ class RetryProcessorTest extends TestCase
 
     public function test_it_should_keep_original_message_headers()
     {
-        $processor        = $this->prophesize('Swarrot\Processor\ProcessorInterface');
-        $messagePublisher = $this->prophesize('Swarrot\Broker\MessagePublisher\MessagePublisherInterface');
-        $logger           = $this->prophesize('Psr\Log\LoggerInterface');
+        $processor        = $this->prophesize(ProcessorInterface::class);
+        $messagePublisher = $this->prophesize(MessagePublisherInterface::class);
+        $logger           = $this->prophesize(LoggerInterface::class);
 
         $message = new Message('body', array('headers' => array(
             'string' => 'foo',
@@ -276,9 +279,9 @@ class RetryProcessorTest extends TestCase
 
     public function test_it_should_log_a_warning_by_default_when_an_exception_occurred()
     {
-        $processor        = $this->prophesize('Swarrot\Processor\ProcessorInterface');
-        $messagePublisher = $this->prophesize('Swarrot\Broker\MessagePublisher\MessagePublisherInterface');
-        $logger           = $this->prophesize('Psr\Log\LoggerInterface');
+        $processor        = $this->prophesize(ProcessorInterface::class);
+        $messagePublisher = $this->prophesize(MessagePublisherInterface::class);
+        $logger           = $this->prophesize(LoggerInterface::class);
         $exception        = new \BadMethodCallException();
 
         $message = new Message('body', array(), 1);
@@ -318,9 +321,9 @@ class RetryProcessorTest extends TestCase
 
     public function test_it_should_log_a_custom_log_level_when_an_exception_occurred()
     {
-        $processor        = $this->prophesize('Swarrot\Processor\ProcessorInterface');
-        $messagePublisher = $this->prophesize('Swarrot\Broker\MessagePublisher\MessagePublisherInterface');
-        $logger           = $this->prophesize('Psr\Log\LoggerInterface');
+        $processor        = $this->prophesize(ProcessorInterface::class);
+        $messagePublisher = $this->prophesize(MessagePublisherInterface::class);
+        $logger           = $this->prophesize(LoggerInterface::class);
         $exception        = new \BadMethodCallException();
 
         $message = new Message('body', array(), 1);
@@ -362,9 +365,9 @@ class RetryProcessorTest extends TestCase
 
     public function test_it_should_log_a_custom_log_level_when_a_child_exception_occurred()
     {
-        $processor        = $this->prophesize('Swarrot\Processor\ProcessorInterface');
-        $messagePublisher = $this->prophesize('Swarrot\Broker\MessagePublisher\MessagePublisherInterface');
-        $logger           = $this->prophesize('Psr\Log\LoggerInterface');
+        $processor        = $this->prophesize(ProcessorInterface::class);
+        $messagePublisher = $this->prophesize(MessagePublisherInterface::class);
+        $logger           = $this->prophesize(LoggerInterface::class);
         $exception        = new \BadMethodCallException();
 
         $message = new Message('body', array(), 1);
@@ -406,9 +409,9 @@ class RetryProcessorTest extends TestCase
 
     public function test_it_should_log_a_warning_by_default_if_max_attempts_is_reached()
     {
-        $processor        = $this->prophesize('Swarrot\Processor\ProcessorInterface');
-        $messagePublisher = $this->prophesize('Swarrot\Broker\MessagePublisher\MessagePublisherInterface');
-        $logger           = $this->prophesize('Psr\Log\LoggerInterface');
+        $processor        = $this->prophesize(ProcessorInterface::class);
+        $messagePublisher = $this->prophesize(MessagePublisherInterface::class);
+        $logger           = $this->prophesize(LoggerInterface::class);
         $exception        = new \BadMethodCallException();
 
         $message = new Message('body', array('headers' => array('swarrot_retry_attempts' => 3)), 1);
@@ -447,9 +450,9 @@ class RetryProcessorTest extends TestCase
 
     public function test_it_should_log_a_custom_log_level_if_max_attempts_is_reached()
     {
-        $processor        = $this->prophesize('Swarrot\Processor\ProcessorInterface');
-        $messagePublisher = $this->prophesize('Swarrot\Broker\MessagePublisher\MessagePublisherInterface');
-        $logger           = $this->prophesize('Psr\Log\LoggerInterface');
+        $processor        = $this->prophesize(ProcessorInterface::class);
+        $messagePublisher = $this->prophesize(MessagePublisherInterface::class);
+        $logger           = $this->prophesize(LoggerInterface::class);
         $exception        = new \BadMethodCallException();
 
         $message = new Message('body', array('headers' => array('swarrot_retry_attempts' => 3)), 1);
@@ -490,9 +493,9 @@ class RetryProcessorTest extends TestCase
 
     public function test_it_should_log_a_custom_log_level_if_max_attempts_is_reached_for_child_exception()
     {
-        $processor        = $this->prophesize('Swarrot\Processor\ProcessorInterface');
-        $messagePublisher = $this->prophesize('Swarrot\Broker\MessagePublisher\MessagePublisherInterface');
-        $logger           = $this->prophesize('Psr\Log\LoggerInterface');
+        $processor        = $this->prophesize(ProcessorInterface::class);
+        $messagePublisher = $this->prophesize(MessagePublisherInterface::class);
+        $logger           = $this->prophesize(LoggerInterface::class);
         $exception        = new \BadMethodCallException();
 
         $message = new Message('body', array('headers' => array('swarrot_retry_attempts' => 3)), 1);

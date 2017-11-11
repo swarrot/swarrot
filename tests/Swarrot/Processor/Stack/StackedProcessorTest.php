@@ -5,15 +5,19 @@ namespace Swarrot\Processor\Stack;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Swarrot\Broker\Message;
+use Swarrot\Processor\ProcessorInterface;
+use Swarrot\Processor\InitializableInterface;
+use Swarrot\Processor\TerminableInterface;
+use Swarrot\Processor\SleepyInterface;
 
 class StackedProcessorTest extends TestCase
 {
     public function test_it_is_initializable()
     {
-        $p1  = $this->prophesize('Swarrot\Processor\ProcessorInterface');
-        $p2  = $this->prophesize('Swarrot\Processor\InitializableInterface');
-        $p3  = $this->prophesize('Swarrot\Processor\TerminableInterface');
-        $p4  = $this->prophesize('Swarrot\Processor\SleepyInterface');
+        $p1  = $this->prophesize(ProcessorInterface::class);
+        $p2  = $this->prophesize(InitializableInterface::class);
+        $p3  = $this->prophesize(TerminableInterface::class);
+        $p4  = $this->prophesize(SleepyInterface::class);
 
         $stackedProcessor = new StackedProcessor(
             $p1->reveal(), array(
@@ -23,24 +27,24 @@ class StackedProcessorTest extends TestCase
             )
         );
 
-        $this->assertInstanceOf('Swarrot\Processor\Stack\StackedProcessor', $stackedProcessor);
+        $this->assertInstanceOf(StackedProcessor::class, $stackedProcessor);
     }
 
     public function test_it_is_callable()
     {
-        $p1  = $this->prophesize('Swarrot\Processor\ProcessorInterface');
-        $p2  = $this->prophesize('Swarrot\Processor\InitializableInterface');
-        $p3  = $this->prophesize('Swarrot\Processor\TerminableInterface');
-        $p4  = $this->prophesize('Swarrot\Processor\SleepyInterface');
+        $p1  = $this->prophesize(ProcessorInterface::class);
+        $p2  = $this->prophesize(InitializableInterface::class);
+        $p3  = $this->prophesize(TerminableInterface::class);
+        $p4  = $this->prophesize(SleepyInterface::class);
 
         $p2->initialize(Argument::type('array'))->willReturn(null);
         $p3->terminate(Argument::type('array'))->willReturn(null);
         $p4->sleep(Argument::type('array'))->willReturn(null);
 
-        $p1->process(Argument::type('Swarrot\Broker\Message'), Argument::type('array'))->willReturn(null);
-        $p2->process(Argument::type('Swarrot\Broker\Message'), Argument::type('array'))->willReturn(null);
-        $p3->process(Argument::type('Swarrot\Broker\Message'), Argument::type('array'))->willReturn(null);
-        $p4->process(Argument::type('Swarrot\Broker\Message'), Argument::type('array'))->willReturn(null);
+        $p1->process(Argument::type(Message::class), Argument::type('array'))->willReturn(null);
+        $p2->process(Argument::type(Message::class), Argument::type('array'))->willReturn(null);
+        $p3->process(Argument::type(Message::class), Argument::type('array'))->willReturn(null);
+        $p4->process(Argument::type(Message::class), Argument::type('array'))->willReturn(null);
 
         $stackedProcessor = new StackedProcessor(
             $p1->reveal(), array(
@@ -62,10 +66,10 @@ class StackedProcessorTest extends TestCase
 
     public function test_sleep_return_false_if_at_least_a_processor_return_false()
     {
-        $p1  = $this->prophesize('Swarrot\Processor\SleepyInterface');
-        $p2  = $this->prophesize('Swarrot\Processor\SleepyInterface');
-        $p3  = $this->prophesize('Swarrot\Processor\SleepyInterface');
-        $p4  = $this->prophesize('Swarrot\Processor\SleepyInterface');
+        $p1  = $this->prophesize(SleepyInterface::class);
+        $p2  = $this->prophesize(SleepyInterface::class);
+        $p3  = $this->prophesize(SleepyInterface::class);
+        $p4  = $this->prophesize(SleepyInterface::class);
 
         $p2->sleep(Argument::type('array'))->willReturn(true);
         $p3->sleep(Argument::type('array'))->willReturn(true);

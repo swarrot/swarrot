@@ -4,7 +4,11 @@ namespace Swarrot\Broker\MessageProvider;
 
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Swarrot\Broker\Message;
+use Swarrot\Driver\MessageCacheInterface;
 use Swarrot\Driver\PrefetchMessageCache;
+use Aws\Sqs\SqsClient;
+use Guzzle\Service\Resource\Model;
 
 /**
  * Class SqsMessageProviderTest.
@@ -24,8 +28,8 @@ class SqsMessageProviderTest extends TestCase
      */
     public function setUp()
     {
-        $this->channel = $this->prophesize('Aws\Sqs\SqsClient');
-        $this->cache = $this->prophesize('Swarrot\Driver\MessageCacheInterface');
+        $this->channel = $this->prophesize(SqsClient::class);
+        $this->cache = $this->prophesize(MessageCacheInterface::class);
 
         $this->provider = new SqsMessageProvider($this->channel->reveal(), 'foo', $this->cache->reveal());
     }
@@ -35,7 +39,7 @@ class SqsMessageProviderTest extends TestCase
      */
     public function testInstance()
     {
-        $this->assertInstanceOf('Swarrot\Broker\MessageProvider\MessageProviderInterface', $this->provider);
+        $this->assertInstanceOf(MessageProviderInterface::class, $this->provider);
     }
 
     /**
@@ -47,7 +51,7 @@ class SqsMessageProviderTest extends TestCase
 
         $this->provider = new SqsMessageProvider($this->channel->reveal(), 'foo', $cache);
 
-        $response = $this->prophesize('Guzzle\Service\Resource\Model');
+        $response = $this->prophesize(Model::class);
         $response->get(Argument::any())->willReturn([
             [
                 'Body' => 'Body',
@@ -56,7 +60,7 @@ class SqsMessageProviderTest extends TestCase
         ]);
         $this->channel->receiveMessage(Argument::any())->willReturn($response);
 
-        $this->assertInstanceOf('Swarrot\Broker\Message', $this->provider->get());
+        $this->assertInstanceOf(Message::class, $this->provider->get());
 
         $this->channel->receiveMessage([
             'QueueUrl' => 'foo',
@@ -72,7 +76,7 @@ class SqsMessageProviderTest extends TestCase
     {
         $this->cache->pop(Argument::any())->willReturn(null);
 
-        $response = $this->prophesize('Guzzle\Service\Resource\Model');
+        $response = $this->prophesize(Model::class);
         $response->get(Argument::any())->willReturn(null);
         $this->channel->receiveMessage(Argument::any())->willReturn($response);
 
@@ -90,12 +94,12 @@ class SqsMessageProviderTest extends TestCase
      */
     public function testGetWithCache()
     {
-        $message = $this->prophesize('Swarrot\Broker\Message');
+        $message = $this->prophesize(Message::class);
 
         $this->cache->pop(Argument::any())
             ->willReturn($message);
 
-        $this->assertInstanceOf('Swarrot\Broker\Message', $this->provider->get());
+        $this->assertInstanceOf(Message::class, $this->provider->get());
 
         $this->cache->push(Argument::any())->shouldNotBeCalled();
         $this->channel->receiveMessage(Argument::any())->shouldNotBeCalled();

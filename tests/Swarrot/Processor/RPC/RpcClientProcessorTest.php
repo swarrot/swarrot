@@ -4,39 +4,41 @@ namespace Swarrot\Processor\RPC;
 
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Psr\Log\LoggerInterface;
 use Swarrot\Broker\Message;
+use Swarrot\Processor\ProcessorInterface;
 
 class RpcClientProcessorTest extends TestCase
 {
     public function test_it_is_initializable_without_a_logger()
     {
         $processor = new RpcClientProcessor();
-        $this->assertInstanceOf('Swarrot\\Processor\\RPC\\RpcClientProcessor', $processor);
+        $this->assertInstanceOf(RpcClientProcessor::class, $processor);
     }
 
     public function test_it_is_initializable_with_a_logger()
     {
-        $logger = $this->prophesize('Psr\\Log\\LoggerInterface');
+        $logger = $this->prophesize(LoggerInterface::class);
 
         $processor = new RpcClientProcessor(null, $logger->reveal());
-        $this->assertInstanceOf('Swarrot\\Processor\\RPC\\RpcClientProcessor', $processor);
+        $this->assertInstanceOf(RpcClientProcessor::class, $processor);
     }
 
     public function test_it_is_initializable_with_a_processor()
     {
-        $processor = $this->prophesize('Swarrot\\Processor\\ProcessorInterface');
+        $processor = $this->prophesize(ProcessorInterface::class);
 
         $processor = new RpcClientProcessor($processor->reveal());
-        $this->assertInstanceOf('Swarrot\\Processor\\RPC\\RpcClientProcessor', $processor);
+        $this->assertInstanceOf(RpcClientProcessor::class, $processor);
     }
 
     public function test_it_is_initializable_with_a_processor_and_a_logger()
     {
-        $processor = $this->prophesize('Swarrot\\Processor\\ProcessorInterface');
-        $logger = $this->prophesize('Psr\\Log\\LoggerInterface');
+        $processor = $this->prophesize(ProcessorInterface::class);
+        $logger = $this->prophesize(LoggerInterface::class);
 
         $processor = new RpcClientProcessor($processor->reveal(), $logger->reveal());
-        $this->assertInstanceOf('Swarrot\\Processor\\RPC\\RpcClientProcessor', $processor);
+        $this->assertInstanceOf(RpcClientProcessor::class, $processor);
     }
 
     public function test_it_should_sleep_if_no_correlation_id_set()
@@ -67,7 +69,7 @@ class RpcClientProcessorTest extends TestCase
     {
         $message = new Message(null, ['correlation_id' => 1]);
 
-        $processor = $this->prophesize('Swarrot\\Processor\\ProcessorInterface');
+        $processor = $this->prophesize(ProcessorInterface::class);
         $processor->process($message, ['rpc_client_correlation_id' => 1])->willReturn(true)->shouldBeCalled();
         $processor = new RpcClientProcessor($processor->reveal());
 

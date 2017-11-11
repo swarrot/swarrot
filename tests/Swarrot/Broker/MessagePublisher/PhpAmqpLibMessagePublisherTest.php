@@ -6,12 +6,13 @@ use Prophecy\Argument;
 use PhpAmqpLib\Message\AMQPMessage;
 use PHPUnit\Framework\TestCase;
 use Swarrot\Broker\Message;
+use PhpAmqpLib\Channel\AMQPChannel;
 
 class PhpAmqpLibMessagePublisherTest extends TestCase
 {
     public function test_publish_with_valid_message()
     {
-        $channel = $this->prophesize('PhpAmqpLib\Channel\AMQPChannel');
+        $channel = $this->prophesize(AMQPChannel::class);
 
         $channel->basic_publish(
             Argument::that(function (AMQPMessage $message) {
@@ -34,7 +35,7 @@ class PhpAmqpLibMessagePublisherTest extends TestCase
 
     public function test_publish_with_application_headers()
     {
-        $channel = $this->prophesize('PhpAmqpLib\Channel\AMQPChannel');
+        $channel = $this->prophesize(AMQPChannel::class);
 
         $channel->basic_publish(
             Argument::that(function (AMQPMessage $message) {
@@ -74,10 +75,10 @@ class PhpAmqpLibMessagePublisherTest extends TestCase
 
     public function test_publish_with_publisher_confirms()
     {
-        if (!method_exists('PhpAmqpLib\Channel\AMQPChannel', 'set_nack_handler')) {
+        if (!method_exists(AMQPChannel::class, 'set_nack_handler')) {
             $this->markTestSkipped("The AMQP library version does not support publisher confirms");
         }
-        $channel = $this->prophesize('PhpAmqpLib\Channel\AMQPChannel');
+        $channel = $this->prophesize(AMQPChannel::class);
         $channel->set_nack_handler(
             Argument::type('\Closure')
         )->shouldBeCalledTimes(1);

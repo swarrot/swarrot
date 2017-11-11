@@ -3,6 +3,7 @@
 namespace Swarrot\Driver;
 
 use PHPUnit\Framework\TestCase;
+use Swarrot\Broker\Message;
 
 /**
  * Class PrefetchMessageCacheTest.
@@ -27,7 +28,7 @@ class PrefetchMessageCacheTest extends TestCase
      */
     public function testInstance()
     {
-        $this->assertInstanceOf('Swarrot\Driver\MessageCacheInterface', $this->driver);
+        $this->assertInstanceOf(MessageCacheInterface::class, $this->driver);
     }
 
     /**
@@ -35,7 +36,7 @@ class PrefetchMessageCacheTest extends TestCase
      */
     public function testPushPop()
     {
-        $message = $this->prophesize('Swarrot\Broker\Message');
+        $message = $this->prophesize(Message::class);
 
         $this->driver->push('foo', $message->reveal());
 
@@ -47,9 +48,9 @@ class PrefetchMessageCacheTest extends TestCase
      */
     public function testMultiplePushPop()
     {
-        $message1 = $this->prophesize('Swarrot\Broker\Message');
-        $message2 = $this->prophesize('Swarrot\Broker\Message');
-        $message3 = $this->prophesize('Swarrot\Broker\Message');
+        $message1 = $this->prophesize(Message::class);
+        $message2 = $this->prophesize(Message::class);
+        $message3 = $this->prophesize(Message::class);
 
         $this->driver->push('foo', $message1->reveal());
         $this->driver->push('foo', $message2->reveal());

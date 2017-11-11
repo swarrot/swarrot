@@ -3,6 +3,7 @@
 namespace Swarrot\Processor\NewRelic;
 
 use PHPUnit\Framework\TestCase;
+use Swarrot\Processor\ProcessorInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class NewRelicProcessorTest extends TestCase
@@ -10,7 +11,7 @@ class NewRelicProcessorTest extends TestCase
     public function testOptions()
     {
         $processor = new NewRelicProcessor(
-            $this->prophesize('Swarrot\Processor\ProcessorInterface')->reveal()
+            $this->prophesize(ProcessorInterface::class)->reveal()
         );
 
         $resolver = new OptionsResolver();

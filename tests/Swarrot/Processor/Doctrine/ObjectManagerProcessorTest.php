@@ -2,11 +2,13 @@
 
 namespace Swarrot\Processor\Ack;
 
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Swarrot\Broker\Message;
 use Swarrot\Processor\Doctrine\ObjectManagerProcessor;
+use Swarrot\Processor\ProcessorInterface;
 
 class ObjectManagerProcessorTest extends TestCase
 {
@@ -15,12 +17,12 @@ class ObjectManagerProcessorTest extends TestCase
         $message = new Message();
         $options = [];
 
-        $innerProcessorProphecy = $this->prophesize('Swarrot\Processor\ProcessorInterface');
+        $innerProcessorProphecy = $this->prophesize(ProcessorInterface::class);
         $innerProcessorProphecy->process($message, $options)->willReturn(true);
 
         $objectManagers = [];
 
-        $objectManagerProphecy = $this->prophesize('Doctrine\Common\Persistence\ObjectManager');
+        $objectManagerProphecy = $this->prophesize(ObjectManager::class);
         $objectManagerProphecy->clear()->shouldBeCalled();
         $objectManagers['default'] = $objectManagerProphecy->reveal();
 
@@ -34,7 +36,7 @@ class ObjectManagerProcessorTest extends TestCase
         $objectManagerProphecy->clear()->shouldNotBeCalled();
         $objectManagers['bar'] = $objectManagerProphecy->reveal();
 
-        $managerRegistryProphecy = $this->prophesize('Doctrine\Common\Persistence\ManagerRegistry');
+        $managerRegistryProphecy = $this->prophesize(ManagerRegistry::class);
         $managerRegistryProphecy->getManagers()->willReturn($objectManagers);
         $managerRegistryProphecy->resetManager('bar')->shouldBeCalled();
 

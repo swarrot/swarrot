@@ -8,6 +8,7 @@ use Interop\Queue\PsrMessage;
 use Interop\Queue\PsrQueue;
 use Prophecy\Argument;
 use PHPUnit\Framework\TestCase;
+use Swarrot\Broker\Message;
 
 class InteropMessageProviderTest extends TestCase
 {
@@ -87,7 +88,7 @@ class InteropMessageProviderTest extends TestCase
 
         $message = $provider->get();
 
-        $this->assertInstanceOf('Swarrot\Broker\Message', $message);
+        $this->assertInstanceOf(Message::class, $message);
         $this->assertSame('theBody', $message->getBody());
         $this->assertSame([
             'fooHeader' => 'fooHeaderVal',
