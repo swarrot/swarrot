@@ -16,5 +16,5 @@ fi
 
 git checkout ${PHPAMQP_VERSION}
 
-phpize --clean && phpize && ./configure && sudo make install
+phpize --clean && phpize && ./configure && make install
 echo "extension = amqp.so" >> ~/.phpenv/versions/$(phpenv version-name)/etc/php.ini

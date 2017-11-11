@@ -1,27 +1,36 @@
 language: php
 
+sudo: false
+
+services: [rabbitmq]
+
 env:
     global:
         - LIBRABBITMQ_VERSION=v0.8.0
         - PHPAMQP_VERSION=v1.9.3
 
 matrix:
+    allow_failures:
+        - php: nightly
+
     include:
         # Test with default configuration
         - { php: 7.1 }
+        - { php: nightly }
         # Test against librabbitmq cutting-edge
         - { php: 7.1, env: LIBRABBITMQ_VERSION=master }
+        - { php: nightly, env: LIBRABBITMQ_VERSION=master }
         # Test with lowest dependencies
         - { php: 7.1, env: COMPOSER_FLAGS='--prefer-lowest --prefer-stable' }
+        - { php: nightly, env: COMPOSER_FLAGS='--prefer-lowest --prefer-stable' }
 
-services: [rabbitmq]
+    fast_finish: true
 
-before_install:
-  - phpenv config-rm xdebug.ini
-  - sh -c './tests/bin/install_rabbitmq-c.sh'
-  - sh -c './tests/bin/install_php-amqp.sh'
+install:
+  - sudo ./tests/bin/install_rabbitmq-c.sh
+  - ./tests/bin/install_php-amqp.sh
   - composer selfupdate
   - composer update --prefer-source -n $COMPOSER_FLAGS
-  - sh -c "sudo ./tests/bin/prepare_rabbit.sh"
+  - sudo ./tests/bin/prepare_rabbit.sh
 
 script: vendor/bin/phpunit
