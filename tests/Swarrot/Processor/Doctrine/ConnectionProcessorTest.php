@@ -2,11 +2,16 @@
 
 namespace Swarrot\Processor\Ack;
 
+use Doctrine\Common\Persistence\ConnectionRegistry;
+use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Connections\MasterSlaveConnection;
 use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\Platforms\SqlitePlatform;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Swarrot\Broker\Message;
 use Swarrot\Processor\Doctrine\ConnectionProcessor;
+use Swarrot\Processor\ProcessorInterface;
 
 class ConnectionProcessorTest extends TestCase
 {
@@ -18,7 +23,7 @@ class ConnectionProcessorTest extends TestCase
             'doctrine_close_master' => true,
         ];
 
-        $innerProcessorProphecy = $this->prophesize('Swarrot\Processor\ProcessorInterface');
+        $innerProcessorProphecy = $this->prophesize(ProcessorInterface::class);
         $innerProcessorProphecy->process($message, $options)->willReturn(true);
 
         $createConnections = function () {
@@ -44,7 +49,7 @@ class ConnectionProcessorTest extends TestCase
         $processor = new ConnectionProcessor($innerProcessorProphecy->reveal(), $createConnections());
         $this->assertEquals($processor->process($message, $options), true);
 
-        $connectionRegistry = $this->prophesize('Doctrine\Common\Persistence\ConnectionRegistry');
+        $connectionRegistry = $this->prophesize(ConnectionRegistry::class);
         $connectionRegistry->getConnections()->willReturn($createConnections);
 
         $processor = new ConnectionProcessor($innerProcessorProphecy->reveal(), $createConnections());
@@ -53,12 +58,12 @@ class ConnectionProcessorTest extends TestCase
 
     public function testCloseTimedOutConnection()
     {
-        $innerProcessorProphecy = $this->prophesize('Swarrot\Processor\ProcessorInterface');
+        $innerProcessorProphecy = $this->prophesize(ProcessorInterface::class);
         $innerProcessorProphecy->process(Argument::cetera())->willReturn(true);
 
         $dummySql = 'SELECT 1';
 
-        $databasePlatformProphecy = $this->prophesize('Doctrine\DBAL\Platforms\SqlitePlatform');
+        $databasePlatformProphecy = $this->prophesize(SqlitePlatform::class);
         $databasePlatformProphecy->getDummySelectSQL()->willReturn($dummySql);
 
         $connectionProphecy = $this->prophesizeConnection();
@@ -71,7 +76,7 @@ class ConnectionProcessorTest extends TestCase
             'doctrine_ping' => true,
             'doctrine_close_master' => true,
         ];
-        $processor = new ConnectionProcessor($innerProcessorProphecy->reveal(), [$connectionProphecy->reveal()], true);
+        $processor = new ConnectionProcessor($innerProcessorProphecy->reveal(), [$connectionProphecy->reveal()]);
         $processor->process(new Message(), $options);
     }
 
@@ -81,14 +86,14 @@ class ConnectionProcessorTest extends TestCase
      */
     public function testRejectNonConnections()
     {
-        $innerProcessorProphecy = $this->prophesize('Swarrot\Processor\ProcessorInterface');
+        $innerProcessorProphecy = $this->prophesize(ProcessorInterface::class);
 
         new ConnectionProcessor($innerProcessorProphecy->reveal(), [new \StdClass]);
     }
 
     public function testAcceptEmptyConnections()
     {
-        $innerProcessorProphecy = $this->prophesize('Swarrot\Processor\ProcessorInterface');
+        $innerProcessorProphecy = $this->prophesize(ProcessorInterface::class);
         $innerProcessorProphecy->process(Argument::cetera())->willReturn(true)->shouldBeCalledTimes(1);
 
         $options = [
@@ -101,11 +106,11 @@ class ConnectionProcessorTest extends TestCase
 
     private function prophesizeConnection()
     {
-        return $this->prophesize('Doctrine\DBAL\Connection');
+        return $this->prophesize(Connection::class);
     }
 
     private function prophesizeMasterSlaveConnection()
     {
-        return $this->prophesize('Doctrine\DBAL\Connections\MasterSlaveConnection');
+        return $this->prophesize(MasterSlaveConnection::class);
     }
 }

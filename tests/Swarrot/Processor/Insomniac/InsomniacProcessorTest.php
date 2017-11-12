@@ -4,6 +4,7 @@ namespace Swarrot\Processor\Insomniac;
 
 use PHPUnit\Framework\TestCase;
 use Swarrot\Broker\Message;
+use Swarrot\Processor\ProcessorInterface;
 
 class InsomniacProcessorTest extends TestCase
 {
@@ -12,7 +13,7 @@ class InsomniacProcessorTest extends TestCase
         $message = new Message();
         $options = [];
 
-        $decoratedProcessorProphecy = $this->prophesize('Swarrot\Processor\ProcessorInterface');
+        $decoratedProcessorProphecy = $this->prophesize(ProcessorInterface::class);
         $decoratedProcessorProphecy
             ->process($message, $options)
             ->shouldBeCalled()

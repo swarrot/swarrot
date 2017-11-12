@@ -3,6 +3,7 @@
 namespace Swarrot\Broker\MessageProvider;
 
 use PHPUnit\Framework\TestCase;
+use Swarrot\Broker\Message;
 
 class PeclPackageMessageProviderTest extends TestCase
 {
@@ -18,7 +19,7 @@ class PeclPackageMessageProviderTest extends TestCase
         $provider = new PeclPackageMessageProvider($this->getAMQPQueue('queue_with_messages'));
         $message = $provider->get();
 
-        $this->assertInstanceOf('Swarrot\Broker\Message', $message);
+        $this->assertInstanceOf(Message::class, $message);
     }
 
     public function test_get_without_messages_in_queue_return_null()
