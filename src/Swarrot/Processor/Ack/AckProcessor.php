@@ -7,6 +7,7 @@ use Swarrot\Processor\ConfigurableInterface;
 use Swarrot\Broker\MessageProvider\MessageProviderInterface;
 use Swarrot\Broker\Message;
 use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class AckProcessor implements ConfigurableInterface
@@ -35,7 +36,7 @@ class AckProcessor implements ConfigurableInterface
     {
         $this->processor = $processor;
         $this->messageProvider = $messageProvider;
-        $this->logger = $logger;
+        $this->logger = $logger ?: new NullLogger();
     }
 
     /**
@@ -47,7 +48,7 @@ class AckProcessor implements ConfigurableInterface
             $return = $this->processor->process($message, $options);
             $this->messageProvider->ack($message);
 
-            $this->logger and $this->logger->info(
+            $this->logger->info(
                 '[Ack] Message #'.$message->getId().' has been correctly ack\'ed',
                 [
                     'swarrot_processor' => 'ack',
@@ -85,7 +86,7 @@ class AckProcessor implements ConfigurableInterface
         $requeue = isset($options['requeue_on_error']) ? (bool) $options['requeue_on_error'] : false;
         $this->messageProvider->nack($message, $requeue);
 
-        $this->logger and $this->logger->error(
+        $this->logger->error(
             sprintf(
                 '[Ack] An exception occurred. Message #%d has been %s.',
                 $message->getId(),

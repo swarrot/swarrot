@@ -6,6 +6,7 @@ use Swarrot\Processor\ProcessorInterface;
 use Swarrot\Processor\ConfigurableInterface;
 use Swarrot\Broker\Message;
 use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class MaxMessagesProcessor implements ConfigurableInterface
@@ -32,7 +33,7 @@ class MaxMessagesProcessor implements ConfigurableInterface
     public function __construct(ProcessorInterface $processor, LoggerInterface $logger = null)
     {
         $this->processor = $processor;
-        $this->logger = $logger;
+        $this->logger = $logger ?: new NullLogger();
     }
 
     /**
@@ -43,7 +44,7 @@ class MaxMessagesProcessor implements ConfigurableInterface
         $return = $this->processor->process($message, $options);
 
         if (++$this->messagesProcessed >= $options['max_messages']) {
-            $this->logger and $this->logger->info(
+            $this->logger->info(
                 sprintf('[MaxMessages] Max messages have been reached (%d)', $options['max_messages']),
                 [
                     'swarrot_processor' => 'max_messages',

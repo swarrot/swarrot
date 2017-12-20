@@ -42,7 +42,7 @@ class PeclPackageMessagePublisher implements MessagePublisherInterface
         return function ($deliveryTag, $multiple) {
             //remove acked from pending list
             if ($multiple) {
-                for ($tag = 0; $tag <= $multiple; ++$tag ) {
+                for ($tag = 0; $tag <= $multiple; ++$tag) {
                     unset($this->pendingMessages[$tag]);
                 }
             } else {

@@ -2,9 +2,10 @@
 
 namespace Swarrot\Processor\ExceptionCatcher;
 
+use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 use Swarrot\Broker\Message;
 use Swarrot\Processor\ProcessorInterface;
-use Psr\Log\LoggerInterface;
 
 class ExceptionCatcherProcessor implements ProcessorInterface
 {
@@ -21,7 +22,7 @@ class ExceptionCatcherProcessor implements ProcessorInterface
     public function __construct(ProcessorInterface $processor, LoggerInterface $logger = null)
     {
         $this->processor = $processor;
-        $this->logger = $logger;
+        $this->logger = $logger ?: new NullLogger();
     }
 
     /**
@@ -47,7 +48,7 @@ class ExceptionCatcherProcessor implements ProcessorInterface
      */
     private function handleException($exception, Message $message, array $options)
     {
-        $this->logger and $this->logger->error(
+        $this->logger->error(
             '[ExceptionCatcher] An exception occurred. This exception has been caught.',
             [
                 'swarrot_processor' => 'exception',

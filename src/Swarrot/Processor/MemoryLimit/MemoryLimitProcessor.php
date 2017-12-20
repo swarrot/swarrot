@@ -3,6 +3,7 @@
 namespace Swarrot\Processor\MemoryLimit;
 
 use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 use Swarrot\Broker\Message;
 use Swarrot\Processor\ConfigurableInterface;
 use Swarrot\Processor\ProcessorInterface;
@@ -27,7 +28,7 @@ class MemoryLimitProcessor implements ConfigurableInterface
     public function __construct(ProcessorInterface $processor, LoggerInterface $logger = null)
     {
         $this->processor = $processor;
-        $this->logger = $logger;
+        $this->logger = $logger ?: new NullLogger();
     }
 
     /**
@@ -38,7 +39,7 @@ class MemoryLimitProcessor implements ConfigurableInterface
         $return = $this->processor->process($message, $options);
 
         if (null !== $options['memory_limit'] && memory_get_usage() >= $options['memory_limit'] * 1024 * 1024) {
-            $this->logger and $this->logger->info(
+            $this->logger->info(
                 sprintf('[MemoryLimit] Memory limit has been reached (%d MB)', $options['memory_limit']),
                 [
                     'swarrot_processor' => 'memory_limit',

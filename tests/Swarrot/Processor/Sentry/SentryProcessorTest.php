@@ -1,6 +1,6 @@
 <?php
 
-namespace Swarrot\Tests\Processor\Ack;
+namespace Swarrot\Tests\Processor\Sentry;
 
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
