@@ -1,12 +1,13 @@
 <?php
 
-namespace Swarrot\Processor\RPC;
+namespace Swarrot\Tests\Processor\RPC;
 
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Psr\Log\LoggerInterface;
 use Swarrot\Broker\Message;
 use Swarrot\Processor\ProcessorInterface;
+use Swarrot\Processor\RPC\RpcClientProcessor;
 
 class RpcClientProcessorTest extends TestCase
 {

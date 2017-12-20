@@ -1,6 +1,6 @@
 <?php
 
-namespace Swarrot\Processor\Stack;
+namespace Swarrot\Tests\Processor\Stack;
 
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
@@ -9,6 +9,7 @@ use Swarrot\Processor\ProcessorInterface;
 use Swarrot\Processor\InitializableInterface;
 use Swarrot\Processor\TerminableInterface;
 use Swarrot\Processor\SleepyInterface;
+use Swarrot\Processor\Stack\StackedProcessor;
 
 class StackedProcessorTest extends TestCase
 {

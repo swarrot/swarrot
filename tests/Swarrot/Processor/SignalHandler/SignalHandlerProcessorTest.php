@@ -1,12 +1,13 @@
 <?php
 
-namespace Swarrot\Processor\SignalHandler;
+namespace Swarrot\Tests\Processor\SignalHandler;
 
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Swarrot\Broker\Message;
 use Swarrot\Processor\ProcessorInterface;
 use Psr\Log\LoggerInterface;
+use Swarrot\Processor\SignalHandler\SignalHandlerProcessor;
 
 class SignalHandlerProcessorTest extends TestCase
 {

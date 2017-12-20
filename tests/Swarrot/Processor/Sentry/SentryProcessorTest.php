@@ -1,13 +1,13 @@
 <?php
 
-namespace Swarrot\Processor\Ack;
+namespace Swarrot\Tests\Processor\Ack;
 
-use Swarrot\Processor\Sentry\SentryProcessor;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Swarrot\Broker\Message;
 use Swarrot\Processor\ProcessorInterface;
 use Raven_Client;
+use Swarrot\Processor\Sentry\SentryProcessor;
 
 class SentryProcessorTest extends TestCase
 {

@@ -1,12 +1,13 @@
 <?php
 
-namespace Swarrot\Processor\MemoryLimit;
+namespace Swarrot\Tests\Processor\MemoryLimit;
 
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Psr\Log\LoggerInterface;
 use Swarrot\Broker\Message;
 use Swarrot\Processor\ProcessorInterface;
-use Psr\Log\LoggerInterface;
+use Swarrot\Processor\MemoryLimit\MemoryLimitProcessor;
 
 class MemoryLimitProcessorTest extends TestCase
 {

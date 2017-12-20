@@ -1,6 +1,6 @@
 <?php
 
-namespace Swarrot\Processor\Ack;
+namespace Swarrot\Tests\Processor\Ack;
 
 use Doctrine\Common\Persistence\ConnectionRegistry;
 use Doctrine\DBAL\Connection;

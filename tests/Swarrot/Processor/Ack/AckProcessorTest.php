@@ -1,10 +1,11 @@
 <?php
 
-namespace Swarrot\Processor\Ack;
+namespace Swarrot\Tests\Processor\Ack;
 
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Swarrot\Broker\Message;
+use Swarrot\Processor\Ack\AckProcessor;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Swarrot\Processor\ProcessorInterface;
 use Swarrot\Broker\MessageProvider\MessageProviderInterface;

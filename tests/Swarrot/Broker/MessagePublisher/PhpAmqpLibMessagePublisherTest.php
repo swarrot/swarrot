@@ -1,12 +1,13 @@
 <?php
 
-namespace Swarrot\Broker\MessagePublisher;
+namespace Swarrot\Tests\Broker\MessagePublisher;
 
 use Prophecy\Argument;
 use PhpAmqpLib\Message\AMQPMessage;
 use PHPUnit\Framework\TestCase;
 use Swarrot\Broker\Message;
 use PhpAmqpLib\Channel\AMQPChannel;
+use Swarrot\Broker\MessagePublisher\PhpAmqpLibMessagePublisher;
 
 class PhpAmqpLibMessagePublisherTest extends TestCase
 {

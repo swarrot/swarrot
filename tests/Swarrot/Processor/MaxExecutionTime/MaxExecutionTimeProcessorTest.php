@@ -1,11 +1,12 @@
 <?php
 
-namespace Swarrot\Processor\MaxExecutionTime;
+namespace Swarrot\Tests\Processor\MaxExecutionTime;
 
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Swarrot\Broker\Message;
 use Swarrot\Processor\ProcessorInterface;
+use Swarrot\Processor\MaxExecutionTime\MaxExecutionTimeProcessor;
 use Psr\Log\LoggerInterface;
 
 class MaxExecutionTimeProcessorTest extends TestCase

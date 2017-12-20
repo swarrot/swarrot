@@ -1,12 +1,13 @@
 <?php
 
-namespace Swarrot\Processor\ExceptionCatcher;
+namespace Swarrot\Tests\Processor\ExceptionCatcher;
 
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Swarrot\Broker\Message;
 use Swarrot\Processor\ProcessorInterface;
 use Psr\Log\LoggerInterface;
+use Swarrot\Processor\ExceptionCatcher\ExceptionCatcherProcessor;
 
 class ExceptionCatcherTest extends TestCase
 {

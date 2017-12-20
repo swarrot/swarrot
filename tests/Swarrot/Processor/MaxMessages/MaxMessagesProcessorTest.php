@@ -1,12 +1,13 @@
 <?php
 
-namespace Swarrot\Processor\MaxMessages;
+namespace Swarrot\Tests\Processor\MaxMessages;
 
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Swarrot\Broker\Message;
 use Psr\Log\LoggerInterface;
 use Swarrot\Processor\ProcessorInterface;
+use Swarrot\Processor\MaxMessages\MaxMessagesProcessor;
 
 class MaxMessagesProcessorTest extends TestCase
 {

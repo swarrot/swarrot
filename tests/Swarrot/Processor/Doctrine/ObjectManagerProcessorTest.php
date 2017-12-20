@@ -1,6 +1,6 @@
 <?php
 
-namespace Swarrot\Processor\Ack;
+namespace Swarrot\Tests\Processor\Ack;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Persistence\ObjectManager;

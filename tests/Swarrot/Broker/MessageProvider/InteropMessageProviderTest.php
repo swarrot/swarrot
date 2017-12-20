@@ -1,6 +1,6 @@
 <?php
 
-namespace Swarrot\Broker\MessageProvider;
+namespace Swarrot\Tests\Broker\MessageProvider;
 
 use Interop\Queue\PsrConsumer;
 use Interop\Queue\PsrContext;
@@ -9,6 +9,8 @@ use Interop\Queue\PsrQueue;
 use Prophecy\Argument;
 use PHPUnit\Framework\TestCase;
 use Swarrot\Broker\Message;
+use Swarrot\Broker\MessageProvider\InteropMessageProvider;
+use Swarrot\Broker\MessageProvider\MessageProviderInterface;
 
 class InteropMessageProviderTest extends TestCase
 {

@@ -1,14 +1,14 @@
 <?php
 
-namespace spec\Swarrot\Processor\InstantRetry;
+namespace Swarrot\Tests\Processor\InstantRetry;
 
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Psr\Log\LogLevel;
-use Swarrot\Processor\InstantRetry\InstantRetryProcessor;
 use Swarrot\Broker\Message;
 use Swarrot\Processor\ProcessorInterface;
 use Psr\Log\LoggerInterface;
+use Swarrot\Processor\InstantRetry\InstantRetryProcessor;
 
 class InstantRetryProcessorTest extends TestCase
 {

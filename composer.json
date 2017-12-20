@@ -39,6 +39,11 @@
             "Swarrot\\": "src/Swarrot"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Swarrot\\Tests\\": "tests/Swarrot"
+        }
+    },
     "scripts": {
         "test": [
             "phpunit --colors=always"

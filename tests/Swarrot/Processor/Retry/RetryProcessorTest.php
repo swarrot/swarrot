@@ -1,6 +1,6 @@
 <?php
 
-namespace Swarrot\Processor\Retry;
+namespace Swarrot\Tests\Processor\Retry;
 
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
@@ -9,6 +9,7 @@ use Psr\Log\LogLevel;
 use Swarrot\Broker\Message;
 use Swarrot\Broker\MessagePublisher\MessagePublisherInterface;
 use Swarrot\Processor\ProcessorInterface;
+use Swarrot\Processor\Retry\RetryProcessor;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class RetryProcessorTest extends TestCase

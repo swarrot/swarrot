@@ -1,6 +1,6 @@
 <?php
 
-namespace Swarrot;
+namespace Swarrot\Tests;
 
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
@@ -12,6 +12,7 @@ use Swarrot\Processor\ConfigurableInterface;
 use Swarrot\Processor\SleepyInterface;
 use Swarrot\Processor\TerminableInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Swarrot\Consumer;
 
 class ConsumerTest extends TestCase
 {

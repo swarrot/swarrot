@@ -1,11 +1,13 @@
 <?php
 
-namespace Swarrot\Broker\MessageProvider;
+namespace Swarrot\Tests\Broker\MessageProvider;
 
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Swarrot\Broker\Message;
 use Swarrot\Driver\MessageCacheInterface;
+use Swarrot\Broker\MessageProvider\SqsMessageProvider;
+use Swarrot\Broker\MessageProvider\MessageProviderInterface;
 use Swarrot\Driver\PrefetchMessageCache;
 use Aws\Sqs\SqsClient;
 use Guzzle\Service\Resource\Model;
