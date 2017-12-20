@@ -44,9 +44,9 @@ class PhpAmqpLibMessagePublisherTest extends TestCase
 
                 return
                     'body' === $message->body &&
-                    ['I', 42] === $properties['application_headers']['int_header'] &&
-                    ['S', 'my_value'] === $properties['application_headers']['string_header'] &&
-                    ['A', ['foo' => 'bar']] === $properties['application_headers']['array_header'] &&
+                    $properties['application_headers']['int_header'] === ['I', 42] &&
+                    $properties['application_headers']['string_header'] === ['S', 'my_value'] &&
+                    $properties['application_headers']['array_header'] === ['A', ['foo' => 'bar']] &&
                     !isset($properties['headers']) &&
                     $message->serialize_properties()
                 ;
@@ -62,11 +62,11 @@ class PhpAmqpLibMessagePublisherTest extends TestCase
                 [
                     'headers' => [
                         'string_header' => 'my_value',
-                        'array_header' => ['foo' => 'bar']
+                        'array_header' => ['foo' => 'bar'],
                     ],
                     'application_headers' => [
-                        'int_header' => ['I', 42]
-                    ]
+                        'int_header' => ['I', 42],
+                    ],
                 ]
             )
         );
@@ -77,7 +77,7 @@ class PhpAmqpLibMessagePublisherTest extends TestCase
     public function test_publish_with_publisher_confirms()
     {
         if (!method_exists(AMQPChannel::class, 'set_nack_handler')) {
-            $this->markTestSkipped("The AMQP library version does not support publisher confirms");
+            $this->markTestSkipped('The AMQP library version does not support publisher confirms');
         }
         $channel = $this->prophesize(AMQPChannel::class);
         $channel->set_nack_handler(

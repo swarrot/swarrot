@@ -70,7 +70,7 @@ class SentryProcessor implements ProcessorInterface
             ],
             'extra' => [
                 'message' => $message->getBody(),
-            ]
+            ],
         ];
 
         return $data;

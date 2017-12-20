@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__.'/../vendor/autoload.php';
 
 use Swarrot\Consumer;
 use Swarrot\Broker\PeclPackageMessageProvider;
@@ -16,8 +16,9 @@ class Processor implements ProcessorInterface
     public function __construct($processor, $num = 1)
     {
         $this->processor = $processor;
-        $this->num       = (int) $num;
+        $this->num = (int) $num;
     }
+
     public function process(Message $message, array $options)
     {
         printf("Start processing message #%d in processor #%d\n", $message->getId(), $this->num);

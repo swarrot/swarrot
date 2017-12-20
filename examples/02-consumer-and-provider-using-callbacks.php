@@ -9,7 +9,7 @@ use Swarrot\Processor\Callback\CallbackProcessor;
 
 $i = 0;
 $messageProvider = new CallbackMessageProvider(function () use (&$i) {
-    $isPair = $i++ % 2 == 0;
+    $isPair = 0 == $i++ % 2;
 
     return $isPair ?
         new Message(

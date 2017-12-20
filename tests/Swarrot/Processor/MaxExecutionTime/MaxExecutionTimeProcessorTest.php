@@ -22,7 +22,7 @@ class MaxExecutionTimeProcessorTest extends TestCase
     public function test_it_is_initializable_with_a_logger()
     {
         $processor = $this->prophesize(ProcessorInterface::class);
-        $logger    = $this->prophesize(LoggerInterface::class);
+        $logger = $this->prophesize(LoggerInterface::class);
 
         $processor = new MaxExecutionTimeProcessor($processor->reveal(), $logger->reveal());
         $this->assertInstanceOf(MaxExecutionTimeProcessor::class, $processor);
@@ -39,7 +39,7 @@ class MaxExecutionTimeProcessorTest extends TestCase
             ))
         );
 
-        $logger    = $this->prophesize(LoggerInterface::class);
+        $logger = $this->prophesize(LoggerInterface::class);
         $logger->info(
             Argument::exact(sprintf('[MaxExecutionTime] Max execution time have been reached (%d)', $maxExecutionTime)),
             Argument::exact(['swarrot_processor' => 'max_execution_time'])

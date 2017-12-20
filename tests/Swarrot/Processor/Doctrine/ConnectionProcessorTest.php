@@ -88,7 +88,7 @@ class ConnectionProcessorTest extends TestCase
     {
         $innerProcessorProphecy = $this->prophesize(ProcessorInterface::class);
 
-        new ConnectionProcessor($innerProcessorProphecy->reveal(), [new \StdClass]);
+        new ConnectionProcessor($innerProcessorProphecy->reveal(), [new \StdClass()]);
     }
 
     public function testAcceptEmptyConnections()

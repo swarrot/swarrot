@@ -3,7 +3,6 @@
 namespace Swarrot\Tests\Processor\RPC;
 
 use PHPUnit\Framework\TestCase;
-use Prophecy\Argument;
 use Psr\Log\LoggerInterface;
 use Swarrot\Broker\Message;
 use Swarrot\Processor\ProcessorInterface;
@@ -44,13 +43,13 @@ class RpcClientProcessorTest extends TestCase
 
     public function test_it_should_sleep_if_no_correlation_id_set()
     {
-        $processor = new RpcClientProcessor;
-        $this->assertNull($processor->process(new Message, []));
+        $processor = new RpcClientProcessor();
+        $this->assertNull($processor->process(new Message(), []));
     }
 
     public function test_it_should_sleep_if_invalid_correlation_id()
     {
-        $processor = new RpcClientProcessor;
+        $processor = new RpcClientProcessor();
         $message = new Message(null, ['correlation_id' => 1]);
 
         $this->assertNull($processor->process($message, ['rpc_client_correlation_id' => 0]));
@@ -59,7 +58,7 @@ class RpcClientProcessorTest extends TestCase
 
     public function test_it_should_stop_if_correct_correlation_id()
     {
-        $processor = new RpcClientProcessor;
+        $processor = new RpcClientProcessor();
         $message = new Message(null, ['correlation_id' => 1]);
 
         $this->assertNull($processor->process($message, ['rpc_client_correlation_id' => 1]));
@@ -78,4 +77,3 @@ class RpcClientProcessorTest extends TestCase
         $this->assertFalse($processor->sleep([]));
     }
 }
-

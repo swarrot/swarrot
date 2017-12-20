@@ -29,6 +29,7 @@ class MemoryLimitProcessor implements ConfigurableInterface
         $this->processor = $processor;
         $this->logger = $logger;
     }
+
     /**
      * {@inheritdoc}
      */

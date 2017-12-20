@@ -45,7 +45,6 @@ class InteropMessagePublisherTest extends TestCase
             ->shouldBeCalledTimes(1)
         ;
 
-
         $context = $this->prophesize(PsrContext::class);
         $context
             ->createTopic(Argument::exact('theTopicName'))
@@ -72,7 +71,7 @@ class InteropMessagePublisherTest extends TestCase
             'fooProp' => 'fooPropVal',
             'headers' => [
                 'fooHeader' => 'fooHeaderVal',
-            ]
+            ],
         ]));
 
         $this->assertNull($return);

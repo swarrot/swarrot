@@ -14,7 +14,7 @@ class RpcServerProcessorTest extends TestCase
 {
     public function test_it_is_initializable_without_a_logger()
     {
-        $processor        = $this->prophesize(ProcessorInterface::class);
+        $processor = $this->prophesize(ProcessorInterface::class);
         $messagePublisher = $this->prophesize(MessagePublisherInterface::class);
 
         $processor = new RpcServerProcessor($processor->reveal(), $messagePublisher->reveal());
@@ -23,9 +23,9 @@ class RpcServerProcessorTest extends TestCase
 
     public function test_it_is_initializable_with_a_logger()
     {
-        $processor        = $this->prophesize(ProcessorInterface::class);
+        $processor = $this->prophesize(ProcessorInterface::class);
         $messagePublisher = $this->prophesize(MessagePublisherInterface::class);
-        $logger           = $this->prophesize(LoggerInterface::class);
+        $logger = $this->prophesize(LoggerInterface::class);
 
         $processor = new RpcServerProcessor($processor->reveal(), $messagePublisher->reveal(), $logger->reveal());
         $this->assertInstanceOf(RpcServerProcessor::class, $processor);
@@ -34,7 +34,7 @@ class RpcServerProcessorTest extends TestCase
     /** @dataProvider noPropertiesProvider */
     public function test_it_should_do_an_early_return_if_no_adequate_properties(array $properties)
     {
-        $processor        = $this->prophesize(ProcessorInterface::class);
+        $processor = $this->prophesize(ProcessorInterface::class);
         $messagePublisher = $this->prophesize(MessagePublisherInterface::class);
         $messagePublisher->publish()->shouldNotBeCalled();
 
@@ -51,7 +51,7 @@ class RpcServerProcessorTest extends TestCase
                 [['correlation_id' => 0]],
                 [['reply_to' => '', 'correlation_id' => 0]],
                 [['reply_to' => '', 'correlation_id' => 42]],
-                [['reply_to' => 'foo', 'correlation_id' => 0]]];
+                [['reply_to' => 'foo', 'correlation_id' => 0]], ];
     }
 
     public function test_it_should_publish_a_new_message_when_done()
@@ -71,4 +71,3 @@ class RpcServerProcessorTest extends TestCase
         $this->assertSame('bar', $processor->process($message, []));
     }
 }
-

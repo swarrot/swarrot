@@ -22,7 +22,7 @@ class MemoryLimitProcessorTest extends TestCase
     public function test_it_is_initializable_with_a_logger()
     {
         $processor = $this->prophesize(ProcessorInterface::class);
-        $logger    = $this->prophesize(LoggerInterface::class);
+        $logger = $this->prophesize(LoggerInterface::class);
 
         $processor = new MemoryLimitProcessor($processor->reveal(), $logger->reveal());
         $this->assertInstanceOf(MemoryLimitProcessor::class, $processor);

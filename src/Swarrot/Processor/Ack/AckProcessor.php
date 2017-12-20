@@ -82,7 +82,7 @@ class AckProcessor implements ConfigurableInterface
      */
     private function handleException($exception, Message $message, array $options)
     {
-        $requeue = isset($options['requeue_on_error']) ? (boolean) $options['requeue_on_error'] : false;
+        $requeue = isset($options['requeue_on_error']) ? (bool) $options['requeue_on_error'] : false;
         $this->messageProvider->nack($message, $requeue);
 
         $this->logger and $this->logger->error(

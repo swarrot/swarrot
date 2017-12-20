@@ -56,7 +56,6 @@ class RetryProcessor implements ConfigurableInterface
             ->setAllowedTypes('retry_log_levels_map', 'array')
             ->setAllowedTypes('retry_fail_log_levels_map', 'array')
         ;
-
     }
 
     /**
