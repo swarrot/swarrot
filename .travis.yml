@@ -4,6 +4,11 @@ sudo: false
 
 services: [rabbitmq]
 
+addons:
+  apt:
+    packages:
+    - cmake
+
 env:
     global:
         - LIBRABBITMQ_VERSION=v0.8.0
@@ -31,6 +36,6 @@ install:
   - ./tests/bin/install_php-amqp.sh
   - composer selfupdate
   - composer update --prefer-source -n $COMPOSER_FLAGS
-  - sudo ./tests/bin/prepare_rabbit.sh
+  - sudo env ./tests/bin/prepare_rabbit.sh
 
 script: vendor/bin/phpunit
