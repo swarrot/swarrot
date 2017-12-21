@@ -3,6 +3,7 @@
 namespace Swarrot\Processor\RPC;
 
 use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 use Swarrot\Broker\Message;
 use Swarrot\Broker\MessagePublisher\MessagePublisherInterface;
 use Swarrot\Processor\ProcessorInterface;
@@ -27,7 +28,7 @@ class RpcServerProcessor implements ProcessorInterface
     {
         $this->processor = $processor;
         $this->publisher = $publisher;
-        $this->logger = $logger;
+        $this->logger = $logger ?: new NullLogger();
     }
 
     /** {@inheritdoc} */
@@ -41,7 +42,7 @@ class RpcServerProcessor implements ProcessorInterface
             return $result;
         }
 
-        $this->logger and $this->logger->info(sprintf('sending a new message to the "%s" queue with the id "%s"', $properties['reply_to'], $properties['correlation_id']), ['swarrot_processor' => 'rpc']);
+        $this->logger->info(sprintf('sending a new message to the "%s" queue with the id "%s"', $properties['reply_to'], $properties['correlation_id']), ['swarrot_processor' => 'rpc']);
 
         $message = new Message((string) $result, ['correlation_id' => $properties['correlation_id']]);
         $this->publisher->publish($message, $properties['reply_to']);

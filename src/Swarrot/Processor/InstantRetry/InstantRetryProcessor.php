@@ -2,11 +2,12 @@
 
 namespace Swarrot\Processor\InstantRetry;
 
+use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
+use Psr\Log\NullLogger;
 use Swarrot\Broker\Message;
 use Swarrot\Processor\ConfigurableInterface;
 use Swarrot\Processor\ProcessorInterface;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class InstantRetryProcessor implements ConfigurableInterface
@@ -24,7 +25,7 @@ class InstantRetryProcessor implements ConfigurableInterface
     public function __construct(ProcessorInterface $processor, LoggerInterface $logger = null)
     {
         $this->processor = $processor;
-        $this->logger = $logger;
+        $this->logger = $logger ?: new NullLogger();
     }
 
     /**
@@ -66,7 +67,7 @@ class InstantRetryProcessor implements ConfigurableInterface
      */
     private function handleException($exception, Message $message, array $options)
     {
-        $this->logger and $this->logException(
+        $this->logException(
             $exception,
             sprintf(
                 '[InstantRetry] An exception occurred. Message #%d will be processed again in %d ms',

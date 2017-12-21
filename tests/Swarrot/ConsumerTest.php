@@ -1,6 +1,6 @@
 <?php
 
-namespace Swarrot;
+namespace Swarrot\Tests;
 
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
@@ -12,12 +12,13 @@ use Swarrot\Processor\ConfigurableInterface;
 use Swarrot\Processor\SleepyInterface;
 use Swarrot\Processor\TerminableInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Swarrot\Consumer;
 
 class ConsumerTest extends TestCase
 {
     public function test_it_is_initializable()
     {
-        $provider  = $this->prophesize(MessageProviderInterface::class);
+        $provider = $this->prophesize(MessageProviderInterface::class);
         $processor = $this->prophesize(ProcessorInterface::class);
 
         $consumer = new Consumer($provider->reveal(), $processor->reveal());
@@ -26,7 +27,7 @@ class ConsumerTest extends TestCase
 
     public function test_it_returns_null_if_no_error_occurred()
     {
-        $provider  = $this->prophesize(MessageProviderInterface::class);
+        $provider = $this->prophesize(MessageProviderInterface::class);
         $processor = $this->prophesize(ProcessorInterface::class);
 
         $message = new Message('body', array(), 1);
@@ -38,7 +39,7 @@ class ConsumerTest extends TestCase
                 $message,
                 [
                     'poll_interval' => '50000',
-                    'queue'         => 'image_crop',
+                    'queue' => 'image_crop',
                 ]
             )
             ->willReturn(false)
@@ -50,7 +51,7 @@ class ConsumerTest extends TestCase
 
     public function test_it_call_processor_if_its_configurable()
     {
-        $provider  = $this->prophesize(MessageProviderInterface::class);
+        $provider = $this->prophesize(MessageProviderInterface::class);
         $processor = $this->prophesize(ConfigurableInterface::class);
 
         $message = new Message('body', array(), 1);
@@ -71,7 +72,7 @@ class ConsumerTest extends TestCase
 
     public function test_it_call_processor_if_its_initializable()
     {
-        $provider  = $this->prophesize(MessageProviderInterface::class);
+        $provider = $this->prophesize(MessageProviderInterface::class);
         $processor = $this->prophesize(InitializableInterface::class);
 
         $message = new Message('body', array(), 1);
@@ -90,7 +91,7 @@ class ConsumerTest extends TestCase
 
     public function test_it_call_processor_if_its_terminable()
     {
-        $provider  = $this->prophesize(MessageProviderInterface::class);
+        $provider = $this->prophesize(MessageProviderInterface::class);
         $processor = $this->prophesize(TerminableInterface::class);
 
         $message = new Message('body', array(), 1);
@@ -109,7 +110,7 @@ class ConsumerTest extends TestCase
 
     public function test_it_call_processor_if_its_Sleepy()
     {
-        $provider  = $this->prophesize(MessageProviderInterface::class);
+        $provider = $this->prophesize(MessageProviderInterface::class);
         $processor = $this->prophesize(SleepyInterface::class);
 
         $message = new Message('body', array(), 1);

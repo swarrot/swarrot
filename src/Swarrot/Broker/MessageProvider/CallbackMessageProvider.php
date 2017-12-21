@@ -41,7 +41,7 @@ class CallbackMessageProvider implements MessageProviderInterface
      */
     public function ack(Message $message)
     {
-        if ($this->ack === null) {
+        if (null === $this->ack) {
             return;
         }
 
@@ -53,7 +53,7 @@ class CallbackMessageProvider implements MessageProviderInterface
      */
     public function nack(Message $message, $requeue = false)
     {
-        if ($this->nack === null) {
+        if (null === $this->nack) {
             return;
         }
 

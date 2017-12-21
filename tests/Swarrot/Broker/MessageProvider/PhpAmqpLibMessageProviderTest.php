@@ -1,25 +1,26 @@
 <?php
 
-namespace Swarrot\Broker\MessageProvider;
+namespace Swarrot\Tests\Broker\MessageProvider;
 
 use PhpAmqpLib\Message\AMQPMessage;
 use PHPUnit\Framework\TestCase;
 use Swarrot\Broker\Message;
 use PhpAmqpLib\Channel\AMQPChannel;
+use Swarrot\Broker\MessageProvider\PhpAmqpLibMessageProvider;
 
 class PhpAmqpLibMessageProviderTest extends TestCase
 {
     public function test_get_with_messages_in_queue_return_message()
     {
-        $channel     = $this->prophesize(AMQPChannel::class);
+        $channel = $this->prophesize(AMQPChannel::class);
         $amqpMessage = new AMQPMessage('foobar');
 
-        $amqpMessage->delivery_info['delivery_tag'] =  '1';
+        $amqpMessage->delivery_info['delivery_tag'] = '1';
 
         $channel->basic_get('my_queue')->shouldBeCalled()->willReturn($amqpMessage);
 
         $provider = new PhpAmqpLibMessageProvider($channel->reveal(), 'my_queue');
-        $message  = $provider->get();
+        $message = $provider->get();
 
         $this->assertInstanceOf('Swarrot\Broker\Message', $message);
     }
@@ -31,7 +32,7 @@ class PhpAmqpLibMessageProviderTest extends TestCase
         $channel->basic_get('my_queue')->shouldBeCalled()->willReturn(null);
 
         $provider = new PhpAmqpLibMessageProvider($channel->reveal(), 'my_queue');
-        $message  = $provider->get();
+        $message = $provider->get();
 
         $this->assertNull($message);
     }

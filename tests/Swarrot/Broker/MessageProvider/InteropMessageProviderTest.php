@@ -1,6 +1,6 @@
 <?php
 
-namespace Swarrot\Broker\MessageProvider;
+namespace Swarrot\Tests\Broker\MessageProvider;
 
 use Interop\Queue\PsrConsumer;
 use Interop\Queue\PsrContext;
@@ -9,6 +9,8 @@ use Interop\Queue\PsrQueue;
 use Prophecy\Argument;
 use PHPUnit\Framework\TestCase;
 use Swarrot\Broker\Message;
+use Swarrot\Broker\MessageProvider\InteropMessageProvider;
+use Swarrot\Broker\MessageProvider\MessageProviderInterface;
 
 class InteropMessageProviderTest extends TestCase
 {
@@ -28,7 +30,7 @@ class InteropMessageProviderTest extends TestCase
 
         $context = $this->prophesize(PsrContext::class);
         $context
-            ->createQueue(Argument::exact("aQueueName"))
+            ->createQueue(Argument::exact('aQueueName'))
             ->willReturn($queue)
         ;
         $context
@@ -76,7 +78,7 @@ class InteropMessageProviderTest extends TestCase
 
         $context = $this->prophesize(PsrContext::class);
         $context
-            ->createQueue(Argument::exact("aQueueName"))
+            ->createQueue(Argument::exact('aQueueName'))
             ->willReturn($queue)
         ;
         $context
@@ -108,7 +110,7 @@ class InteropMessageProviderTest extends TestCase
 
         $context = $this->prophesize(PsrContext::class);
         $context
-            ->createQueue(Argument::exact("aQueueName"))
+            ->createQueue(Argument::exact('aQueueName'))
             ->willReturn($queue)
         ;
         $context
@@ -141,7 +143,7 @@ class InteropMessageProviderTest extends TestCase
 
         $context = $this->prophesize(PsrContext::class);
         $context
-            ->createQueue(Argument::exact("aQueueName"))
+            ->createQueue(Argument::exact('aQueueName'))
             ->willReturn($queue)
         ;
         $context
@@ -180,7 +182,7 @@ class InteropMessageProviderTest extends TestCase
 
         $context = $this->prophesize(PsrContext::class);
         $context
-            ->createQueue(Argument::exact("aQueueName"))
+            ->createQueue(Argument::exact('aQueueName'))
             ->willReturn($queue)
         ;
         $context
@@ -214,7 +216,7 @@ class InteropMessageProviderTest extends TestCase
 
         $context = $this->prophesize(PsrContext::class);
         $context
-            ->createQueue(Argument::exact("theQueueName"))
+            ->createQueue(Argument::exact('theQueueName'))
             ->willReturn($queue)
         ;
         $context

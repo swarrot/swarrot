@@ -1,12 +1,13 @@
 <?php
 
-namespace Swarrot\Processor\MemoryLimit;
+namespace Swarrot\Tests\Processor\MemoryLimit;
 
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Psr\Log\LoggerInterface;
 use Swarrot\Broker\Message;
 use Swarrot\Processor\ProcessorInterface;
-use Psr\Log\LoggerInterface;
+use Swarrot\Processor\MemoryLimit\MemoryLimitProcessor;
 
 class MemoryLimitProcessorTest extends TestCase
 {
@@ -21,7 +22,7 @@ class MemoryLimitProcessorTest extends TestCase
     public function test_it_is_initializable_with_a_logger()
     {
         $processor = $this->prophesize(ProcessorInterface::class);
-        $logger    = $this->prophesize(LoggerInterface::class);
+        $logger = $this->prophesize(LoggerInterface::class);
 
         $processor = new MemoryLimitProcessor($processor->reveal(), $logger->reveal());
         $this->assertInstanceOf(MemoryLimitProcessor::class, $processor);

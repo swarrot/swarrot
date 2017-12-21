@@ -27,7 +27,7 @@ final class InteropMessagePublisher implements MessagePublisherInterface
 
     /**
      * @param PsrContext $context
-     * @param string $topicName
+     * @param string     $topicName
      */
     public function __construct(PsrContext $context, $topicName)
     {
@@ -43,7 +43,7 @@ final class InteropMessagePublisher implements MessagePublisherInterface
         $headers = $message->getProperties();
         $properties = [];
         if (isset($headers['headers'])) {
-            $properties =  $headers['headers'];
+            $properties = $headers['headers'];
 
             unset($headers['headers']);
         }

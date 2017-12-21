@@ -3,6 +3,7 @@
 namespace Swarrot\Processor\RPC;
 
 use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Swarrot\Broker\Message;
 use Swarrot\Processor\ProcessorInterface;
@@ -26,7 +27,7 @@ class RpcClientProcessor implements ProcessorInterface, ConfigurableInterface, S
     /** @var LoggerInterface */
     private $logger;
 
-    /** @var ProcessorInterface */
+    /** @var ProcessorInterface|null */
     private $processor;
 
     /** @var bool */
@@ -35,7 +36,7 @@ class RpcClientProcessor implements ProcessorInterface, ConfigurableInterface, S
     public function __construct(ProcessorInterface $processor = null, LoggerInterface $logger = null)
     {
         $this->processor = $processor;
-        $this->logger = $logger;
+        $this->logger = $logger ?: new NullLogger();
     }
 
     /** {@inheritdoc} */
@@ -54,11 +55,11 @@ class RpcClientProcessor implements ProcessorInterface, ConfigurableInterface, S
 
         $result = null;
 
-        $this->logger and $this->logger->info('Message received from the RPC Server ; terminating consumer', ['correlation_id' => $properties['correlation_id']]);
+        $this->logger->info('Message received from the RPC Server ; terminating consumer', ['correlation_id' => $properties['correlation_id']]);
         $this->awoken = true;
 
         if (null !== $this->processor) {
-            $this->logger and $this->logger->info('Sending message to sub-processor');
+            $this->logger->info('Sending message to sub-processor');
             $result = $this->processor->process($message, $options);
         }
 

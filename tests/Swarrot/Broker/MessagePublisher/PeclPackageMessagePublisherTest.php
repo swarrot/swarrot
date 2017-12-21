@@ -1,8 +1,9 @@
 <?php
 
-namespace Swarrot\Broker\MessagePublisher;
+namespace Swarrot\Tests\Broker\MessagePublisher;
 
 use Swarrot\Broker\Message;
+use Swarrot\Broker\MessagePublisher\PeclPackageMessagePublisher;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 
@@ -49,7 +50,7 @@ class PeclPackageMessagePublisherTest extends TestCase
                     'headers' => [
                         'header' => 'value',
                         'integer' => 42,
-                    ]
+                    ],
                 ])
             )
             ->shouldBeCalledTimes(1)
@@ -62,7 +63,7 @@ class PeclPackageMessagePublisherTest extends TestCase
                     'integer' => 42,
                     'array' => ['foo', 'bar'],
                     'another_array' => ['foo' => ['bar', 'burger']],
-                ]
+                ],
             ])
         );
 
@@ -82,7 +83,7 @@ class PeclPackageMessagePublisherTest extends TestCase
                         'another_header' => 'another_value',
                         'string' => 'foobar',
                         'integer' => 42,
-                    ]
+                    ],
                 ])
             )
             ->shouldBeCalledTimes(1)
@@ -93,11 +94,11 @@ class PeclPackageMessagePublisherTest extends TestCase
                 'application_headers' => [
                     'string' => ['S', 'foobar'],
                     'integer' => ['I', 42],
-                    'array' => ['A', ['foo', 'bar']]
+                    'array' => ['A', ['foo', 'bar']],
                 ],
                 'headers' => [
-                    'another_header' => 'another_value'
-                ]
+                    'another_header' => 'another_value',
+                ],
             ])
         );
 
@@ -119,7 +120,7 @@ class PeclPackageMessagePublisherTest extends TestCase
         $provider = new PeclPackageMessagePublisher($exchange->reveal());
         $return = $provider->publish(
             new Message('body', [
-                'delivery_mode' => 0
+                'delivery_mode' => 0,
             ])
         );
 
@@ -128,8 +129,8 @@ class PeclPackageMessagePublisherTest extends TestCase
 
     public function test_publish_with_publisher_confirms()
     {
-        if (version_compare("1.8.0", phpversion('amqp')) === 1) {
-            $this->markTestSkipped("The AMQP Extension version does not support publisher confirms");
+        if (1 === version_compare('1.8.0', phpversion('amqp'))) {
+            $this->markTestSkipped('The AMQP Extension version does not support publisher confirms');
         }
 
         $channel = $this->prophesize('\AMQPChannel');
@@ -167,7 +168,7 @@ class PeclPackageMessagePublisherTest extends TestCase
         $provider = new PeclPackageMessagePublisher($exchange->reveal(), AMQP_NOPARAM, null, true, 10);
         $return = $provider->publish(
             new Message('body', [
-                'delivery_mode' => 0
+                'delivery_mode' => 0,
             ])
         );
 

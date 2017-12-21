@@ -31,19 +31,19 @@ final class InteropMessageProvider implements MessageProviderInterface
     private $consumedMessages = [];
 
     /**
-     * @var float|int
+     * @var int
      */
     private $waitTimeout;
 
     /**
      * @param PsrContext $context
-     * @param string $queueName
-     * @param float|int $waitTimeout
+     * @param string     $queueName
+     * @param float|int  $waitTimeout
      */
-    public function __construct(PsrContext $context, $queueName, $waitTimeout = 1000 /** 1sec */)
+    public function __construct(PsrContext $context, $queueName, $waitTimeout = 1000 /* 1sec */)
     {
         $this->context = $context;
-        $this->waitTimeout = $waitTimeout;
+        $this->waitTimeout = (int) $waitTimeout;
 
         $this->queue = $context->createQueue($queueName);
         $this->consumer = $context->createConsumer($this->queue);

@@ -2,6 +2,8 @@
 
 namespace Swarrot;
 
+use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 use Swarrot\Broker\MessageProvider\MessageProviderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Swarrot\Processor\ProcessorInterface;
@@ -9,7 +11,6 @@ use Swarrot\Processor\ConfigurableInterface;
 use Swarrot\Processor\InitializableInterface;
 use Swarrot\Processor\TerminableInterface;
 use Swarrot\Processor\SleepyInterface;
-use Psr\Log\LoggerInterface;
 
 class Consumer
 {
@@ -44,7 +45,7 @@ class Consumer
         $this->messageProvider = $messageProvider;
         $this->processor = $processor;
         $this->optionsResolver = $optionsResolver ?: new OptionsResolver();
-        $this->logger = $logger;
+        $this->logger = $logger ?: new NullLogger();
     }
 
     /**
@@ -54,12 +55,11 @@ class Consumer
      */
     public function consume(array $options = array())
     {
-        if (null !== $this->logger) {
-            $this->logger->debug(sprintf(
-                'Start consuming queue %s.',
-                $this->messageProvider->getQueueName()
-            ));
-        }
+        $this->logger->debug(sprintf(
+            'Start consuming queue %s.',
+            $this->messageProvider->getQueueName()
+        ));
+
         $this->optionsResolver->setDefaults(array(
             'poll_interval' => 50000,
             'queue' => $this->messageProvider->getQueueName(),

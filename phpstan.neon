@@ -1,0 +1,25 @@
+parameters:
+    excludes_analyse:
+        - %currentWorkingDirectory%/tests
+        - %currentWorkingDirectory%/vendor
+
+    ignoreErrors:
+        - '#^Method .* should return bool|null but empty return statement found.#'
+        - '#^Call to an undefined method Doctrine\\Common\\Persistence\\ObjectManager::isOpen\(\).$#'
+        - '#^Function newrelic_[a-z_]* not found.#'
+
+    checkNullables: false
+    # Cause:
+    # ------ ----------------------------------------------------------------------------------------------------------------------------------------------------
+    # Line   src/Swarrot/Consumer.php
+    # ------ ----------------------------------------------------------------------------------------------------------------------------------------------------
+    # 80     Parameter #1 $message of method Swarrot\Processor\ProcessorInterface::process() expects Swarrot\Broker\Message, Swarrot\Broker\Message|null given.
+    # ------ ----------------------------------------------------------------------------------------------------------------------------------------------------
+
+    checkMaybeUndefinedVariables: false
+    # Cause:
+    # ------ --------------------------------------------------------------
+    # Line   src/Swarrot/Processor/InstantRetry/InstantRetryProcessor.php
+    # ------ --------------------------------------------------------------
+    # 48     Variable $e might not be defined.
+    # ------ --------------------------------------------------------------

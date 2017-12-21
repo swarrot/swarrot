@@ -1,9 +1,10 @@
 <?php
 
-namespace Swarrot\Broker\MessageProvider;
+namespace Swarrot\Tests\Broker\MessageProvider;
 
 use PHPUnit\Framework\TestCase;
 use Swarrot\Broker\Message;
+use Swarrot\Broker\MessageProvider\PeclPackageMessageProvider;
 
 class PeclPackageMessageProviderTest extends TestCase
 {
@@ -40,7 +41,7 @@ class PeclPackageMessageProviderTest extends TestCase
     protected function getAMQPQueue($name)
     {
         $connection = new \AMQPConnection(array(
-            'vhost' => 'swarrot'
+            'vhost' => 'swarrot',
         ));
         $connection->connect();
         $channel = new \AMQPChannel($connection);

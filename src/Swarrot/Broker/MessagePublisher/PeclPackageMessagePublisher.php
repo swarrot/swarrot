@@ -29,8 +29,8 @@ class PeclPackageMessagePublisher implements MessagePublisherInterface
         $this->publisherConfirms = $publisherConfirms;
         $this->timeout = $timeout;
         if ($publisherConfirms) {
-            if (version_compare("1.8.0", phpversion('amqp')) === 1) {
-                throw new \Exception("Publisher confirms are not supported. Update your pecl amqp package");
+            if (1 === version_compare('1.8.0', phpversion('amqp'))) {
+                throw new \Exception('Publisher confirms are not supported. Update your pecl amqp package');
             }
             $this->exchange->getChannel()->setConfirmCallback($this->getAckHandler(), $this->getNackHandler());
             $this->exchange->getChannel()->confirmSelect();
@@ -42,7 +42,7 @@ class PeclPackageMessagePublisher implements MessagePublisherInterface
         return function ($deliveryTag, $multiple) {
             //remove acked from pending list
             if ($multiple) {
-                for ($tag = 0; $tag <= $multiple; $tag ++) {
+                for ($tag = 0; $tag <= $multiple; ++$tag) {
                     unset($this->pendingMessages[$tag]);
                 }
             } else {
@@ -60,10 +60,9 @@ class PeclPackageMessagePublisher implements MessagePublisherInterface
     private function getNackHandler()
     {
         return function ($deliveryTag, $multiple, $requeue) {
-            throw new \Exception("Error publishing deliveryTag: " . $deliveryTag);
+            throw new \Exception('Error publishing deliveryTag: '.$deliveryTag);
         };
     }
-
 
     /**
      * {@inheritdoc}

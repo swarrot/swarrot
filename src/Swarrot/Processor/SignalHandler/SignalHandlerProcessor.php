@@ -8,6 +8,7 @@ use Swarrot\Processor\ConfigurableInterface;
 use Swarrot\Processor\SleepyInterface;
 use Swarrot\Processor\InitializableInterface;
 use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SignalHandlerProcessor implements ConfigurableInterface, SleepyInterface, InitializableInterface
@@ -34,7 +35,7 @@ class SignalHandlerProcessor implements ConfigurableInterface, SleepyInterface, 
     public function __construct(ProcessorInterface $processor, LoggerInterface $logger = null)
     {
         $this->processor = $processor;
-        $this->logger = $logger;
+        $this->logger = $logger ?: new NullLogger();
     }
 
     /**
@@ -56,7 +57,7 @@ class SignalHandlerProcessor implements ConfigurableInterface, SleepyInterface, 
             return true;
         }
 
-        return !$this->shouldStop();
+        return !$this->shouldStop($options);
     }
 
     /**
@@ -66,7 +67,7 @@ class SignalHandlerProcessor implements ConfigurableInterface, SleepyInterface, 
     {
         $return = $this->processor->process($message, $options);
 
-        if (extension_loaded('pcntl') && $this->shouldStop()) {
+        if (extension_loaded('pcntl') && $this->shouldStop($options)) {
             return false;
         }
 
@@ -79,7 +80,7 @@ class SignalHandlerProcessor implements ConfigurableInterface, SleepyInterface, 
     public function initialize(array $options)
     {
         if (!extension_loaded('pcntl')) {
-            $this->logger and $this->logger->warning(
+            $this->logger->warning(
                 '[SignalHandler] The SignalHandlerProcessor needs the pcntl extension to work',
                 [
                     'swarrot_processor' => 'signal_handler',
@@ -100,9 +101,11 @@ class SignalHandlerProcessor implements ConfigurableInterface, SleepyInterface, 
     /**
      * shouldStop.
      *
+     * @param array $options
+     *
      * @return bool
      */
-    protected function shouldStop()
+    protected function shouldStop(array $options)
     {
         pcntl_signal_dispatch();
 
@@ -112,7 +115,7 @@ class SignalHandlerProcessor implements ConfigurableInterface, SleepyInterface, 
         }
 
         if ($this::$shouldExit) {
-            $this->logger and $this->logger->info(
+            $this->logger->info(
                 '[SignalHandler] Signal received. Stop consumer now.',
                 [
                     'swarrot_processor' => 'signal_handler',

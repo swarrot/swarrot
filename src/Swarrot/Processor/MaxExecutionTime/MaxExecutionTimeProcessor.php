@@ -5,6 +5,7 @@ namespace Swarrot\Processor\MaxExecutionTime;
 use Swarrot\Processor\ProcessorInterface;
 use Swarrot\Broker\Message;
 use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Swarrot\Processor\InitializableInterface;
 use Swarrot\Processor\ConfigurableInterface;
@@ -34,7 +35,7 @@ class MaxExecutionTimeProcessor implements ConfigurableInterface, InitializableI
     public function __construct(ProcessorInterface $processor, LoggerInterface $logger = null)
     {
         $this->processor = $processor;
-        $this->logger = $logger;
+        $this->logger = $logger ?: new NullLogger();
     }
 
     /**
@@ -90,7 +91,7 @@ class MaxExecutionTimeProcessor implements ConfigurableInterface, InitializableI
     protected function isTimeExceeded(array $options)
     {
         if (microtime(true) - $this->startTime > $options['max_execution_time']) {
-            $this->logger and $this->logger->info(
+            $this->logger->info(
                 sprintf(
                     '[MaxExecutionTime] Max execution time have been reached (%d)',
                     $options['max_execution_time']
