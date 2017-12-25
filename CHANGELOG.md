@@ -5,6 +5,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [3.2.1] - 2017-12-25
+
+- Make swarrot compatible with symfony4.
+
 ## [3.2.0] - 2017-10-31
 
 - Add a sentry processor to capture exceptions
@@ -152,7 +156,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [1.1.0] - 2014-04-01
 
-[Unreleased]: https://github.com/swarrot/swarrot/compare/v3.1.0...HEAD
+[Unreleased]: https://github.com/swarrot/swarrot/compare/v3.2.1...HEAD
+[3.2.1]: https://github.com/swarrot/swarrot/compare/v3.2.0...v3.2.1
 [3.2.0]: https://github.com/swarrot/swarrot/compare/v3.1.0...v3.2.0
 [3.1.0]: https://github.com/swarrot/swarrot/compare/v3.0.0...v3.1.0
 [3.0.0]: https://github.com/swarrot/swarrot/compare/v2.4.0...v3.0.0
