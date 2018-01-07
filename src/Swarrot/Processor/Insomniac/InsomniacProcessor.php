@@ -2,7 +2,7 @@
 
 namespace Swarrot\Processor\Insomniac;
 
-use Swarrot\Broker\Message;
+use Swarrot\Broker\MessageInterface;
 use Swarrot\Processor\ProcessorInterface;
 use Swarrot\Processor\SleepyInterface;
 use Psr\Log\LoggerInterface;
@@ -25,7 +25,7 @@ class InsomniacProcessor implements SleepyInterface
     /**
      * {@inheritdoc}
      */
-    public function process(Message $message, array $options)
+    public function process(MessageInterface $message, array $options)
     {
         return $this->decoratedProcessor->process($message, $options);
     }

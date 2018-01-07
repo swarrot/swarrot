@@ -4,6 +4,7 @@ namespace Swarrot\Broker\MessageProvider;
 
 use PhpAmqpLib\Channel\AMQPChannel;
 use Swarrot\Broker\Message;
+use Swarrot\Broker\MessageInterface;
 
 class PhpAmqpLibMessageProvider implements MessageProviderInterface
 {
@@ -64,7 +65,7 @@ class PhpAmqpLibMessageProvider implements MessageProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function ack(Message $message)
+    public function ack(MessageInterface $message)
     {
         $this->channel->basic_ack($message->getId());
     }
@@ -72,7 +73,7 @@ class PhpAmqpLibMessageProvider implements MessageProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function nack(Message $message, $requeue = false)
+    public function nack(MessageInterface $message, $requeue = false)
     {
         $this->channel->basic_nack($message->getId(), false, $requeue);
     }

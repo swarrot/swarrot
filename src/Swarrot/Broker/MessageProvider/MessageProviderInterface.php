@@ -2,31 +2,31 @@
 
 namespace Swarrot\Broker\MessageProvider;
 
-use Swarrot\Broker\Message;
+use Swarrot\Broker\MessageInterface;
 
 interface MessageProviderInterface
 {
     /**
      * get.
      *
-     * @return Message|null
+     * @return MessageInterface|null
      */
     public function get();
 
     /**
      * ack.
      *
-     * @param Message $message
+     * @param MessageInterface $message
      */
-    public function ack(Message $message);
+    public function ack(MessageInterface $message);
 
     /**
      * nack.
      *
-     * @param Message $message The message to NACK
+     * @param MessageInterface $message The message to NACK
      * @param bool    $requeue Requeue the message in the queue ?
      */
-    public function nack(Message $message, $requeue = false);
+    public function nack(MessageInterface $message, $requeue = false);
 
     /**
      * getQueueName.

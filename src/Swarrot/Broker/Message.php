@@ -2,7 +2,7 @@
 
 namespace Swarrot\Broker;
 
-class Message
+class Message implements MessageInterface
 {
     /**
      * @var string
@@ -50,11 +50,26 @@ class Message
         $this->id = $id;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getBody()
     {
         return $this->body;
     }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function setBody($body)
+    {
+        return $this->body = $body;
+    }
+
+    /**
+     * @deprecated getHeaders() method is deprecated. Use getProperties().
+     * @return array
+     */
     public function getHeaders()
     {
         trigger_error('getHeaders() method is deprecated. Use getProperties().', E_USER_DEPRECATED);
@@ -62,13 +77,56 @@ class Message
         return $this->getProperties();
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getProperties()
     {
         return $this->properties;
     }
 
+    /**
+     * @param array $properties
+     */
+    public function setProperties(array $properties)
+    {
+        $this->properties = $properties;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setProperty($name, $value)
+    {
+        $this->properties[$name] = $value;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getProperty($name, $default = null)
+    {
+        if(isset($this->properties[$name])) {
+
+            return $this->properties[$name];
+        }
+
+        return $default;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
     }
 }

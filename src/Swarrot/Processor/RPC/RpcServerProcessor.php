@@ -4,6 +4,7 @@ namespace Swarrot\Processor\RPC;
 
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
+use Swarrot\Broker\MessageInterface;
 use Swarrot\Broker\Message;
 use Swarrot\Broker\MessagePublisher\MessagePublisherInterface;
 use Swarrot\Processor\ProcessorInterface;
@@ -32,7 +33,7 @@ class RpcServerProcessor implements ProcessorInterface
     }
 
     /** {@inheritdoc} */
-    public function process(Message $message, array $options)
+    public function process(MessageInterface $message, array $options)
     {
         $result = $this->processor->process($message, $options);
 

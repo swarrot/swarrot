@@ -5,7 +5,7 @@ namespace Swarrot\Processor\Ack;
 use Swarrot\Processor\ProcessorInterface;
 use Swarrot\Processor\ConfigurableInterface;
 use Swarrot\Broker\MessageProvider\MessageProviderInterface;
-use Swarrot\Broker\Message;
+use Swarrot\Broker\MessageInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -42,7 +42,7 @@ class AckProcessor implements ConfigurableInterface
     /**
      * {@inheritdoc}
      */
-    public function process(Message $message, array $options)
+    public function process(MessageInterface $message, array $options)
     {
         try {
             $return = $this->processor->process($message, $options);
@@ -78,10 +78,10 @@ class AckProcessor implements ConfigurableInterface
 
     /**
      * @param \Exception|\Throwable $exception
-     * @param Message               $message
+     * @param MessageInterface      $message
      * @param array                 $options
      */
-    private function handleException($exception, Message $message, array $options)
+    private function handleException($exception, MessageInterface $message, array $options)
     {
         $requeue = isset($options['requeue_on_error']) ? (bool) $options['requeue_on_error'] : false;
         $this->messageProvider->nack($message, $requeue);

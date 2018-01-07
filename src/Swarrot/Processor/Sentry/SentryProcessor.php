@@ -2,7 +2,7 @@
 
 namespace Swarrot\Processor\Sentry;
 
-use Swarrot\Broker\Message;
+use Swarrot\Broker\MessageInterface;
 use Swarrot\Processor\ProcessorInterface;
 
 class SentryProcessor implements ProcessorInterface
@@ -30,7 +30,7 @@ class SentryProcessor implements ProcessorInterface
     /**
      * {@inheritdoc}
      */
-    public function process(Message $message, array $options)
+    public function process(MessageInterface $message, array $options)
     {
         try {
             return $this->processor->process($message, $options);
@@ -41,12 +41,12 @@ class SentryProcessor implements ProcessorInterface
 
     /**
      * @param \Throwable $exception
-     * @param Message    $message
+     * @param MessageInterface    $message
      * @param array      $options
      *
      * @throws \Throwable
      */
-    private function handleException(\Throwable $exception, Message $message, array $options)
+    private function handleException(\Throwable $exception, MessageInterface $message, array $options)
     {
         $this->client->captureException($exception, $this->buildSentryData($message, $options));
 
@@ -54,12 +54,12 @@ class SentryProcessor implements ProcessorInterface
     }
 
     /**
-     * @param Message $message
+     * @param MessageInterface $message
      * @param array   $options
      *
      * @return array
      */
-    protected function buildSentryData(Message $message, array $options)
+    protected function buildSentryData(MessageInterface $message, array $options)
     {
         $properties = $message->getProperties();
 

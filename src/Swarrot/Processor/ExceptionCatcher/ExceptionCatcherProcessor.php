@@ -4,7 +4,7 @@ namespace Swarrot\Processor\ExceptionCatcher;
 
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
-use Swarrot\Broker\Message;
+use Swarrot\Broker\MessageInterface;
 use Swarrot\Processor\ProcessorInterface;
 
 class ExceptionCatcherProcessor implements ProcessorInterface
@@ -28,7 +28,7 @@ class ExceptionCatcherProcessor implements ProcessorInterface
     /**
      * {@inheritdoc}
      */
-    public function process(Message $message, array $options)
+    public function process(MessageInterface $message, array $options)
     {
         try {
             return $this->processor->process($message, $options);
@@ -43,10 +43,10 @@ class ExceptionCatcherProcessor implements ProcessorInterface
 
     /**
      * @param \Throwable|\Exception $exception
-     * @param Message               $message
+     * @param MessageInterface      $message
      * @param array                 $options
      */
-    private function handleException($exception, Message $message, array $options)
+    private function handleException($exception, MessageInterface $message, array $options)
     {
         $this->logger->error(
             '[ExceptionCatcher] An exception occurred. This exception has been caught.',

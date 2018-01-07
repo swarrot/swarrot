@@ -3,6 +3,7 @@
 namespace Swarrot\Broker\MessageProvider;
 
 use Swarrot\Broker\Message;
+use Swarrot\Broker\MessageInterface;
 
 class PeclPackageMessageProvider implements MessageProviderInterface
 {
@@ -61,7 +62,7 @@ class PeclPackageMessageProvider implements MessageProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function ack(Message $message)
+    public function ack(MessageInterface $message)
     {
         $this->queue->ack($message->getId());
     }
@@ -69,7 +70,7 @@ class PeclPackageMessageProvider implements MessageProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function nack(Message $message, $requeue = false)
+    public function nack(MessageInterface $message, $requeue = false)
     {
         $this->queue->nack($message->getId(), $requeue ? AMQP_REQUEUE : null);
     }

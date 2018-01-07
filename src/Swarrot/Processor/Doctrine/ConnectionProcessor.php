@@ -6,7 +6,7 @@ use Doctrine\Common\Persistence\ConnectionRegistry;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Connections\MasterSlaveConnection;
 use Doctrine\DBAL\DBALException;
-use Swarrot\Broker\Message;
+use Swarrot\Broker\MessageInterface;
 use Swarrot\Processor\ConfigurableInterface;
 use Swarrot\Processor\ProcessorInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -54,7 +54,7 @@ class ConnectionProcessor implements ConfigurableInterface
     /**
      * {@inheritdoc}
      */
-    public function process(Message $message, array $options)
+    public function process(MessageInterface $message, array $options)
     {
         if ($options['doctrine_ping']) {
             foreach ($this->connections as $connection) {

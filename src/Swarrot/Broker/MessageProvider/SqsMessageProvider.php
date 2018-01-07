@@ -4,6 +4,7 @@ namespace Swarrot\Broker\MessageProvider;
 
 use Aws\Sqs\SqsClient;
 use Swarrot\Broker\Message;
+use Swarrot\Broker\MessageInterface;
 use Swarrot\Driver\MessageCacheInterface;
 use Swarrot\Driver\PrefetchMessageCache;
 
@@ -70,7 +71,7 @@ class SqsMessageProvider implements MessageProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function ack(Message $message)
+    public function ack(MessageInterface $message)
     {
         $this->channel->deleteMessage([
             'QueueUrl' => $this->getQueueName(),
@@ -81,7 +82,7 @@ class SqsMessageProvider implements MessageProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function nack(Message $message, $requeue = false)
+    public function nack(MessageInterface $message, $requeue = false)
     {
     }
 

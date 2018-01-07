@@ -3,8 +3,8 @@
 require_once __DIR__.'/../vendor/autoload.php';
 
 use Swarrot\Consumer;
-use Swarrot\Broker\PeclPackageMessageProvider;
-use Swarrot\Broker\Message;
+use Swarrot\Broker\MessageProvider\PeclPackageMessageProvider;
+use Swarrot\Broker\MessageInterface;
 use Swarrot\Processor\ProcessorInterface;
 
 class Processor implements ProcessorInterface
@@ -13,13 +13,13 @@ class Processor implements ProcessorInterface
 
     protected $num;
 
-    public function __construct($processor, $num = 1)
+    public function __construct(ProcessorInterface $processor, $num = 1)
     {
         $this->processor = $processor;
         $this->num = (int) $num;
     }
 
-    public function process(Message $message, array $options)
+    public function process(MessageInterface $message, array $options)
     {
         printf("Start processing message #%d in processor #%d\n", $message->getId(), $this->num);
         $return = $this->processor->process($message, $options);
@@ -31,7 +31,7 @@ class Processor implements ProcessorInterface
 
 class FinalProcessor implements ProcessorInterface
 {
-    public function process(Message $message, array $options)
+    public function process(MessageInterface $message, array $options)
     {
         printf("Consume message #%d\n", $message->getId());
     }

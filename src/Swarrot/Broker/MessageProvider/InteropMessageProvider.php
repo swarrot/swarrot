@@ -6,6 +6,7 @@ use Interop\Queue\PsrConsumer;
 use Interop\Queue\PsrContext;
 use Interop\Queue\PsrMessage;
 use Interop\Queue\PsrQueue;
+use Swarrot\Broker\MessageInterface;
 use Swarrot\Broker\Message;
 
 final class InteropMessageProvider implements MessageProviderInterface
@@ -72,7 +73,7 @@ final class InteropMessageProvider implements MessageProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function ack(Message $message)
+    public function ack(MessageInterface $message)
     {
         if (false == isset($this->consumedMessages[$message->getId()])) {
             return;
@@ -87,7 +88,7 @@ final class InteropMessageProvider implements MessageProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function nack(Message $message, $requeue = false)
+    public function nack(MessageInterface $message, $requeue = false)
     {
         if (false == isset($this->consumedMessages[$message->getId()])) {
             return;

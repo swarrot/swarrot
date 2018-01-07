@@ -3,7 +3,7 @@
 namespace Swarrot\Processor\Doctrine;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
-use Swarrot\Broker\Message;
+use Swarrot\Broker\MessageInterface;
 use Swarrot\Processor\ProcessorInterface;
 
 /**
@@ -30,7 +30,7 @@ class ObjectManagerProcessor implements ProcessorInterface
     /**
      * {@inheritdoc}
      */
-    public function process(Message $message, array $options)
+    public function process(MessageInterface $message, array $options)
     {
         $result = $this->processor->process($message, $options);
 

@@ -5,7 +5,7 @@ namespace Swarrot\Processor\RPC;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Swarrot\Broker\Message;
+use Swarrot\Broker\MessageInterface;
 use Swarrot\Processor\ProcessorInterface;
 use Swarrot\Processor\ConfigurableInterface;
 use Swarrot\Processor\SleepyInterface;
@@ -40,7 +40,7 @@ class RpcClientProcessor implements ProcessorInterface, ConfigurableInterface, S
     }
 
     /** {@inheritdoc} */
-    public function process(Message $message, array $options)
+    public function process(MessageInterface $message, array $options)
     {
         $properties = $message->getProperties();
 

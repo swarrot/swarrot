@@ -2,7 +2,7 @@
 
 namespace Swarrot\Driver;
 
-use Swarrot\Broker\Message;
+use Swarrot\Broker\MessageInterface;
 
 /**
  * Class PrefetchMessageCache.
@@ -15,9 +15,9 @@ class PrefetchMessageCache implements MessageCacheInterface
      * Pushes a message to the end of the cache.
      *
      * @param string  $queueName
-     * @param Message $message
+     * @param MessageInterface $message
      */
-    public function push($queueName, Message $message)
+    public function push($queueName, MessageInterface $message)
     {
         $cache = $this->get($queueName);
         $cache->enqueue($message);
@@ -29,7 +29,7 @@ class PrefetchMessageCache implements MessageCacheInterface
      *
      * @param string $queueName
      *
-     * @return Message|null
+     * @return MessageInterface|null
      */
     public function pop($queueName)
     {

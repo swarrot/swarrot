@@ -4,6 +4,7 @@ namespace Swarrot\Processor\Retry;
 
 use Swarrot\Processor\ProcessorInterface;
 use Swarrot\Processor\ConfigurableInterface;
+use Swarrot\Broker\MessageInterface;
 use Swarrot\Broker\Message;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
@@ -26,7 +27,7 @@ class RetryProcessor implements ConfigurableInterface
     /**
      * {@inheritdoc}
      */
-    public function process(Message $message, array $options)
+    public function process(MessageInterface $message, array $options)
     {
         try {
             return $this->processor->process($message, $options);
@@ -60,10 +61,10 @@ class RetryProcessor implements ConfigurableInterface
 
     /**
      * @param \Exception|\Throwable $exception
-     * @param Message               $message
+     * @param MessageInterface      $message
      * @param array                 $options
      */
-    private function handleException($exception, Message $message, array $options)
+    private function handleException($exception, MessageInterface $message, array $options)
     {
         $properties = $message->getProperties();
 

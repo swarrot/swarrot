@@ -6,7 +6,7 @@ use Interop\Amqp\AmqpMessage;
 use Interop\Queue\PsrContext;
 use Interop\Queue\PsrProducer;
 use Interop\Queue\PsrTopic;
-use Swarrot\Broker\Message;
+use Swarrot\Broker\MessageInterface;
 
 final class InteropMessagePublisher implements MessagePublisherInterface
 {
@@ -38,7 +38,7 @@ final class InteropMessagePublisher implements MessagePublisherInterface
     }
 
     /** {@inheritdoc} */
-    public function publish(Message $message, $key = null)
+    public function publish(MessageInterface $message, $key = null)
     {
         $headers = $message->getProperties();
         $properties = [];

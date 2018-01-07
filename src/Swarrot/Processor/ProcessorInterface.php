@@ -2,7 +2,7 @@
 
 namespace Swarrot\Processor;
 
-use Swarrot\Broker\Message;
+use Swarrot\Broker\MessageInterface;
 
 interface ProcessorInterface
 {
@@ -10,10 +10,10 @@ interface ProcessorInterface
      * Process a message.
      * Return false to stop processing messages.
      *
-     * @param Message $message The message given by a MessageProvider
-     * @param array   $options An array containing all parameters
+     * @param MessageInterface $message The message given by a MessageProvider
+     * @param array            $options An array containing all parameters
      *
      * @return bool|null
      */
-    public function process(Message $message, array $options);
+    public function process(MessageInterface $message, array $options);
 }

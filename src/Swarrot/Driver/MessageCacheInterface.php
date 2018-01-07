@@ -2,7 +2,7 @@
 
 namespace Swarrot\Driver;
 
-use Swarrot\Broker\Message;
+use Swarrot\Broker\MessageInterface;
 
 /**
  * Interface MessageCacheInterface.
@@ -13,9 +13,9 @@ interface MessageCacheInterface
      * Pushes a message to the end of the cache.
      *
      * @param string  $queueName
-     * @param Message $message
+     * @param MessageInterface $message
      */
-    public function push($queueName, Message $message);
+    public function push($queueName, MessageInterface $message);
 
     /**
      * Get the next message in line. Or nothing if there is no more
@@ -23,7 +23,7 @@ interface MessageCacheInterface
      *
      * @param string $queueName
      *
-     * @return Message|null
+     * @return MessageInterface|null
      */
     public function pop($queueName);
 }

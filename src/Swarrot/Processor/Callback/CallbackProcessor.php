@@ -2,7 +2,7 @@
 
 namespace Swarrot\Processor\Callback;
 
-use Swarrot\Broker\Message;
+use Swarrot\Broker\MessageInterface;
 use Swarrot\Processor\ProcessorInterface;
 
 class CallbackProcessor implements ProcessorInterface
@@ -17,7 +17,7 @@ class CallbackProcessor implements ProcessorInterface
     /**
      * {@inheritdoc}
      */
-    public function process(Message $message, array $options)
+    public function process(MessageInterface $message, array $options)
     {
         call_user_func($this->process, $message, $options);
     }
