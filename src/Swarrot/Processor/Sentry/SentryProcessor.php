@@ -40,9 +40,9 @@ class SentryProcessor implements ProcessorInterface
     }
 
     /**
-     * @param \Throwable $exception
-     * @param MessageInterface    $message
-     * @param array      $options
+     * @param \Throwable       $exception
+     * @param MessageInterface $message
+     * @param array            $options
      *
      * @throws \Throwable
      */
@@ -55,7 +55,7 @@ class SentryProcessor implements ProcessorInterface
 
     /**
      * @param MessageInterface $message
-     * @param array   $options
+     * @param array            $options
      *
      * @return array
      */

@@ -24,7 +24,7 @@ interface MessageProviderInterface
      * nack.
      *
      * @param MessageInterface $message The message to NACK
-     * @param bool    $requeue Requeue the message in the queue ?
+     * @param bool             $requeue Requeue the message in the queue ?
      */
     public function nack(MessageInterface $message, $requeue = false);
 

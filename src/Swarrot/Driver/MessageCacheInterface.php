@@ -12,7 +12,7 @@ interface MessageCacheInterface
     /**
      * Pushes a message to the end of the cache.
      *
-     * @param string  $queueName
+     * @param string           $queueName
      * @param MessageInterface $message
      */
     public function push($queueName, MessageInterface $message);

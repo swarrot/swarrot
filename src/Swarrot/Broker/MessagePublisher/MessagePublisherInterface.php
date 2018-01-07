@@ -10,7 +10,7 @@ interface MessagePublisherInterface
      * publish.
      *
      * @param MessageInterface $message The message to publish
-     * @param string  $key     A routing key to use
+     * @param string           $key     A routing key to use
      */
     public function publish(MessageInterface $message, $key = null);
 

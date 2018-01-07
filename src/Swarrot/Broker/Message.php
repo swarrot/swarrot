@@ -68,6 +68,7 @@ class Message implements MessageInterface
 
     /**
      * @deprecated getHeaders() method is deprecated. Use getProperties().
+     *
      * @return array
      */
     public function getHeaders()
@@ -106,8 +107,7 @@ class Message implements MessageInterface
      */
     public function getProperty($name, $default = null)
     {
-        if(isset($this->properties[$name])) {
-
+        if (isset($this->properties[$name])) {
             return $this->properties[$name];
         }
 
