@@ -63,6 +63,7 @@ class Consumer
         $this->optionsResolver->setDefaults(array(
             'poll_interval' => 50000,
             'queue' => $this->messageProvider->getQueueName(),
+            'method' => 'consume'
         ));
 
         if ($this->processor instanceof ConfigurableInterface) {
@@ -75,24 +76,53 @@ class Consumer
             $this->processor->initialize($options);
         }
 
+        if ($options['method'] === 'consume') {
+            $this->methodConsume($options);
+        } else {
+            $this->methodGet($options);
+        }
+
+
+        if ($this->processor instanceof TerminableInterface) {
+            $this->processor->terminate($options);
+        }
+    }
+
+    private function methodConsume(array $options = array())
+    {
+        $consumerTag = uniqid();
+        try {
+
+            $this->messageProvider->consume($consumerTag, function($message) use ($options) {
+
+                if (false === $this->processor->process($message, $options)) {
+                    throw new \Exception('Stop processing');
+                }
+
+                if ($this->processor instanceof SleepyInterface) {
+                    if (false === $this->processor->sleep($options)) {
+                        throw new \Exception('Stop processing');
+                    }
+                }
+            });
+
+        } catch (\Exception $e) {}
+    }
+
+    private function methodGet(array $options = array())
+    {
         while (true) {
             while (null !== $message = $this->messageProvider->get()) {
                 if (false === $this->processor->process($message, $options)) {
                     break 2;
                 }
             }
-
             if ($this->processor instanceof SleepyInterface) {
                 if (false === $this->processor->sleep($options)) {
                     break;
                 }
             }
-
             usleep($options['poll_interval']);
-        }
-
-        if ($this->processor instanceof TerminableInterface) {
-            $this->processor->terminate($options);
         }
     }
 

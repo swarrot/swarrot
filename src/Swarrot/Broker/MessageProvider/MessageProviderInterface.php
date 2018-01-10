@@ -14,6 +14,14 @@ interface MessageProviderInterface
     public function get();
 
     /**
+     * consume
+     *
+     * @param string $consumerTag Identify the consumer for the rabbitmq-server
+     * @param callable $callback A callback receiving a Swarrot\Broker\Message instance on consumption
+     */
+    public function consume($consumerTag, callable $callback);
+
+    /**
      * ack.
      *
      * @param Message $message
