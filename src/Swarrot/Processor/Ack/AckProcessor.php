@@ -52,6 +52,7 @@ class AckProcessor implements ConfigurableInterface
                 '[Ack] Message #'.$message->getId().' has been correctly ack\'ed',
                 [
                     'swarrot_processor' => 'ack',
+                    'queue_name' => $this->messageProvider->getQueueName(),
                 ]
             );
 
@@ -94,6 +95,7 @@ class AckProcessor implements ConfigurableInterface
             ),
             [
                 'swarrot_processor' => 'ack',
+                'queue_name' => $this->messageProvider->getQueueName(),
                 'exception' => $exception,
             ]
         );
