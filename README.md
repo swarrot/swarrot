@@ -162,6 +162,8 @@ if ($message = $messageProvider->get()) {
 * [RPC related processors](src/Swarrot/Processor/RPC) (thanks to [Baptiste Clavié](https://github.com/Taluu))
 * [SentryProcessor](src/Swarrot/Processor/Sentry) (thanks to [Floran Brutel](https://github.com/notFloran))
 * [SignalHandlerProcessor](src/Swarrot/Processor/SignalHandler)
+* [XDeathMaxCountProcessor](src/Swarrot/Processor/XDeath) (thanks to [Anthony Moutte](https://github.com/instabledesign))
+* [XDeathMaxLifetimeProcessor](src/Swarrot/Processor/XDeath) (thanks to [Anthony Moutte](https://github.com/instabledesign))
 
 ### Create your own processor
 
