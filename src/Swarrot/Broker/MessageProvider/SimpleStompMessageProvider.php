@@ -49,7 +49,7 @@ class SimpleStompMessageProvider implements MessageProviderInterface
 
     public function get()
     {
-        if (null !== $frame = $this->stomp->read()) {
+        if ($frame = $this->stomp->read()) {
             return new Message($frame->getBody(), $frame->getHeaders());
         }
 

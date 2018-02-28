@@ -47,7 +47,7 @@ class StatefulStompMessageProvider implements MessageProviderInterface
 
     public function get()
     {
-        if (null !== $frame = $this->stomp->read()) {
+        if ($frame = $this->stomp->read()) {
             return new Message($frame->getBody(), $frame->getHeaders());
         }
 
@@ -68,14 +68,7 @@ class StatefulStompMessageProvider implements MessageProviderInterface
      */
     public function nack(Message $message, $requeue = false)
     {
-        $this->client->sendFrame(
-            $this->client->getProtocol()->getNackFrame(
-                new StompMessage($message->getBody(), $message->getProperties()),
-                null,
-                $requeue
-            ),
-            false
-        );
+        $this->stomp->nack(new StompMessage($message->getBody(), $message->getProperties()), $requeue);
     }
 
     /**
