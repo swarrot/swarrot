@@ -105,7 +105,7 @@ class PeclPackageMessagePublisher implements MessagePublisherInterface
         );
         if ($this->publisherConfirms) {
             //track published to see what needs to be acked
-            $this->lastDeliveryTag += 1;
+            ++$this->lastDeliveryTag;
             $this->pendingMessages[$this->lastDeliveryTag] = $message;
             $this->exchange->getChannel()->waitForConfirm($this->timeout);
         }
