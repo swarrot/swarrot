@@ -6,22 +6,27 @@ use Swarrot\Broker\Message;
 
 class CallbackMessageProvider implements MessageProviderInterface
 {
-    /*
-     * @var Closure
+    /**
+     * @var callable
      */
     protected $get;
 
-    /*
-     * @var Closure
+    /**
+     * @var callable
      */
     protected $ack;
 
-    /*
-     * @var Closure
+    /**
+     * @var callable
      */
     protected $nack;
 
-    public function __construct(\Closure $get, \Closure $ack = null, \Closure $nack = null)
+    /**
+     * @param callable      $get
+     * @param callable|null $ack
+     * @param callable|null $nack
+     */
+    public function __construct(callable $get, callable $ack = null, callable $nack = null)
     {
         $this->get = $get;
         $this->ack = $ack;
@@ -45,7 +50,7 @@ class CallbackMessageProvider implements MessageProviderInterface
             return;
         }
 
-        return call_user_func($this->ack, $message);
+        call_user_func($this->ack, $message);
     }
 
     /**
@@ -57,7 +62,7 @@ class CallbackMessageProvider implements MessageProviderInterface
             return;
         }
 
-        return call_user_func($this->nack, $message, $requeue);
+        call_user_func($this->nack, $message, $requeue);
     }
 
     /**
