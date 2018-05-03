@@ -2,6 +2,7 @@
 
 namespace Swarrot\Tests\Broker\MessagePublisher;
 
+use PhpAmqpLib\Wire\AMQPArray;
 use Prophecy\Argument;
 use PhpAmqpLib\Message\AMQPMessage;
 use PHPUnit\Framework\TestCase;
@@ -47,6 +48,7 @@ class PhpAmqpLibMessagePublisherTest extends TestCase
                     $properties['application_headers']['int_header'] === ['I', 42] &&
                     $properties['application_headers']['string_header'] === ['S', 'my_value'] &&
                     $properties['application_headers']['array_header'] === ['A', ['foo' => 'bar']] &&
+                    $properties['application_headers']['x-death'] == ['A', new AMQPArray(['reason' => 'expired'])] &&
                     !isset($properties['headers']) &&
                     $message->serialize_properties()
                 ;
@@ -63,6 +65,7 @@ class PhpAmqpLibMessagePublisherTest extends TestCase
                     'headers' => [
                         'string_header' => 'my_value',
                         'array_header' => ['foo' => 'bar'],
+                        'x-death' => new AMQPArray(['reason' => 'expired']),
                     ],
                     'application_headers' => [
                         'int_header' => ['I', 42],

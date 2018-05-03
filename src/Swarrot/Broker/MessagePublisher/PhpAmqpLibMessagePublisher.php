@@ -4,6 +4,7 @@ namespace Swarrot\Broker\MessagePublisher;
 
 use PhpAmqpLib\Message\AMQPMessage;
 use PhpAmqpLib\Channel\AMQPChannel;
+use PhpAmqpLib\Wire\AMQPArray;
 use Swarrot\Broker\Message;
 
 class PhpAmqpLibMessagePublisher implements MessagePublisherInterface
@@ -57,7 +58,7 @@ class PhpAmqpLibMessagePublisher implements MessagePublisherInterface
                 $properties['application_headers'] = [];
             }
             foreach ($properties['headers'] as $header => $value) {
-                if (is_array($value)) {
+                if (is_array($value) or ($value instanceof AMQPArray)) {
                     $type = 'A';
                 } elseif (is_int($value)) {
                     $type = 'I';
