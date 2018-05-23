@@ -56,6 +56,7 @@ class PhpAmqpLibMessagePublisherTest extends TestCase
                         $properties['application_headers']['x-death'] == ['A', new AMQPArray(['reason' => 'expired'])]
                     ;
                 }
+
                 return $res;
             }),
             Argument::exact('swarrot'),
