@@ -2,7 +2,6 @@
 
 namespace Swarrot\Tests\Broker\MessagePublisher;
 
-use PhpAmqpLib\Wire\AMQPArray;
 use Prophecy\Argument;
 use PhpAmqpLib\Message\AMQPMessage;
 use PHPUnit\Framework\TestCase;
@@ -42,44 +41,36 @@ class PhpAmqpLibMessagePublisherTest extends TestCase
         $channel->basic_publish(
             Argument::that(function (AMQPMessage $message) {
                 $properties = $message->get_properties();
-                $res =
+
+                return
                     'body' === $message->body &&
                     $properties['application_headers']['int_header'] === ['I', 42] &&
                     $properties['application_headers']['string_header'] === ['S', 'my_value'] &&
                     $properties['application_headers']['array_header'] === ['A', ['foo' => 'bar']] &&
                     !isset($properties['headers']) &&
                     $message->serialize_properties()
-                ;
-                if (class_exists(AMQPArray::class)) {
-                    $res =
-                        $res &&
-                        $properties['application_headers']['x-death'] == ['A', new AMQPArray(['reason' => 'expired'])]
                     ;
-                }
-
-                return $res;
             }),
             Argument::exact('swarrot'),
             Argument::exact('')
         )->shouldBeCalledTimes(1);
 
         $provider = new PhpAmqpLibMessagePublisher($channel->reveal(), 'swarrot');
+        $return = $provider->publish(
+            new Message(
+                'body',
+                [
+                    'headers' => [
+                        'string_header' => 'my_value',
+                        'array_header' => ['foo' => 'bar'],
+                    ],
+                    'application_headers' => [
+                        'int_header' => ['I', 42],
+                    ],
+                ]
+            )
+        );
 
-        $properties = [
-            'headers' => [
-                'string_header' => 'my_value',
-                'array_header' => ['foo' => 'bar'],
-            ],
-            'application_headers' => [
-                'int_header' => ['I', 42],
-            ],
-        ];
-
-        if (class_exists(AMQPArray::class)) {
-            $properties['headers']['x-death'] = new AMQPArray(['reason' => 'expired']);
-        }
-
-        $return = $provider->publish(new Message('body', $properties));
         $this->assertNull($return);
     }
 

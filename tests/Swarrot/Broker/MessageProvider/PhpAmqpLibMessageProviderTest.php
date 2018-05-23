@@ -3,6 +3,7 @@
 namespace Swarrot\Tests\Broker\MessageProvider;
 
 use PhpAmqpLib\Message\AMQPMessage;
+use PhpAmqpLib\Wire\AMQPArray;
 use PHPUnit\Framework\TestCase;
 use Swarrot\Broker\Message;
 use PhpAmqpLib\Channel\AMQPChannel;
@@ -23,6 +24,24 @@ class PhpAmqpLibMessageProviderTest extends TestCase
         $message = $provider->get();
 
         $this->assertInstanceOf('Swarrot\Broker\Message', $message);
+    }
+
+    public function test_get_with_amqp_array_header_return_array_header()
+    {
+        $channel = $this->prophesize(AMQPChannel::class);
+        $amqpMessage = new AMQPMessage(
+            'foobar',
+            ['application_headers' => ['x-death' => new AMQPArray(['reason' => 'expired'])]]
+        );
+
+        $amqpMessage->delivery_info['delivery_tag'] = '1';
+
+        $channel->basic_get('my_queue')->shouldBeCalled()->willReturn($amqpMessage);
+
+        $provider = new PhpAmqpLibMessageProvider($channel->reveal(), 'my_queue');
+        $message = $provider->get();
+
+        $this->assertEquals('expired', $message->getProperties()['headers']['x-death']);
     }
 
     public function test_get_without_messages_in_queue_return_null()
