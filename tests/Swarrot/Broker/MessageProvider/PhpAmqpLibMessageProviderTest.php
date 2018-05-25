@@ -29,9 +29,19 @@ class PhpAmqpLibMessageProviderTest extends TestCase
     public function test_get_with_amqp_array_header_return_array_header()
     {
         $channel = $this->prophesize(AMQPChannel::class);
+
+        $properties = [
+            "application_headers" => [
+                "x-death" => [
+                    "0" => "S",
+                    "1" => new AMQPArray(["data:protected" => "data"])
+                ]
+            ]
+        ];
+
         $amqpMessage = new AMQPMessage(
-            'foobar',
-            ['application_headers' => ['x-death' => new AMQPArray(['reason' => 'expired'])]]
+            'hello',
+            $properties
         );
 
         $amqpMessage->delivery_info['delivery_tag'] = '1';
@@ -41,7 +51,7 @@ class PhpAmqpLibMessageProviderTest extends TestCase
         $provider = new PhpAmqpLibMessageProvider($channel->reveal(), 'my_queue');
         $message = $provider->get();
 
-        $this->assertEquals('expired', $message->getProperties()['headers']['x-death']);
+        $this->assertEquals(["0" => "data"], $message->getProperties()['headers']['x-death']);
     }
 
     public function test_get_without_messages_in_queue_return_null()

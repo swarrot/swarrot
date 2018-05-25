@@ -55,8 +55,8 @@ class PhpAmqpLibMessageProvider implements MessageProviderInterface
         $properties['headers'] = [];
         if ($envelope->has('application_headers')) {
             foreach ($envelope->get('application_headers') as $key => $value) {
-                if (is_a($value, AMQPArray::class)) {
-                    $properties['headers'][$key] = $value->getNativeData()[0];
+                if (is_a($value[1], AMQPArray::class)) {
+                    $properties['headers'][$key] = $value[1]->getNativeData();
                 } else {
                     $properties['headers'][$key] = $value[1];
                 }
