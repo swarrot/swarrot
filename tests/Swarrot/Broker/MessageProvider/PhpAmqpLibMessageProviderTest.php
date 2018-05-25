@@ -28,32 +28,34 @@ class PhpAmqpLibMessageProviderTest extends TestCase
 
     public function test_get_with_amqp_array_header_return_array_header()
     {
-        if (class_exists(AMQPArray::class)) {
-            $channel = $this->prophesize(AMQPChannel::class);
-
-            $properties = [
-                'application_headers' => [
-                    'x-death' => [
-                        '0' => 'S',
-                        '1' => new AMQPArray(['data:protected' => 'data']),
-                    ],
-                ],
-            ];
-
-            $amqpMessage = new AMQPMessage(
-                'hello',
-                $properties
-            );
-
-            $amqpMessage->delivery_info['delivery_tag'] = '1';
-
-            $channel->basic_get('my_queue')->shouldBeCalled()->willReturn($amqpMessage);
-
-            $provider = new PhpAmqpLibMessageProvider($channel->reveal(), 'my_queue');
-            $message = $provider->get();
-
-            $this->assertEquals(['0' => 'data'], $message->getProperties()['headers']['x-death']);
+        if (!class_exists(AMQPArray::class)) {
+            $this->markTestSkipped('The AMQPArray class is not available.');
         }
+
+        $channel = $this->prophesize(AMQPChannel::class);
+
+        $properties = [
+            'application_headers' => [
+                'x-death' => [
+                    '0' => 'S',
+                    '1' => new AMQPArray(['data:protected' => 'data']),
+                ],
+            ],
+        ];
+
+        $amqpMessage = new AMQPMessage(
+            'hello',
+            $properties
+        );
+
+        $amqpMessage->delivery_info['delivery_tag'] = '1';
+
+        $channel->basic_get('my_queue')->shouldBeCalled()->willReturn($amqpMessage);
+
+        $provider = new PhpAmqpLibMessageProvider($channel->reveal(), 'my_queue');
+        $message = $provider->get();
+
+        $this->assertEquals(['0' => 'data'], $message->getProperties()['headers']['x-death']);
     }
 
     public function test_get_without_messages_in_queue_return_null()
