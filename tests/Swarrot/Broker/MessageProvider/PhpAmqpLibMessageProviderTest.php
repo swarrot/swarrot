@@ -32,12 +32,12 @@ class PhpAmqpLibMessageProviderTest extends TestCase
             $channel = $this->prophesize(AMQPChannel::class);
 
             $properties = [
-                "application_headers" => [
-                    "x-death" => [
-                        "0" => "S",
-                        "1" => new AMQPArray(["data:protected" => "data"])
-                    ]
-                ]
+                'application_headers' => [
+                    'x-death' => [
+                        '0' => 'S',
+                        '1' => new AMQPArray(['data:protected' => 'data']),
+                    ],
+                ],
             ];
 
             $amqpMessage = new AMQPMessage(
@@ -52,7 +52,7 @@ class PhpAmqpLibMessageProviderTest extends TestCase
             $provider = new PhpAmqpLibMessageProvider($channel->reveal(), 'my_queue');
             $message = $provider->get();
 
-            $this->assertEquals(["0" => "data"], $message->getProperties()['headers']['x-death']);
+            $this->assertEquals(['0' => 'data'], $message->getProperties()['headers']['x-death']);
         }
     }
 
