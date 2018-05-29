@@ -3,6 +3,7 @@
 namespace Swarrot\Broker\MessageProvider;
 
 use PhpAmqpLib\Channel\AMQPChannel;
+use PhpAmqpLib\Wire\AMQPArray;
 use Swarrot\Broker\Message;
 
 class PhpAmqpLibMessageProvider implements MessageProviderInterface
@@ -54,7 +55,11 @@ class PhpAmqpLibMessageProvider implements MessageProviderInterface
         $properties['headers'] = [];
         if ($envelope->has('application_headers')) {
             foreach ($envelope->get('application_headers') as $key => $value) {
-                $properties['headers'][$key] = $value[1];
+                if ($value[1] instanceof AMQPArray) {
+                    $properties['headers'][$key] = $value[1]->getNativeData();
+                } else {
+                    $properties['headers'][$key] = $value[1];
+                }
             }
         }
 
