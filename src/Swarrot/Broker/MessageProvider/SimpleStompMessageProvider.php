@@ -3,6 +3,7 @@
 namespace Swarrot\Broker\MessageProvider;
 
 use Stomp\Client;
+use Stomp\Exception\StompException;
 use Stomp\SimpleStomp;
 use Stomp\Transport\Message as StompMessage;
 use Swarrot\Broker\Message;
@@ -67,11 +68,18 @@ class SimpleStompMessageProvider implements MessageProviderInterface
     /**
      * @param Message $message
      * @param bool    $requeue
+     *
+     * @throws StompException
      */
     public function nack(Message $message, $requeue = false)
     {
+        $protocol = $this->client->getProtocol();
+        if (null === $protocol) {
+            throw new StompException('Stomp protocol is require to NACK Frames.');
+        }
+
         $this->client->sendFrame(
-            $this->client->getProtocol()->getNackFrame(
+            $protocol->getNackFrame(
                 new StompMessage($message->getBody(), $message->getProperties()),
                 null,
                 $requeue

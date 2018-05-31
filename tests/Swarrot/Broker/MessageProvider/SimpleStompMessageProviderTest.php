@@ -47,8 +47,9 @@ class SimpleStompMessageProviderTest extends TestCase
             ->getProtocol()
             ->willReturn($this->protocol->reveal())
             ->shouldBeCalled();
+
         $this->client
-            ->sendFrame($subscriptionFrame)
+            ->sendFrame($subscriptionFrame->reveal())
             ->shouldBeCalled();
 
         $this->provider = new SimpleStompMessageProvider(
@@ -136,6 +137,20 @@ class SimpleStompMessageProviderTest extends TestCase
 
         $this->client
             ->sendFrame($frame->reveal(), false)
+            ->shouldBeCalled();
+
+        $this->provider->nack(new Message('fake_body', ['fake_property']), true);
+    }
+
+    /**
+     * @expectedException \Stomp\Exception\StompException
+     * @expectedExceptionMessage Stomp protocol is require to NACK Frames.
+     */
+    public function test_nack_without_protocol()
+    {
+        $this->client
+            ->getProtocol()
+            ->willReturn(null)
             ->shouldBeCalled();
 
         $this->provider->nack(new Message('fake_body', ['fake_property']), true);
