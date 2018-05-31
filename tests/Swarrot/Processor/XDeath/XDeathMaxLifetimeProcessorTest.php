@@ -121,7 +121,22 @@ class XDeathMaxLifetimeProcessorTest extends TestCase
             ],
         ];
 
-        if (class_exists('PhpAmqpLib\Wire\AMQPArray') && class_exists('PhpAmqpLib\Wire\AMQPTable')) {
+        if (class_exists('\AMQPTimestamp')) {
+            $data[] = [
+                new Message(
+                    null,
+                    [
+                        'headers' => [
+                            'x-death' => [
+                                ['time' => new \AMQPTimestamp(time() - 50)],
+                            ],
+                        ],
+                    ]
+                ),
+            ];
+        }
+
+        if (false && class_exists('PhpAmqpLib\Wire\AMQPArray') && class_exists('PhpAmqpLib\Wire\AMQPTable')) {
             $data[] = [
                 new Message(
                     null,
