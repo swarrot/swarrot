@@ -136,7 +136,7 @@ class XDeathMaxLifetimeProcessorTest extends TestCase
             ];
         }
 
-        if (false && class_exists('PhpAmqpLib\Wire\AMQPArray') && class_exists('PhpAmqpLib\Wire\AMQPTable')) {
+        if (class_exists('PhpAmqpLib\Wire\AMQPArray') && class_exists('PhpAmqpLib\Wire\AMQPTable')) {
             $data[] = [
                 new Message(
                     null,
