@@ -56,6 +56,51 @@ class ConnectionProcessorTest extends TestCase
         $this->assertEquals($processor->process($message, $options), true);
     }
 
+    /**
+     * @expectedException \Exception
+     * @expectedExceptionMessage my_fake_message
+     */
+    public function testWithException()
+    {
+        $message = new Message();
+        $options = [
+            'doctrine_ping' => false,
+            'doctrine_close_master' => true,
+        ];
+
+        $innerProcessorProphecy = $this->prophesize(ProcessorInterface::class);
+        $innerProcessorProphecy->process($message, $options)->willThrow(new \Exception('my_fake_message'));
+
+        $createConnections = function () {
+            $connections = [];
+
+            $connectionProphecy = $this->prophesizeConnection();
+            $connectionProphecy->close()->shouldNotBeCalled();
+            $connections[] = $connectionProphecy->reveal();
+
+            $connectionProphecy = $this->prophesizeMasterSlaveConnection();
+            $connectionProphecy->isConnectedToMaster()->willReturn(false);
+            $connectionProphecy->close()->shouldNotBeCalled();
+            $connections[] = $connectionProphecy->reveal();
+
+            $connectionProphecy = $this->prophesizeMasterSlaveConnection();
+            $connectionProphecy->isConnectedToMaster()->willReturn(true);
+            $connectionProphecy->close()->shouldBeCalled();
+            $connections[] = $connectionProphecy->reveal();
+
+            return $connections;
+        };
+
+        $processor = new ConnectionProcessor($innerProcessorProphecy->reveal(), $createConnections());
+        $this->assertEquals($processor->process($message, $options), true);
+
+        $connectionRegistry = $this->prophesize(ConnectionRegistry::class);
+        $connectionRegistry->getConnections()->willReturn($createConnections);
+
+        $processor = new ConnectionProcessor($innerProcessorProphecy->reveal(), $createConnections());
+        $this->assertEquals($processor->process($message, $options), true);
+    }
+
     public function testCloseTimedOutConnection()
     {
         $innerProcessorProphecy = $this->prophesize(ProcessorInterface::class);

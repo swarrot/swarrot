@@ -43,6 +43,43 @@ class ObjectManagerProcessorTest extends TestCase
 
         $this->assertEquals($processor->process($message, $options), true);
     }
+
+    /**
+     * @expectedException \Exception
+     * @expectedExceptionMessage my_fake_message
+     */
+    public function testWithException()
+    {
+        $message = new Message();
+        $options = [];
+
+        $innerProcessorProphecy = $this->prophesize(ProcessorInterface::class);
+        $innerProcessorProphecy->process($message, $options)->willThrow(new \Exception('my_fake_message'));
+
+        $objectManagers = [];
+
+        $objectManagerProphecy = $this->prophesize(ObjectManager::class);
+        $objectManagerProphecy->clear()->shouldBeCalled();
+        $objectManagers['default'] = $objectManagerProphecy->reveal();
+
+        $objectManagerProphecy = $this->prophesize(__NAMESPACE__.'\\ObjectManagerWithIsOpen');
+        $objectManagerProphecy->isOpen()->willReturn(true);
+        $objectManagerProphecy->clear()->shouldBeCalled();
+        $objectManagers['foo'] = $objectManagerProphecy->reveal();
+
+        $objectManagerProphecy = $this->prophesize(__NAMESPACE__.'\\ObjectManagerWithIsOpen');
+        $objectManagerProphecy->isOpen()->willReturn(false);
+        $objectManagerProphecy->clear()->shouldNotBeCalled();
+        $objectManagers['bar'] = $objectManagerProphecy->reveal();
+
+        $managerRegistryProphecy = $this->prophesize(ManagerRegistry::class);
+        $managerRegistryProphecy->getManagers()->willReturn($objectManagers);
+        $managerRegistryProphecy->resetManager('bar')->shouldBeCalled();
+
+        $processor = new ObjectManagerProcessor($innerProcessorProphecy->reveal(), $managerRegistryProphecy->reveal());
+
+        $this->assertEquals($processor->process($message, $options), true);
+    }
 }
 
 interface ObjectManagerWithIsOpen extends ObjectManager
