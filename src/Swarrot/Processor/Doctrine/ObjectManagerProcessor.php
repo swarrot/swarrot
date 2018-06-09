@@ -32,19 +32,19 @@ class ObjectManagerProcessor implements ProcessorInterface
      */
     public function process(Message $message, array $options)
     {
-        $result = $this->processor->process($message, $options);
+        try {
+            return $this->processor->process($message, $options);
+        } finally {
+            foreach ($this->managerRegistry->getManagers() as $managerName => $manager) {
+                if (method_exists($manager, 'isOpen')
+                    && !$manager->isOpen()) {
+                    $this->managerRegistry->resetManager($managerName);
 
-        foreach ($this->managerRegistry->getManagers() as $managerName => $manager) {
-            if (method_exists($manager, 'isOpen')
-                && !$manager->isOpen()) {
-                $this->managerRegistry->resetManager($managerName);
+                    continue;
+                }
 
-                continue;
+                $manager->clear();
             }
-
-            $manager->clear();
         }
-
-        return $result;
     }
 }

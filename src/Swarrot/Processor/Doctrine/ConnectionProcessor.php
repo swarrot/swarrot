@@ -68,19 +68,19 @@ class ConnectionProcessor implements ConfigurableInterface
             }
         }
 
-        $result = $this->processor->process($message, $options);
-
-        if ($options['doctrine_close_master']) {
-            foreach ($this->connections as $connection) {
-                if ($connection instanceof MasterSlaveConnection
-                    && $connection->isConnectedToMaster()
-                ) {
-                    $connection->close();
+        try {
+            return $this->processor->process($message, $options);
+        } finally {
+            if ($options['doctrine_close_master']) {
+                foreach ($this->connections as $connection) {
+                    if ($connection instanceof MasterSlaveConnection
+                        && $connection->isConnectedToMaster()
+                    ) {
+                        $connection->close();
+                    }
                 }
             }
         }
-
-        return $result;
     }
 
     /**
