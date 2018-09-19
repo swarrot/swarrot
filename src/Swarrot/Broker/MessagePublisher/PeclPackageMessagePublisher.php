@@ -37,9 +37,12 @@ class PeclPackageMessagePublisher implements MessagePublisherInterface
         }
     }
 
-    private function getAckHandler()
+    private function getAckHandler(callable $ackHandler = null)
     {
-        return function ($deliveryTag, $multiple) {
+        return function ($deliveryTag, $multiple) use ($ackHandler) {
+            if (is_callable($ackHandler)) {
+                $ackHandler($deliveryTag, $multiple);
+            }
             //remove acked from pending list
             if ($multiple) {
                 for ($tag = 0; $tag <= $multiple; ++$tag) {
@@ -57,9 +60,12 @@ class PeclPackageMessagePublisher implements MessagePublisherInterface
         };
     }
 
-    private function getNackHandler()
+    private function getNackHandler(callable $nackHandler = null)
     {
-        return function ($deliveryTag, $multiple, $requeue) {
+        return function ($deliveryTag, $multiple, $requeue) use ($nackHandler) {
+            if (is_callable($nackHandler)) {
+                return $nackHandler($deliveryTag, $multiple, $requeue);
+            }
             throw new \Exception('Error publishing deliveryTag: '.$deliveryTag);
         };
     }
@@ -67,7 +73,7 @@ class PeclPackageMessagePublisher implements MessagePublisherInterface
     /**
      * {@inheritdoc}
      */
-    public function publish(Message $message, $key = null)
+    public function publish(Message $message, $key = null, callable $ackHandler = null, callable $nackHandler = null)
     {
         $properties = $message->getProperties();
         if (isset($properties['application_headers'])) {

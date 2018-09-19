@@ -37,9 +37,12 @@ class PhpAmqpLibMessagePublisher implements MessagePublisherInterface
         $this->timeout = $timeout;
     }
 
-    private function getNackHandler()
+    private function getNackHandler(callable $nackHandler = null)
     {
-        return function (AMQPMessage $message) {
+        return function (AMQPMessage $message) use ($nackHandler) {
+            if (is_callable($nackHandler)) {
+                return $nackHandler($message);
+            }
             if ($message->has('delivery_tag') && is_scalar($message->get('delivery_tag'))) {
                 throw new \Exception('Error publishing deliveryTag: '.$message->get('delivery_tag'));
             } else {
@@ -48,8 +51,10 @@ class PhpAmqpLibMessagePublisher implements MessagePublisherInterface
         };
     }
 
-    /** {@inheritdoc} */
-    public function publish(Message $message, $key = null)
+    /**
+     * {@inheritdoc}
+     */
+    public function publish(Message $message, $key = null, callable $ackHandler = null, callable $nackHandler = null)
     {
         $properties = $message->getProperties();
         if (isset($properties['headers'])) {
@@ -73,6 +78,9 @@ class PhpAmqpLibMessagePublisher implements MessagePublisherInterface
 
         $this->channel->basic_publish($amqpMessage, $this->exchange, (string) $key);
         if ($this->publisherConfirms) {
+            if ($nackHandler !== null) {
+                $this->channel->set_nack_handler($this->getNackHandler($nackHandler));
+            }
             $this->channel->wait_for_pending_acks($this->timeout);
         }
     }

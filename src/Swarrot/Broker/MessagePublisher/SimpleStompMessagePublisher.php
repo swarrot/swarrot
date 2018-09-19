@@ -48,10 +48,9 @@ class SimpleStompMessagePublisher implements MessagePublisherInterface
     }
 
     /**
-     * @param Message $message
-     * @param null    $key
+     * {@inheritdoc}
      */
-    public function publish(Message $message, $key = null)
+    public function publish(Message $message, $key = null, callable $ackHandler = null, callable $nackHandler = null)
     {
         $this->stomp->send($key, new StompMessage($message->getBody(), $message->getProperties()));
     }

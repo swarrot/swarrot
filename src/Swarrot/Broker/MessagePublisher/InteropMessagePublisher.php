@@ -38,7 +38,7 @@ final class InteropMessagePublisher implements MessagePublisherInterface
     }
 
     /** {@inheritdoc} */
-    public function publish(Message $message, $key = null)
+    public function publish(Message $message, $key = null, callable $ackHandler = null, callable $nackHandler = null)
     {
         $headers = $message->getProperties();
         $properties = [];
