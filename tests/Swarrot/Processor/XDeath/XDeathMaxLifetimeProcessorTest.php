@@ -129,6 +129,8 @@ class XDeathMaxLifetimeProcessorTest extends TestCase
                         'headers' => [
                             'x-death' => [
                                 ['time' => new \AMQPTimestamp(time() - 50)],
+                                ['queue' => 'other_queue', 'time' => new \AMQPTimestamp(time() - 50)],
+                                ['queue' => 'good_queue', 'time' => new \AMQPTimestamp(time() - 50)],
                             ],
                         ],
                     ]
@@ -252,7 +254,7 @@ class XDeathMaxLifetimeProcessorTest extends TestCase
         $this->expectException('\BadMethodCallException');
 
         $options = array(
-            'x_death_max_lifetime' => 10,
+            'x_death_max_lifetime' => 60,
             'x_death_max_lifetime_log_levels_map' => array(),
             'x_death_max_lifetime_fail_log_levels_map' => array(),
         );
@@ -272,7 +274,7 @@ class XDeathMaxLifetimeProcessorTest extends TestCase
             ->log(
                 'warning',
                 Argument::that(function ($value) {
-                    return preg_match('/\[XDeathMaxLifetime\] Lifetime remain \d+\/10 seconds\./', $value);
+                    return preg_match('/\[XDeathMaxLifetime\] Lifetime remain \d+\/60 seconds\./', $value);
                 }),
                 Argument::cetera()
             )
@@ -332,7 +334,7 @@ class XDeathMaxLifetimeProcessorTest extends TestCase
         $this->expectException('\BadMethodCallException');
 
         $options = array(
-            'x_death_max_lifetime' => 10,
+            'x_death_max_lifetime' => 60,
             'x_death_max_lifetime_log_levels_map' => array(
                 '\BadMethodCallException' => LogLevel::CRITICAL,
             ),
@@ -354,7 +356,7 @@ class XDeathMaxLifetimeProcessorTest extends TestCase
             ->log(
                 'critical',
                 Argument::that(function ($value) {
-                    return preg_match('/\[XDeathMaxLifetime\] Lifetime remain \d+\/10 seconds\./', $value);
+                    return preg_match('/\[XDeathMaxLifetime\] Lifetime remain \d+\/60 seconds./', $value);
                 }),
                 Argument::cetera()
             )
