@@ -13,7 +13,7 @@ env:
     global:
         - LIBRABBITMQ_VERSION=v0.8.0
         - PHPAMQP_VERSION=v1.9.3
-        - MODE="test" # Allowed values: [test, syntax, phpstan]
+        - MODE="test" # Allowed values: [test, syntax]
 
 matrix:
     allow_failures:
@@ -31,7 +31,6 @@ matrix:
         - { php: 7.2, env: DEPENDENCIES=beta }
         # Other modes
         - { php: 7.2, env: MODE=syntax }
-        - { php: 7.2, env: MODE=phpstan }
 
     fast_finish: true
 
@@ -42,11 +41,9 @@ install:
   - if [[ "$MODE" != "syntax" ]]; then sudo ./tests/bin/install_rabbitmq-c.sh; fi;
   - if [[ "$MODE" != "syntax" ]]; then ./tests/bin/install_php-amqp.sh; fi;
   - if [[ "$MODE" == "syntax" ]]; then composer require --dev --no-update friendsofphp/php-cs-fixer; fi;
-  - if [[ "$MODE" == "phpstan" ]]; then composer require --dev --no-update phpstan/phpstan; fi;
   - composer update --prefer-dist --no-progress --no-suggest $COMPOSER_FLAGS --ansi
   - if [[ "$MODE" == "test" ]]; then sudo env "PATH=$PATH" ./tests/bin/prepare_rabbit.sh; fi;
 
 script:
     - if [[ "$MODE" == "syntax" ]]; then ./vendor/bin/php-cs-fixer fix --dry-run --diff --no-interaction -v; fi;
-    - if [[ "$MODE" == "phpstan" ]]; then ./vendor/bin/phpstan analyze -c phpstan.neon -l max src/; fi;
     - if [[ "$MODE" == "test" ]]; then ./vendor/bin/phpunit; fi;
