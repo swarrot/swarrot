@@ -117,8 +117,7 @@ class XDeathMaxLifetimeProcessor implements ConfigurableInterface
                 );
             } elseif (isset($queueXDeathHeader['time'])) {
                 $xDeathTimestamp = $queueXDeathHeader['time'];
-                // PhpAmqpLib compatibility
-                if ($xDeathTimestamp instanceof \DateTime) {
+                if ($xDeathTimestamp instanceof \DateTime || $xDeathTimestamp instanceof \AMQPTimestamp) {
                     $xDeathTimestamp = $xDeathTimestamp->getTimestamp();
                 }
                 $remainLifetime = $xDeathTimestamp - (time() - $options['x_death_max_lifetime']);
