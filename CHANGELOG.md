@@ -5,6 +5,13 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [3.3.0] - 2018-10-11
+
+- Add XDeathMaxCountProcessor
+- Add XDeathMaxLifetimeProcessor
+- Deal with AMQPArray in PhpAmqpLibMessagePublisher
+- Add stomp support
+
 ## [3.2.1] - 2017-12-25
 
 - Make swarrot compatible with symfony4.
@@ -156,7 +163,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [1.1.0] - 2014-04-01
 
-[Unreleased]: https://github.com/swarrot/swarrot/compare/v3.2.1...HEAD
+[Unreleased]: https://github.com/swarrot/swarrot/compare/v3.3.0...HEAD
+[3.3.0]: https://github.com/swarrot/swarrot/compare/v3.2.1...v3.3.0
 [3.2.1]: https://github.com/swarrot/swarrot/compare/v3.2.0...v3.2.1
 [3.2.0]: https://github.com/swarrot/swarrot/compare/v3.1.0...v3.2.0
 [3.1.0]: https://github.com/swarrot/swarrot/compare/v3.0.0...v3.1.0
