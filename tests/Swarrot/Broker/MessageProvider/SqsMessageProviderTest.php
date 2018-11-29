@@ -106,4 +106,43 @@ class SqsMessageProviderTest extends TestCase
         $this->cache->push(Argument::any())->shouldNotBeCalled();
         $this->channel->receiveMessage(Argument::any())->shouldNotBeCalled();
     }
+
+    public function testAck()
+    {
+        $message = $this->prophesize(Message::class);
+        $message->getId()->willReturn('123');
+
+        $this->channel->deleteMessage([
+            'QueueUrl' => 'foo',
+            'ReceiptHandle' => '123',
+        ])->shouldBeCalled();
+
+        $this->provider->ack($message->reveal());
+    }
+
+    public function testNackWithRequeue()
+    {
+        $message = $this->prophesize(Message::class);
+        $message->getId()->willReturn('123');
+
+        $this->channel->changeMessageVisibility([
+            'QueueUrl' => 'foo',
+            'ReceiptHandle' => '123',
+            'VisibilityTimeout' => 0,
+        ])->shouldBeCalled();
+        $this->channel->deleteMessage(Argument::any())->shouldNotBeCalled();
+
+        $this->provider->nack($message->reveal(), true);
+    }
+
+    public function testNackWithoutRequeue()
+    {
+        $message = $this->prophesize(Message::class);
+        $message->getId()->willReturn('123');
+
+        $this->channel->changeMessageVisibility(Argument::any())->shouldNotBeCalled();
+        $this->channel->deleteMessage(Argument::any())->shouldNotBeCalled();
+
+        $this->provider->nack($message->reveal());
+    }
 }
