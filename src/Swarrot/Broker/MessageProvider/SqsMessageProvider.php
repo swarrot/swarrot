@@ -16,6 +16,7 @@ class SqsMessageProvider implements MessageProviderInterface
     private $channel;
     private $prefetch;
     private $waitTime;
+    private $requeueTimeout;
     private $queueName;
 
     /**
@@ -24,19 +25,22 @@ class SqsMessageProvider implements MessageProviderInterface
      * @param MessageCacheInterface|null $cache
      * @param int                        $prefetch
      * @param int                        $waitTime
+     * @param int                        $requeueTimeout
      */
     public function __construct(
         SqsClient $channel,
         $queueName,
         MessageCacheInterface $cache = null,
         $prefetch = 9,
-        $waitTime = 5
+        $waitTime = 5,
+        $requeueTimeout = 0
     ) {
         $this->channel = $channel;
         $this->queueName = $queueName;
         $this->cache = $cache ?: new PrefetchMessageCache();
         $this->prefetch = $prefetch;
         $this->waitTime = $waitTime;
+        $this->requeueTimeout = $requeueTimeout;
     }
 
     /**
@@ -83,6 +87,15 @@ class SqsMessageProvider implements MessageProviderInterface
      */
     public function nack(Message $message, $requeue = false)
     {
+        if (!$requeue) {
+            return;
+        }
+
+        $this->channel->changeMessageVisibility([
+            'QueueUrl' => $this->getQueueName(),
+            'ReceiptHandle' => $message->getId(),
+            'VisibilityTimeout' => $this->requeueTimeout,
+        ]);
     }
 
     /**
