@@ -1,16 +1,19 @@
 # RetryProcessor
 
-Retryprocessor is a [swarrot](https://github.com/swarrot/swarrot) processor.
+RetryProcessor is a [swarrot](https://github.com/swarrot/swarrot) processor.
 Its goal is to re-published messages in broker when an error occurred.
 
 ## Configuration
 
-|Key                      |Default|Description                                                                  |
-|:-----------------------:|:-----:|-----------------------------------------------------------------------------|
-|retry_key_pattern        |       |[MANDATORY] The pattern to use to construct routing key (ie: `key_%attempt%`)|
-|retry_attempts           |3      |The number of attempts before raising an exception.                          |
-|retry_log_levels_map     |[]     |Map of classes to a log level when retry. (Warning by default)               |
-|retry_fail_log_levels_map|[]     |Map of classes to a log level when all retries failed. (Warning by default)  |
+|Key                      |Default|Description                                                                           |
+|:-----------------------:|:-----:|--------------------------------------------------------------------------------------|
+|retry_key_pattern        |       |The pattern to use to construct routing key (ie: `key_%attempt%`)                     |
+|retry_key_generator      |       |The callable to construct routing key (ie: `(int $attempt, Message $message): string`)|
+|retry_attempts           |3      |The number of attempts before raising an exception.                                   |
+|retry_log_levels_map     |[]     |Map of classes to a log level when retry. (Warning by default)                        |
+|retry_fail_log_levels_map|[]     |Map of classes to a log level when all retries failed. (Warning by default)           |
+
+Configuring either `retry_key_pattern` or `retry_key_generator` is mandatory.
 
 ## How it works
 

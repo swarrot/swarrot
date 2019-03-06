@@ -138,6 +138,55 @@ class RetryProcessorTest extends TestCase
         );
     }
 
+    public function test_it_should_republish_message_with_custom_key()
+    {
+        $processor = $this->prophesize(ProcessorInterface::class);
+        $messagePublisher = $this->prophesize(MessagePublisherInterface::class);
+        $logger = $this->prophesize(LoggerInterface::class);
+
+        $message = new Message('body', array('headers' => array('swarrot_retry_attempts' => 1)), 1);
+
+        $retryProcessor = new RetryProcessor($processor->reveal(), $messagePublisher->reveal(), $logger->reveal());
+
+        $optionsResolver = new OptionsResolver();
+        $retryProcessor->setDefaultOptions($optionsResolver);
+
+        $options = $optionsResolver->resolve(array(
+            'retry_attempts' => 3,
+            'retry_key_generator' => function ($attempts, Message $message) {
+                // Using the id here is not actually useful for a working setup. An actual implementation would probably rather inspect some properties.
+                return 'test_'.$attempts.'_'.$message->getId();
+            },
+            'retry_log_levels_map' => array(),
+            'retry_fail_log_levels_map' => array(),
+        ));
+
+        $processor
+            ->process(
+                Argument::exact($message),
+                Argument::exact($options)
+            )->willThrow('\BadMethodCallException')
+            ->shouldBeCalledTimes(1)
+        ;
+        $messagePublisher
+            ->publish(
+                Argument::that(function (Message $message) {
+                    $properties = $message->getProperties();
+
+                    return 2 === $properties['headers']['swarrot_retry_attempts'] && 'body' === $message->getBody();
+                }),
+
+                Argument::exact('test_2_1')
+            )
+            ->willReturn(null)
+            ->shouldBeCalledTimes(1)
+        ;
+
+        $this->assertNull(
+            $retryProcessor->process($message, $options)
+        );
+    }
+
     public function test_it_should_throw_exception_if_max_attempts_is_reached()
     {
         $processor = $this->prophesize(ProcessorInterface::class);
@@ -191,6 +240,11 @@ class RetryProcessorTest extends TestCase
         $config = $optionsResolver->resolve(array(
             'retry_key_pattern' => 'key_%attempt%',
         ));
+
+        // retry_key_generator is tested separately, because closures cannot be reproduced for assertEquals
+        $this->assertArrayHasKey('retry_key_generator', $config);
+        $this->assertInstanceOf(\Closure::class, $config['retry_key_generator']);
+        unset($config['retry_key_generator']);
 
         $this->assertEquals(array(
             'retry_key_pattern' => 'key_%attempt%',
