@@ -10,6 +10,7 @@ use Swarrot\Broker\Message;
 use Swarrot\Broker\MessagePublisher\MessagePublisherInterface;
 use Swarrot\Processor\ProcessorInterface;
 use Swarrot\Processor\Retry\RetryProcessor;
+use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class RetryProcessorTest extends TestCase
@@ -252,6 +253,21 @@ class RetryProcessorTest extends TestCase
             'retry_log_levels_map' => array(),
             'retry_fail_log_levels_map' => array(),
         ), $config);
+    }
+
+    public function test_it_should_require_configuring_the_retry_key()
+    {
+        $processor = $this->prophesize(ProcessorInterface::class);
+        $messagePublisher = $this->prophesize(MessagePublisherInterface::class);
+
+        $retryProcessor = new RetryProcessor($processor->reveal(), $messagePublisher->reveal());
+
+        $optionsResolver = new OptionsResolver();
+        $retryProcessor->setDefaultOptions($optionsResolver);
+
+        $this->expectException(MissingOptionsException::class);
+
+        $optionsResolver->resolve(array());
     }
 
     public function test_it_should_keep_original_message_properties()
