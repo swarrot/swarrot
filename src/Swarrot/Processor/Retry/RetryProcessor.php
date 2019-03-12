@@ -7,6 +7,8 @@ use Swarrot\Processor\ConfigurableInterface;
 use Swarrot\Broker\Message;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
+use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
+use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Swarrot\Broker\MessagePublisher\MessagePublisherInterface;
 
@@ -47,12 +49,24 @@ class RetryProcessor implements ConfigurableInterface
                 'retry_attempts' => 3,
                 'retry_log_levels_map' => array(),
                 'retry_fail_log_levels_map' => array(),
+                'retry_key_generator' => function (Options $options) {
+                    if (!isset($options['retry_key_pattern'])) {
+                        throw new MissingOptionsException('Either the retry_key_pattern or retry_key_generator option is required.');
+                    }
+
+                    $keyPattern = $options['retry_key_pattern'];
+
+                    return function ($attempts) use ($keyPattern) {
+                        return str_replace('%attempt%', $attempts, $keyPattern);
+                    };
+                },
             ))
-            ->setRequired(array(
-                'retry_key_pattern',
+            ->setDefined(array(
+                'retry_key_pattern', // Mandatory if retry_key_generator is not provided
             ))
             ->setAllowedTypes('retry_attempts', 'int')
             ->setAllowedTypes('retry_key_pattern', 'string')
+            ->setAllowedTypes('retry_key_generator', 'callable')
             ->setAllowedTypes('retry_log_levels_map', 'array')
             ->setAllowedTypes('retry_fail_log_levels_map', 'array')
         ;
@@ -92,12 +106,14 @@ class RetryProcessor implements ConfigurableInterface
 
         $properties['headers']['swarrot_retry_attempts'] = $attempts;
 
+        $keyGenerator = $options['retry_key_generator'];
+
+        $key = $keyGenerator($attempts, $message);
+
         $message = new Message(
             $message->getBody(),
             $properties
         );
-
-        $key = str_replace('%attempt%', $attempts, $options['retry_key_pattern']);
 
         $this->logger and $this->logException(
             $exception,
