@@ -59,7 +59,7 @@ class RetryProcessor implements ConfigurableInterface
                     return function ($attempts) use ($keyPattern) {
                         return str_replace('%attempt%', $attempts, $keyPattern);
                     };
-                }
+                },
             ))
             ->setDefined(array(
                 'retry_key_pattern', // Mandatory if retry_key_generator is not provided
