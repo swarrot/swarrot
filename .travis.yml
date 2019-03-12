@@ -22,6 +22,7 @@ matrix:
     include:
         # Test with default configuration
         - { php: 7.2 }
+        - { php: 7.3 }
         - { php: nightly }
         # Test against librabbitmq cutting-edge
         - { php: 7.2, env: LIBRABBITMQ_VERSION=master }
