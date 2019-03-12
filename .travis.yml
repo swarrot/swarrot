@@ -12,20 +12,16 @@ addons:
 env:
     global:
         - LIBRABBITMQ_VERSION=v0.8.0
-        - PHPAMQP_VERSION=v1.9.3
+        - PHPAMQP_VERSION=v1.9.4
         - MODE="test" # Allowed values: [test, syntax]
 
 matrix:
-    allow_failures:
-        - php: nightly
-
     include:
         # Test with default configuration
         - { php: 7.2 }
-        - { php: nightly }
+        - { php: 7.3 }
         # Test against librabbitmq cutting-edge
         - { php: 7.2, env: LIBRABBITMQ_VERSION=master }
-        - { php: nightly, env: LIBRABBITMQ_VERSION=master }
         # Test with lowest & beta dependencies
         - { php: 7.2, env: COMPOSER_FLAGS='--prefer-lowest --prefer-stable' }
         - { php: 7.2, env: DEPENDENCIES=beta }
