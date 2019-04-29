@@ -109,11 +109,6 @@ class SignalHandlerProcessor implements ConfigurableInterface, SleepyInterface, 
     {
         pcntl_signal_dispatch();
 
-        $signals = isset($options['signal_handler_signals']) ? $options['signal_handler_signals'] : array();
-        foreach ($signals as $signal) {
-            pcntl_signal($signal, SIG_DFL);
-        }
-
         if ($this::$shouldExit) {
             $this->logger->info(
                 '[SignalHandler] Signal received. Stop consumer now.',
@@ -121,6 +116,11 @@ class SignalHandlerProcessor implements ConfigurableInterface, SleepyInterface, 
                     'swarrot_processor' => 'signal_handler',
                 ]
             );
+
+            $signals = isset($options['signal_handler_signals']) ? $options['signal_handler_signals'] : array();
+            foreach ($signals as $signal) {
+                pcntl_signal($signal, SIG_DFL);
+            }
 
             return true;
         }
