@@ -53,11 +53,7 @@ class SignalHandlerProcessor implements ConfigurableInterface, SleepyInterface, 
      */
     public function sleep(array $options)
     {
-        if (!extension_loaded('pcntl')) {
-            return true;
-        }
-
-        return !$this->shouldStop($options);
+        return !$this::$shouldExit;
     }
 
     /**
@@ -67,7 +63,7 @@ class SignalHandlerProcessor implements ConfigurableInterface, SleepyInterface, 
     {
         $return = $this->processor->process($message, $options);
 
-        if (extension_loaded('pcntl') && $this->shouldStop($options)) {
+        if ($this::$shouldExit) {
             return false;
         }
 
@@ -93,33 +89,16 @@ class SignalHandlerProcessor implements ConfigurableInterface, SleepyInterface, 
         $signals = isset($options['signal_handler_signals']) ? $options['signal_handler_signals'] : array();
         foreach ($signals as $signal) {
             pcntl_signal($signal, function () {
+                $this->logger->info(
+                    '[SignalHandler] Signal received. Stop consumer now.',
+                    [
+                        'swarrot_processor' => 'signal_handler',
+                    ]
+                );
                 SignalHandlerProcessor::$shouldExit = true;
             });
         }
-    }
 
-    /**
-     * shouldStop.
-     *
-     * @param array $options
-     *
-     * @return bool
-     */
-    protected function shouldStop(array $options)
-    {
-        pcntl_signal_dispatch();
-
-        if ($this::$shouldExit) {
-            $this->logger->info(
-                '[SignalHandler] Signal received. Stop consumer now.',
-                [
-                    'swarrot_processor' => 'signal_handler',
-                ]
-            );
-
-            return true;
-        }
-
-        return false;
+        pcntl_async_signals(true);
     }
 }
