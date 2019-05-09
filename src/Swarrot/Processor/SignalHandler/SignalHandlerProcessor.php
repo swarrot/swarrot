@@ -117,11 +117,6 @@ class SignalHandlerProcessor implements ConfigurableInterface, SleepyInterface, 
                 ]
             );
 
-            $signals = isset($options['signal_handler_signals']) ? $options['signal_handler_signals'] : array();
-            foreach ($signals as $signal) {
-                pcntl_signal($signal, SIG_DFL);
-            }
-
             return true;
         }
 
