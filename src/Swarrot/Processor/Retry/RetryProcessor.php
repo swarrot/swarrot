@@ -90,11 +90,9 @@ class RetryProcessor implements ConfigurableInterface
         if ($attempts > $options['retry_attempts']) {
             $this->logger and $this->logException(
                 $exception,
-                sprintf(
-                    '[Retry] Stop attempting to process message after %d attempts',
-                    $attempts
-                ),
-                $options['retry_fail_log_levels_map']
+                '[Retry] Stop attempting to process message.',
+                $options['retry_fail_log_levels_map'],
+                ['number_of_attempts' => $attempts]
             );
 
             throw $exception;
@@ -117,12 +115,12 @@ class RetryProcessor implements ConfigurableInterface
 
         $this->logger and $this->logException(
             $exception,
-            sprintf(
-                '[Retry] An exception occurred. Republish message for the %d times (key: %s)',
-                $attempts,
-                $key
-            ),
-            $options['retry_log_levels_map']
+            '[Retry] An exception occurred. Republishing message.',
+            $options['retry_log_levels_map'],
+            [
+                'number_of_attempts' => $attempts,
+                'key' => $key,
+            ]
         );
 
         $this->publisher->publish($message, $key);
@@ -133,8 +131,12 @@ class RetryProcessor implements ConfigurableInterface
      * @param string                $logMessage
      * @param array                 $logLevelsMap
      */
-    private function logException($exception, $logMessage, array $logLevelsMap)
-    {
+    private function logException(
+        $exception,
+        $logMessage,
+        array $logLevelsMap,
+        array $extraContext
+    ) {
         $logLevel = LogLevel::WARNING;
 
         foreach ($logLevelsMap as $className => $level) {
@@ -151,7 +153,7 @@ class RetryProcessor implements ConfigurableInterface
             [
                 'swarrot_processor' => 'retry',
                 'exception' => $exception,
-            ]
+            ] + $extraContext
         );
     }
 }

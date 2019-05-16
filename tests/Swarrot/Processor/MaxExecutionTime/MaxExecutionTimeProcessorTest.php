@@ -41,8 +41,11 @@ class MaxExecutionTimeProcessorTest extends TestCase
 
         $logger = $this->prophesize(LoggerInterface::class);
         $logger->info(
-            Argument::exact(sprintf('[MaxExecutionTime] Max execution time have been reached (%d)', $maxExecutionTime)),
-            Argument::exact(['swarrot_processor' => 'max_execution_time'])
+            Argument::exact('[MaxExecutionTime] Max execution time has been reached'),
+            Argument::exact([
+                'max_execution_time' => $maxExecutionTime,
+                'swarrot_processor' => 'max_execution_time',
+            ])
         )
         ->shouldBeCalledTimes(1);
 

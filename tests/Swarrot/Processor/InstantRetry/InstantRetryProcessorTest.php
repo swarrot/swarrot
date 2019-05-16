@@ -97,10 +97,12 @@ class InstantRetryProcessorTest extends TestCase
         $logger
             ->log(
                 Argument::exact(LogLevel::WARNING),
-                Argument::exact('[InstantRetry] An exception occurred. Message #1 will be processed again in 1 ms'),
+                Argument::exact('[InstantRetry] An exception occurred. The message will be processed again.'),
                 Argument::exact(array(
                     'swarrot_processor' => 'instant_retry',
                     'exception' => $exception,
+                    'message_id' => 1,
+                    'instant_retry_delay' => 1,
                 ))
             )
             ->shouldBeCalledTimes(3)
@@ -140,10 +142,12 @@ class InstantRetryProcessorTest extends TestCase
         $logger
             ->log(
                 Argument::exact(LogLevel::CRITICAL),
-                Argument::exact('[InstantRetry] An exception occurred. Message #1 will be processed again in 1 ms'),
+                Argument::exact('[InstantRetry] An exception occurred. The message will be processed again.'),
                 Argument::exact(array(
                     'swarrot_processor' => 'instant_retry',
                     'exception' => $exception,
+                    'message_id' => 1,
+                    'instant_retry_delay' => 1,
                 ))
             )
             ->shouldBeCalledTimes(3)
@@ -185,10 +189,12 @@ class InstantRetryProcessorTest extends TestCase
         $logger
             ->log(
                 Argument::exact(LogLevel::CRITICAL),
-                Argument::exact('[InstantRetry] An exception occurred. Message #1 will be processed again in 1 ms'),
+                Argument::exact('[InstantRetry] An exception occurred. The message will be processed again.'),
                 Argument::exact(array(
                     'swarrot_processor' => 'instant_retry',
                     'exception' => $exception,
+                    'message_id' => 1,
+                    'instant_retry_delay' => 1,
                 ))
             )
             ->shouldBeCalledTimes(3)

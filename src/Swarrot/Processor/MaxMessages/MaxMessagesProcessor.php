@@ -45,8 +45,9 @@ class MaxMessagesProcessor implements ConfigurableInterface
 
         if (++$this->messagesProcessed >= $options['max_messages']) {
             $this->logger->info(
-                sprintf('[MaxMessages] Max messages have been reached (%d)', $options['max_messages']),
+                '[MaxMessages] The maximum number of messages has been reached',
                 [
+                    'max_messages' => $options['max_messages'],
                     'swarrot_processor' => 'max_messages',
                 ]
             );

@@ -55,10 +55,9 @@ class Consumer
      */
     public function consume(array $options = array())
     {
-        $this->logger->debug(sprintf(
-            'Start consuming queue %s.',
-            $this->messageProvider->getQueueName()
-        ));
+        $this->logger->debug('Start consuming queue.', [
+            'queue' => $this->messageProvider->getQueueName(),
+        ]);
 
         $this->optionsResolver->setDefaults(array(
             'poll_interval' => 50000,
