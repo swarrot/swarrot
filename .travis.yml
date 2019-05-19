@@ -23,8 +23,8 @@ matrix:
         # Test against librabbitmq cutting-edge
         - { php: 7.2, env: LIBRABBITMQ_VERSION=master }
         # Test with lowest & beta dependencies
-        - { php: 7.2, env: COMPOSER_FLAGS='--prefer-lowest --prefer-stable' }
-        - { php: 7.2, env: DEPENDENCIES=beta }
+        - { php: 7.1, env: COMPOSER_FLAGS='--prefer-lowest --prefer-stable' }
+        - { php: 7.3, env: DEPENDENCIES=beta }
         # Other modes
         - { php: 7.2, env: MODE=syntax }
 
