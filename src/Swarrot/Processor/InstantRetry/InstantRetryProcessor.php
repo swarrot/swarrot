@@ -69,12 +69,12 @@ class InstantRetryProcessor implements ConfigurableInterface
     {
         $this->logException(
             $exception,
-            sprintf(
-                '[InstantRetry] An exception occurred. Message #%d will be processed again in %d ms',
-                $message->getId(),
-                $options['instant_retry_delay'] / 1000
-            ),
-            $options['instant_retry_log_levels_map']
+            '[InstantRetry] An exception occurred. The message will be processed again.',
+            $options['instant_retry_log_levels_map'],
+            [
+                'message_id' => $message->getId(),
+                'instant_retry_delay' => $options['instant_retry_delay'] / 1000,
+            ]
         );
 
         usleep($options['instant_retry_delay']);
@@ -82,11 +82,13 @@ class InstantRetryProcessor implements ConfigurableInterface
 
     /**
      * @param \Exception|\Throwable $exception
-     * @param string                $logMessage
-     * @param array                 $logLevelsMap
      */
-    private function logException($exception, $logMessage, array $logLevelsMap)
-    {
+    private function logException(
+        $exception,
+        $logMessage,
+        array $logLevelsMap,
+        array $extraContext
+    ) {
         $logLevel = LogLevel::WARNING;
 
         foreach ($logLevelsMap as $className => $level) {
@@ -103,7 +105,7 @@ class InstantRetryProcessor implements ConfigurableInterface
             [
                 'swarrot_processor' => 'instant_retry',
                 'exception' => $exception,
-            ]
+            ] + $extraContext
         );
     }
 }

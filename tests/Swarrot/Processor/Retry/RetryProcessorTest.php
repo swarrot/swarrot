@@ -398,10 +398,12 @@ class RetryProcessorTest extends TestCase
         $logger
             ->log(
                 Argument::exact(LogLevel::WARNING),
-                Argument::exact('[Retry] An exception occurred. Republish message for the 1 times (key: key_1)'),
+                Argument::exact('[Retry] An exception occurred. Republishing message.'),
                 Argument::exact(array(
                     'swarrot_processor' => 'retry',
                     'exception' => $exception,
+                    'number_of_attempts' => 1,
+                    'key' => 'key_1',
                 ))
             )
             ->shouldBeCalledTimes(1)
@@ -446,10 +448,12 @@ class RetryProcessorTest extends TestCase
         $logger
             ->log(
                 Argument::exact(LogLevel::CRITICAL),
-                Argument::exact('[Retry] An exception occurred. Republish message for the 1 times (key: key_1)'),
+                Argument::exact('[Retry] An exception occurred. Republishing message.'),
                 Argument::exact(array(
                     'swarrot_processor' => 'retry',
                     'exception' => $exception,
+                    'number_of_attempts' => 1,
+                    'key' => 'key_1',
                 ))
             )
             ->shouldBeCalledTimes(1)
@@ -494,10 +498,12 @@ class RetryProcessorTest extends TestCase
         $logger
             ->log(
                 Argument::exact(LogLevel::CRITICAL),
-                Argument::exact('[Retry] An exception occurred. Republish message for the 1 times (key: key_1)'),
+                Argument::exact('[Retry] An exception occurred. Republishing message.'),
                 Argument::exact(array(
                     'swarrot_processor' => 'retry',
                     'exception' => $exception,
+                    'number_of_attempts' => 1,
+                    'key' => 'key_1',
                 ))
             )
             ->shouldBeCalledTimes(1)
@@ -540,10 +546,11 @@ class RetryProcessorTest extends TestCase
         $logger
             ->log(
                 Argument::exact(LogLevel::WARNING),
-                Argument::exact('[Retry] Stop attempting to process message after 4 attempts'),
+                Argument::exact('[Retry] Stop attempting to process message.'),
                 Argument::exact(array(
                     'swarrot_processor' => 'retry',
                     'exception' => $exception,
+                    'number_of_attempts' => 4,
                 ))
             )
             ->shouldBeCalledTimes(1)
@@ -588,10 +595,11 @@ class RetryProcessorTest extends TestCase
         $logger
             ->log(
                 Argument::exact(LogLevel::CRITICAL),
-                Argument::exact('[Retry] Stop attempting to process message after 4 attempts'),
+                Argument::exact('[Retry] Stop attempting to process message.'),
                 Argument::exact(array(
                     'swarrot_processor' => 'retry',
                     'exception' => $exception,
+                    'number_of_attempts' => 4,
                 ))
             )
             ->shouldBeCalledTimes(1)
@@ -636,10 +644,11 @@ class RetryProcessorTest extends TestCase
         $logger
             ->log(
                 Argument::exact(LogLevel::CRITICAL),
-                Argument::exact('[Retry] Stop attempting to process message after 4 attempts'),
+                Argument::exact('[Retry] Stop attempting to process message.'),
                 Argument::exact(array(
                     'swarrot_processor' => 'retry',
                     'exception' => $exception,
+                    'number_of_attempts' => 4,
                 ))
             )
             ->shouldBeCalledTimes(1)

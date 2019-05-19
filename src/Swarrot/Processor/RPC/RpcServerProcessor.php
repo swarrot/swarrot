@@ -42,7 +42,11 @@ class RpcServerProcessor implements ProcessorInterface
             return $result;
         }
 
-        $this->logger->info(sprintf('sending a new message to the "%s" queue with the id "%s"', $properties['reply_to'], $properties['correlation_id']), ['swarrot_processor' => 'rpc']);
+        $this->logger->info('sending a new message', [
+            'swarrot_processor' => 'rpc',
+            'queue' => $properties['reply_to'],
+            'correlation_id' => $properties['correlation_id'],
+        ]);
 
         $message = new Message((string) $result, ['correlation_id' => $properties['correlation_id']]);
         $this->publisher->publish($message, $properties['reply_to']);
