@@ -5,6 +5,14 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [3.4.0] - 2019-05-19
+
+- Always use static messages for logs
+- Update minimal dependencies.
+- Improve SignalHandlerProcessor with php7.1 pcntl_async_signals method.
+- Improve RetryProcessor & retry_key configuration
+- Implement Nack in SQS
+
 ## [3.3.1] - 2018-10-11
 
 - Correct release
@@ -167,7 +175,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [1.1.0] - 2014-04-01
 
-[Unreleased]: https://github.com/swarrot/swarrot/compare/v3.3.1...HEAD
+[Unreleased]: https://github.com/swarrot/swarrot/compare/v3.4.0...HEAD
+[3.4.0]: https://github.com/swarrot/swarrot/compare/v3.3.1...v3.4.0
 [3.3.1]: https://github.com/swarrot/swarrot/compare/v3.3.0...v3.3.1
 [3.3.0]: https://github.com/swarrot/swarrot/compare/v3.2.1...v3.3.0
 [3.2.1]: https://github.com/swarrot/swarrot/compare/v3.2.0...v3.2.1
