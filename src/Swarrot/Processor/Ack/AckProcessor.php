@@ -88,10 +88,12 @@ class AckProcessor implements ConfigurableInterface
         $this->messageProvider->nack($message, $requeue);
 
         $this->logger->error(
-            '[Ack] An exception occurred.',
+            sprintf(
+                '[Ack] An exception occurred, the message has been %s.',
+                $requeue ? 'requeued' : "nack'ed"
+            ),
             [
                 'message_id' => $message->getId(),
-                'message_status' => $requeue ? 'requeued' : "nack'ed",
                 'swarrot_processor' => 'ack',
                 'exception' => $exception,
             ]
