@@ -40,7 +40,7 @@ class MemoryLimitProcessor implements ConfigurableInterface
 
         if (null !== $options['memory_limit'] && memory_get_usage() >= $options['memory_limit'] * 1024 * 1024) {
             $this->logger->info(
-                '[MemoryLimit] Memory limit has been reached (%d MB)',
+                '[MemoryLimit] Memory limit has been reached',
                 [
                     'memory_limit' => $options['memory_limit'],
                     'swarrot_processor' => 'memory_limit',
