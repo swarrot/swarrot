@@ -2,7 +2,7 @@
 
 namespace Swarrot\Processor\NewRelic;
 
-use Swarrot\Broker\Message;
+use Swarrot\Broker\MessageInterface;
 use Swarrot\Processor\ConfigurableInterface;
 use Swarrot\Processor\ProcessorInterface;
 use Symfony\Component\OptionsResolver\Options;
@@ -33,7 +33,7 @@ class NewRelicProcessor implements ConfigurableInterface
     /**
      * {@inheritdoc}
      */
-    public function process(Message $message, array $options)
+    public function process(MessageInterface $message, array $options)
     {
         if ($this->extensionLoaded) {
             newrelic_start_transaction($options['new_relic_app_name'], $options['new_relic_license']);

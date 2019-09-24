@@ -4,7 +4,7 @@ namespace Swarrot\Broker\MessagePublisher;
 
 use PhpAmqpLib\Message\AMQPMessage;
 use PhpAmqpLib\Channel\AMQPChannel;
-use Swarrot\Broker\Message;
+use Swarrot\Broker\MessageInterface;
 
 class PhpAmqpLibMessagePublisher implements MessagePublisherInterface
 {
@@ -49,7 +49,7 @@ class PhpAmqpLibMessagePublisher implements MessagePublisherInterface
     }
 
     /** {@inheritdoc} */
-    public function publish(Message $message, $key = null)
+    public function publish(MessageInterface $message, $key = null)
     {
         $properties = $message->getProperties();
         if (isset($properties['headers'])) {

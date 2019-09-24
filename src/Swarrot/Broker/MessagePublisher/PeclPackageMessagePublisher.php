@@ -2,7 +2,7 @@
 
 namespace Swarrot\Broker\MessagePublisher;
 
-use Swarrot\Broker\Message;
+use Swarrot\Broker\MessageInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
@@ -67,7 +67,7 @@ class PeclPackageMessagePublisher implements MessagePublisherInterface
     /**
      * {@inheritdoc}
      */
-    public function publish(Message $message, $key = null)
+    public function publish(MessageInterface $message, $key = null)
     {
         $properties = $message->getProperties();
         if (isset($properties['application_headers'])) {

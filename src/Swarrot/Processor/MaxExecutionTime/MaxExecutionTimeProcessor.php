@@ -3,7 +3,7 @@
 namespace Swarrot\Processor\MaxExecutionTime;
 
 use Swarrot\Processor\ProcessorInterface;
-use Swarrot\Broker\Message;
+use Swarrot\Broker\MessageInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -72,7 +72,7 @@ class MaxExecutionTimeProcessor implements ConfigurableInterface, InitializableI
     /**
      * {@inheritdoc}
      */
-    public function process(Message $message, array $options)
+    public function process(MessageInterface $message, array $options)
     {
         if (true === $this->isTimeExceeded($options)) {
             return false;

@@ -7,7 +7,7 @@ use Swarrot\Processor\ConfigurableInterface;
 use Swarrot\Processor\InitializableInterface;
 use Swarrot\Processor\TerminableInterface;
 use Swarrot\Processor\SleepyInterface;
-use Swarrot\Broker\Message;
+use Swarrot\Broker\MessageInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class StackedProcessor implements ConfigurableInterface, InitializableInterface, TerminableInterface, SleepyInterface
@@ -61,7 +61,7 @@ class StackedProcessor implements ConfigurableInterface, InitializableInterface,
     /**
      * {@inheritdoc}
      */
-    public function process(Message $message, array $options)
+    public function process(MessageInterface $message, array $options)
     {
         if ($this->processor instanceof ProcessorInterface) {
             return $this->processor->process($message, $options);

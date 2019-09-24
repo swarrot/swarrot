@@ -2,7 +2,7 @@
 
 namespace Swarrot\Broker\MessageProvider;
 
-use Swarrot\Broker\Message;
+use Swarrot\Broker\MessageInterface;
 
 class CallbackMessageProvider implements MessageProviderInterface
 {
@@ -44,7 +44,7 @@ class CallbackMessageProvider implements MessageProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function ack(Message $message)
+    public function ack(MessageInterface $message)
     {
         if (null === $this->ack) {
             return;
@@ -56,7 +56,7 @@ class CallbackMessageProvider implements MessageProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function nack(Message $message, $requeue = false)
+    public function nack(MessageInterface $message, $requeue = false)
     {
         if (null === $this->nack) {
             return;
