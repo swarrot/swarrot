@@ -4,12 +4,12 @@ namespace Swarrot\Tests\Processor\Ack;
 
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
-use Swarrot\Broker\Message;
-use Swarrot\Processor\Ack\AckProcessor;
-use Symfony\Component\OptionsResolver\OptionsResolver;
-use Swarrot\Processor\ProcessorInterface;
-use Swarrot\Broker\MessageProvider\MessageProviderInterface;
 use Psr\Log\LoggerInterface;
+use Swarrot\Broker\Message;
+use Swarrot\Broker\MessageProvider\MessageProviderInterface;
+use Swarrot\Processor\Ack\AckProcessor;
+use Swarrot\Processor\ProcessorInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class AckProcessorTest extends TestCase
 {
@@ -38,13 +38,13 @@ class AckProcessorTest extends TestCase
         $messageProvider = $this->prophesize(MessageProviderInterface::class);
         $logger = $this->prophesize(LoggerInterface::class);
 
-        $message = new Message('body', array(), 1);
+        $message = new Message('body', [], 1);
 
-        $processor->process(Argument::exact($message), Argument::exact(array()))->willReturn(null);
+        $processor->process(Argument::exact($message), Argument::exact([]))->willReturn(null);
         $messageProvider->ack(Argument::exact($message))->willReturn(null);
 
         $processor = new AckProcessor($processor->reveal(), $messageProvider->reveal(), $logger->reveal());
-        $this->assertNull($processor->process($message, array()));
+        $this->assertNull($processor->process($message, []));
     }
 
     public function test_it_should_nack_when_an_exception_is_thrown()
@@ -53,15 +53,15 @@ class AckProcessorTest extends TestCase
         $messageProvider = $this->prophesize(MessageProviderInterface::class);
         $logger = $this->prophesize(LoggerInterface::class);
 
-        $message = new Message('body', array(), 1);
+        $message = new Message('body', [], 1);
 
-        $processor->process(Argument::exact($message), Argument::exact(array()))->willThrow('\BadMethodCallException');
+        $processor->process(Argument::exact($message), Argument::exact([]))->willThrow('\BadMethodCallException');
         $messageProvider->nack(Argument::exact($message), Argument::exact(false))->willReturn(null);
 
         $processor = new AckProcessor($processor->reveal(), $messageProvider->reveal(), $logger->reveal());
 
         $this->expectException('\BadMethodCallException');
-        $this->assertNull($processor->process($message, array()));
+        $this->assertNull($processor->process($message, []));
     }
 
     public function test_it_should_nack_and_requeue_when_an_exception_is_thrown_and_conf_updated()
@@ -70,18 +70,18 @@ class AckProcessorTest extends TestCase
         $messageProvider = $this->prophesize(MessageProviderInterface::class);
         $logger = $this->prophesize(LoggerInterface::class);
 
-        $message = new Message('body', array(), 1);
+        $message = new Message('body', [], 1);
 
         $processor->process(
             Argument::exact($message),
-            Argument::exact(array('requeue_on_error' => true))
+            Argument::exact(['requeue_on_error' => true])
         )->willThrow('\BadMethodCallException');
         $messageProvider->nack(Argument::exact($message), Argument::exact(true))->willReturn(null);
 
         $processor = new AckProcessor($processor->reveal(), $messageProvider->reveal(), $logger->reveal());
 
         $this->expectException('\BadMethodCallException');
-        $this->assertNull($processor->process($message, array('requeue_on_error' => true)));
+        $this->assertNull($processor->process($message, ['requeue_on_error' => true]));
     }
 
     public function test_it_should_return_a_valid_array_of_option()
@@ -94,12 +94,12 @@ class AckProcessorTest extends TestCase
         $optionsResolver = new OptionsResolver();
         $processor->setDefaultOptions($optionsResolver);
 
-        $config = $optionsResolver->resolve(array(
+        $config = $optionsResolver->resolve([
             'requeue_on_error' => false,
-        ));
+        ]);
 
-        $this->assertEquals(array(
+        $this->assertEquals([
             'requeue_on_error' => false,
-        ), $config);
+        ], $config);
     }
 }

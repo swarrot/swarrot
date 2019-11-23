@@ -40,16 +40,16 @@ class RetryProcessorTest extends TestCase
         $messagePublisher = $this->prophesize(MessagePublisherInterface::class);
         $logger = $this->prophesize(LoggerInterface::class);
 
-        $message = new Message('body', array(), 1);
+        $message = new Message('body', [], 1);
 
-        $processor->process(Argument::exact($message), Argument::exact(array()))->willReturn(null);
+        $processor->process(Argument::exact($message), Argument::exact([]))->willReturn(null);
         $messagePublisher
             ->publish(Argument::exact($message))
             ->shouldNotBeCalled(null)
         ;
 
         $processor = new RetryProcessor($processor->reveal(), $messagePublisher->reveal(), $logger->reveal());
-        $this->assertNull($processor->process($message, array()));
+        $this->assertNull($processor->process($message, []));
     }
 
     public function test_it_should_republished_message_when_an_exception_occurred()
@@ -58,19 +58,19 @@ class RetryProcessorTest extends TestCase
         $messagePublisher = $this->prophesize(MessagePublisherInterface::class);
         $logger = $this->prophesize(LoggerInterface::class);
 
-        $message = new Message('body', array(), 1);
+        $message = new Message('body', [], 1);
 
         $retryProcessor = new RetryProcessor($processor->reveal(), $messagePublisher->reveal(), $logger->reveal());
 
         $optionsResolver = new OptionsResolver();
         $retryProcessor->setDefaultOptions($optionsResolver);
 
-        $options = $optionsResolver->resolve(array(
+        $options = $optionsResolver->resolve([
             'retry_attempts' => 3,
             'retry_key_pattern' => 'key_%attempt%',
-            'retry_log_levels_map' => array(),
-            'retry_fail_log_levels_map' => array(),
-        ));
+            'retry_log_levels_map' => [],
+            'retry_fail_log_levels_map' => [],
+        ]);
 
         $processor
             ->process(
@@ -99,19 +99,19 @@ class RetryProcessorTest extends TestCase
         $messagePublisher = $this->prophesize(MessagePublisherInterface::class);
         $logger = $this->prophesize(LoggerInterface::class);
 
-        $message = new Message('body', array('headers' => array('swarrot_retry_attempts' => 1)), 1);
+        $message = new Message('body', ['headers' => ['swarrot_retry_attempts' => 1]], 1);
 
         $retryProcessor = new RetryProcessor($processor->reveal(), $messagePublisher->reveal(), $logger->reveal());
 
         $optionsResolver = new OptionsResolver();
         $retryProcessor->setDefaultOptions($optionsResolver);
 
-        $options = $optionsResolver->resolve(array(
+        $options = $optionsResolver->resolve([
             'retry_attempts' => 3,
             'retry_key_pattern' => 'key_%attempt%',
-            'retry_log_levels_map' => array(),
-            'retry_fail_log_levels_map' => array(),
-        ));
+            'retry_log_levels_map' => [],
+            'retry_fail_log_levels_map' => [],
+        ]);
 
         $processor
             ->process(
@@ -145,22 +145,22 @@ class RetryProcessorTest extends TestCase
         $messagePublisher = $this->prophesize(MessagePublisherInterface::class);
         $logger = $this->prophesize(LoggerInterface::class);
 
-        $message = new Message('body', array('headers' => array('swarrot_retry_attempts' => 1)), 1);
+        $message = new Message('body', ['headers' => ['swarrot_retry_attempts' => 1]], 1);
 
         $retryProcessor = new RetryProcessor($processor->reveal(), $messagePublisher->reveal(), $logger->reveal());
 
         $optionsResolver = new OptionsResolver();
         $retryProcessor->setDefaultOptions($optionsResolver);
 
-        $options = $optionsResolver->resolve(array(
+        $options = $optionsResolver->resolve([
             'retry_attempts' => 3,
             'retry_key_generator' => function ($attempts, Message $message) {
                 // Using the id here is not actually useful for a working setup. An actual implementation would probably rather inspect some properties.
                 return 'test_'.$attempts.'_'.$message->getId();
             },
-            'retry_log_levels_map' => array(),
-            'retry_fail_log_levels_map' => array(),
-        ));
+            'retry_log_levels_map' => [],
+            'retry_fail_log_levels_map' => [],
+        ]);
 
         $processor
             ->process(
@@ -194,19 +194,19 @@ class RetryProcessorTest extends TestCase
         $messagePublisher = $this->prophesize(MessagePublisherInterface::class);
         $logger = $this->prophesize(LoggerInterface::class);
 
-        $message = new Message('body', array('headers' => array('swarrot_retry_attempts' => 3)), 1);
+        $message = new Message('body', ['headers' => ['swarrot_retry_attempts' => 3]], 1);
 
         $retryProcessor = new RetryProcessor($processor->reveal(), $messagePublisher->reveal(), $logger->reveal());
 
         $optionsResolver = new OptionsResolver();
         $retryProcessor->setDefaultOptions($optionsResolver);
 
-        $options = $optionsResolver->resolve(array(
+        $options = $optionsResolver->resolve([
             'retry_attempts' => 3,
             'retry_key_pattern' => 'key_%attempt%',
-            'retry_log_levels_map' => array(),
-            'retry_fail_log_levels_map' => array(),
-        ));
+            'retry_log_levels_map' => [],
+            'retry_fail_log_levels_map' => [],
+        ]);
 
         $processor
             ->process(
@@ -238,21 +238,21 @@ class RetryProcessorTest extends TestCase
         $optionsResolver = new OptionsResolver();
         $processor->setDefaultOptions($optionsResolver);
 
-        $config = $optionsResolver->resolve(array(
+        $config = $optionsResolver->resolve([
             'retry_key_pattern' => 'key_%attempt%',
-        ));
+        ]);
 
         // retry_key_generator is tested separately, because closures cannot be reproduced for assertEquals
         $this->assertArrayHasKey('retry_key_generator', $config);
         $this->assertInstanceOf(\Closure::class, $config['retry_key_generator']);
         unset($config['retry_key_generator']);
 
-        $this->assertEquals(array(
+        $this->assertEquals([
             'retry_key_pattern' => 'key_%attempt%',
             'retry_attempts' => 3,
-            'retry_log_levels_map' => array(),
-            'retry_fail_log_levels_map' => array(),
-        ), $config);
+            'retry_log_levels_map' => [],
+            'retry_fail_log_levels_map' => [],
+        ], $config);
     }
 
     public function test_it_should_require_configuring_the_retry_key()
@@ -267,7 +267,7 @@ class RetryProcessorTest extends TestCase
 
         $this->expectException(MissingOptionsException::class);
 
-        $optionsResolver->resolve(array());
+        $optionsResolver->resolve([]);
     }
 
     public function test_it_should_keep_original_message_properties()
@@ -276,19 +276,19 @@ class RetryProcessorTest extends TestCase
         $messagePublisher = $this->prophesize(MessagePublisherInterface::class);
         $logger = $this->prophesize(LoggerInterface::class);
 
-        $message = new Message('body', array('delivery_mode' => 2, 'app_id' => 'applicationId', 'headers' => array('swarrot_retry_attempts' => 1)), 1);
+        $message = new Message('body', ['delivery_mode' => 2, 'app_id' => 'applicationId', 'headers' => ['swarrot_retry_attempts' => 1]], 1);
 
         $retryProcessor = new RetryProcessor($processor->reveal(), $messagePublisher->reveal(), $logger->reveal());
 
         $optionsResolver = new OptionsResolver();
         $retryProcessor->setDefaultOptions($optionsResolver);
 
-        $options = $optionsResolver->resolve(array(
+        $options = $optionsResolver->resolve([
             'retry_attempts' => 3,
             'retry_key_pattern' => 'key_%attempt%',
-            'retry_log_levels_map' => array(),
-            'retry_fail_log_levels_map' => array(),
-        ));
+            'retry_log_levels_map' => [],
+            'retry_fail_log_levels_map' => [],
+        ]);
 
         $processor
             ->process(
@@ -323,22 +323,22 @@ class RetryProcessorTest extends TestCase
         $messagePublisher = $this->prophesize(MessagePublisherInterface::class);
         $logger = $this->prophesize(LoggerInterface::class);
 
-        $message = new Message('body', array('headers' => array(
+        $message = new Message('body', ['headers' => [
             'string' => 'foo',
             'integer' => 42,
-        )), 1);
+        ]], 1);
 
         $retryProcessor = new RetryProcessor($processor->reveal(), $messagePublisher->reveal(), $logger->reveal());
 
         $optionsResolver = new OptionsResolver();
         $retryProcessor->setDefaultOptions($optionsResolver);
 
-        $options = $optionsResolver->resolve(array(
+        $options = $optionsResolver->resolve([
             'retry_attempts' => 3,
             'retry_key_pattern' => 'key_%attempt%',
-            'retry_log_levels_map' => array(),
-            'retry_fail_log_levels_map' => array(),
-        ));
+            'retry_log_levels_map' => [],
+            'retry_fail_log_levels_map' => [],
+        ]);
 
         $processor
             ->process(
@@ -373,19 +373,19 @@ class RetryProcessorTest extends TestCase
         $logger = $this->prophesize(LoggerInterface::class);
         $exception = new \BadMethodCallException();
 
-        $message = new Message('body', array(), 1);
+        $message = new Message('body', [], 1);
 
         $retryProcessor = new RetryProcessor($processor->reveal(), $messagePublisher->reveal(), $logger->reveal());
 
         $optionsResolver = new OptionsResolver();
         $retryProcessor->setDefaultOptions($optionsResolver);
 
-        $options = $optionsResolver->resolve(array(
+        $options = $optionsResolver->resolve([
             'retry_attempts' => 3,
             'retry_key_pattern' => 'key_%attempt%',
-            'retry_log_levels_map' => array(),
-            'retry_fail_log_levels_map' => array(),
-        ));
+            'retry_log_levels_map' => [],
+            'retry_fail_log_levels_map' => [],
+        ]);
 
         $processor
             ->process(
@@ -399,12 +399,12 @@ class RetryProcessorTest extends TestCase
             ->log(
                 Argument::exact(LogLevel::WARNING),
                 Argument::exact('[Retry] An exception occurred. Republishing message.'),
-                Argument::exact(array(
+                Argument::exact([
                     'swarrot_processor' => 'retry',
                     'exception' => $exception,
                     'number_of_attempts' => 1,
                     'key' => 'key_1',
-                ))
+                ])
             )
             ->shouldBeCalledTimes(1)
         ;
@@ -421,21 +421,21 @@ class RetryProcessorTest extends TestCase
         $logger = $this->prophesize(LoggerInterface::class);
         $exception = new \BadMethodCallException();
 
-        $message = new Message('body', array(), 1);
+        $message = new Message('body', [], 1);
 
         $retryProcessor = new RetryProcessor($processor->reveal(), $messagePublisher->reveal(), $logger->reveal());
 
         $optionsResolver = new OptionsResolver();
         $retryProcessor->setDefaultOptions($optionsResolver);
 
-        $options = $optionsResolver->resolve(array(
+        $options = $optionsResolver->resolve([
             'retry_attempts' => 3,
             'retry_key_pattern' => 'key_%attempt%',
-            'retry_log_levels_map' => array(
+            'retry_log_levels_map' => [
                 '\BadMethodCallException' => LogLevel::CRITICAL,
-            ),
-            'retry_fail_log_levels_map' => array(),
-        ));
+            ],
+            'retry_fail_log_levels_map' => [],
+        ]);
 
         $processor
             ->process(
@@ -449,12 +449,12 @@ class RetryProcessorTest extends TestCase
             ->log(
                 Argument::exact(LogLevel::CRITICAL),
                 Argument::exact('[Retry] An exception occurred. Republishing message.'),
-                Argument::exact(array(
+                Argument::exact([
                     'swarrot_processor' => 'retry',
                     'exception' => $exception,
                     'number_of_attempts' => 1,
                     'key' => 'key_1',
-                ))
+                ])
             )
             ->shouldBeCalledTimes(1)
         ;
@@ -471,21 +471,21 @@ class RetryProcessorTest extends TestCase
         $logger = $this->prophesize(LoggerInterface::class);
         $exception = new \BadMethodCallException();
 
-        $message = new Message('body', array(), 1);
+        $message = new Message('body', [], 1);
 
         $retryProcessor = new RetryProcessor($processor->reveal(), $messagePublisher->reveal(), $logger->reveal());
 
         $optionsResolver = new OptionsResolver();
         $retryProcessor->setDefaultOptions($optionsResolver);
 
-        $options = $optionsResolver->resolve(array(
+        $options = $optionsResolver->resolve([
             'retry_attempts' => 3,
             'retry_key_pattern' => 'key_%attempt%',
-            'retry_log_levels_map' => array(
+            'retry_log_levels_map' => [
                 '\LogicException' => LogLevel::CRITICAL,
-            ),
-            'retry_fail_log_levels_map' => array(),
-        ));
+            ],
+            'retry_fail_log_levels_map' => [],
+        ]);
 
         $processor
             ->process(
@@ -499,12 +499,12 @@ class RetryProcessorTest extends TestCase
             ->log(
                 Argument::exact(LogLevel::CRITICAL),
                 Argument::exact('[Retry] An exception occurred. Republishing message.'),
-                Argument::exact(array(
+                Argument::exact([
                     'swarrot_processor' => 'retry',
                     'exception' => $exception,
                     'number_of_attempts' => 1,
                     'key' => 'key_1',
-                ))
+                ])
             )
             ->shouldBeCalledTimes(1)
         ;
@@ -521,19 +521,19 @@ class RetryProcessorTest extends TestCase
         $logger = $this->prophesize(LoggerInterface::class);
         $exception = new \BadMethodCallException();
 
-        $message = new Message('body', array('headers' => array('swarrot_retry_attempts' => 3)), 1);
+        $message = new Message('body', ['headers' => ['swarrot_retry_attempts' => 3]], 1);
 
         $retryProcessor = new RetryProcessor($processor->reveal(), $messagePublisher->reveal(), $logger->reveal());
 
         $optionsResolver = new OptionsResolver();
         $retryProcessor->setDefaultOptions($optionsResolver);
 
-        $options = $optionsResolver->resolve(array(
+        $options = $optionsResolver->resolve([
             'retry_attempts' => 3,
             'retry_key_pattern' => 'key_%attempt%',
-            'retry_log_levels_map' => array(),
-            'retry_fail_log_levels_map' => array(),
-        ));
+            'retry_log_levels_map' => [],
+            'retry_fail_log_levels_map' => [],
+        ]);
 
         $processor
             ->process(
@@ -547,11 +547,11 @@ class RetryProcessorTest extends TestCase
             ->log(
                 Argument::exact(LogLevel::WARNING),
                 Argument::exact('[Retry] Stop attempting to process message.'),
-                Argument::exact(array(
+                Argument::exact([
                     'swarrot_processor' => 'retry',
                     'exception' => $exception,
                     'number_of_attempts' => 4,
-                ))
+                ])
             )
             ->shouldBeCalledTimes(1)
         ;
@@ -568,21 +568,21 @@ class RetryProcessorTest extends TestCase
         $logger = $this->prophesize(LoggerInterface::class);
         $exception = new \BadMethodCallException();
 
-        $message = new Message('body', array('headers' => array('swarrot_retry_attempts' => 3)), 1);
+        $message = new Message('body', ['headers' => ['swarrot_retry_attempts' => 3]], 1);
 
         $retryProcessor = new RetryProcessor($processor->reveal(), $messagePublisher->reveal(), $logger->reveal());
 
         $optionsResolver = new OptionsResolver();
         $retryProcessor->setDefaultOptions($optionsResolver);
 
-        $options = $optionsResolver->resolve(array(
+        $options = $optionsResolver->resolve([
             'retry_attempts' => 3,
             'retry_key_pattern' => 'key_%attempt%',
-            'retry_log_levels_map' => array(),
-            'retry_fail_log_levels_map' => array(
+            'retry_log_levels_map' => [],
+            'retry_fail_log_levels_map' => [
                 '\BadMethodCallException' => LogLevel::CRITICAL,
-            ),
-        ));
+            ],
+        ]);
 
         $processor
             ->process(
@@ -596,11 +596,11 @@ class RetryProcessorTest extends TestCase
             ->log(
                 Argument::exact(LogLevel::CRITICAL),
                 Argument::exact('[Retry] Stop attempting to process message.'),
-                Argument::exact(array(
+                Argument::exact([
                     'swarrot_processor' => 'retry',
                     'exception' => $exception,
                     'number_of_attempts' => 4,
-                ))
+                ])
             )
             ->shouldBeCalledTimes(1)
         ;
@@ -617,21 +617,21 @@ class RetryProcessorTest extends TestCase
         $logger = $this->prophesize(LoggerInterface::class);
         $exception = new \BadMethodCallException();
 
-        $message = new Message('body', array('headers' => array('swarrot_retry_attempts' => 3)), 1);
+        $message = new Message('body', ['headers' => ['swarrot_retry_attempts' => 3]], 1);
 
         $retryProcessor = new RetryProcessor($processor->reveal(), $messagePublisher->reveal(), $logger->reveal());
 
         $optionsResolver = new OptionsResolver();
         $retryProcessor->setDefaultOptions($optionsResolver);
 
-        $options = $optionsResolver->resolve(array(
+        $options = $optionsResolver->resolve([
             'retry_attempts' => 3,
             'retry_key_pattern' => 'key_%attempt%',
-            'retry_log_levels_map' => array(),
-            'retry_fail_log_levels_map' => array(
+            'retry_log_levels_map' => [],
+            'retry_fail_log_levels_map' => [
                 '\LogicException' => LogLevel::CRITICAL,
-            ),
-        ));
+            ],
+        ]);
 
         $processor
             ->process(
@@ -645,11 +645,11 @@ class RetryProcessorTest extends TestCase
             ->log(
                 Argument::exact(LogLevel::CRITICAL),
                 Argument::exact('[Retry] Stop attempting to process message.'),
-                Argument::exact(array(
+                Argument::exact([
                     'swarrot_processor' => 'retry',
                     'exception' => $exception,
                     'number_of_attempts' => 4,
-                ))
+                ])
             )
             ->shouldBeCalledTimes(1)
         ;

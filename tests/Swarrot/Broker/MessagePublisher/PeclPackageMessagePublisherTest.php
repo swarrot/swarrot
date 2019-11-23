@@ -2,10 +2,10 @@
 
 namespace Swarrot\Tests\Broker\MessagePublisher;
 
-use Swarrot\Broker\Message;
-use Swarrot\Broker\MessagePublisher\PeclPackageMessagePublisher;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Swarrot\Broker\Message;
+use Swarrot\Broker\MessagePublisher\PeclPackageMessagePublisher;
 
 class PeclPackageMessagePublisherTest extends TestCase
 {

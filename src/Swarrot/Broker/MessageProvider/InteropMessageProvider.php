@@ -36,9 +36,8 @@ final class InteropMessageProvider implements MessageProviderInterface
     private $waitTimeout;
 
     /**
-     * @param PsrContext $context
-     * @param string     $queueName
-     * @param float|int  $waitTimeout
+     * @param string    $queueName
+     * @param float|int $waitTimeout
      */
     public function __construct(PsrContext $context, $queueName, $waitTimeout = 1000 /* 1sec */)
     {

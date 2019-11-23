@@ -6,8 +6,8 @@ use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Psr\Log\LoggerInterface;
 use Swarrot\Broker\Message;
-use Swarrot\Processor\ProcessorInterface;
 use Swarrot\Processor\MemoryLimit\MemoryLimitProcessor;
+use Swarrot\Processor\ProcessorInterface;
 
 class MemoryLimitProcessorTest extends TestCase
 {
@@ -33,21 +33,21 @@ class MemoryLimitProcessorTest extends TestCase
         $processor = $this->prophesize(ProcessorInterface::class);
         $processor->process(
             Argument::type(Message::class),
-            Argument::exact(array(
+            Argument::exact([
                 'memory_limit' => null,
-            ))
+            ])
         )
         ->shouldBeCalledTimes(1);
 
         $logger = $this->prophesize(LoggerInterface::class);
 
-        $message = new Message('body', array(), 1);
+        $message = new Message('body', [], 1);
         $processor = new MemoryLimitProcessor(
             $processor->reveal(),
             $logger->reveal()
         );
 
         // Process
-        $this->assertNull($processor->process($message, array('memory_limit' => null)));
+        $this->assertNull($processor->process($message, ['memory_limit' => null]));
     }
 }

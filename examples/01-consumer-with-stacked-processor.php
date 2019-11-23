@@ -2,9 +2,9 @@
 
 require_once __DIR__.'/../vendor/autoload.php';
 
-use Swarrot\Consumer;
-use Swarrot\Broker\PeclPackageMessageProvider;
 use Swarrot\Broker\Message;
+use Swarrot\Broker\PeclPackageMessageProvider;
+use Swarrot\Consumer;
 use Swarrot\Processor\ProcessorInterface;
 
 class Processor implements ProcessorInterface

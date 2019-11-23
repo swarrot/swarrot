@@ -17,10 +17,6 @@ class SentryProcessor implements ProcessorInterface
      */
     private $client;
 
-    /**
-     * @param ProcessorInterface $processor
-     * @param \Raven_Client      $client
-     */
     public function __construct(ProcessorInterface $processor, \Raven_Client $client)
     {
         $this->processor = $processor;
@@ -40,10 +36,6 @@ class SentryProcessor implements ProcessorInterface
     }
 
     /**
-     * @param \Throwable $exception
-     * @param Message    $message
-     * @param array      $options
-     *
      * @throws \Throwable
      */
     private function handleException(\Throwable $exception, Message $message, array $options)
@@ -54,9 +46,6 @@ class SentryProcessor implements ProcessorInterface
     }
 
     /**
-     * @param Message $message
-     * @param array   $options
-     *
      * @return array
      */
     protected function buildSentryData(Message $message, array $options)

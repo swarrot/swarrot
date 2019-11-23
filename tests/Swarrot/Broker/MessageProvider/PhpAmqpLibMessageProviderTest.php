@@ -2,11 +2,11 @@
 
 namespace Swarrot\Tests\Broker\MessageProvider;
 
+use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Message\AMQPMessage;
 use PhpAmqpLib\Wire\AMQPArray;
 use PHPUnit\Framework\TestCase;
 use Swarrot\Broker\Message;
-use PhpAmqpLib\Channel\AMQPChannel;
 use Swarrot\Broker\MessageProvider\PhpAmqpLibMessageProvider;
 
 class PhpAmqpLibMessageProviderTest extends TestCase
@@ -78,7 +78,7 @@ class PhpAmqpLibMessageProviderTest extends TestCase
 
         $provider = new PhpAmqpLibMessageProvider($channel->reveal(), 'my_queue');
 
-        $provider->ack(new Message('foobar', array(), 5));
+        $provider->ack(new Message('foobar', [], 5));
     }
 
     public function test_nack()
@@ -89,7 +89,7 @@ class PhpAmqpLibMessageProviderTest extends TestCase
 
         $provider = new PhpAmqpLibMessageProvider($channel->reveal(), 'my_queue');
 
-        $provider->nack(new Message('foobar', array(), 5), true);
+        $provider->nack(new Message('foobar', [], 5), true);
     }
 
     public function test_get_name()

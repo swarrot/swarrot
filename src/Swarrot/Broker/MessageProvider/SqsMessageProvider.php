@@ -20,12 +20,10 @@ class SqsMessageProvider implements MessageProviderInterface
     private $queueName;
 
     /**
-     * @param SqsClient                  $channel
-     * @param string                     $queueName
-     * @param MessageCacheInterface|null $cache
-     * @param int                        $prefetch
-     * @param int                        $waitTime
-     * @param int                        $requeueTimeout
+     * @param string $queueName
+     * @param int    $prefetch
+     * @param int    $waitTime
+     * @param int    $requeueTimeout
      */
     public function __construct(
         SqsClient $channel,

@@ -8,8 +8,6 @@ interface ConfigurableInterface extends ProcessorInterface
 {
     /**
      * setDefaultOptions.
-     *
-     * @param OptionsResolver $resolver
      */
     public function setDefaultOptions(OptionsResolver $resolver);
 }

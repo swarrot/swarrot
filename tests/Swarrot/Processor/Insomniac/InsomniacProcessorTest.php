@@ -4,8 +4,8 @@ namespace Swarrot\Tests\Processor\Insomniac;
 
 use PHPUnit\Framework\TestCase;
 use Swarrot\Broker\Message;
-use Swarrot\Processor\ProcessorInterface;
 use Swarrot\Processor\Insomniac\InsomniacProcessor;
+use Swarrot\Processor\ProcessorInterface;
 
 class InsomniacProcessorTest extends TestCase
 {

@@ -55,7 +55,7 @@ class Builder
      */
     public function resolve($processor)
     {
-        $middlewares = array($processor);
+        $middlewares = [$processor];
 
         foreach ($this->specs as $spec) {
             $args = $spec;

@@ -40,10 +40,9 @@ class Message
      * @see: http://www.amqp.org/resources/download
      *
      * @param mixed $body
-     * @param array $properties
      * @param mixed $id
      */
-    public function __construct($body = null, array $properties = array(), $id = null)
+    public function __construct($body = null, array $properties = [], $id = null)
     {
         $this->body = $body;
         $this->properties = $properties;

@@ -40,9 +40,9 @@ class PeclPackageMessageProviderTest extends TestCase
 
     protected function getAMQPQueue($name)
     {
-        $connection = new \AMQPConnection(array(
+        $connection = new \AMQPConnection([
             'vhost' => 'swarrot',
-        ));
+        ]);
         $connection->connect();
         $channel = new \AMQPChannel($connection);
         $queue = new \AMQPQueue($channel);

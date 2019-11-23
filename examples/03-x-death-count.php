@@ -18,10 +18,10 @@
  */
 require_once __DIR__.'/../vendor/autoload.php';
 
-use Swarrot\Consumer;
 use Swarrot\Broker\Message;
-use Swarrot\Processor\ProcessorInterface;
 use Swarrot\Broker\MessageProvider\PeclPackageMessageProvider;
+use Swarrot\Consumer;
+use Swarrot\Processor\ProcessorInterface;
 
 class FailProcessor implements ProcessorInterface
 {
@@ -35,7 +35,7 @@ class FailProcessor implements ProcessorInterface
 
 class PrintLogger extends \Psr\Log\AbstractLogger
 {
-    public function log($level, $message, array $context = array())
+    public function log($level, $message, array $context = [])
     {
         printf("[Log %s] %s\n", $level, $message);
     }

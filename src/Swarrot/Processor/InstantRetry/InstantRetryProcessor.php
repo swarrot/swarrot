@@ -53,17 +53,15 @@ class InstantRetryProcessor implements ConfigurableInterface
      */
     public function setDefaultOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'instant_retry_delay' => 2000000,
             'instant_retry_attempts' => 3,
-            'instant_retry_log_levels_map' => array(),
-        ));
+            'instant_retry_log_levels_map' => [],
+        ]);
     }
 
     /**
      * @param \Exception|\Throwable $exception
-     * @param Message               $message
-     * @param array                 $options
      */
     private function handleException($exception, Message $message, array $options)
     {

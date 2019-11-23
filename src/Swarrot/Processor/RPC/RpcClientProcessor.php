@@ -4,11 +4,11 @@ namespace Swarrot\Processor\RPC;
 
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 use Swarrot\Broker\Message;
-use Swarrot\Processor\ProcessorInterface;
 use Swarrot\Processor\ConfigurableInterface;
+use Swarrot\Processor\ProcessorInterface;
 use Swarrot\Processor\SleepyInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * Act as a RPC client that waits for a certain message to terminate.

@@ -6,13 +6,13 @@ use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Swarrot\Broker\Message;
 use Swarrot\Broker\MessageProvider\MessageProviderInterface;
+use Swarrot\Consumer;
+use Swarrot\Processor\ConfigurableInterface;
 use Swarrot\Processor\InitializableInterface;
 use Swarrot\Processor\ProcessorInterface;
-use Swarrot\Processor\ConfigurableInterface;
 use Swarrot\Processor\SleepyInterface;
 use Swarrot\Processor\TerminableInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Swarrot\Consumer;
 
 class ConsumerTest extends TestCase
 {
@@ -30,7 +30,7 @@ class ConsumerTest extends TestCase
         $provider = $this->prophesize(MessageProviderInterface::class);
         $processor = $this->prophesize(ProcessorInterface::class);
 
-        $message = new Message('body', array(), 1);
+        $message = new Message('body', [], 1);
 
         $provider->get()->willReturn($message);
         $provider->getQueueName()->willReturn('image_crop');
@@ -54,7 +54,7 @@ class ConsumerTest extends TestCase
         $provider = $this->prophesize(MessageProviderInterface::class);
         $processor = $this->prophesize(ConfigurableInterface::class);
 
-        $message = new Message('body', array(), 1);
+        $message = new Message('body', [], 1);
 
         $provider->get()->willReturn($message);
         $provider->getQueueName()->willReturn('');
@@ -75,7 +75,7 @@ class ConsumerTest extends TestCase
         $provider = $this->prophesize(MessageProviderInterface::class);
         $processor = $this->prophesize(InitializableInterface::class);
 
-        $message = new Message('body', array(), 1);
+        $message = new Message('body', [], 1);
 
         $provider->get()->willReturn($message);
         $provider->getQueueName()->willReturn('');
@@ -94,7 +94,7 @@ class ConsumerTest extends TestCase
         $provider = $this->prophesize(MessageProviderInterface::class);
         $processor = $this->prophesize(TerminableInterface::class);
 
-        $message = new Message('body', array(), 1);
+        $message = new Message('body', [], 1);
 
         $provider->get()->willReturn($message);
         $provider->getQueueName()->willReturn('');
@@ -113,7 +113,7 @@ class ConsumerTest extends TestCase
         $provider = $this->prophesize(MessageProviderInterface::class);
         $processor = $this->prophesize(SleepyInterface::class);
 
-        $message = new Message('body', array(), 1);
+        $message = new Message('body', [], 1);
 
         $provider->get()->willReturn($message);
         $provider->getQueueName()->willReturn('');

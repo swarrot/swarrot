@@ -2,11 +2,11 @@
 
 namespace Swarrot\Processor\MaxMessages;
 
-use Swarrot\Processor\ProcessorInterface;
-use Swarrot\Processor\ConfigurableInterface;
-use Swarrot\Broker\Message;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
+use Swarrot\Broker\Message;
+use Swarrot\Processor\ConfigurableInterface;
+use Swarrot\Processor\ProcessorInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class MaxMessagesProcessor implements ConfigurableInterface
@@ -64,9 +64,9 @@ class MaxMessagesProcessor implements ConfigurableInterface
     public function setDefaultOptions(OptionsResolver $resolver)
     {
         $resolver
-            ->setDefaults(array(
+            ->setDefaults([
                 'max_messages' => 100,
-            ))
+            ])
             ->setAllowedTypes('max_messages', 'int')
         ;
     }

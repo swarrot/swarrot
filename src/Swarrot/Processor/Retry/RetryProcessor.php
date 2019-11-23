@@ -2,15 +2,15 @@
 
 namespace Swarrot\Processor\Retry;
 
-use Swarrot\Processor\ProcessorInterface;
-use Swarrot\Processor\ConfigurableInterface;
-use Swarrot\Broker\Message;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
+use Swarrot\Broker\Message;
+use Swarrot\Broker\MessagePublisher\MessagePublisherInterface;
+use Swarrot\Processor\ConfigurableInterface;
+use Swarrot\Processor\ProcessorInterface;
 use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Swarrot\Broker\MessagePublisher\MessagePublisherInterface;
 
 class RetryProcessor implements ConfigurableInterface
 {
@@ -45,10 +45,10 @@ class RetryProcessor implements ConfigurableInterface
     public function setDefaultOptions(OptionsResolver $resolver)
     {
         $resolver
-            ->setDefaults(array(
+            ->setDefaults([
                 'retry_attempts' => 3,
-                'retry_log_levels_map' => array(),
-                'retry_fail_log_levels_map' => array(),
+                'retry_log_levels_map' => [],
+                'retry_fail_log_levels_map' => [],
                 'retry_key_generator' => function (Options $options) {
                     if (!isset($options['retry_key_pattern'])) {
                         throw new MissingOptionsException('Either the retry_key_pattern or retry_key_generator option is required.');
@@ -60,10 +60,10 @@ class RetryProcessor implements ConfigurableInterface
                         return str_replace('%attempt%', $attempts, $keyPattern);
                     };
                 },
-            ))
-            ->setDefined(array(
+            ])
+            ->setDefined([
                 'retry_key_pattern', // Mandatory if retry_key_generator is not provided
-            ))
+            ])
             ->setAllowedTypes('retry_attempts', 'int')
             ->setAllowedTypes('retry_key_pattern', 'string')
             ->setAllowedTypes('retry_key_generator', 'callable')
@@ -74,8 +74,6 @@ class RetryProcessor implements ConfigurableInterface
 
     /**
      * @param \Exception|\Throwable $exception
-     * @param Message               $message
-     * @param array                 $options
      */
     private function handleException($exception, Message $message, array $options)
     {
@@ -99,7 +97,7 @@ class RetryProcessor implements ConfigurableInterface
         }
 
         if (!isset($properties['headers'])) {
-            $properties['headers'] = array();
+            $properties['headers'] = [];
         }
 
         $properties['headers']['swarrot_retry_attempts'] = $attempts;
@@ -129,7 +127,6 @@ class RetryProcessor implements ConfigurableInterface
     /**
      * @param \Exception|\Throwable $exception
      * @param string                $logMessage
-     * @param array                 $logLevelsMap
      */
     private function logException(
         $exception,

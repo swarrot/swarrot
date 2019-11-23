@@ -2,9 +2,9 @@
 
 namespace Swarrot\Broker\MessagePublisher;
 
-use Swarrot\Broker\Message;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
+use Swarrot\Broker\Message;
 
 class PeclPackageMessagePublisher implements MessagePublisherInterface
 {
@@ -77,9 +77,7 @@ class PeclPackageMessagePublisher implements MessagePublisherInterface
 
             foreach ($properties['application_headers'] as $header => $value) {
                 if (!is_array($value) || 2 !== count($value)) {
-                    throw new \InvalidArgumentException(
-                        'Unexpected value for application_headers "'.$header.'"'
-                    );
+                    throw new \InvalidArgumentException('Unexpected value for application_headers "'.$header.'"');
                 }
 
                 $properties['headers'][$header] = $value[1];

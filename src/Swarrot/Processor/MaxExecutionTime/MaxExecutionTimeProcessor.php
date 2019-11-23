@@ -2,14 +2,14 @@
 
 namespace Swarrot\Processor\MaxExecutionTime;
 
-use Swarrot\Processor\ProcessorInterface;
-use Swarrot\Broker\Message;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
-use Symfony\Component\OptionsResolver\OptionsResolver;
-use Swarrot\Processor\InitializableInterface;
+use Swarrot\Broker\Message;
 use Swarrot\Processor\ConfigurableInterface;
+use Swarrot\Processor\InitializableInterface;
+use Swarrot\Processor\ProcessorInterface;
 use Swarrot\Processor\SleepyInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class MaxExecutionTimeProcessor implements ConfigurableInterface, InitializableInterface, SleepyInterface
 {
@@ -44,24 +44,19 @@ class MaxExecutionTimeProcessor implements ConfigurableInterface, InitializableI
     public function setDefaultOptions(OptionsResolver $resolver)
     {
         $resolver
-            ->setDefaults(array(
+            ->setDefaults([
                 'max_execution_time' => 300,
-            ))
+            ])
             ->setAllowedTypes('max_execution_time', 'int')
         ;
     }
 
-    /**
-     * @param array $options
-     */
     public function initialize(array $options)
     {
         $this->startTime = microtime(true);
     }
 
     /**
-     * @param array $options
-     *
      * @return bool
      */
     public function sleep(array $options)
@@ -83,8 +78,6 @@ class MaxExecutionTimeProcessor implements ConfigurableInterface, InitializableI
 
     /**
      * isTimeExceeded.
-     *
-     * @param array $options
      *
      * @return bool
      */

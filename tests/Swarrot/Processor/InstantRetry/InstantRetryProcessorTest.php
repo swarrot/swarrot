@@ -4,11 +4,11 @@ namespace Swarrot\Tests\Processor\InstantRetry;
 
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 use Swarrot\Broker\Message;
-use Swarrot\Processor\ProcessorInterface;
-use Psr\Log\LoggerInterface;
 use Swarrot\Processor\InstantRetry\InstantRetryProcessor;
+use Swarrot\Processor\ProcessorInterface;
 
 class InstantRetryProcessorTest extends TestCase
 {
@@ -34,16 +34,16 @@ class InstantRetryProcessorTest extends TestCase
         $processor = $this->prophesize(ProcessorInterface::class);
         $logger = $this->prophesize(LoggerInterface::class);
 
-        $message = new Message('body', array(), 1);
+        $message = new Message('body', [], 1);
 
         $processor = new InstantRetryProcessor($processor->reveal(), $logger->reveal());
 
         $this->assertNull(
-            $processor->process($message, array(
+            $processor->process($message, [
                 'instant_retry_attempts' => 3,
                 'instant_retry_delay' => 1000,
-                'instant_retry_log_levels_map' => array(),
-            ))
+                'instant_retry_log_levels_map' => [],
+            ])
         );
     }
 
@@ -52,15 +52,15 @@ class InstantRetryProcessorTest extends TestCase
         $processor = $this->prophesize(ProcessorInterface::class);
         $logger = $this->prophesize(LoggerInterface::class);
 
-        $message = new Message('body', array(), 1);
+        $message = new Message('body', [], 1);
 
         $processor->process(
             Argument::type(Message::class),
-            Argument::exact(array(
+            Argument::exact([
                 'instant_retry_attempts' => 3,
                 'instant_retry_delay' => 1000,
-                'instant_retry_log_levels_map' => array(),
-            ))
+                'instant_retry_log_levels_map' => [],
+            ])
         )
         ->shouldBeCalledTimes(3)
         ->willThrow('\BadMethodCallException');
@@ -68,11 +68,11 @@ class InstantRetryProcessorTest extends TestCase
         $processor = new InstantRetryProcessor($processor->reveal(), $logger->reveal());
 
         $this->expectException('\BadMethodCallException');
-        $processor->process($message, array(
+        $processor->process($message, [
             'instant_retry_attempts' => 3,
             'instant_retry_delay' => 1000,
-            'instant_retry_log_levels_map' => array(),
-        ));
+            'instant_retry_log_levels_map' => [],
+        ]);
     }
 
     public function test_it_should_log_a_warning_by_default_when_an_exception_occurred()
@@ -81,15 +81,15 @@ class InstantRetryProcessorTest extends TestCase
         $logger = $this->prophesize(LoggerInterface::class);
         $exception = new \BadMethodCallException();
 
-        $message = new Message('body', array(), 1);
+        $message = new Message('body', [], 1);
 
         $processor->process(
             Argument::type(Message::class),
-            Argument::exact(array(
+            Argument::exact([
                 'instant_retry_attempts' => 3,
                 'instant_retry_delay' => 1000,
-                'instant_retry_log_levels_map' => array(),
-            ))
+                'instant_retry_log_levels_map' => [],
+            ])
         )
         ->shouldBeCalledTimes(3)
         ->willThrow($exception);
@@ -98,12 +98,12 @@ class InstantRetryProcessorTest extends TestCase
             ->log(
                 Argument::exact(LogLevel::WARNING),
                 Argument::exact('[InstantRetry] An exception occurred. The message will be processed again.'),
-                Argument::exact(array(
+                Argument::exact([
                     'swarrot_processor' => 'instant_retry',
                     'exception' => $exception,
                     'message_id' => 1,
                     'instant_retry_delay' => 1,
-                ))
+                ])
             )
             ->shouldBeCalledTimes(3)
         ;
@@ -111,11 +111,11 @@ class InstantRetryProcessorTest extends TestCase
         $processor = new InstantRetryProcessor($processor->reveal(), $logger->reveal());
 
         $this->expectException('\BadMethodCallException');
-        $processor->process($message, array(
+        $processor->process($message, [
             'instant_retry_attempts' => 3,
             'instant_retry_delay' => 1000,
-            'instant_retry_log_levels_map' => array(),
-        ));
+            'instant_retry_log_levels_map' => [],
+        ]);
     }
 
     public function test_it_should_log_a_custom_log_level_when_an_exception_occurred()
@@ -124,17 +124,17 @@ class InstantRetryProcessorTest extends TestCase
         $logger = $this->prophesize(LoggerInterface::class);
         $exception = new \BadMethodCallException();
 
-        $message = new Message('body', array(), 1);
+        $message = new Message('body', [], 1);
 
         $processor->process(
             Argument::type(Message::class),
-            Argument::exact(array(
+            Argument::exact([
                 'instant_retry_attempts' => 3,
                 'instant_retry_delay' => 1000,
-                'instant_retry_log_levels_map' => array(
+                'instant_retry_log_levels_map' => [
                     '\BadMethodCallException' => LogLevel::CRITICAL,
-                ),
-            ))
+                ],
+            ])
         )
         ->shouldBeCalledTimes(3)
         ->willThrow($exception);
@@ -143,12 +143,12 @@ class InstantRetryProcessorTest extends TestCase
             ->log(
                 Argument::exact(LogLevel::CRITICAL),
                 Argument::exact('[InstantRetry] An exception occurred. The message will be processed again.'),
-                Argument::exact(array(
+                Argument::exact([
                     'swarrot_processor' => 'instant_retry',
                     'exception' => $exception,
                     'message_id' => 1,
                     'instant_retry_delay' => 1,
-                ))
+                ])
             )
             ->shouldBeCalledTimes(3)
         ;
@@ -156,13 +156,13 @@ class InstantRetryProcessorTest extends TestCase
         $processor = new InstantRetryProcessor($processor->reveal(), $logger->reveal());
 
         $this->expectException('\BadMethodCallException');
-        $processor->process($message, array(
+        $processor->process($message, [
             'instant_retry_attempts' => 3,
             'instant_retry_delay' => 1000,
-            'instant_retry_log_levels_map' => array(
+            'instant_retry_log_levels_map' => [
                 '\BadMethodCallException' => LogLevel::CRITICAL,
-            ),
-        ));
+            ],
+        ]);
     }
 
     public function test_it_should_log_a_custom_log_level_when_a_child_exception_occurred()
@@ -171,17 +171,17 @@ class InstantRetryProcessorTest extends TestCase
         $logger = $this->prophesize(LoggerInterface::class);
         $exception = new \BadMethodCallException();
 
-        $message = new Message('body', array(), 1);
+        $message = new Message('body', [], 1);
 
         $processor->process(
             Argument::type(Message::class),
-            Argument::exact(array(
+            Argument::exact([
                 'instant_retry_attempts' => 3,
                 'instant_retry_delay' => 1000,
-                'instant_retry_log_levels_map' => array(
+                'instant_retry_log_levels_map' => [
                     '\LogicException' => LogLevel::CRITICAL,
-                ),
-            ))
+                ],
+            ])
         )
             ->shouldBeCalledTimes(3)
             ->willThrow($exception);
@@ -190,12 +190,12 @@ class InstantRetryProcessorTest extends TestCase
             ->log(
                 Argument::exact(LogLevel::CRITICAL),
                 Argument::exact('[InstantRetry] An exception occurred. The message will be processed again.'),
-                Argument::exact(array(
+                Argument::exact([
                     'swarrot_processor' => 'instant_retry',
                     'exception' => $exception,
                     'message_id' => 1,
                     'instant_retry_delay' => 1,
-                ))
+                ])
             )
             ->shouldBeCalledTimes(3)
         ;
@@ -203,12 +203,12 @@ class InstantRetryProcessorTest extends TestCase
         $processor = new InstantRetryProcessor($processor->reveal(), $logger->reveal());
 
         $this->expectException('\BadMethodCallException');
-        $processor->process($message, array(
+        $processor->process($message, [
             'instant_retry_attempts' => 3,
             'instant_retry_delay' => 1000,
-            'instant_retry_log_levels_map' => array(
+            'instant_retry_log_levels_map' => [
                 '\LogicException' => LogLevel::CRITICAL,
-            ),
-        ));
+            ],
+        ]);
     }
 }
