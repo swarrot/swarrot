@@ -12,7 +12,7 @@
     ],
     "require": {
         "php": "^7.1",
-        "symfony/options-resolver": "^3.4 || ^4.1 || ^5.0",
+        "symfony/options-resolver": "^3.4 || ^4.2 || ^5.0",
         "psr/log": "^1.0"
     },
     "require-dev": {
