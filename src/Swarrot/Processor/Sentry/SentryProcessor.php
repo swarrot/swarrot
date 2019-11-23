@@ -19,6 +19,8 @@ class SentryProcessor implements ProcessorInterface
 
     public function __construct(ProcessorInterface $processor, \Raven_Client $client)
     {
+        @trigger_error(sprintf('"%s" have been deprecated since Swarrot 3.5', __CLASS__), E_USER_DEPRECATED);
+
         $this->processor = $processor;
         $this->client = $client;
     }

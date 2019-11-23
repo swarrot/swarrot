@@ -33,6 +33,8 @@ class SqsMessageProvider implements MessageProviderInterface
         $waitTime = 5,
         $requeueTimeout = 0
     ) {
+        @trigger_error(sprintf('"%s" have been deprecated since Swarrot 3.5', __CLASS__), E_USER_DEPRECATED);
+
         $this->channel = $channel;
         $this->queueName = $queueName;
         $this->cache = $cache ?: new PrefetchMessageCache();
