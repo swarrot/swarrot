@@ -2,12 +2,12 @@
 
 namespace Swarrot\Processor\Ack;
 
-use Swarrot\Processor\ProcessorInterface;
-use Swarrot\Processor\ConfigurableInterface;
-use Swarrot\Broker\MessageProvider\MessageProviderInterface;
-use Swarrot\Broker\Message;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
+use Swarrot\Broker\Message;
+use Swarrot\Broker\MessageProvider\MessageProviderInterface;
+use Swarrot\Processor\ConfigurableInterface;
+use Swarrot\Processor\ProcessorInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class AckProcessor implements ConfigurableInterface
@@ -70,17 +70,15 @@ class AckProcessor implements ConfigurableInterface
     public function setDefaultOptions(OptionsResolver $resolver)
     {
         $resolver
-            ->setDefaults(array(
+            ->setDefaults([
                 'requeue_on_error' => false,
-            ))
+            ])
             ->setAllowedTypes('requeue_on_error', 'bool')
         ;
     }
 
     /**
      * @param \Exception|\Throwable $exception
-     * @param Message               $message
-     * @param array                 $options
      */
     private function handleException($exception, Message $message, array $options)
     {

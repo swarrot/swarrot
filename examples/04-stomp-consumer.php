@@ -15,10 +15,10 @@
  */
 require_once __DIR__.'/../vendor/autoload.php';
 
-use Swarrot\Consumer;
 use Swarrot\Broker\Message;
-use Swarrot\Processor\Callback\CallbackProcessor;
 use Swarrot\Broker\MessageProvider\StatefulStompMessageProvider;
+use Swarrot\Consumer;
+use Swarrot\Processor\Callback\CallbackProcessor;
 
 $client = new \Stomp\Client('tcp://localhost:61613');
 $client->setLogin('stompUser', 'stompPass');

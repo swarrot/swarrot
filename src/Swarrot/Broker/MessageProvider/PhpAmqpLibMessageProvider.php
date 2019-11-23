@@ -19,8 +19,7 @@ class PhpAmqpLibMessageProvider implements MessageProviderInterface
     private $queueName;
 
     /**
-     * @param AMQPChannel $channel
-     * @param string      $queueName
+     * @param string $queueName
      */
     public function __construct(AMQPChannel $channel, $queueName)
     {

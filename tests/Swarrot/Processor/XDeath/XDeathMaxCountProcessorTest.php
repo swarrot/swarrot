@@ -40,10 +40,10 @@ class XDeathMaxCountProcessorTest extends TestCase
 
     public function test_it_should_return_result_when_all_is_right()
     {
-        $message = new Message('body', array(), 1);
+        $message = new Message('body', [], 1);
 
         $processorMock = $this->prophesize(ProcessorInterface::class);
-        $processorMock->process(Argument::exact($message), Argument::exact(array()))->willReturn(null);
+        $processorMock->process(Argument::exact($message), Argument::exact([]))->willReturn(null);
 
         $callback = function () {
         };
@@ -51,14 +51,14 @@ class XDeathMaxCountProcessorTest extends TestCase
         $logger = $this->prophesize(LoggerInterface::class);
 
         $processor = new XDeathMaxCountProcessor($processorMock->reveal(), 'good_queue', $callback, $logger->reveal());
-        $this->assertNull($processor->process($message, array()));
+        $this->assertNull($processor->process($message, []));
     }
 
     public function test_it_should_rethrow_when_an_exception_occurred()
     {
         $this->expectException('\BadMethodCallException');
 
-        $message = new Message('body', array(), 1);
+        $message = new Message('body', [], 1);
 
         $options = [];
         $processorMock = $this->prophesize(ProcessorInterface::class);
@@ -91,13 +91,13 @@ class XDeathMaxCountProcessorTest extends TestCase
         $processor = new XDeathMaxCountProcessor($processorMock->reveal(), 'good_queue', $callback, $logger->reveal());
         $processor->setDefaultOptions($optionsResolver);
 
-        $config = $optionsResolver->resolve(array());
+        $config = $optionsResolver->resolve([]);
 
-        $this->assertEquals(array(
+        $this->assertEquals([
             'x_death_max_count' => 300,
-            'x_death_max_count_log_levels_map' => array(),
-            'x_death_max_count_fail_log_levels_map' => array(),
-        ), $config);
+            'x_death_max_count_log_levels_map' => [],
+            'x_death_max_count_fail_log_levels_map' => [],
+        ], $config);
     }
 
     public function messageProvider()
@@ -153,11 +153,11 @@ class XDeathMaxCountProcessorTest extends TestCase
      */
     public function test_it_should_not_rethrow_with_x_death_max_count_reached($message)
     {
-        $options = array(
+        $options = [
             'x_death_max_count' => 1,
-            'x_death_max_count_log_levels_map' => array(),
-            'x_death_max_count_fail_log_levels_map' => array(),
-        );
+            'x_death_max_count_log_levels_map' => [],
+            'x_death_max_count_fail_log_levels_map' => [],
+        ];
 
         $processorMock = $this->prophesize(ProcessorInterface::class);
         $processorMock
@@ -187,11 +187,11 @@ class XDeathMaxCountProcessorTest extends TestCase
     {
         $this->expectException('\BadMethodCallException');
 
-        $options = array(
+        $options = [
             'x_death_max_count' => 1,
-            'x_death_max_count_log_levels_map' => array(),
-            'x_death_max_count_fail_log_levels_map' => array(),
-        );
+            'x_death_max_count_log_levels_map' => [],
+            'x_death_max_count_fail_log_levels_map' => [],
+        ];
 
         $processorMock = $this->prophesize(ProcessorInterface::class);
         $processorMock
@@ -221,11 +221,11 @@ class XDeathMaxCountProcessorTest extends TestCase
     {
         $this->expectException('\BadMethodCallException');
 
-        $options = array(
+        $options = [
             'x_death_max_count' => 10,
-            'x_death_max_count_log_levels_map' => array(),
-            'x_death_max_count_fail_log_levels_map' => array(),
-        );
+            'x_death_max_count_log_levels_map' => [],
+            'x_death_max_count_fail_log_levels_map' => [],
+        ];
 
         $processorMock = $this->prophesize(ProcessorInterface::class);
         $processorMock
@@ -253,13 +253,13 @@ class XDeathMaxCountProcessorTest extends TestCase
      */
     public function test_it_should_log_a_custom_log_level_with_x_death_max_count_reached($message)
     {
-        $options = array(
+        $options = [
             'x_death_max_count' => 1,
-            'x_death_max_count_log_levels_map' => array(),
-            'x_death_max_count_fail_log_levels_map' => array(
+            'x_death_max_count_log_levels_map' => [],
+            'x_death_max_count_fail_log_levels_map' => [
                 '\BadMethodCallException' => LogLevel::CRITICAL,
-            ),
-        );
+            ],
+        ];
 
         $processorMock = $this->prophesize(ProcessorInterface::class);
         $processorMock
@@ -289,13 +289,13 @@ class XDeathMaxCountProcessorTest extends TestCase
     {
         $this->expectException('\BadMethodCallException');
 
-        $options = array(
+        $options = [
             'x_death_max_count' => 10,
-            'x_death_max_count_log_levels_map' => array(
+            'x_death_max_count_log_levels_map' => [
                 '\BadMethodCallException' => LogLevel::CRITICAL,
-            ),
-            'x_death_max_count_fail_log_levels_map' => array(),
-        );
+            ],
+            'x_death_max_count_fail_log_levels_map' => [],
+        ];
 
         $processorMock = $this->prophesize(ProcessorInterface::class);
         $processorMock
@@ -325,11 +325,11 @@ class XDeathMaxCountProcessorTest extends TestCase
     {
         $this->expectException('\BadMethodCallException');
 
-        $options = array(
+        $options = [
             'x_death_max_count' => 10,
-            'x_death_max_count_log_levels_map' => array(),
-            'x_death_max_count_fail_log_levels_map' => array(),
-        );
+            'x_death_max_count_log_levels_map' => [],
+            'x_death_max_count_fail_log_levels_map' => [],
+        ];
         $processorMock = $this->prophesize(ProcessorInterface::class);
         $processorMock
             ->process(Argument::exact($message), Argument::exact($options))

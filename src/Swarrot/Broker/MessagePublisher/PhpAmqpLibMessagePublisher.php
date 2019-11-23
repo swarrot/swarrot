@@ -2,8 +2,8 @@
 
 namespace Swarrot\Broker\MessagePublisher;
 
-use PhpAmqpLib\Message\AMQPMessage;
 use PhpAmqpLib\Channel\AMQPChannel;
+use PhpAmqpLib\Message\AMQPMessage;
 use Swarrot\Broker\Message;
 
 class PhpAmqpLibMessagePublisher implements MessagePublisherInterface

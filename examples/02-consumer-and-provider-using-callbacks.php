@@ -2,9 +2,9 @@
 
 require_once __DIR__.'/../vendor/autoload.php';
 
-use Swarrot\Consumer;
 use Swarrot\Broker\Message;
 use Swarrot\Broker\MessageProvider\CallbackMessageProvider;
+use Swarrot\Consumer;
 use Swarrot\Processor\Callback\CallbackProcessor;
 
 $i = 0;

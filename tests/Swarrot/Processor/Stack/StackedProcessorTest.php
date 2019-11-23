@@ -5,11 +5,11 @@ namespace Swarrot\Tests\Processor\Stack;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Swarrot\Broker\Message;
-use Swarrot\Processor\ProcessorInterface;
 use Swarrot\Processor\InitializableInterface;
-use Swarrot\Processor\TerminableInterface;
+use Swarrot\Processor\ProcessorInterface;
 use Swarrot\Processor\SleepyInterface;
 use Swarrot\Processor\Stack\StackedProcessor;
+use Swarrot\Processor\TerminableInterface;
 
 class StackedProcessorTest extends TestCase
 {
@@ -21,11 +21,11 @@ class StackedProcessorTest extends TestCase
         $p4 = $this->prophesize(SleepyInterface::class);
 
         $stackedProcessor = new StackedProcessor(
-            $p1->reveal(), array(
+            $p1->reveal(), [
                 $p2->reveal(),
                 $p3->reveal(),
                 $p4->reveal(),
-            )
+            ]
         );
 
         $this->assertInstanceOf(StackedProcessor::class, $stackedProcessor);
@@ -48,20 +48,20 @@ class StackedProcessorTest extends TestCase
         $p4->process(Argument::type(Message::class), Argument::type('array'))->willReturn(null);
 
         $stackedProcessor = new StackedProcessor(
-            $p1->reveal(), array(
+            $p1->reveal(), [
                 $p2->reveal(),
                 $p3->reveal(),
                 $p4->reveal(),
-            )
+            ]
         );
 
-        $this->assertNull($stackedProcessor->initialize(array()));
-        $this->assertNull($stackedProcessor->terminate(array()));
-        $this->assertTrue($stackedProcessor->sleep(array()));
+        $this->assertNull($stackedProcessor->initialize([]));
+        $this->assertNull($stackedProcessor->terminate([]));
+        $this->assertTrue($stackedProcessor->sleep([]));
 
         $this->assertNull($stackedProcessor->process(
-            new Message('body', array(), 1),
-            array()
+            new Message('body', [], 1),
+            []
         ));
     }
 
@@ -77,13 +77,13 @@ class StackedProcessorTest extends TestCase
         $p4->sleep(Argument::type('array'))->willReturn(false);
 
         $stackedProcessor = new StackedProcessor(
-            $p1->reveal(), array(
+            $p1->reveal(), [
                 $p2->reveal(),
                 $p3->reveal(),
                 $p4->reveal(),
-            )
+            ]
         );
 
-        $this->assertFalse($stackedProcessor->sleep(array()));
+        $this->assertFalse($stackedProcessor->sleep([]));
     }
 }

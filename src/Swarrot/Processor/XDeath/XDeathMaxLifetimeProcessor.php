@@ -7,8 +7,8 @@ use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 use Psr\Log\NullLogger;
 use Swarrot\Broker\Message;
-use Swarrot\Processor\ProcessorInterface;
 use Swarrot\Processor\ConfigurableInterface;
+use Swarrot\Processor\ProcessorInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class XDeathMaxLifetimeProcessor implements ConfigurableInterface
@@ -33,12 +33,6 @@ class XDeathMaxLifetimeProcessor implements ConfigurableInterface
      */
     private $logger;
 
-    /**
-     * @param ProcessorInterface   $processor
-     * @param string               $queueName
-     * @param callable             $callback
-     * @param LoggerInterface|null $logger
-     */
     public function __construct(
         ProcessorInterface $processor,
         string $queueName,
@@ -57,11 +51,11 @@ class XDeathMaxLifetimeProcessor implements ConfigurableInterface
     public function setDefaultOptions(OptionsResolver $resolver)
     {
         $resolver
-            ->setDefaults(array(
+            ->setDefaults([
                 'x_death_max_lifetime' => 3600,
-                'x_death_max_lifetime_log_levels_map' => array(),
-                'x_death_max_lifetime_fail_log_levels_map' => array(),
-            ))
+                'x_death_max_lifetime_log_levels_map' => [],
+                'x_death_max_lifetime_fail_log_levels_map' => [],
+            ])
             ->setAllowedTypes('x_death_max_lifetime', 'int')
             ->setAllowedTypes('x_death_max_lifetime_log_levels_map', 'array')
             ->setAllowedTypes('x_death_max_lifetime_fail_log_levels_map', 'array');
@@ -83,8 +77,6 @@ class XDeathMaxLifetimeProcessor implements ConfigurableInterface
 
     /**
      * @param \Exception|\Throwable $exception
-     * @param Message               $message
-     * @param array                 $options
      *
      * @return mixed
      */
@@ -155,7 +147,6 @@ class XDeathMaxLifetimeProcessor implements ConfigurableInterface
     /**
      * @param \Exception|\Throwable $exception
      * @param string                $logMessage
-     * @param array                 $logLevelsMap
      */
     private function logException($exception, $logMessage, array $logLevelsMap)
     {

@@ -4,9 +4,9 @@ namespace Swarrot\Tests\Processor\SignalHandler;
 
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Psr\Log\LoggerInterface;
 use Swarrot\Broker\Message;
 use Swarrot\Processor\ProcessorInterface;
-use Psr\Log\LoggerInterface;
 use Swarrot\Processor\SignalHandler\SignalHandlerProcessor;
 
 class SignalHandlerProcessorTest extends TestCase
@@ -33,9 +33,9 @@ class SignalHandlerProcessorTest extends TestCase
         $processor = $this->prophesize(ProcessorInterface::class);
         $logger = $this->prophesize(LoggerInterface::class);
 
-        $message = new Message('body', array(), 1);
+        $message = new Message('body', [], 1);
         $processor = new SignalHandlerProcessor($processor->reveal(), $logger->reveal());
-        $this->assertNull($processor->process($message, array()));
+        $this->assertNull($processor->process($message, []));
     }
 
     public function test_it_should_throw_an_exception_after_consecutive_failed()
@@ -43,17 +43,17 @@ class SignalHandlerProcessorTest extends TestCase
         $processor = $this->prophesize(ProcessorInterface::class);
         $logger = $this->prophesize(LoggerInterface::class);
 
-        $message = new Message('body', array(), 1);
+        $message = new Message('body', [], 1);
 
         $processor->process(
             Argument::exact($message),
-            Argument::exact(array())
+            Argument::exact([])
         )
         ->willThrow('\BadMethodCallException');
 
         $processor = new SignalHandlerProcessor($processor->reveal(), $logger->reveal());
 
         $this->expectException('\BadMethodCallException');
-        $processor->process($message, array());
+        $processor->process($message, []);
     }
 }

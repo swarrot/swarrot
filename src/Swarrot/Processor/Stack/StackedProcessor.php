@@ -2,12 +2,12 @@
 
 namespace Swarrot\Processor\Stack;
 
-use Swarrot\Processor\ProcessorInterface;
+use Swarrot\Broker\Message;
 use Swarrot\Processor\ConfigurableInterface;
 use Swarrot\Processor\InitializableInterface;
-use Swarrot\Processor\TerminableInterface;
+use Swarrot\Processor\ProcessorInterface;
 use Swarrot\Processor\SleepyInterface;
-use Swarrot\Broker\Message;
+use Swarrot\Processor\TerminableInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class StackedProcessor implements ConfigurableInterface, InitializableInterface, TerminableInterface, SleepyInterface
@@ -24,7 +24,6 @@ class StackedProcessor implements ConfigurableInterface, InitializableInterface,
 
     /**
      * @param mixed $processor
-     * @param array $middlewares
      */
     public function __construct($processor, array $middlewares)
     {
@@ -34,8 +33,6 @@ class StackedProcessor implements ConfigurableInterface, InitializableInterface,
 
     /**
      * setDefaultOptions.
-     *
-     * @param OptionsResolver $resolver
      */
     public function setDefaultOptions(OptionsResolver $resolver)
     {
@@ -70,9 +67,7 @@ class StackedProcessor implements ConfigurableInterface, InitializableInterface,
 
             return $processor($message, $options);
         } else {
-            throw new \InvalidArgumentException(
-                'Processor MUST implement ProcessorInterface or be a valid callable.'
-            );
+            throw new \InvalidArgumentException('Processor MUST implement ProcessorInterface or be a valid callable.');
         }
     }
 

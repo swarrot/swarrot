@@ -33,17 +33,12 @@ class ConnectionProcessor implements ConfigurableInterface
         }
 
         if (!is_array($connections)) {
-            $connections = array($connections);
+            $connections = [$connections];
         }
 
         foreach ($connections as $connection) {
             if (!$connection instanceof Connection) {
-                throw new \InvalidArgumentException(
-                    sprintf(
-                        '$connections must be an array of Connection, but one of the elements was %s',
-                        is_object($connection) ? get_class($connection) : gettype($connection)
-                    )
-                );
+                throw new \InvalidArgumentException(sprintf('$connections must be an array of Connection, but one of the elements was %s', is_object($connection) ? get_class($connection) : gettype($connection)));
             }
         }
 

@@ -4,8 +4,8 @@ namespace Swarrot\Tests\Driver;
 
 use PHPUnit\Framework\TestCase;
 use Swarrot\Broker\Message;
-use Swarrot\Driver\PrefetchMessageCache;
 use Swarrot\Driver\MessageCacheInterface;
+use Swarrot\Driver\PrefetchMessageCache;
 
 /**
  * Class PrefetchMessageCacheTest.

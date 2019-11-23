@@ -15,8 +15,6 @@ interface MessageProviderInterface
 
     /**
      * ack.
-     *
-     * @param Message $message
      */
     public function ack(Message $message);
 

@@ -25,11 +25,9 @@ class StatefulStompMessageProvider implements MessageProviderInterface
     private $destination;
 
     /**
-     * @param Client $client
      * @param string $destination
      * @param null   $selector
      * @param string $ack
-     * @param array  $header
      */
     public function __construct(
         Client $client,
@@ -54,17 +52,13 @@ class StatefulStompMessageProvider implements MessageProviderInterface
         return null;
     }
 
-    /**
-     * @param Message $message
-     */
     public function ack(Message $message)
     {
         $this->stomp->ack(new StompMessage($message->getBody(), $message->getProperties()));
     }
 
     /**
-     * @param Message $message
-     * @param bool    $requeue
+     * @param bool $requeue
      */
     public function nack(Message $message, $requeue = false)
     {

@@ -12,9 +12,6 @@ class CallbackProcessor implements ProcessorInterface
      */
     protected $process;
 
-    /**
-     * @param callable $process
-     */
     public function __construct(callable $process)
     {
         $this->process = $process;

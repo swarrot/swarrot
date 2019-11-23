@@ -6,11 +6,11 @@ use Interop\Queue\PsrContext;
 use Interop\Queue\PsrMessage;
 use Interop\Queue\PsrProducer;
 use Interop\Queue\PsrTopic;
+use PHPUnit\Framework\TestCase;
+use Prophecy\Argument;
 use Swarrot\Broker\Message;
 use Swarrot\Broker\MessagePublisher\InteropMessagePublisher;
 use Swarrot\Broker\MessagePublisher\MessagePublisherInterface;
-use Prophecy\Argument;
-use PHPUnit\Framework\TestCase;
 
 class InteropMessagePublisherTest extends TestCase
 {

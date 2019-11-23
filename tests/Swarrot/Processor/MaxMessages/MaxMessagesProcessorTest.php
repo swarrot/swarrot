@@ -4,10 +4,10 @@ namespace Swarrot\Tests\Processor\MaxMessages;
 
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
-use Swarrot\Broker\Message;
 use Psr\Log\LoggerInterface;
-use Swarrot\Processor\ProcessorInterface;
+use Swarrot\Broker\Message;
 use Swarrot\Processor\MaxMessages\MaxMessagesProcessor;
+use Swarrot\Processor\ProcessorInterface;
 
 class MaxMessagesProcessorTest extends TestCase
 {
@@ -34,9 +34,9 @@ class MaxMessagesProcessorTest extends TestCase
         $processor = $this->prophesize(ProcessorInterface::class);
         $processor->process(
             Argument::type(Message::class),
-            Argument::exact(array(
+            Argument::exact([
                 'max_messages' => $maxMessages,
-            ))
+            ])
         )
         ->shouldBeCalledTimes(2);
 
@@ -47,16 +47,16 @@ class MaxMessagesProcessorTest extends TestCase
         )
         ->shouldBeCalledTimes(1);
 
-        $message = new Message('body', array(), 1);
+        $message = new Message('body', [], 1);
         $processor = new MaxMessagesProcessor(
             $processor->reveal(),
             $logger->reveal()
         );
 
         // Process
-        $this->assertNull($processor->process($message, array('max_messages' => $maxMessages)));
+        $this->assertNull($processor->process($message, ['max_messages' => $maxMessages]));
 
         // Too much messages processed, return false
-        $this->assertFalse($processor->process($message, array('max_messages' => $maxMessages)));
+        $this->assertFalse($processor->process($message, ['max_messages' => $maxMessages]));
     }
 }

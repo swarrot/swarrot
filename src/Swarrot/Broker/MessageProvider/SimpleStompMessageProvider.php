@@ -26,12 +26,10 @@ class SimpleStompMessageProvider implements MessageProviderInterface
     private $destination;
 
     /**
-     * @param Client $client
      * @param string $destination
      * @param null   $subscriptionId
      * @param string $ack
      * @param null   $selector
-     * @param array  $header
      */
     public function __construct(
         Client $client,
@@ -57,17 +55,13 @@ class SimpleStompMessageProvider implements MessageProviderInterface
         return null;
     }
 
-    /**
-     * @param Message $message
-     */
     public function ack(Message $message)
     {
         $this->stomp->ack(new StompMessage($message->getBody(), $message->getProperties()));
     }
 
     /**
-     * @param Message $message
-     * @param bool    $requeue
+     * @param bool $requeue
      *
      * @throws StompException
      */

@@ -2,13 +2,13 @@
 
 namespace Swarrot\Processor\SignalHandler;
 
-use Swarrot\Broker\Message;
-use Swarrot\Processor\ProcessorInterface;
-use Swarrot\Processor\ConfigurableInterface;
-use Swarrot\Processor\SleepyInterface;
-use Swarrot\Processor\InitializableInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
+use Swarrot\Broker\Message;
+use Swarrot\Processor\ConfigurableInterface;
+use Swarrot\Processor\InitializableInterface;
+use Swarrot\Processor\ProcessorInterface;
+use Swarrot\Processor\SleepyInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SignalHandlerProcessor implements ConfigurableInterface, SleepyInterface, InitializableInterface
@@ -43,9 +43,9 @@ class SignalHandlerProcessor implements ConfigurableInterface, SleepyInterface, 
      */
     public function setDefaultOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'signal_handler_signals' => extension_loaded('pcntl') ? [SIGTERM, SIGINT, SIGQUIT] : [],
-        ));
+        ]);
     }
 
     /**
@@ -86,7 +86,7 @@ class SignalHandlerProcessor implements ConfigurableInterface, SleepyInterface, 
             return;
         }
 
-        $signals = isset($options['signal_handler_signals']) ? $options['signal_handler_signals'] : array();
+        $signals = isset($options['signal_handler_signals']) ? $options['signal_handler_signals'] : [];
         foreach ($signals as $signal) {
             pcntl_signal($signal, function () {
                 $this->logger->info(

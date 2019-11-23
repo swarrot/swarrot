@@ -58,10 +58,10 @@ class MemoryLimitProcessor implements ConfigurableInterface
      */
     public function setDefaultOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'memory_limit' => null,
-        ));
+        ]);
 
-        $resolver->setAllowedTypes('memory_limit', array('integer', 'null'));
+        $resolver->setAllowedTypes('memory_limit', ['integer', 'null']);
     }
 }

@@ -4,9 +4,9 @@ namespace Swarrot\Tests\Processor\Sentry;
 
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Raven_Client;
 use Swarrot\Broker\Message;
 use Swarrot\Processor\ProcessorInterface;
-use Raven_Client;
 use Swarrot\Processor\Sentry\SentryProcessor;
 
 class SentryProcessorTest extends TestCase

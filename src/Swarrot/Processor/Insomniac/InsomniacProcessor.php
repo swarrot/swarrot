@@ -2,10 +2,10 @@
 
 namespace Swarrot\Processor\Insomniac;
 
+use Psr\Log\LoggerInterface;
 use Swarrot\Broker\Message;
 use Swarrot\Processor\ProcessorInterface;
 use Swarrot\Processor\SleepyInterface;
-use Psr\Log\LoggerInterface;
 
 class InsomniacProcessor implements SleepyInterface
 {

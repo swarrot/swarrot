@@ -21,11 +21,6 @@ class CallbackMessageProvider implements MessageProviderInterface
      */
     protected $nack;
 
-    /**
-     * @param callable      $get
-     * @param callable|null $ack
-     * @param callable|null $nack
-     */
     public function __construct(callable $get, callable $ack = null, callable $nack = null)
     {
         $this->get = $get;

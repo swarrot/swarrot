@@ -26,8 +26,7 @@ final class InteropMessagePublisher implements MessagePublisherInterface
     private $topic;
 
     /**
-     * @param PsrContext $context
-     * @param string     $topicName
+     * @param string $topicName
      */
     public function __construct(PsrContext $context, $topicName)
     {

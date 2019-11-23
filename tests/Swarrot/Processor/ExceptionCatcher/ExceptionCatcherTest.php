@@ -4,10 +4,10 @@ namespace Swarrot\Tests\Processor\ExceptionCatcher;
 
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
-use Swarrot\Broker\Message;
-use Swarrot\Processor\ProcessorInterface;
 use Psr\Log\LoggerInterface;
+use Swarrot\Broker\Message;
 use Swarrot\Processor\ExceptionCatcher\ExceptionCatcherProcessor;
+use Swarrot\Processor\ProcessorInterface;
 
 class ExceptionCatcherTest extends TestCase
 {
@@ -33,9 +33,9 @@ class ExceptionCatcherTest extends TestCase
         $processor = $this->prophesize(ProcessorInterface::class);
         $logger = $this->prophesize(LoggerInterface::class);
 
-        $message = new Message('body', array(), 1);
+        $message = new Message('body', [], 1);
         $processor = new ExceptionCatcherProcessor($processor->reveal(), $logger->reveal());
-        $this->assertNull($processor->process($message, array()));
+        $this->assertNull($processor->process($message, []));
     }
 
     public function test_it_should_throw_an_exception_after_consecutive_failed()
@@ -43,16 +43,16 @@ class ExceptionCatcherTest extends TestCase
         $processor = $this->prophesize(ProcessorInterface::class);
         $logger = $this->prophesize(LoggerInterface::class);
 
-        $message = new Message('body', array(), 1);
+        $message = new Message('body', [], 1);
 
         $processor->process(
             Argument::exact($message),
-            Argument::exact(array())
+            Argument::exact([])
         )
         ->willThrow('\BadMethodCallException');
 
         $processor = new ExceptionCatcherProcessor($processor->reveal(), $logger->reveal());
 
-        $this->assertNull($processor->process($message, array()));
+        $this->assertNull($processor->process($message, []));
     }
 }

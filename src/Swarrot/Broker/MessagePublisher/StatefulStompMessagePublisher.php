@@ -38,9 +38,6 @@ class StatefulStompMessagePublisher implements MessagePublisherInterface
      */
     private $stomp;
 
-    /**
-     * @param Client $client
-     */
     public function __construct(Client $client)
     {
         $this->client = $client;
@@ -48,8 +45,7 @@ class StatefulStompMessagePublisher implements MessagePublisherInterface
     }
 
     /**
-     * @param Message $message
-     * @param null    $key
+     * @param null $key
      */
     public function publish(Message $message, $key = null)
     {

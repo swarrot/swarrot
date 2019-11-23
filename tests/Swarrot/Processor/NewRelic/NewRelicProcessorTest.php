@@ -3,9 +3,9 @@
 namespace Swarrot\Tests\Processor\NewRelic;
 
 use PHPUnit\Framework\TestCase;
+use Swarrot\Processor\NewRelic\NewRelicProcessor;
 use Swarrot\Processor\ProcessorInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Swarrot\Processor\NewRelic\NewRelicProcessor;
 
 class NewRelicProcessorTest extends TestCase
 {

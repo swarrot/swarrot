@@ -5,12 +5,12 @@ namespace Swarrot;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Swarrot\Broker\MessageProvider\MessageProviderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
-use Swarrot\Processor\ProcessorInterface;
 use Swarrot\Processor\ConfigurableInterface;
 use Swarrot\Processor\InitializableInterface;
-use Swarrot\Processor\TerminableInterface;
+use Swarrot\Processor\ProcessorInterface;
 use Swarrot\Processor\SleepyInterface;
+use Swarrot\Processor\TerminableInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class Consumer
 {
@@ -35,10 +35,8 @@ class Consumer
     protected $logger;
 
     /**
-     * @param MessageProviderInterface $messageProvider
-     * @param ProcessorInterface       $processor
-     * @param OptionsResolver          $optionsResolver
-     * @param LoggerInterface          $logger
+     * @param OptionsResolver $optionsResolver
+     * @param LoggerInterface $logger
      */
     public function __construct(MessageProviderInterface $messageProvider, ProcessorInterface $processor, OptionsResolver $optionsResolver = null, LoggerInterface $logger = null)
     {
@@ -53,16 +51,16 @@ class Consumer
      *
      * @param array $options Parameters sent to the processor
      */
-    public function consume(array $options = array())
+    public function consume(array $options = [])
     {
         $this->logger->debug('Start consuming queue.', [
             'queue' => $this->messageProvider->getQueueName(),
         ]);
 
-        $this->optionsResolver->setDefaults(array(
+        $this->optionsResolver->setDefaults([
             'poll_interval' => 50000,
             'queue' => $this->messageProvider->getQueueName(),
-        ));
+        ]);
 
         if ($this->processor instanceof ConfigurableInterface) {
             $this->processor->setDefaultOptions($this->optionsResolver);
@@ -144,8 +142,6 @@ class Consumer
     }
 
     /**
-     * @param OptionsResolver $optionsResolver
-     *
      * @return self
      */
     public function setOptionsResolver(OptionsResolver $optionsResolver)

@@ -11,9 +11,6 @@ class PeclPackageMessageProvider implements MessageProviderInterface
      */
     protected $queue;
 
-    /**
-     * @param \AMQPQueue $queue
-     */
     public function __construct(\AMQPQueue $queue)
     {
         $this->queue = $queue;
@@ -32,7 +29,7 @@ class PeclPackageMessageProvider implements MessageProviderInterface
 
         return new Message(
             $envelope->getBody(),
-            array(
+            [
                 'content_type' => $envelope->getContentType(),
                 'routing_key' => $envelope->getRoutingKey(),
                 'delivery_tag' => $envelope->getDeliveryTag(),
@@ -53,7 +50,7 @@ class PeclPackageMessageProvider implements MessageProviderInterface
                 'cluster_id' => 0,
                 'channel' => '',
                 'consumer_tag' => '',
-            ),
+            ],
             $envelope->getDeliveryTag()
         );
     }
