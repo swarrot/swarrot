@@ -8,6 +8,7 @@ addons:
   apt:
     packages:
     - cmake
+    - rabbitmq-server
 
 env:
     global:
@@ -38,6 +39,7 @@ install:
   - if [[ "$MODE" != "syntax" ]]; then ./tests/bin/install_php-amqp.sh; fi;
   - if [[ "$MODE" == "syntax" ]]; then composer require --dev --no-update friendsofphp/php-cs-fixer; fi;
   - composer update --prefer-dist --no-progress --no-suggest $COMPOSER_FLAGS --ansi
+  - if [[ "$MODE" == "test" ]]; then sudo rabbitmq-plugins enable rabbitmq_management; fi;
   - if [[ "$MODE" == "test" ]]; then sudo env "PATH=$PATH" ./tests/bin/prepare_rabbit.sh; fi;
 
 script:
