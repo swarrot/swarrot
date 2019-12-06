@@ -14,7 +14,6 @@ env:
     global:
         - LIBRABBITMQ_VERSION=v0.8.0
         - PHPAMQP_VERSION=v1.9.4
-        - MODE="test" # Allowed values: [test, syntax]
 
 matrix:
     include:
@@ -26,8 +25,6 @@ matrix:
         # Test with lowest & beta dependencies
         - { php: 7.1, env: COMPOSER_FLAGS='--prefer-lowest --prefer-stable' }
         - { php: 7.3, env: DEPENDENCIES=beta }
-        # Other modes
-        - { php: 7.2, env: MODE=syntax }
 
     fast_finish: true
 
@@ -35,13 +32,9 @@ before_install:
   - if [ "$DEPENDENCIES" == "beta" ]; then composer config minimum-stability beta; fi;
 
 install:
-  - if [[ "$MODE" != "syntax" ]]; then sudo ./tests/bin/install_rabbitmq-c.sh; fi;
-  - if [[ "$MODE" != "syntax" ]]; then ./tests/bin/install_php-amqp.sh; fi;
-  - if [[ "$MODE" == "syntax" ]]; then composer require --dev --no-update friendsofphp/php-cs-fixer; fi;
   - composer update --prefer-dist --no-progress --no-suggest $COMPOSER_FLAGS --ansi
-  - if [[ "$MODE" == "test" ]]; then sudo rabbitmq-plugins enable rabbitmq_management; fi;
-  - if [[ "$MODE" == "test" ]]; then sudo env "PATH=$PATH" ./tests/bin/prepare_rabbit.sh; fi;
+  - sudo rabbitmq-plugins enable rabbitmq_management
+  - sudo env "PATH=$PATH" ./tests/bin/prepare_rabbit.sh
 
 script:
-    - if [[ "$MODE" == "syntax" ]]; then ./vendor/bin/php-cs-fixer fix --dry-run --diff --no-interaction -v; fi;
-    - if [[ "$MODE" == "test" ]]; then ./vendor/bin/phpunit; fi;
+    - ./vendor/bin/phpunit

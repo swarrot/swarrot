@@ -1,0 +1,13 @@
+on: [push, pull_request]
+
+name: Static analysis
+
+jobs:
+  php-cs-fixer:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: PHP-CS-Fixer
+        uses: docker://jakzal/phpqa:php7.3-alpine
+        with:
+            args: php-cs-fixer fix --dry-run --diff-format udiff
