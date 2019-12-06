@@ -28,7 +28,7 @@ class StatefulStompMessageProviderTest extends TestCase
      */
     private $provider;
 
-    public function setUp()
+    public function setUp(): void
     {
         $subscriptionFrame = $this->prophesize(Frame::class);
         $subscriptionFrame

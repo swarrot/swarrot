@@ -20,7 +20,7 @@ class PrefetchMessageCacheTest extends TestCase
     /**
      * Set up the test.
      */
-    public function setUp()
+    public function setUp(): void
     {
         $this->driver = new PrefetchMessageCache();
     }

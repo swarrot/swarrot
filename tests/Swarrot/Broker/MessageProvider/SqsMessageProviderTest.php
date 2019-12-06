@@ -28,7 +28,7 @@ class SqsMessageProviderTest extends TestCase
     /**
      * Set up the test.
      */
-    public function setUp()
+    public function setUp(): void
     {
         $this->channel = $this->prophesize(SqsClient::class);
         $this->cache = $this->prophesize(MessageCacheInterface::class);

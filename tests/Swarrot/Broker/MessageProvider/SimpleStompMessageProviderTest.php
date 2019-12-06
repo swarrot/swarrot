@@ -6,6 +6,7 @@ use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
 use Stomp\Client;
+use Stomp\Exception\StompException;
 use Stomp\Protocol\Protocol;
 use Stomp\Transport\Frame;
 use Swarrot\Broker\Message;
@@ -28,7 +29,7 @@ class SimpleStompMessageProviderTest extends TestCase
      */
     private $provider;
 
-    public function setUp()
+    public function setUp(): void
     {
         $subscriptionFrame = $this->prophesize(Frame::class);
         $subscriptionFrame
@@ -142,16 +143,15 @@ class SimpleStompMessageProviderTest extends TestCase
         $this->provider->nack(new Message('fake_body', ['fake_property']), true);
     }
 
-    /**
-     * @expectedException \Stomp\Exception\StompException
-     * @expectedExceptionMessage Stomp protocol is require to NACK Frames.
-     */
     public function test_nack_without_protocol()
     {
         $this->client
             ->getProtocol()
             ->willReturn(null)
             ->shouldBeCalled();
+
+        $this->expectException(StompException::class);
+        $this->expectExceptionMessage('Stomp protocol is require to NACK Frames.');
 
         $this->provider->nack(new Message('fake_body', ['fake_property']), true);
     }

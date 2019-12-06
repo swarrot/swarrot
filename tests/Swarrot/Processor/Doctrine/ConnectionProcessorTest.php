@@ -56,10 +56,6 @@ class ConnectionProcessorTest extends TestCase
         $this->assertEquals($processor->process($message, $options), true);
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage my_fake_message
-     */
     public function testWithException()
     {
         $message = new Message();
@@ -92,13 +88,11 @@ class ConnectionProcessorTest extends TestCase
         };
 
         $processor = new ConnectionProcessor($innerProcessorProphecy->reveal(), $createConnections());
-        $this->assertEquals($processor->process($message, $options), true);
 
-        $connectionRegistry = $this->prophesize(ConnectionRegistry::class);
-        $connectionRegistry->getConnections()->willReturn($createConnections);
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('my_fake_message');
 
-        $processor = new ConnectionProcessor($innerProcessorProphecy->reveal(), $createConnections());
-        $this->assertEquals($processor->process($message, $options), true);
+        $processor->process($message, $options);
     }
 
     public function testCloseTimedOutConnection()
@@ -125,13 +119,12 @@ class ConnectionProcessorTest extends TestCase
         $processor->process(new Message(), $options);
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage $connections must be an array of Connection, but one of the elements was stdClass
-     */
     public function testRejectNonConnections()
     {
         $innerProcessorProphecy = $this->prophesize(ProcessorInterface::class);
+
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('$connections must be an array of Connection, but one of the elements was stdClass');
 
         new ConnectionProcessor($innerProcessorProphecy->reveal(), [new \StdClass()]);
     }
