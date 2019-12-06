@@ -35,6 +35,8 @@ class RpcClientProcessor implements ProcessorInterface, ConfigurableInterface, S
 
     public function __construct(ProcessorInterface $processor = null, LoggerInterface $logger = null)
     {
+        @trigger_error(sprintf('"%s" have been deprecated since Swarrot 3.5', __CLASS__), E_USER_DEPRECATED);
+
         $this->processor = $processor;
         $this->logger = $logger ?: new NullLogger();
     }
