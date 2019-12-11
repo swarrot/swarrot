@@ -5,6 +5,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+- Drop support of PHP < 7.2
+
 ## [3.4.0] - 2019-05-19
 
 - Always use static messages for logs

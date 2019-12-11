@@ -44,10 +44,6 @@ class ObjectManagerProcessorTest extends TestCase
         $this->assertEquals($processor->process($message, $options), true);
     }
 
-    /**
-     * @expectedException \Exception
-     * @expectedExceptionMessage my_fake_message
-     */
     public function testWithException()
     {
         $message = new Message();
@@ -78,7 +74,10 @@ class ObjectManagerProcessorTest extends TestCase
 
         $processor = new ObjectManagerProcessor($innerProcessorProphecy->reveal(), $managerRegistryProphecy->reveal());
 
-        $this->assertEquals($processor->process($message, $options), true);
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage('my_fake_message');
+
+        $processor->process($message, $options);
     }
 }
 

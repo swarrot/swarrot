@@ -14,7 +14,7 @@ use Swarrot\Broker\MessagePublisher\MessagePublisherInterface;
 
 class InteropMessagePublisherTest extends TestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         if (!interface_exists(PsrContext::class)) {
             $this->markTestSkipped('The queue-interop package is not available');

@@ -16,20 +16,32 @@ env:
         - PHPAMQP_VERSION=v1.9.4
 
 matrix:
-    include:
-        # Test with default configuration
-        - { php: 7.2 }
-        - { php: 7.3 }
-        # Test against librabbitmq cutting-edge
-        - { php: 7.2, env: LIBRABBITMQ_VERSION=master }
-        # Test with lowest & beta dependencies
-        - { php: 7.1, env: COMPOSER_FLAGS='--prefer-lowest --prefer-stable' }
-        - { php: 7.3, env: DEPENDENCIES=beta }
-
     fast_finish: true
+    include:
+        # Test with lowest dependencies
+        - { php: 7.2, env: COMPOSER_FLAGS='--prefer-lowest --prefer-stable' }
+
+        # Test the latest stable release
+        - php: 7.3
+
+        # Test against librabbitmq cutting-edge
+        - { php: 7.3, env: LIBRABBITMQ_VERSION=master }
+
+        # Force some major versions of Symfony
+        - php: 7.3
+          env: SYMFONY_VERSION="3.*"
+        - php: 7.3
+          env: SYMFONY_VERSION="4.*"
+
+        # Test with latest PHP version & beta dependencies
+        - { php: 7.4snapshot, env: STABILITY=dev }
+
+    allow_failures:
+        - { php: 7.4snapshot, env: STABILITY=dev }
 
 before_install:
-  - if [ "$DEPENDENCIES" == "beta" ]; then composer config minimum-stability beta; fi;
+  - if [ "$STABILITY" == "beta" ]; then composer config minimum-stability beta; fi;
+  - if ! [ -z "$STABILITY" ]; then composer config minimum-stability ${STABILITY}; fi;
 
 install:
   - composer update --prefer-dist --no-progress --no-suggest $COMPOSER_FLAGS --ansi

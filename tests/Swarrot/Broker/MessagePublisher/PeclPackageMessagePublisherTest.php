@@ -9,7 +9,7 @@ use Swarrot\Broker\MessagePublisher\PeclPackageMessagePublisher;
 
 class PeclPackageMessagePublisherTest extends TestCase
 {
-    protected function setUp()
+    protected function setUp(): void
     {
         if (!class_exists('AMQPConnection')) {
             $this->markTestSkipped('The AMQP extension is not available');
