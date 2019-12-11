@@ -5,7 +5,13 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [3.5.0] - 2019-12-11
+
 - Drop support of PHP < 7.2
+- Add support for Symfony ^5.0
+- Improve some logs
+- Deprecate SQSMessageProvider
+- Deprecate some processors: Sentry & RPC related processors
 
 ## [3.4.0] - 2019-05-19
 
@@ -177,7 +183,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [1.1.0] - 2014-04-01
 
-[Unreleased]: https://github.com/swarrot/swarrot/compare/v3.4.0...HEAD
+[Unreleased]: https://github.com/swarrot/swarrot/compare/v3.5.0...HEAD
+[3.5.0]: https://github.com/swarrot/swarrot/compare/v3.4.0...v3.5.0
 [3.4.0]: https://github.com/swarrot/swarrot/compare/v3.3.1...v3.4.0
 [3.3.1]: https://github.com/swarrot/swarrot/compare/v3.3.0...v3.3.1
 [3.3.0]: https://github.com/swarrot/swarrot/compare/v3.2.1...v3.3.0
