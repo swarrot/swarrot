@@ -45,7 +45,7 @@ class NewRelicProcessor implements ConfigurableInterface
             $result = $this->processor->process($message, $options);
         } catch (\Exception $e) {
             if ($this->extensionLoaded) {
-                newrelic_notice_error(null, $e);
+                newrelic_notice_error($e);
                 newrelic_end_transaction();
             }
 
