@@ -147,6 +147,8 @@ class XDeathMaxLifetimeProcessor implements ConfigurableInterface
     /**
      * @param \Exception|\Throwable $exception
      * @param string                $logMessage
+     *
+     * @return void
      */
     private function logException($exception, $logMessage, array $logLevelsMap)
     {

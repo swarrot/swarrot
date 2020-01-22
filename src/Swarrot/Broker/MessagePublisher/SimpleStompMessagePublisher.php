@@ -45,15 +45,15 @@ class SimpleStompMessagePublisher implements MessagePublisherInterface
     }
 
     /**
-     * @param null $key
+     * @param string $key
      */
-    public function publish(Message $message, $key = null)
+    public function publish(Message $message, $key = '')
     {
         $this->stomp->send($key, new StompMessage($message->getBody(), $message->getProperties()));
     }
 
     public function getExchangeName()
     {
-        return;
+        return '';
     }
 }

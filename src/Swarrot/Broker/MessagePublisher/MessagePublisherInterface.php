@@ -12,7 +12,7 @@ interface MessagePublisherInterface
      * @param Message $message The message to publish
      * @param string  $key     A routing key to use
      */
-    public function publish(Message $message, $key = null);
+    public function publish(Message $message, $key = '');
 
     /**
      * getExchangeName.
