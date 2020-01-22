@@ -36,6 +36,8 @@ class StatefulStompMessageProvider implements MessageProviderInterface
         $ack = 'client',
         array $header = []
     ) {
+        @trigger_error(sprintf('"%s" have been deprecated since Swarrot 3.6', __CLASS__), E_USER_DEPRECATED);
+
         $this->client = $client;
         $this->destination = $destination;
 
