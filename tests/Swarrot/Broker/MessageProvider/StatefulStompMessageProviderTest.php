@@ -60,6 +60,10 @@ class StatefulStompMessageProviderTest extends TestCase
         );
     }
 
+    /**
+     * @group legacy
+     * @expectedDeprecation "Swarrot\Broker\MessageProvider\StatefulStompMessageProvider" have been deprecated since Swarrot 3.6
+     */
     public function test_get_with_messages_in_queue_return_message()
     {
         $frame = $this->prophesize(Frame::class);
@@ -82,6 +86,10 @@ class StatefulStompMessageProviderTest extends TestCase
         $this->assertInstanceOf('Swarrot\Broker\Message', $message);
     }
 
+    /**
+     * @group legacy
+     * @expectedDeprecation "Swarrot\Broker\MessageProvider\StatefulStompMessageProvider" have been deprecated since Swarrot 3.6
+     */
     public function test_get_without_messages_in_queue_return_null()
     {
         $this->client
@@ -94,6 +102,10 @@ class StatefulStompMessageProviderTest extends TestCase
         $this->assertNull($message);
     }
 
+    /**
+     * @group legacy
+     * @expectedDeprecation "Swarrot\Broker\MessageProvider\StatefulStompMessageProvider" have been deprecated since Swarrot 3.6
+     */
     public function test_ack()
     {
         $frame = $this->prophesize(Frame::class);
@@ -115,6 +127,10 @@ class StatefulStompMessageProviderTest extends TestCase
         $this->provider->ack(new Message('fake_body', ['fake_property']));
     }
 
+    /**
+     * @group legacy
+     * @expectedDeprecation "Swarrot\Broker\MessageProvider\StatefulStompMessageProvider" have been deprecated since Swarrot 3.6
+     */
     public function test_nack()
     {
         $frame = $this->prophesize(Frame::class);
@@ -140,6 +156,10 @@ class StatefulStompMessageProviderTest extends TestCase
         $this->provider->nack(new Message('fake_body', ['fake_property']), true);
     }
 
+    /**
+     * @group legacy
+     * @expectedDeprecation "Swarrot\Broker\MessageProvider\StatefulStompMessageProvider" have been deprecated since Swarrot 3.6
+     */
     public function test_get_name()
     {
         $this->assertEquals('fake_destination', $this->provider->getQueueName());

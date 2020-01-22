@@ -12,6 +12,10 @@ use Swarrot\Processor\RPC\RpcServerProcessor;
 
 class RpcServerProcessorTest extends TestCase
 {
+    /**
+     * @group legacy
+     * @expectedDeprecation "Swarrot\Processor\RPC\RpcServerProcessor" have been deprecated since Swarrot 3.5
+     */
     public function test_it_is_initializable_without_a_logger()
     {
         $processor = $this->prophesize(ProcessorInterface::class);
@@ -21,6 +25,10 @@ class RpcServerProcessorTest extends TestCase
         $this->assertInstanceOf(RpcServerProcessor::class, $processor);
     }
 
+    /**
+     * @group legacy
+     * @expectedDeprecation "Swarrot\Processor\RPC\RpcServerProcessor" have been deprecated since Swarrot 3.5
+     */
     public function test_it_is_initializable_with_a_logger()
     {
         $processor = $this->prophesize(ProcessorInterface::class);
@@ -31,7 +39,12 @@ class RpcServerProcessorTest extends TestCase
         $this->assertInstanceOf(RpcServerProcessor::class, $processor);
     }
 
-    /** @dataProvider noPropertiesProvider */
+    /**
+     * @group legacy
+     * @expectedDeprecation "Swarrot\Processor\RPC\RpcServerProcessor" have been deprecated since Swarrot 3.5
+     *
+     * @dataProvider noPropertiesProvider
+     */
     public function test_it_should_do_an_early_return_if_no_adequate_properties(array $properties)
     {
         $processor = $this->prophesize(ProcessorInterface::class);
@@ -54,6 +67,10 @@ class RpcServerProcessorTest extends TestCase
                 [['reply_to' => 'foo', 'correlation_id' => 0]], ];
     }
 
+    /**
+     * @group legacy
+     * @expectedDeprecation "Swarrot\Processor\RPC\RpcServerProcessor" have been deprecated since Swarrot 3.5
+     */
     public function test_it_should_publish_a_new_message_when_done()
     {
         $message = new Message('', ['reply_to' => 'foo', 'correlation_id' => 42]);

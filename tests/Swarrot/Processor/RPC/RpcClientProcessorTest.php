@@ -10,12 +10,20 @@ use Swarrot\Processor\RPC\RpcClientProcessor;
 
 class RpcClientProcessorTest extends TestCase
 {
+    /**
+     * @group legacy
+     * @expectedDeprecation "Swarrot\Processor\RPC\RpcClientProcessor" have been deprecated since Swarrot 3.5
+     */
     public function test_it_is_initializable_without_a_logger()
     {
         $processor = new RpcClientProcessor();
         $this->assertInstanceOf(RpcClientProcessor::class, $processor);
     }
 
+    /**
+     * @group legacy
+     * @expectedDeprecation "Swarrot\Processor\RPC\RpcClientProcessor" have been deprecated since Swarrot 3.5
+     */
     public function test_it_is_initializable_with_a_logger()
     {
         $logger = $this->prophesize(LoggerInterface::class);
@@ -24,6 +32,10 @@ class RpcClientProcessorTest extends TestCase
         $this->assertInstanceOf(RpcClientProcessor::class, $processor);
     }
 
+    /**
+     * @group legacy
+     * @expectedDeprecation "Swarrot\Processor\RPC\RpcClientProcessor" have been deprecated since Swarrot 3.5
+     */
     public function test_it_is_initializable_with_a_processor()
     {
         $processor = $this->prophesize(ProcessorInterface::class);
@@ -32,6 +44,10 @@ class RpcClientProcessorTest extends TestCase
         $this->assertInstanceOf(RpcClientProcessor::class, $processor);
     }
 
+    /**
+     * @group legacy
+     * @expectedDeprecation "Swarrot\Processor\RPC\RpcClientProcessor" have been deprecated since Swarrot 3.5
+     */
     public function test_it_is_initializable_with_a_processor_and_a_logger()
     {
         $processor = $this->prophesize(ProcessorInterface::class);
@@ -41,12 +57,20 @@ class RpcClientProcessorTest extends TestCase
         $this->assertInstanceOf(RpcClientProcessor::class, $processor);
     }
 
+    /**
+     * @group legacy
+     * @expectedDeprecation "Swarrot\Processor\RPC\RpcClientProcessor" have been deprecated since Swarrot 3.5
+     */
     public function test_it_should_sleep_if_no_correlation_id_set()
     {
         $processor = new RpcClientProcessor();
         $this->assertNull($processor->process(new Message(), []));
     }
 
+    /**
+     * @group legacy
+     * @expectedDeprecation "Swarrot\Processor\RPC\RpcClientProcessor" have been deprecated since Swarrot 3.5
+     */
     public function test_it_should_sleep_if_invalid_correlation_id()
     {
         $processor = new RpcClientProcessor();
@@ -56,6 +80,10 @@ class RpcClientProcessorTest extends TestCase
         $this->assertTrue($processor->sleep([]));
     }
 
+    /**
+     * @group legacy
+     * @expectedDeprecation "Swarrot\Processor\RPC\RpcClientProcessor" have been deprecated since Swarrot 3.5
+     */
     public function test_it_should_stop_if_correct_correlation_id()
     {
         $processor = new RpcClientProcessor();
@@ -65,6 +93,10 @@ class RpcClientProcessorTest extends TestCase
         $this->assertFalse($processor->sleep([]));
     }
 
+    /**
+     * @group legacy
+     * @expectedDeprecation "Swarrot\Processor\RPC\RpcClientProcessor" have been deprecated since Swarrot 3.5
+     */
     public function test_it_should_let_the_nested_processor_act_and_stop_if_correct_correlation_id()
     {
         $message = new Message(null, ['correlation_id' => 1]);

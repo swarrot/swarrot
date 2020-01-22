@@ -26,7 +26,8 @@ class SqsMessageProviderTest extends TestCase
     protected $cache;
 
     /**
-     * Set up the test.
+     * @group legacy
+     * @expectedDeprecation "Swarrot\Broker\MessageProvider\SqsMessageProvider" have been deprecated since Swarrot 3.5
      */
     public function setUp(): void
     {
@@ -37,7 +38,8 @@ class SqsMessageProviderTest extends TestCase
     }
 
     /**
-     * Test instance.
+     * @group legacy
+     * @expectedDeprecation "Swarrot\Broker\MessageProvider\SqsMessageProvider" have been deprecated since Swarrot 3.5
      */
     public function testInstance()
     {
@@ -45,7 +47,8 @@ class SqsMessageProviderTest extends TestCase
     }
 
     /**
-     * Test with no cache.
+     * @group legacy
+     * @expectedDeprecation "Swarrot\Broker\MessageProvider\SqsMessageProvider" have been deprecated since Swarrot 3.5
      */
     public function testGetWithNoCache()
     {
@@ -72,7 +75,8 @@ class SqsMessageProviderTest extends TestCase
     }
 
     /**
-     * Test with no cache.
+     * @group legacy
+     * @expectedDeprecation "Swarrot\Broker\MessageProvider\SqsMessageProvider" have been deprecated since Swarrot 3.5
      */
     public function testGetWithNoResult()
     {
@@ -92,7 +96,8 @@ class SqsMessageProviderTest extends TestCase
     }
 
     /**
-     * Test with cache.
+     * @group legacy
+     * @expectedDeprecation "Swarrot\Broker\MessageProvider\SqsMessageProvider" have been deprecated since Swarrot 3.5
      */
     public function testGetWithCache()
     {
@@ -107,6 +112,10 @@ class SqsMessageProviderTest extends TestCase
         $this->channel->receiveMessage(Argument::any())->shouldNotBeCalled();
     }
 
+    /**
+     * @group legacy
+     * @expectedDeprecation "Swarrot\Broker\MessageProvider\SqsMessageProvider" have been deprecated since Swarrot 3.5
+     */
     public function testAck()
     {
         $message = $this->prophesize(Message::class);
@@ -120,6 +129,10 @@ class SqsMessageProviderTest extends TestCase
         $this->provider->ack($message->reveal());
     }
 
+    /**
+     * @group legacy
+     * @expectedDeprecation "Swarrot\Broker\MessageProvider\SqsMessageProvider" have been deprecated since Swarrot 3.5
+     */
     public function testNackWithRequeue()
     {
         $message = $this->prophesize(Message::class);
@@ -135,6 +148,10 @@ class SqsMessageProviderTest extends TestCase
         $this->provider->nack($message->reveal(), true);
     }
 
+    /**
+     * @group legacy
+     * @expectedDeprecation "Swarrot\Broker\MessageProvider\SqsMessageProvider" have been deprecated since Swarrot 3.5
+     */
     public function testNackWithoutRequeue()
     {
         $message = $this->prophesize(Message::class);
