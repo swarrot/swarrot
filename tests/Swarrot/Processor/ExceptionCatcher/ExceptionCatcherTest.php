@@ -30,12 +30,15 @@ class ExceptionCatcherTest extends TestCase
 
     public function test_it_should_return_void_when_no_exception_is_thrown()
     {
+        $message = new Message('body', [], 1);
+
         $processor = $this->prophesize(ProcessorInterface::class);
+        $processor->process($message, [])->shouldBeCalledTimes(1)->willReturn(true);
+
         $logger = $this->prophesize(LoggerInterface::class);
 
-        $message = new Message('body', [], 1);
         $processor = new ExceptionCatcherProcessor($processor->reveal(), $logger->reveal());
-        $this->assertNull($processor->process($message, []));
+        $this->assertTrue($processor->process($message, []));
     }
 
     public function test_it_should_throw_an_exception_after_consecutive_failed()
@@ -53,6 +56,6 @@ class ExceptionCatcherTest extends TestCase
 
         $processor = new ExceptionCatcherProcessor($processor->reveal(), $logger->reveal());
 
-        $this->assertNull($processor->process($message, []));
+        $this->assertTrue($processor->process($message, []));
     }
 }

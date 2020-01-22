@@ -36,20 +36,18 @@ class RetryProcessorTest extends TestCase
 
     public function test_it_should_return_result_when_all_is_right()
     {
-        $processor = $this->prophesize(ProcessorInterface::class);
-        $messagePublisher = $this->prophesize(MessagePublisherInterface::class);
-        $logger = $this->prophesize(LoggerInterface::class);
-
         $message = new Message('body', [], 1);
 
-        $processor->process(Argument::exact($message), Argument::exact([]))->willReturn(null);
-        $messagePublisher
-            ->publish(Argument::exact($message))
-            ->shouldNotBeCalled(null)
-        ;
+        $processor = $this->prophesize(ProcessorInterface::class);
+        $processor->process($message, [])->shouldBeCalledTimes(1)->willReturn(true);
+
+        $messagePublisher = $this->prophesize(MessagePublisherInterface::class);
+        $messagePublisher->publish($message)->shouldNotBeCalled();
+
+        $logger = $this->prophesize(LoggerInterface::class);
 
         $processor = new RetryProcessor($processor->reveal(), $messagePublisher->reveal(), $logger->reveal());
-        $this->assertNull($processor->process($message, []));
+        $this->assertTrue($processor->process($message, []));
     }
 
     public function test_it_should_republished_message_when_an_exception_occurred()
@@ -88,7 +86,7 @@ class RetryProcessorTest extends TestCase
             ->shouldBeCalledTimes(1)
         ;
 
-        $this->assertNull(
+        $this->assertTrue(
             $retryProcessor->process($message, $options)
         );
     }
@@ -134,7 +132,7 @@ class RetryProcessorTest extends TestCase
             ->shouldBeCalledTimes(1)
         ;
 
-        $this->assertNull(
+        $this->assertTrue(
             $retryProcessor->process($message, $options)
         );
     }
@@ -183,7 +181,7 @@ class RetryProcessorTest extends TestCase
             ->shouldBeCalledTimes(1)
         ;
 
-        $this->assertNull(
+        $this->assertTrue(
             $retryProcessor->process($message, $options)
         );
     }
@@ -312,7 +310,7 @@ class RetryProcessorTest extends TestCase
             ->shouldBeCalledTimes(1)
         ;
 
-        $this->assertNull(
+        $this->assertTrue(
             $retryProcessor->process($message, $options)
         );
     }
@@ -361,7 +359,7 @@ class RetryProcessorTest extends TestCase
             ->shouldBeCalledTimes(1)
         ;
 
-        $this->assertNull(
+        $this->assertTrue(
             $retryProcessor->process($message, $options)
         );
     }
@@ -409,7 +407,7 @@ class RetryProcessorTest extends TestCase
             ->shouldBeCalledTimes(1)
         ;
 
-        $this->assertNull(
+        $this->assertTrue(
             $retryProcessor->process($message, $options)
         );
     }
@@ -459,7 +457,7 @@ class RetryProcessorTest extends TestCase
             ->shouldBeCalledTimes(1)
         ;
 
-        $this->assertNull(
+        $this->assertTrue(
             $retryProcessor->process($message, $options)
         );
     }
@@ -509,7 +507,7 @@ class RetryProcessorTest extends TestCase
             ->shouldBeCalledTimes(1)
         ;
 
-        $this->assertNull(
+        $this->assertTrue(
             $retryProcessor->process($message, $options)
         );
     }

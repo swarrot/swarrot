@@ -53,13 +53,15 @@ class Consumer
      */
     public function consume(array $options = [])
     {
+        $queueName = $this->messageProvider->getQueueName();
+
         $this->logger->debug('Start consuming queue.', [
-            'queue' => $this->messageProvider->getQueueName(),
+            'queue' => $queueName,
         ]);
 
         $this->optionsResolver->setDefaults([
             'poll_interval' => 50000,
-            'queue' => $this->messageProvider->getQueueName(),
+            'queue' => $queueName,
         ]);
 
         if ($this->processor instanceof ConfigurableInterface) {
@@ -74,7 +76,11 @@ class Consumer
 
         while (true) {
             while (null !== $message = $this->messageProvider->get()) {
-                if (false === $this->processor->process($message, $options)) {
+                $result = $this->processor->process($message, $options);
+                if (!is_bool($result)) {
+                    @trigger_error(sprintf('Processors must return a bool since Swarrot 3.7', __CLASS__), E_USER_DEPRECATED);
+                }
+                if (false === $result) {
                     break 2;
                 }
             }

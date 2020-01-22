@@ -27,103 +27,109 @@ class ConsumerTest extends TestCase
 
     public function test_it_returns_null_if_no_error_occurred()
     {
-        $provider = $this->prophesize(MessageProviderInterface::class);
-        $processor = $this->prophesize(ProcessorInterface::class);
-
         $message = new Message('body', [], 1);
 
-        $provider->get()->willReturn($message);
-        $provider->getQueueName()->willReturn('image_crop');
+        $provider = $this->prophesize(MessageProviderInterface::class);
+        $provider->get()->shouldBeCalledTimes(1)->willReturn($message);
+        $provider->getQueueName()->shouldBeCalledTimes(1)->willReturn('my_queue');
+
+        $processor = $this->prophesize(ProcessorInterface::class);
         $processor
             ->process(
                 $message,
                 [
                     'poll_interval' => '50000',
-                    'queue' => 'image_crop',
+                    'queue' => 'my_queue',
                 ]
             )
+            ->shouldBeCalledTimes(1)
             ->willReturn(false)
         ;
 
         $consumer = new Consumer($provider->reveal(), $processor->reveal());
-        $this->assertNull($consumer->consume());
+        $consumer->consume();
     }
 
     public function test_it_call_processor_if_its_configurable()
     {
-        $provider = $this->prophesize(MessageProviderInterface::class);
-        $processor = $this->prophesize(ConfigurableInterface::class);
-
         $message = new Message('body', [], 1);
 
-        $provider->get()->willReturn($message);
-        $provider->getQueueName()->willReturn('');
-        $processor->setDefaultOptions(
-            Argument::type(OptionsResolver::class)
-        )->willReturn(null);
-        $processor->process(
-            $message,
-            Argument::type('array')
-        )->willReturn(false);
+        $provider = $this->prophesize(MessageProviderInterface::class);
+        $provider->get()->shouldBeCalledTimes(1)->willReturn($message);
+        $provider->getQueueName()->shouldBeCalledTimes(1)->willReturn('');
+
+        $processor = $this->prophesize(ConfigurableInterface::class);
+        $processor->setDefaultOptions(Argument::type(OptionsResolver::class))->shouldBeCalledTimes(1);
+        $processor->process($message, Argument::type('array'))->shouldBeCalledTimes(1)->willReturn(false);
 
         $consumer = new Consumer($provider->reveal(), $processor->reveal());
-        $this->assertNull($consumer->consume());
+        $consumer->consume();
     }
 
     public function test_it_call_processor_if_its_initializable()
     {
-        $provider = $this->prophesize(MessageProviderInterface::class);
-        $processor = $this->prophesize(InitializableInterface::class);
-
         $message = new Message('body', [], 1);
 
-        $provider->get()->willReturn($message);
-        $provider->getQueueName()->willReturn('');
-        $processor->initialize(Argument::type('array'))->willReturn(null);
-        $processor->process(
-            $message,
-            Argument::type('array')
-        )->willReturn(false);
+        $provider = $this->prophesize(MessageProviderInterface::class);
+        $provider->get()->shouldBeCalledTimes(1)->willReturn($message);
+        $provider->getQueueName()->shouldBeCalledTimes(1)->willReturn('');
+
+        $processor = $this->prophesize(InitializableInterface::class);
+        $processor->initialize(Argument::type('array'))->shouldBeCalledTimes(1);
+        $processor->process($message, Argument::type('array'))->shouldBeCalledTimes(1)->willReturn(false);
 
         $consumer = new Consumer($provider->reveal(), $processor->reveal());
-        $this->assertNull($consumer->consume());
+        $consumer->consume();
     }
 
     public function test_it_call_processor_if_its_terminable()
     {
-        $provider = $this->prophesize(MessageProviderInterface::class);
-        $processor = $this->prophesize(TerminableInterface::class);
-
         $message = new Message('body', [], 1);
 
-        $provider->get()->willReturn($message);
-        $provider->getQueueName()->willReturn('');
+        $provider = $this->prophesize(MessageProviderInterface::class);
+        $provider->get()->shouldBeCalledTimes(1)->willReturn($message);
+        $provider->getQueueName()->shouldBeCalledTimes(1)->willReturn('');
+
+        $processor = $this->prophesize(TerminableInterface::class);
         $processor->terminate(Argument::type('array'))->willReturn(null);
-        $processor->process(
-            $message,
-            Argument::type('array')
-        )->willReturn(false);
+        $processor->process($message, Argument::type('array'))->shouldBeCalledTimes(1)->willReturn(false);
 
         $consumer = new Consumer($provider->reveal(), $processor->reveal());
-        $this->assertNull($consumer->consume());
+        $consumer->consume();
     }
 
     public function test_it_call_processor_if_its_Sleepy()
     {
-        $provider = $this->prophesize(MessageProviderInterface::class);
-        $processor = $this->prophesize(SleepyInterface::class);
-
         $message = new Message('body', [], 1);
 
-        $provider->get()->willReturn($message);
-        $provider->getQueueName()->willReturn('');
+        $provider = $this->prophesize(MessageProviderInterface::class);
+        $provider->get()->shouldBeCalledTimes(1)->willReturn($message);
+        $provider->getQueueName()->shouldBeCalledTimes(1)->willReturn('');
+
+        $processor = $this->prophesize(SleepyInterface::class);
         $processor->sleep(Argument::type('array'))->willReturn(null);
-        $processor->process(
-            $message,
-            Argument::type('array')
-        )->willReturn(false);
+        $processor->process($message, Argument::type('array'))->shouldBeCalledTimes(1)->willReturn(false);
 
         $consumer = new Consumer($provider->reveal(), $processor->reveal());
-        $this->assertNull($consumer->consume());
+        $consumer->consume();
+    }
+
+    /**
+     * @group legacy
+     * @expectedDeprecation Processors must return a bool since Swarrot 3.7
+     */
+    public function test_it_triggers_a_deprecation_when_processor_return_null()
+    {
+        $message = new Message('body', [], 1);
+
+        $provider = $this->prophesize(MessageProviderInterface::class);
+        $provider->get()->shouldBeCalledTimes(2)->willReturn($message);
+        $provider->getQueueName()->shouldBeCalledTimes(1)->willReturn('');
+
+        $processor = $this->prophesize(ProcessorInterface::class);
+        $processor->process($message, Argument::type('array'))->shouldBeCalledTimes(2)->willReturn(null, false);
+
+        $consumer = new Consumer($provider->reveal(), $processor->reveal());
+        $consumer->consume();
     }
 }

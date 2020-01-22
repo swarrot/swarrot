@@ -25,7 +25,9 @@
         "aws/aws-sdk-php": "^2.8",
         "sentry/sentry": "^1.5",
         "stomp-php/stomp-php": "^4.3.1",
-        "php-http/curl-client": "^2.0"
+        "php-http/curl-client": "^2.0",
+        "symfony/phpunit-bridge": "^5.0",
+        "symfony/error-handler": "^5.0"
     },
     "suggest": {
         "pecl-amqp": "*",
