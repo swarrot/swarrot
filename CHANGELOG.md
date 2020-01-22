@@ -5,6 +5,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [3.6.0] - 2020-01-22
+
+- Deprecate Stomp message providers
+
 ## [3.5.0] - 2019-12-11
 
 - Drop support of PHP < 7.2
