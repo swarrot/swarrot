@@ -41,6 +41,10 @@ matrix:
 
     allow_failures:
         - { php: 7.4, env: STABILITY=dev }
+        # Those PHP 7.4 tests fails due to outdated sentry dependency.
+        # To be removed once we'll get rid of sentry.
+        - { php: 7.4 }
+        - { php: 7.4, env: LIBRABBITMQ_VERSION=master }
 
 before_install:
   - if ! [ -z "$STABILITY" ]; then composer config minimum-stability ${STABILITY}; fi;
