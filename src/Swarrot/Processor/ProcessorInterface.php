@@ -13,7 +13,7 @@ interface ProcessorInterface
      * @param Message $message The message given by a MessageProvider
      * @param array   $options An array containing all parameters
      *
-     * @return bool|null
+     * @return bool
      */
     public function process(Message $message, array $options);
 }

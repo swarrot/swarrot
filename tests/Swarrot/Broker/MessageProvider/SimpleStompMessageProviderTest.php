@@ -63,6 +63,10 @@ class SimpleStompMessageProviderTest extends TestCase
         );
     }
 
+    /**
+     * @group legacy
+     * @expectedDeprecation "Swarrot\Broker\MessageProvider\SimpleStompMessageProvider" have been deprecated since Swarrot 3.6
+     */
     public function test_get_with_messages_in_queue_return_message()
     {
         $frame = $this->prophesize(Frame::class);
@@ -85,6 +89,10 @@ class SimpleStompMessageProviderTest extends TestCase
         $this->assertInstanceOf('Swarrot\Broker\Message', $message);
     }
 
+    /**
+     * @group legacy
+     * @expectedDeprecation "Swarrot\Broker\MessageProvider\SimpleStompMessageProvider" have been deprecated since Swarrot 3.6
+     */
     public function test_get_without_messages_in_queue_return_null()
     {
         $this->client
@@ -97,6 +105,10 @@ class SimpleStompMessageProviderTest extends TestCase
         $this->assertNull($message);
     }
 
+    /**
+     * @group legacy
+     * @expectedDeprecation "Swarrot\Broker\MessageProvider\SimpleStompMessageProvider" have been deprecated since Swarrot 3.6
+     */
     public function test_ack()
     {
         $frame = $this->prophesize(Frame::class);
@@ -118,6 +130,10 @@ class SimpleStompMessageProviderTest extends TestCase
         $this->provider->ack(new Message('fake_body', ['fake_property']));
     }
 
+    /**
+     * @group legacy
+     * @expectedDeprecation "Swarrot\Broker\MessageProvider\SimpleStompMessageProvider" have been deprecated since Swarrot 3.6
+     */
     public function test_nack()
     {
         $frame = $this->prophesize(Frame::class);
@@ -143,6 +159,10 @@ class SimpleStompMessageProviderTest extends TestCase
         $this->provider->nack(new Message('fake_body', ['fake_property']), true);
     }
 
+    /**
+     * @group legacy
+     * @expectedDeprecation "Swarrot\Broker\MessageProvider\SimpleStompMessageProvider" have been deprecated since Swarrot 3.6
+     */
     public function test_nack_without_protocol()
     {
         $this->client
@@ -156,6 +176,10 @@ class SimpleStompMessageProviderTest extends TestCase
         $this->provider->nack(new Message('fake_body', ['fake_property']), true);
     }
 
+    /**
+     * @group legacy
+     * @expectedDeprecation "Swarrot\Broker\MessageProvider\SimpleStompMessageProvider" have been deprecated since Swarrot 3.6
+     */
     public function test_get_name()
     {
         $this->assertEquals('fake_destination', $this->provider->getQueueName());

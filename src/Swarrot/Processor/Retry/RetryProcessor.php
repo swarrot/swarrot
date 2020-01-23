@@ -37,6 +37,8 @@ class RetryProcessor implements ConfigurableInterface
         } catch (\Exception $e) {
             $this->handleException($e, $message, $options);
         }
+
+        return true;
     }
 
     /**

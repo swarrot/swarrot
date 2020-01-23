@@ -11,6 +11,10 @@ use Swarrot\Processor\Sentry\SentryProcessor;
 
 class SentryProcessorTest extends TestCase
 {
+    /**
+     * @group legacy
+     * @expectedDeprecation "Swarrot\Processor\Sentry\SentryProcessor" have been deprecated since Swarrot 3.5
+     */
     public function test_it_should_return_void_when_no_exception_is_thrown()
     {
         $processor = $this->prophesize(ProcessorInterface::class);
@@ -24,6 +28,10 @@ class SentryProcessorTest extends TestCase
         $this->assertNull($processor->process($message, []));
     }
 
+    /**
+     * @group legacy
+     * @expectedDeprecation "Swarrot\Processor\Sentry\SentryProcessor" have been deprecated since Swarrot 3.5
+     */
     public function test_it_should_capture_when_an_exception_is_thrown()
     {
         $processor = $this->prophesize(ProcessorInterface::class);

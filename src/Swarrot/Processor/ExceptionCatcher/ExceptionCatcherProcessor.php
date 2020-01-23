@@ -38,7 +38,7 @@ class ExceptionCatcherProcessor implements ProcessorInterface
             $this->handleException($e, $message, $options);
         }
 
-        return;
+        return true;
     }
 
     /**
