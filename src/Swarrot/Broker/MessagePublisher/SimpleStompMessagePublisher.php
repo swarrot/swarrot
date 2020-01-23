@@ -40,6 +40,8 @@ class SimpleStompMessagePublisher implements MessagePublisherInterface
 
     public function __construct(Client $client)
     {
+        @trigger_error(sprintf('"%s" have been deprecated since Swarrot 3.7', __CLASS__), E_USER_DEPRECATED);
+
         $this->client = $client;
         $this->stomp = new SimpleStomp($client);
     }

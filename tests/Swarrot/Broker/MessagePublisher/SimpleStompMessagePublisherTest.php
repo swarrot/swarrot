@@ -31,6 +31,10 @@ class SimpleStompMessagePublisherTest extends TestCase
         );
     }
 
+    /**
+     * @group legacy
+     * @expectedDeprecation "Swarrot\Broker\MessagePublisher\SimpleStompMessagePublisher" have been deprecated since Swarrot 3.7
+     */
     public function test_publish_message()
     {
         $this->client
