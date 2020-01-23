@@ -5,6 +5,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+- Remove all deprecated processors & message providers / publishers
+- Add strict type hinting
+- Make all class properties private by default
+
 ## [3.7.0] - 2020-01-29
 
 - Add ServicesResetterProcessor
