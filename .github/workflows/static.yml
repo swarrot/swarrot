@@ -17,6 +17,6 @@ jobs:
     steps:
       - uses: actions/checkout@master
       - name: Run PHPStan
-        uses: docker://jakzal/phpqa:php7.3-alpine
+        uses: docker://odolbeau/swarrot-phpqa:latest
         with:
           args: phpstan analyze
