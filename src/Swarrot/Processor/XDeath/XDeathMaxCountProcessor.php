@@ -13,24 +13,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class XDeathMaxCountProcessor implements ConfigurableInterface
 {
-    /**
-     * @var ProcessorInterface
-     */
     private $processor;
-
-    /**
-     * @var string
-     */
     private $queueName;
-
-    /**
-     * @var callable
-     */
     private $callback;
-
-    /**
-     * @var LoggerInterface
-     */
     private $logger;
 
     public function __construct(
@@ -48,7 +33,7 @@ class XDeathMaxCountProcessor implements ConfigurableInterface
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolver $resolver)
+    public function setDefaultOptions(OptionsResolver $resolver): void
     {
         $resolver
             ->setDefaults([
@@ -64,26 +49,16 @@ class XDeathMaxCountProcessor implements ConfigurableInterface
     /**
      * {@inheritdoc}
      */
-    public function process(Message $message, array $options)
+    public function process(Message $message, array $options): bool
     {
         try {
             return $this->processor->process($message, $options);
         } catch (\Throwable $e) {
-            return $this->handleException($e, $message, $options);
-        } catch (\Exception $e) {
-            return $this->handleException($e, $message, $options);
-        }
-    }
+            $headers = $message->getProperties();
+            if (!isset($headers['headers']['x-death'])) {
+                throw $e;
+            }
 
-    /**
-     * @param \Exception|\Throwable $exception
-     *
-     * @return mixed
-     */
-    private function handleException($exception, Message $message, array $options)
-    {
-        $headers = $message->getProperties();
-        if (isset($headers['headers']['x-death'])) {
             $xDeathHeaders = $headers['headers']['x-death'];
             // PhpAmqpLib compatibility
             if ($xDeathHeaders instanceof AMQPArray) {
@@ -100,50 +75,54 @@ class XDeathMaxCountProcessor implements ConfigurableInterface
 
             if (null === $queueXDeathHeader) {
                 $this->logException(
-                    $exception,
+                    $e,
                     sprintf(
                         '[XDeathMaxCount] No x-death header found for queue name "%s". Do nothing.',
                         $this->queueName
                     ),
                     $options['x_death_max_count_fail_log_levels_map']
                 );
-            } elseif (isset($queueXDeathHeader['count'])) {
-                if ($queueXDeathHeader['count'] >= $options['x_death_max_count']) {
-                    $this->logException(
-                        $exception,
-                        sprintf(
-                            '[XDeathMaxCount] Max count reached. %d/%d attempts. Execute the configured callback.',
-                            $queueXDeathHeader['count'],
-                            $options['x_death_max_count']
-                        ),
-                        $options['x_death_max_count_fail_log_levels_map']
-                    );
 
-                    if (null !== $return = \call_user_func($this->callback, $exception, $message, $options)) {
-                        return $return;
-                    }
-                } else {
-                    $this->logException(
-                        $exception,
-                        sprintf(
-                            '[XDeathMaxCount] %d/%d attempts.',
-                            $queueXDeathHeader['count'],
-                            $options['x_death_max_count']
-                        ),
-                        $options['x_death_max_count_log_levels_map']
-                    );
-                }
+                throw $e;
             }
-        }
 
-        throw $exception;
+            if (!isset($queueXDeathHeader['count'])) {
+                throw $e;
+            }
+
+            if ($queueXDeathHeader['count'] < $options['x_death_max_count']) {
+                $this->logException(
+                    $e,
+                    sprintf(
+                        '[XDeathMaxCount] %d/%d attempts.',
+                        $queueXDeathHeader['count'],
+                        $options['x_death_max_count']
+                    ),
+                    $options['x_death_max_count_log_levels_map']
+                );
+
+                throw $e;
+            }
+
+            $this->logException(
+                $e,
+                sprintf(
+                    '[XDeathMaxCount] Max count reached. %d/%d attempts. Execute the configured callback.',
+                    $queueXDeathHeader['count'],
+                    $options['x_death_max_count']
+                ),
+                $options['x_death_max_count_fail_log_levels_map']
+            );
+
+            if (null !== $return = \call_user_func($this->callback, $e, $message, $options)) {
+                return $return;
+            }
+
+            throw $e;
+        }
     }
 
-    /**
-     * @param \Exception|\Throwable $exception
-     * @param string                $logMessage
-     */
-    private function logException($exception, $logMessage, array $logLevelsMap)
+    private function logException(\Throwable $exception, string $logMessage, array $logLevelsMap): void
     {
         $logLevel = LogLevel::WARNING;
 

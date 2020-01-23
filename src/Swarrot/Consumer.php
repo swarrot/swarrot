@@ -14,30 +14,11 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class Consumer
 {
-    /**
-     * @var MessageProviderInterface
-     */
-    protected $messageProvider;
+    private $messageProvider;
+    private $processor;
+    private $optionsResolver;
+    private $logger;
 
-    /**
-     * @var ProcessorInterface
-     */
-    protected $processor;
-
-    /**
-     * @var OptionsResolver
-     */
-    protected $optionsResolver;
-
-    /**
-     * @var LoggerInterface
-     */
-    protected $logger;
-
-    /**
-     * @param OptionsResolver $optionsResolver
-     * @param LoggerInterface $logger
-     */
     public function __construct(MessageProviderInterface $messageProvider, ProcessorInterface $processor, OptionsResolver $optionsResolver = null, LoggerInterface $logger = null)
     {
         $this->messageProvider = $messageProvider;
@@ -47,11 +28,9 @@ class Consumer
     }
 
     /**
-     * consume.
-     *
      * @param array $options Parameters sent to the processor
      */
-    public function consume(array $options = [])
+    public function consume(array $options = []): void
     {
         $queueName = $this->messageProvider->getQueueName();
 
@@ -78,7 +57,7 @@ class Consumer
             while (null !== $message = $this->messageProvider->get()) {
                 $result = $this->processor->process($message, $options);
                 if (!\is_bool($result)) {
-                    @trigger_error(sprintf('Processors must return a bool since Swarrot 3.7', __CLASS__), E_USER_DEPRECATED);
+                    @trigger_error('Processors must return a bool since Swarrot 3.7', E_USER_DEPRECATED);
                 }
                 if (false === $result) {
                     break 2;
@@ -99,58 +78,36 @@ class Consumer
         }
     }
 
-    /**
-     * @return MessageProviderInterface
-     */
-    public function getMessageProvider()
+    public function getMessageProvider(): MessageProviderInterface
     {
         return $this->messageProvider;
     }
 
-    /**
-     * @param MessageProviderInterface $messageProvider Message provider
-     *
-     * @return self
-     */
-    public function setMessageProvider(MessageProviderInterface $messageProvider)
+    public function setMessageProvider(MessageProviderInterface $messageProvider): self
     {
         $this->messageProvider = $messageProvider;
 
         return $this;
     }
 
-    /**
-     * @return ProcessorInterface
-     */
-    public function getProcessor()
+    public function getProcessor(): ProcessorInterface
     {
         return $this->processor;
     }
 
-    /**
-     * @param ProcessorInterface $processor
-     *
-     * @return self
-     */
-    public function setProcessor($processor)
+    public function setProcessor(ProcessorInterface $processor): self
     {
         $this->processor = $processor;
 
         return $this;
     }
 
-    /**
-     * @return OptionsResolver
-     */
-    public function getOptionsResolver()
+    public function getOptionsResolver(): OptionsResolver
     {
         return $this->optionsResolver;
     }
 
-    /**
-     * @return self
-     */
-    public function setOptionsResolver(OptionsResolver $optionsResolver)
+    public function setOptionsResolver(OptionsResolver $optionsResolver): self
     {
         $this->optionsResolver = $optionsResolver;
 

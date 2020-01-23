@@ -15,11 +15,9 @@ class Builder
     }
 
     /**
-     * @return self
-     *
      * @throws \InvalidArgumentException Missing argument(s) when calling unshift
      */
-    public function unshift()
+    public function unshift(): self
     {
         if (0 === \func_num_args()) {
             throw new \InvalidArgumentException('Missing argument(s) when calling unshift');
@@ -32,11 +30,9 @@ class Builder
     }
 
     /**
-     * @return self
-     *
      * @throws \InvalidArgumentException Missing argument(s) when calling push
      */
-    public function push()
+    public function push(): self
     {
         if (0 === \func_num_args()) {
             throw new \InvalidArgumentException('Missing argument(s) when calling push');
@@ -50,10 +46,8 @@ class Builder
 
     /**
      * @param mixed $processor
-     *
-     * @return StackedProcessor
      */
-    public function resolve($processor)
+    public function resolve($processor): StackedProcessor
     {
         $middlewares = [$processor];
 

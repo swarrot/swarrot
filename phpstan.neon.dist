@@ -1,0 +1,19 @@
+parameters:
+    level: max
+    inferPrivatePropertyTypeFromConstructor: true
+    checkMissingIterableValueType: false
+    paths:
+        - src
+    excludes_analyse:
+        - vendor
+
+    ignoreErrors:
+        -
+            message: "#^Property Swarrot\\\\Processor\\\\Doctrine\\\\ConnectionProcessor\\:\\:\\$connections \\(array\\<Doctrine\\\\DBAL\\\\Connection\\>\\) does not accept array\\<object\\>\\.$#"
+            count: 1
+            path: src/Swarrot/Processor/Doctrine/ConnectionProcessor.php
+
+        -
+            message: "#^Else branch is unreachable because ternary operator condition is always true\\.$#"
+            count: 1
+            path: src/Swarrot/Processor/Doctrine/ConnectionProcessor.php

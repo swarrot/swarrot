@@ -12,15 +12,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class InstantRetryProcessor implements ConfigurableInterface
 {
-    /**
-     * @var ProcessorInterface
-     */
-    protected $processor;
-
-    /**
-     * @var LoggerInterface
-     */
-    protected $logger;
+    private $processor;
+    private $logger;
 
     public function __construct(ProcessorInterface $processor, LoggerInterface $logger = null)
     {
@@ -31,7 +24,7 @@ class InstantRetryProcessor implements ConfigurableInterface
     /**
      * {@inheritdoc}
      */
-    public function process(Message $message, array $options)
+    public function process(Message $message, array $options): bool
     {
         $retry = 0;
 
@@ -39,71 +32,43 @@ class InstantRetryProcessor implements ConfigurableInterface
             try {
                 return $this->processor->process($message, $options);
             } catch (\Throwable $e) {
-                $this->handleException($e, $message, $options);
-            } catch (\Exception $e) {
-                $this->handleException($e, $message, $options);
+                $logLevel = LogLevel::WARNING;
+
+                foreach ($options['instant_retry_log_levels_map'] as $className => $level) {
+                    if ($e instanceof $className) {
+                        $logLevel = $level;
+
+                        break;
+                    }
+                }
+
+                $this->logger->log($logLevel, '[InstantRetry] An exception occurred. The message will be processed again.', [
+                    'swarrot_processor' => 'instant_retry',
+                    'exception' => $e,
+                    'message_id' => $message->getId(),
+                    'instant_retry_delay' => $options['instant_retry_delay'] / 1000,
+                ]);
+
+                usleep($options['instant_retry_delay']);
             }
         }
 
-        throw $e;
+        if (isset($e)) {
+            throw $e;
+        }
+
+        throw new \RuntimeException('You probably misconfigured the InstantRetryProcessor.');
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolver $resolver)
+    public function setDefaultOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'instant_retry_delay' => 2000000,
             'instant_retry_attempts' => 3,
             'instant_retry_log_levels_map' => [],
         ]);
-    }
-
-    /**
-     * @param \Exception|\Throwable $exception
-     */
-    private function handleException($exception, Message $message, array $options)
-    {
-        $this->logException(
-            $exception,
-            '[InstantRetry] An exception occurred. The message will be processed again.',
-            $options['instant_retry_log_levels_map'],
-            [
-                'message_id' => $message->getId(),
-                'instant_retry_delay' => $options['instant_retry_delay'] / 1000,
-            ]
-        );
-
-        usleep($options['instant_retry_delay']);
-    }
-
-    /**
-     * @param \Exception|\Throwable $exception
-     */
-    private function logException(
-        $exception,
-        $logMessage,
-        array $logLevelsMap,
-        array $extraContext
-    ) {
-        $logLevel = LogLevel::WARNING;
-
-        foreach ($logLevelsMap as $className => $level) {
-            if ($exception instanceof $className) {
-                $logLevel = $level;
-
-                break;
-            }
-        }
-
-        $this->logger->log(
-            $logLevel,
-            $logMessage,
-            [
-                'swarrot_processor' => 'instant_retry',
-                'exception' => $exception,
-            ] + $extraContext
-        );
     }
 }

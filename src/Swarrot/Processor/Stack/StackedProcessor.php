@@ -12,25 +12,11 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class StackedProcessor implements ConfigurableInterface, InitializableInterface, TerminableInterface, SleepyInterface
 {
-    /**
-     * @var mixed
-     */
-    protected $processor;
+    private $processor;
+    private $middlewares;
 
-    /**
-     * @var array
-     */
-    protected $middlewares;
-
-    /**
-     * @param mixed $processor
-     */
-    public function __construct($processor, array $middlewares)
+    public function __construct(ProcessorInterface $processor, array $middlewares)
     {
-        if (!$processor instanceof ProcessorInterface) {
-            @trigger_error(sprintf('Using "%s" without a ProcessorInterface have been deprecated since Swarrot 3.7', __CLASS__), E_USER_DEPRECATED);
-        }
-
         $this->processor = $processor;
         $this->middlewares = $middlewares;
     }
@@ -38,7 +24,7 @@ class StackedProcessor implements ConfigurableInterface, InitializableInterface,
     /**
      * setDefaultOptions.
      */
-    public function setDefaultOptions(OptionsResolver $resolver)
+    public function setDefaultOptions(OptionsResolver $resolver): void
     {
         foreach ($this->middlewares as $middleware) {
             if ($middleware instanceof ConfigurableInterface) {
@@ -50,7 +36,7 @@ class StackedProcessor implements ConfigurableInterface, InitializableInterface,
     /**
      * {@inheritdoc}
      */
-    public function initialize(array $options)
+    public function initialize(array $options): void
     {
         foreach ($this->middlewares as $middleware) {
             if ($middleware instanceof InitializableInterface) {
@@ -62,23 +48,15 @@ class StackedProcessor implements ConfigurableInterface, InitializableInterface,
     /**
      * {@inheritdoc}
      */
-    public function process(Message $message, array $options)
+    public function process(Message $message, array $options): bool
     {
-        if ($this->processor instanceof ProcessorInterface) {
-            return $this->processor->process($message, $options);
-        } elseif (\is_callable($this->processor)) {
-            $processor = $this->processor;
-
-            return $processor($message, $options);
-        } else {
-            throw new \InvalidArgumentException('Processor MUST implement ProcessorInterface or be a valid callable.');
-        }
+        return $this->processor->process($message, $options);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function terminate(array $options)
+    public function terminate(array $options): void
     {
         foreach ($this->middlewares as $middleware) {
             if ($middleware instanceof TerminableInterface) {
@@ -90,7 +68,7 @@ class StackedProcessor implements ConfigurableInterface, InitializableInterface,
     /**
      * {@inheritdoc}
      */
-    public function sleep(array $options)
+    public function sleep(array $options): bool
     {
         foreach ($this->middlewares as $middleware) {
             if ($middleware instanceof SleepyInterface) {

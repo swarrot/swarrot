@@ -7,10 +7,7 @@ use Swarrot\Processor\ProcessorInterface;
 
 class CallbackProcessor implements ProcessorInterface
 {
-    /**
-     * @var callable
-     */
-    protected $process;
+    private $process;
 
     public function __construct(callable $process)
     {
@@ -20,7 +17,7 @@ class CallbackProcessor implements ProcessorInterface
     /**
      * {@inheritdoc}
      */
-    public function process(Message $message, array $options)
+    public function process(Message $message, array $options): bool
     {
         return \call_user_func($this->process, $message, $options);
     }

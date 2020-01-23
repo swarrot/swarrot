@@ -6,30 +6,11 @@ use Swarrot\Broker\Message;
 
 interface MessageProviderInterface
 {
-    /**
-     * get.
-     *
-     * @return Message|null
-     */
-    public function get();
+    public function get(): ?Message;
 
-    /**
-     * ack.
-     */
-    public function ack(Message $message);
+    public function ack(Message $message): void;
 
-    /**
-     * nack.
-     *
-     * @param Message $message The message to NACK
-     * @param bool    $requeue Requeue the message in the queue ?
-     */
-    public function nack(Message $message, $requeue = false);
+    public function nack(Message $message, bool $requeue = false): void;
 
-    /**
-     * getQueueName.
-     *
-     * @return string
-     */
-    public function getQueueName();
+    public function getQueueName(): string;
 }

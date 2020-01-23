@@ -3,41 +3,38 @@
 namespace Swarrot\Processor\Insomniac;
 
 use Psr\Log\LoggerInterface;
+use Psr\Log\NullLogger;
 use Swarrot\Broker\Message;
 use Swarrot\Processor\ProcessorInterface;
 use Swarrot\Processor\SleepyInterface;
 
 class InsomniacProcessor implements SleepyInterface
 {
-    protected $logger;
+    private $processor;
+    private $logger;
 
-    /**
-     * @var ProcessorInterface
-     */
-    private $decoratedProcessor;
-
-    public function __construct(ProcessorInterface $decoratedProcessor, LoggerInterface $logger = null)
+    public function __construct(ProcessorInterface $processor, LoggerInterface $logger = null)
     {
-        $this->decoratedProcessor = $decoratedProcessor;
-        $this->logger = $logger;
+        $this->processor = $processor;
+        $this->logger = $logger ?? new NullLogger();
     }
 
     /**
      * {@inheritdoc}
      */
-    public function process(Message $message, array $options)
+    public function process(Message $message, array $options): bool
     {
-        return $this->decoratedProcessor->process($message, $options);
+        return $this->processor->process($message, $options);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function sleep(array $options)
+    public function sleep(array $options): bool
     {
         // Since this should be called after the consumer was not able to retrieve a message,
         // it means that the queue is empty, so we can simply return false to force the consumer to stop
-        $this->logger and $this->logger->info(
+        $this->logger->info(
             '[InsomniacProcessor] No more messages in queue.',
             [
                 'swarrot_processor' => 'insomniac',

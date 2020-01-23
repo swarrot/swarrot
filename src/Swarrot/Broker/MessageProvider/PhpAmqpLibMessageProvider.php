@@ -8,34 +8,21 @@ use Swarrot\Broker\Message;
 
 class PhpAmqpLibMessageProvider implements MessageProviderInterface
 {
-    /**
-     * @var AMQPChannel
-     */
     private $channel;
-
-    /**
-     * @var string
-     */
     private $queueName;
 
-    /**
-     * @param string $queueName
-     */
-    public function __construct(AMQPChannel $channel, $queueName)
+    public function __construct(AMQPChannel $channel, string $queueName)
     {
         $this->channel = $channel;
         $this->queueName = $queueName;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function get()
+    public function get(): ?Message
     {
         $envelope = $this->channel->basic_get($this->queueName);
 
         if (null === $envelope) {
-            return;
+            return null;
         }
 
         $properties = [];
@@ -68,23 +55,31 @@ class PhpAmqpLibMessageProvider implements MessageProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function ack(Message $message)
+    public function ack(Message $message): void
     {
-        $this->channel->basic_ack($message->getId());
+        if (null === $id = $message->getId()) {
+            throw new \RuntimeException('Cannot ack a message without id.');
+        }
+
+        $this->channel->basic_ack($id);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function nack(Message $message, $requeue = false)
+    public function nack(Message $message, bool $requeue = false): void
     {
-        $this->channel->basic_nack($message->getId(), false, $requeue);
+        if (null === $id = $message->getId()) {
+            throw new \RuntimeException('Cannot nack a message without id.');
+        }
+
+        $this->channel->basic_nack($id, false, $requeue);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getQueueName()
+    public function getQueueName(): string
     {
         return $this->queueName;
     }

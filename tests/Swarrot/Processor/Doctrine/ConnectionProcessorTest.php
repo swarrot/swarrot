@@ -26,7 +26,7 @@ class ConnectionProcessorTest extends TestCase
         $innerProcessorProphecy = $this->prophesize(ProcessorInterface::class);
         $innerProcessorProphecy->process($message, $options)->willReturn(true);
 
-        $createConnections = function () {
+        $createConnections = function (): array {
             $connections = [];
 
             $connectionProphecy = $this->prophesizeConnection();

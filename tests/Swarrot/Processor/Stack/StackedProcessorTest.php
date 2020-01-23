@@ -38,31 +38,28 @@ class StackedProcessorTest extends TestCase
         $p3 = $this->prophesize(TerminableInterface::class);
         $p4 = $this->prophesize(SleepyInterface::class);
 
-        $p2->initialize(Argument::type('array'))->willReturn(null);
-        $p3->terminate(Argument::type('array'))->willReturn(null);
-        $p4->sleep(Argument::type('array'))->willReturn(null);
+        $p2->initialize(Argument::type('array'))->shouldBeCalledTimes(1);
+        $p3->terminate(Argument::type('array'))->shouldBeCalledTimes(1);
+        $p4->sleep(Argument::type('array'))->shouldBeCalledTimes(1);
 
-        $p1->process(Argument::type(Message::class), Argument::type('array'))->willReturn(null);
-        $p2->process(Argument::type(Message::class), Argument::type('array'))->willReturn(null);
-        $p3->process(Argument::type(Message::class), Argument::type('array'))->willReturn(null);
-        $p4->process(Argument::type(Message::class), Argument::type('array'))->willReturn(null);
+        $message = new Message('body', [], 1);
 
-        $stackedProcessor = new StackedProcessor(
-            $p1->reveal(), [
-                $p2->reveal(),
-                $p3->reveal(),
-                $p4->reveal(),
-            ]
-        );
+        $p1->process($message, [])->willReturn(true);
+        $p2->process($message, [])->willReturn(true);
+        $p3->process($message, [])->willReturn(true);
+        $p4->process($message, [])->willReturn(true);
 
-        $this->assertNull($stackedProcessor->initialize([]));
-        $this->assertNull($stackedProcessor->terminate([]));
-        $this->assertTrue($stackedProcessor->sleep([]));
+        $stackedProcessor = new StackedProcessor($p1->reveal(), [
+            $p2->reveal(),
+            $p3->reveal(),
+            $p4->reveal(),
+        ]);
 
-        $this->assertNull($stackedProcessor->process(
-            new Message('body', [], 1),
-            []
-        ));
+        $stackedProcessor->initialize([]);
+        $stackedProcessor->terminate([]);
+        $this->assertFalse($stackedProcessor->sleep([]));
+
+        $this->assertTrue($stackedProcessor->process($message, []));
     }
 
     public function test_sleep_return_false_if_at_least_a_processor_return_false()
@@ -85,14 +82,5 @@ class StackedProcessorTest extends TestCase
         );
 
         $this->assertFalse($stackedProcessor->sleep([]));
-    }
-
-    /**
-     * @group legacy
-     * @expectedDeprecation Using "Swarrot\Processor\Stack\StackedProcessor" without a ProcessorInterface have been deprecated since Swarrot 3.7
-     */
-    public function test_without_processor_interface()
-    {
-        $stackedProcessor = new StackedProcessor(function () {}, []);
     }
 }

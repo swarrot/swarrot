@@ -8,20 +8,22 @@ use Swarrot\Broker\Message;
 
 class PeclPackageMessagePublisher implements MessagePublisherInterface
 {
-    protected $exchange;
-    protected $flags;
-    protected $logger;
+    private $exchange;
+    private $flags;
+    private $logger;
     private $publisherConfirms;
     private $timeout = 0;
+    /** @var int */
     private $lastDeliveryTag = 0;
+    /** @var array */
     private $pendingMessages = [];
 
     public function __construct(
         \AMQPExchange $exchange,
-        $flags = AMQP_NOPARAM,
+        int $flags = AMQP_NOPARAM,
         LoggerInterface $logger = null,
-        $publisherConfirms = false,
-        $timeout = 0
+        bool $publisherConfirms = false,
+        int $timeout = 0
     ) {
         $this->exchange = $exchange;
         $this->flags = $flags;
@@ -29,7 +31,7 @@ class PeclPackageMessagePublisher implements MessagePublisherInterface
         $this->publisherConfirms = $publisherConfirms;
         $this->timeout = $timeout;
         if ($publisherConfirms) {
-            if (1 === version_compare('1.8.0', phpversion('amqp'))) {
+            if (false === phpversion('amqp') || 1 === version_compare('1.8.0', phpversion('amqp'))) {
                 throw new \Exception('Publisher confirms are not supported. Update your pecl amqp package');
             }
             $this->exchange->getChannel()->setConfirmCallback($this->getAckHandler(), $this->getNackHandler());
@@ -37,37 +39,10 @@ class PeclPackageMessagePublisher implements MessagePublisherInterface
         }
     }
 
-    private function getAckHandler()
-    {
-        return function ($deliveryTag, $multiple) {
-            //remove acked from pending list
-            if ($multiple) {
-                for ($tag = 0; $tag <= $multiple; ++$tag) {
-                    unset($this->pendingMessages[$tag]);
-                }
-            } else {
-                unset($this->pendingMessages[$deliveryTag]);
-            }
-
-            if (\count($this->pendingMessages) > 0) {
-                return true; //still need to wait
-            }
-
-            return false;
-        };
-    }
-
-    private function getNackHandler()
-    {
-        return function ($deliveryTag, $multiple, $requeue) {
-            throw new \Exception('Error publishing deliveryTag: '.$deliveryTag);
-        };
-    }
-
     /**
      * {@inheritdoc}
      */
-    public function publish(Message $message, $key = null)
+    public function publish(Message $message, string $key = null): void
     {
         $properties = $message->getProperties();
         if (isset($properties['application_headers'])) {
@@ -96,8 +71,8 @@ class PeclPackageMessagePublisher implements MessagePublisherInterface
         }
 
         $this->exchange->publish(
-            $message->getBody(),
-            $key,
+            $message->getBody() ?? '',
+            $key ?? '',
             $this->flags,
             $this->sanitizeProperties($properties)
         );
@@ -109,7 +84,42 @@ class PeclPackageMessagePublisher implements MessagePublisherInterface
         }
     }
 
-    private function sanitizeProperties(array $properties)
+    /**
+     * {@inheritdoc}
+     */
+    public function getExchangeName(): string
+    {
+        return $this->exchange->getName();
+    }
+
+    private function getAckHandler(): callable
+    {
+        return function ($deliveryTag, $multiple) {
+            //remove acked from pending list
+            if ($multiple) {
+                for ($tag = 0; $tag <= $multiple; ++$tag) {
+                    unset($this->pendingMessages[$tag]);
+                }
+            } else {
+                unset($this->pendingMessages[$deliveryTag]);
+            }
+
+            if (\count($this->pendingMessages) > 0) {
+                return true; //still need to wait
+            }
+
+            return false;
+        };
+    }
+
+    private function getNackHandler(): callable
+    {
+        return function ($deliveryTag, $multiple, $requeue) {
+            throw new \Exception('Error publishing deliveryTag: '.$deliveryTag);
+        };
+    }
+
+    private function sanitizeProperties(array $properties): array
     {
         if (isset($properties['headers'])) {
             $properties['headers'] = array_filter($properties['headers'], function ($headerValue) {
@@ -123,13 +133,5 @@ class PeclPackageMessagePublisher implements MessagePublisherInterface
         }
 
         return $properties;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getExchangeName()
-    {
-        return $this->exchange->getName();
     }
 }

@@ -77,14 +77,7 @@ class RetryProcessorTest extends TestCase
             )->willThrow('\BadMethodCallException')
             ->shouldBeCalledTimes(1)
         ;
-        $messagePublisher
-            ->publish(
-                Argument::type(Message::class),
-                Argument::exact('key_1')
-            )
-            ->willReturn(null)
-            ->shouldBeCalledTimes(1)
-        ;
+        $messagePublisher->publish(Argument::type(Message::class), 'key_1')->shouldBeCalledTimes(1);
 
         $this->assertTrue(
             $retryProcessor->process($message, $options)
@@ -128,7 +121,6 @@ class RetryProcessorTest extends TestCase
 
                 Argument::exact('key_2')
             )
-            ->willReturn(null)
             ->shouldBeCalledTimes(1)
         ;
 
@@ -177,7 +169,6 @@ class RetryProcessorTest extends TestCase
 
                 Argument::exact('test_2_1')
             )
-            ->willReturn(null)
             ->shouldBeCalledTimes(1)
         ;
 
@@ -213,13 +204,7 @@ class RetryProcessorTest extends TestCase
             )->willThrow('\BadMethodCallException')
             ->shouldBeCalledTimes(1)
         ;
-        $messagePublisher
-            ->publish(
-                Argument::type(Message::class),
-                Argument::exact('key_1')
-            )
-            ->shouldNotBeCalled()
-        ;
+        $messagePublisher->publish(Argument::any())->shouldNotBeCalled();
 
         $this->expectException('\BadMethodCallException');
 
@@ -306,7 +291,6 @@ class RetryProcessorTest extends TestCase
 
                 Argument::exact('key_2')
             )
-            ->willReturn(null)
             ->shouldBeCalledTimes(1)
         ;
 
@@ -355,13 +339,10 @@ class RetryProcessorTest extends TestCase
                 }),
                 Argument::exact('key_1')
             )
-            ->willReturn(null)
             ->shouldBeCalledTimes(1)
         ;
 
-        $this->assertTrue(
-            $retryProcessor->process($message, $options)
-        );
+        $this->assertTrue($retryProcessor->process($message, $options));
     }
 
     public function test_it_should_log_a_warning_by_default_when_an_exception_occurred()

@@ -43,15 +43,16 @@ class XDeathMaxCountProcessorTest extends TestCase
         $message = new Message('body', [], 1);
 
         $processorMock = $this->prophesize(ProcessorInterface::class);
-        $processorMock->process(Argument::exact($message), Argument::exact([]))->willReturn(null);
+        $processorMock->process(Argument::exact($message), Argument::exact([]))->willReturn(true);
 
         $callback = function () {
+            return false;
         };
 
         $logger = $this->prophesize(LoggerInterface::class);
 
         $processor = new XDeathMaxCountProcessor($processorMock->reveal(), 'good_queue', $callback, $logger->reveal());
-        $this->assertNull($processor->process($message, []));
+        $this->assertTrue($processor->process($message, []));
     }
 
     public function test_it_should_rethrow_when_an_exception_occurred()
@@ -165,8 +166,8 @@ class XDeathMaxCountProcessorTest extends TestCase
             ->willThrow('\BadMethodCallException')
             ->shouldBeCalled();
 
-        $callback = function () {
-            return 'my_fake_return';
+        $callback = function (): bool {
+            return false;
         };
 
         $logger = $this->prophesize(LoggerInterface::class);
@@ -175,7 +176,7 @@ class XDeathMaxCountProcessorTest extends TestCase
             ->shouldBeCalled();
 
         $processor = new XDeathMaxCountProcessor($processorMock->reveal(), 'good_queue', $callback, $logger->reveal());
-        $this->assertEquals('my_fake_return', $processor->process($message, $options));
+        $this->assertFalse($processor->process($message, $options));
     }
 
     /**
@@ -183,7 +184,7 @@ class XDeathMaxCountProcessorTest extends TestCase
      *
      * @param $message
      */
-    public function test_it_should_rethrow_with_x_death_max_count_reached($message)
+    public function test_it_should_rethrow_with_x_death_max_count_reached_and_callback_returns_null($message)
     {
         $this->expectException('\BadMethodCallException');
 
@@ -196,11 +197,11 @@ class XDeathMaxCountProcessorTest extends TestCase
         $processorMock = $this->prophesize(ProcessorInterface::class);
         $processorMock
             ->process(Argument::exact($message), Argument::exact($options))
-            ->willThrow('\BadMethodCallException')
+            ->willThrow(new \BadMethodCallException())
             ->shouldBeCalledTimes(1);
 
         $callback = function () {
-            return;
+            return null;
         };
 
         $logger = $this->prophesize(LoggerInterface::class);
@@ -219,7 +220,7 @@ class XDeathMaxCountProcessorTest extends TestCase
      */
     public function test_it_should_rethrow_with_x_death_max_count_not_reached($message)
     {
-        $this->expectException('\BadMethodCallException');
+        $this->expectException(\BadMethodCallException::class);
 
         $options = [
             'x_death_max_count' => 10,
@@ -229,12 +230,12 @@ class XDeathMaxCountProcessorTest extends TestCase
 
         $processorMock = $this->prophesize(ProcessorInterface::class);
         $processorMock
-            ->process(Argument::exact($message), Argument::exact($options))
-            ->willThrow('\BadMethodCallException')
+            ->process($message, $options)
+            ->willThrow(new \BadMethodCallException())
             ->shouldBeCalledTimes(1);
 
-        $callback = function () {
-            return 'my_fake_return';
+        $callback = function (): bool {
+            return false;
         };
 
         $logger = $this->prophesize(LoggerInterface::class);
@@ -248,10 +249,8 @@ class XDeathMaxCountProcessorTest extends TestCase
 
     /**
      * @dataProvider messageProvider
-     *
-     * @param $message
      */
-    public function test_it_should_log_a_custom_log_level_with_x_death_max_count_reached($message)
+    public function test_it_should_log_a_custom_log_level_with_x_death_max_count_reached(Message $message)
     {
         $options = [
             'x_death_max_count' => 1,
@@ -267,8 +266,8 @@ class XDeathMaxCountProcessorTest extends TestCase
             ->willThrow('\BadMethodCallException')
             ->shouldBeCalledTimes(1);
 
-        $callback = function () {
-            return 'my_fake_return';
+        $callback = function (): bool {
+            return false;
         };
 
         $logger = $this->prophesize(LoggerInterface::class);
@@ -277,7 +276,7 @@ class XDeathMaxCountProcessorTest extends TestCase
             ->shouldBeCalled();
 
         $processor = new XDeathMaxCountProcessor($processorMock->reveal(), 'good_queue', $callback, $logger->reveal());
-        $this->assertEquals('my_fake_return', $processor->process($message, $options));
+        $this->assertFalse($processor->process($message, $options));
     }
 
     /**
@@ -304,7 +303,7 @@ class XDeathMaxCountProcessorTest extends TestCase
             ->shouldBeCalledTimes(1);
 
         $callback = function () {
-            return 'my_fake_return';
+            return false;
         };
 
         $logger = $this->prophesize(LoggerInterface::class);
@@ -336,8 +335,8 @@ class XDeathMaxCountProcessorTest extends TestCase
             ->willThrow('\BadMethodCallException')
             ->shouldBeCalledTimes(1);
 
-        $callback = function () {
-            return 'my_fake_return';
+        $callback = function (): bool {
+            return false;
         };
 
         $logger = $this->prophesize(LoggerInterface::class);

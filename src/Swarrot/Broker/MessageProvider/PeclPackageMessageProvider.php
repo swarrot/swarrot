@@ -6,10 +6,7 @@ use Swarrot\Broker\Message;
 
 class PeclPackageMessageProvider implements MessageProviderInterface
 {
-    /**
-     * @var \AMQPQueue
-     */
-    protected $queue;
+    private $queue;
 
     public function __construct(\AMQPQueue $queue)
     {
@@ -19,12 +16,12 @@ class PeclPackageMessageProvider implements MessageProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function get()
+    public function get(): ?Message
     {
         $envelope = $this->queue->get();
 
-        if (!$envelope) {
-            return;
+        if (!$envelope instanceof \AMQPEnvelope) {
+            return null;
         }
 
         return new Message(
@@ -51,30 +48,38 @@ class PeclPackageMessageProvider implements MessageProviderInterface
                 'channel' => '',
                 'consumer_tag' => '',
             ],
-            $envelope->getDeliveryTag()
+            (string) $envelope->getDeliveryTag()
         );
     }
 
     /**
      * {@inheritdoc}
      */
-    public function ack(Message $message)
+    public function ack(Message $message): void
     {
-        $this->queue->ack($message->getId());
+        if (null === $id = $message->getId()) {
+            throw new \RuntimeException('Cannot ack a message without id.');
+        }
+
+        $this->queue->ack($id);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function nack(Message $message, $requeue = false)
+    public function nack(Message $message, bool $requeue = false): void
     {
-        $this->queue->nack($message->getId(), $requeue ? AMQP_REQUEUE : null);
+        if (null === $id = $message->getId()) {
+            throw new \RuntimeException('Cannot nack a message without id.');
+        }
+
+        $this->queue->nack($id, $requeue ? AMQP_REQUEUE : 0);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getQueueName()
+    public function getQueueName(): string
     {
         return $this->queue->getName();
     }

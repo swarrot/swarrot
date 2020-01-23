@@ -3,7 +3,6 @@
 namespace Swarrot\Tests\Processor\MemoryLimit;
 
 use PHPUnit\Framework\TestCase;
-use Prophecy\Argument;
 use Psr\Log\LoggerInterface;
 use Swarrot\Broker\Message;
 use Swarrot\Processor\MemoryLimit\MemoryLimitProcessor;
@@ -30,24 +29,15 @@ class MemoryLimitProcessorTest extends TestCase
 
     public function test_delegate_processing()
     {
+        $message = new Message('body', [], 1);
+
         $processor = $this->prophesize(ProcessorInterface::class);
-        $processor->process(
-            Argument::type(Message::class),
-            Argument::exact([
-                'memory_limit' => null,
-            ])
-        )
-        ->shouldBeCalledTimes(1);
+        $processor->process($message, ['memory_limit' => null])->shouldBeCalledTimes(1)->willReturn(true);
 
         $logger = $this->prophesize(LoggerInterface::class);
 
-        $message = new Message('body', [], 1);
-        $processor = new MemoryLimitProcessor(
-            $processor->reveal(),
-            $logger->reveal()
-        );
+        $processor = new MemoryLimitProcessor($processor->reveal(), $logger->reveal());
 
-        // Process
-        $this->assertNull($processor->process($message, ['memory_limit' => null]));
+        $this->assertTrue($processor->process($message, ['memory_limit' => null]));
     }
 }

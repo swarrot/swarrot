@@ -11,25 +11,14 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class MaxMessagesProcessor implements ConfigurableInterface
 {
-    /**
-     * @var ProcessorInterface
-     */
-    protected $processor;
-
-    /**
-     * @var LoggerInterface
-     */
-    protected $logger;
+    private $processor;
+    private $logger;
 
     /**
      * @var int
      */
-    protected $messagesProcessed = 0;
+    private $messagesProcessed = 0;
 
-    /**
-     * @param ProcessorInterface $processor Processor
-     * @param LoggerInterface    $logger    Logger
-     */
     public function __construct(ProcessorInterface $processor, LoggerInterface $logger = null)
     {
         $this->processor = $processor;
@@ -39,7 +28,7 @@ class MaxMessagesProcessor implements ConfigurableInterface
     /**
      * {@inheritdoc}
      */
-    public function process(Message $message, array $options)
+    public function process(Message $message, array $options): bool
     {
         $return = $this->processor->process($message, $options);
 
@@ -61,7 +50,7 @@ class MaxMessagesProcessor implements ConfigurableInterface
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolver $resolver)
+    public function setDefaultOptions(OptionsResolver $resolver): void
     {
         $resolver
             ->setDefaults([

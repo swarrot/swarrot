@@ -11,14 +11,7 @@ use Swarrot\Processor\ProcessorInterface;
  */
 class ObjectManagerProcessor implements ProcessorInterface
 {
-    /**
-     * @var ProcessorInterface
-     */
     private $processor;
-
-    /**
-     * @var ManagerRegistry
-     */
     private $managerRegistry;
 
     public function __construct(ProcessorInterface $processor, ManagerRegistry $managerRegistry)
@@ -30,7 +23,7 @@ class ObjectManagerProcessor implements ProcessorInterface
     /**
      * {@inheritdoc}
      */
-    public function process(Message $message, array $options)
+    public function process(Message $message, array $options): bool
     {
         try {
             return $this->processor->process($message, $options);

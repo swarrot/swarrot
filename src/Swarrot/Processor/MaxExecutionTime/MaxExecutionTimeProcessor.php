@@ -13,25 +13,14 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class MaxExecutionTimeProcessor implements ConfigurableInterface, InitializableInterface, SleepyInterface
 {
-    /**
-     * @var ProcessorInterface
-     */
-    protected $processor;
-
-    /**
-     * @var LoggerInterface
-     */
-    protected $logger;
+    private $processor;
+    private $logger;
 
     /**
      * @var float
      */
-    protected $startTime;
+    private $startTime;
 
-    /**
-     * @param ProcessorInterface $processor Processor
-     * @param LoggerInterface    $logger    Logger
-     */
     public function __construct(ProcessorInterface $processor, LoggerInterface $logger = null)
     {
         $this->processor = $processor;
@@ -41,7 +30,7 @@ class MaxExecutionTimeProcessor implements ConfigurableInterface, InitializableI
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolver $resolver)
+    public function setDefaultOptions(OptionsResolver $resolver): void
     {
         $resolver
             ->setDefaults([
@@ -51,15 +40,18 @@ class MaxExecutionTimeProcessor implements ConfigurableInterface, InitializableI
         ;
     }
 
-    public function initialize(array $options)
+    /**
+     * {@inheritdoc}
+     */
+    public function initialize(array $options): void
     {
         $this->startTime = microtime(true);
     }
 
     /**
-     * @return bool
+     * {@inheritdoc}
      */
-    public function sleep(array $options)
+    public function sleep(array $options): bool
     {
         return !$this->isTimeExceeded($options);
     }
@@ -67,7 +59,7 @@ class MaxExecutionTimeProcessor implements ConfigurableInterface, InitializableI
     /**
      * {@inheritdoc}
      */
-    public function process(Message $message, array $options)
+    public function process(Message $message, array $options): bool
     {
         if (true === $this->isTimeExceeded($options)) {
             return false;
@@ -76,12 +68,7 @@ class MaxExecutionTimeProcessor implements ConfigurableInterface, InitializableI
         return $this->processor->process($message, $options);
     }
 
-    /**
-     * isTimeExceeded.
-     *
-     * @return bool
-     */
-    protected function isTimeExceeded(array $options)
+    protected function isTimeExceeded(array $options): bool
     {
         if (microtime(true) - $this->startTime > $options['max_execution_time']) {
             $this->logger->info('[MaxExecutionTime] Max execution time has been reached', [
