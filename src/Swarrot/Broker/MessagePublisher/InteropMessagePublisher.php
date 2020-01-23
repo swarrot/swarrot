@@ -30,6 +30,8 @@ final class InteropMessagePublisher implements MessagePublisherInterface
      */
     public function __construct(PsrContext $context, $topicName)
     {
+        @trigger_error(sprintf('"%s" have been deprecated since Swarrot 3.7', __CLASS__), E_USER_DEPRECATED);
+
         $this->context = $context;
 
         $this->topic = $context->createTopic($topicName);

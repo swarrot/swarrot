@@ -23,6 +23,10 @@ class InteropMessageProviderTest extends TestCase
         parent::setUp();
     }
 
+    /**
+     * @group legacy
+     * @expectedDeprecation "Swarrot\Broker\MessageProvider\InteropMessageProvider" have been deprecated since Swarrot 3.7
+     */
     public function testInstance()
     {
         $queue = $this->prophesize(PsrQueue::class);
@@ -44,6 +48,10 @@ class InteropMessageProviderTest extends TestCase
         );
     }
 
+    /**
+     * @group legacy
+     * @expectedDeprecation "Swarrot\Broker\MessageProvider\InteropMessageProvider" have been deprecated since Swarrot 3.7
+     */
     public function test_get_with_messages_in_queue_return_message()
     {
         $message = $this->prophesize(PsrMessage::class);
@@ -98,6 +106,10 @@ class InteropMessageProviderTest extends TestCase
         ], $message->getProperties());
     }
 
+    /**
+     * @group legacy
+     * @expectedDeprecation "Swarrot\Broker\MessageProvider\InteropMessageProvider" have been deprecated since Swarrot 3.7
+     */
     public function test_get_without_messages_in_queue_return_null()
     {
         $queue = $this->prophesize(PsrQueue::class);
@@ -125,6 +137,10 @@ class InteropMessageProviderTest extends TestCase
         $this->assertNull($message);
     }
 
+    /**
+     * @group legacy
+     * @expectedDeprecation "Swarrot\Broker\MessageProvider\InteropMessageProvider" have been deprecated since Swarrot 3.7
+     */
     public function test_ack_got_message()
     {
         $message = $this->prophesize(PsrMessage::class);
@@ -164,6 +180,10 @@ class InteropMessageProviderTest extends TestCase
         $provider->ack($swarrotMessage);
     }
 
+    /**
+     * @group legacy
+     * @expectedDeprecation "Swarrot\Broker\MessageProvider\InteropMessageProvider" have been deprecated since Swarrot 3.7
+     */
     public function test_nack_got_message()
     {
         $message = $this->prophesize(PsrMessage::class);
@@ -203,6 +223,10 @@ class InteropMessageProviderTest extends TestCase
         $provider->nack($swarrotMessage, true);
     }
 
+    /**
+     * @group legacy
+     * @expectedDeprecation "Swarrot\Broker\MessageProvider\InteropMessageProvider" have been deprecated since Swarrot 3.7
+     */
     public function test_get_name()
     {
         $queue = $this->prophesize(PsrQueue::class);
