@@ -23,7 +23,7 @@ class InsomniacProcessorTest extends TestCase
 
         $processor = new InsomniacProcessor($decoratedProcessorProphecy->reveal());
 
-        $this->assertEquals(true, $processor->process($message, $options));
+        $this->assertTrue($processor->process($message, $options));
 
         $this->assertFalse($processor->sleep([]));
     }

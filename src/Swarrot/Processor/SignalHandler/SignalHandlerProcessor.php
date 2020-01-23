@@ -44,7 +44,7 @@ class SignalHandlerProcessor implements ConfigurableInterface, SleepyInterface, 
     public function setDefaultOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'signal_handler_signals' => extension_loaded('pcntl') ? [SIGTERM, SIGINT, SIGQUIT] : [],
+            'signal_handler_signals' => \extension_loaded('pcntl') ? [SIGTERM, SIGINT, SIGQUIT] : [],
         ]);
     }
 
@@ -75,7 +75,7 @@ class SignalHandlerProcessor implements ConfigurableInterface, SleepyInterface, 
      */
     public function initialize(array $options)
     {
-        if (!extension_loaded('pcntl')) {
+        if (!\extension_loaded('pcntl')) {
             $this->logger->warning(
                 '[SignalHandler] The SignalHandlerProcessor needs the pcntl extension to work',
                 [
@@ -95,7 +95,7 @@ class SignalHandlerProcessor implements ConfigurableInterface, SleepyInterface, 
                         'swarrot_processor' => 'signal_handler',
                     ]
                 );
-                SignalHandlerProcessor::$shouldExit = true;
+                self::$shouldExit = true;
             });
         }
 

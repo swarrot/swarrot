@@ -57,9 +57,9 @@ class PhpAmqpLibMessagePublisher implements MessagePublisherInterface
                 $properties['application_headers'] = [];
             }
             foreach ($properties['headers'] as $header => $value) {
-                if (is_array($value)) {
+                if (\is_array($value)) {
                     $type = 'A';
-                } elseif (is_int($value)) {
+                } elseif (\is_int($value)) {
                     $type = 'I';
                 } else {
                     $type = 'S';

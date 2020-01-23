@@ -1,20 +1,17 @@
-
 <?php
 
-$finder = PhpCsFixer\Finder::create()
-    ->in(__DIR__)
-    ->ignoreDotFiles(true)
-    ->ignoreVCS(true)
-    ->exclude(['vendor'])
-    ->files()
-    ->name('*.php')
-;
-
-return PhpCsFixer\Config::create()
-    ->setUsingCache(true)
+$config = PhpCsFixer\Config::create()
     ->setRiskyAllowed(true)
-    ->setFinder($finder)
     ->setRules([
         '@Symfony' => true,
+        '@Symfony:risky' => true,
     ])
+    ->setFinder(
+        PhpCsFixer\Finder::create()
+            ->in(__DIR__)
+            ->exclude(__DIR__.'/vendor')
+            ->name('*.php')
+    )
 ;
+
+return $config;

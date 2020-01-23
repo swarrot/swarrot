@@ -22,6 +22,6 @@ class CallbackProcessor implements ProcessorInterface
      */
     public function process(Message $message, array $options)
     {
-        return call_user_func($this->process, $message, $options);
+        return \call_user_func($this->process, $message, $options);
     }
 }

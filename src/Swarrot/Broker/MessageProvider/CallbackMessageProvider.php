@@ -33,7 +33,7 @@ class CallbackMessageProvider implements MessageProviderInterface
      */
     public function get()
     {
-        return call_user_func($this->get);
+        return \call_user_func($this->get);
     }
 
     /**
@@ -45,7 +45,7 @@ class CallbackMessageProvider implements MessageProviderInterface
             return;
         }
 
-        call_user_func($this->ack, $message);
+        \call_user_func($this->ack, $message);
     }
 
     /**
@@ -57,7 +57,7 @@ class CallbackMessageProvider implements MessageProviderInterface
             return;
         }
 
-        call_user_func($this->nack, $message, $requeue);
+        \call_user_func($this->nack, $message, $requeue);
     }
 
     /**

@@ -49,7 +49,7 @@ class PeclPackageMessagePublisher implements MessagePublisherInterface
                 unset($this->pendingMessages[$deliveryTag]);
             }
 
-            if (count($this->pendingMessages) > 0) {
+            if (\count($this->pendingMessages) > 0) {
                 return true; //still need to wait
             }
 
@@ -76,7 +76,7 @@ class PeclPackageMessagePublisher implements MessagePublisherInterface
             }
 
             foreach ($properties['application_headers'] as $header => $value) {
-                if (!is_array($value) || 2 !== count($value)) {
+                if (!\is_array($value) || 2 !== \count($value)) {
                     throw new \InvalidArgumentException('Unexpected value for application_headers "'.$header.'"');
                 }
 
@@ -113,7 +113,7 @@ class PeclPackageMessagePublisher implements MessagePublisherInterface
     {
         if (isset($properties['headers'])) {
             $properties['headers'] = array_filter($properties['headers'], function ($headerValue) {
-                return !is_array($headerValue);
+                return !\is_array($headerValue);
             });
         }
 

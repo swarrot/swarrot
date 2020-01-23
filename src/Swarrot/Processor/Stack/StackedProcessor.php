@@ -66,7 +66,7 @@ class StackedProcessor implements ConfigurableInterface, InitializableInterface,
     {
         if ($this->processor instanceof ProcessorInterface) {
             return $this->processor->process($message, $options);
-        } elseif (is_callable($this->processor)) {
+        } elseif (\is_callable($this->processor)) {
             $processor = $this->processor;
 
             return $processor($message, $options);
