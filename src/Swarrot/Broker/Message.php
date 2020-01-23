@@ -54,13 +54,6 @@ class Message
         return $this->body;
     }
 
-    public function getHeaders()
-    {
-        trigger_error('getHeaders() method is deprecated. Use getProperties().', E_USER_DEPRECATED);
-
-        return $this->getProperties();
-    }
-
     public function getProperties()
     {
         return $this->properties;
