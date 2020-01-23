@@ -9,6 +9,10 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class NewRelicProcessorTest extends TestCase
 {
+    /**
+     * @group legacy
+     * @expectedDeprecation "Swarrot\Processor\NewRelic\NewRelicProcessor" have been deprecated since Swarrot 3.7
+     */
     public function testOptions()
     {
         $processor = new NewRelicProcessor(

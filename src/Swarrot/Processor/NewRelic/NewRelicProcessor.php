@@ -22,6 +22,8 @@ class NewRelicProcessor implements ConfigurableInterface
 
     public function __construct(ProcessorInterface $processor)
     {
+        @trigger_error(sprintf('"%s" have been deprecated since Swarrot 3.7', __CLASS__), E_USER_DEPRECATED);
+
         $this->extensionLoaded = extension_loaded('newrelic');
         $this->processor = $processor;
 
