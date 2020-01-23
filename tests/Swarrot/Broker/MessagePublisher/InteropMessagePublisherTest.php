@@ -23,6 +23,10 @@ class InteropMessagePublisherTest extends TestCase
         parent::setUp();
     }
 
+    /**
+     * @group legacy
+     * @expectedDeprecation "Swarrot\Broker\MessagePublisher\InteropMessagePublisher" have been deprecated since Swarrot 3.7
+     */
     public function testInstance()
     {
         $context = $this->prophesize(PsrContext::class);
@@ -33,6 +37,10 @@ class InteropMessagePublisherTest extends TestCase
         );
     }
 
+    /**
+     * @group legacy
+     * @expectedDeprecation "Swarrot\Broker\MessagePublisher\InteropMessagePublisher" have been deprecated since Swarrot 3.7
+     */
     public function test_publish_with_valid_message()
     {
         $topic = $this->prophesize(PsrTopic::class);

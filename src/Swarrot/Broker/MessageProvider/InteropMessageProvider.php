@@ -41,6 +41,8 @@ final class InteropMessageProvider implements MessageProviderInterface
      */
     public function __construct(PsrContext $context, $queueName, $waitTimeout = 1000 /* 1sec */)
     {
+        @trigger_error(sprintf('"%s" have been deprecated since Swarrot 3.7', __CLASS__), E_USER_DEPRECATED);
+
         $this->context = $context;
         $this->waitTimeout = (int) $waitTimeout;
 
