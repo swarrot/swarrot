@@ -5,7 +5,7 @@ namespace Swarrot\Driver;
 use Swarrot\Broker\Message;
 
 /**
- * Interface MessageCacheInterface.
+ * @deprecated
  */
 interface MessageCacheInterface
 {

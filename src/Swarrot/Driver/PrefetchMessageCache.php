@@ -11,6 +11,11 @@ class PrefetchMessageCache implements MessageCacheInterface
 {
     protected $caches = [];
 
+    public function __construct()
+    {
+        @trigger_error(sprintf('"%s" have been deprecated since Swarrot 3.7', __CLASS__), E_USER_DEPRECATED);
+    }
+
     /**
      * Pushes a message to the end of the cache.
      *
