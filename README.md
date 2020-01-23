@@ -128,6 +128,29 @@ To create your own processor and be able to use it with the `StackProcessor`, yo
 just need to implement `ProcessorInterface` and to take another
 `ProcessorInterface` as first argument in constructor.
 
+## Deprecated processors & message providers / publishers
+
+In order to reduce `swarrot/swarrot` dependencies & ease the maintenance, some
+processors & message providers / publishers have been deprecated in 3.x version.
+They will be deleted in 4.0.
+
+If you use those deprecated classes you could create your own repository to
+keep them or we could create a dedicated repository under the swarrot
+organisation if you're willing to help to maintain them.
+
+### Message providers / publishers
+
+* SQS Message provider (in 3.5.0)
+* Stomp message providers (in 3.6.0)
+* Stomp message publishers (in 3.7.0)
+* Interop message publishers & providers (in 3.7.0)
+
+### Processors
+
+* SentryProcessor (in 3.5.0)
+* RPC related processors (in 3.5.0)
+* NewRelicProcessor (in 3.7.0)
+
 ## Inspiration
 
 * [stackphp/builder](https://github.com/stackphp/builder)
