@@ -86,4 +86,13 @@ class StackedProcessorTest extends TestCase
 
         $this->assertFalse($stackedProcessor->sleep([]));
     }
+
+    /**
+     * @group legacy
+     * @expectedDeprecation Using "Swarrot\Processor\Stack\StackedProcessor" without a ProcessorInterface have been deprecated since Swarrot 3.7
+     */
+    public function test_without_processor_interface()
+    {
+        $stackedProcessor = new StackedProcessor(function () {}, []);
+    }
 }

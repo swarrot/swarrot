@@ -27,6 +27,10 @@ class StackedProcessor implements ConfigurableInterface, InitializableInterface,
      */
     public function __construct($processor, array $middlewares)
     {
+        if (!$processor instanceof ProcessorInterface) {
+            @trigger_error(sprintf('Using "%s" without a ProcessorInterface have been deprecated since Swarrot 3.7', __CLASS__), E_USER_DEPRECATED);
+        }
+
         $this->processor = $processor;
         $this->middlewares = $middlewares;
     }
