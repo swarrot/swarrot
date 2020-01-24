@@ -5,7 +5,7 @@ namespace Swarrot\Processor;
 interface InitializableInterface extends ProcessorInterface
 {
     /**
-     * initialize.
+     * @return void
      */
     public function initialize(array $options);
 }

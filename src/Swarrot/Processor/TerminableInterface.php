@@ -5,7 +5,7 @@ namespace Swarrot\Processor;
 interface TerminableInterface extends ProcessorInterface
 {
     /**
-     * terminate.
+     * @return void
      */
     public function terminate(array $options);
 }
