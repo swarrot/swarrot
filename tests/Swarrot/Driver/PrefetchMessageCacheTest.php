@@ -27,6 +27,9 @@ class PrefetchMessageCacheTest extends TestCase
 
     /**
      * Test instance.
+     *
+     * @group legacy
+     * @expectedDeprecation "Swarrot\Driver\PrefetchMessageCache" have been deprecated since Swarrot 3.7
      */
     public function testInstance()
     {
@@ -35,6 +38,9 @@ class PrefetchMessageCacheTest extends TestCase
 
     /**
      * Test with one element.
+     *
+     * @group legacy
+     * @expectedDeprecation "Swarrot\Driver\PrefetchMessageCache" have been deprecated since Swarrot 3.7
      */
     public function testPushPop()
     {
@@ -47,6 +53,9 @@ class PrefetchMessageCacheTest extends TestCase
 
     /**
      * Test with multiple element.
+     *
+     * @group legacy
+     * @expectedDeprecation "Swarrot\Driver\PrefetchMessageCache" have been deprecated since Swarrot 3.7
      */
     public function testMultiplePushPop()
     {
