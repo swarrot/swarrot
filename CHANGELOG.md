@@ -5,6 +5,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+- Add ServicesResetterProcessor
+
 ## [3.6.1] - 2020-01-23
 
 - Fix NewRelicProcessor
