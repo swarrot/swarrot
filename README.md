@@ -104,46 +104,6 @@ Here is an illustration to show you what happens when this order is used:
 
 ![this](https://docs.google.com/drawings/d/1Ea_QJHo-9p7YW8l_by7S4NID0e-AGpXRzzitAlYY5Cc/pub?w=960&h=720)
 
-### Queue interop usage
-
-Swarrot supports [queue-interop](https://github.com/queue-interop/queue-interop) compatible MQ transports. 
-It supports both sides: message publishing as well as their consumption. 
-To start using it you have to find and install the queue-interop compatible library of a MQ broker you want to work with. 
-In the library doc find out how to create its context. 
-
-Send a message:
-
-```php
-<?php
-use Swarrot\Broker\MessagePublisher\InteropMessagePublisher;
-use Swarrot\Broker\Message;
-
-/** @var \Interop\Queue\PsrContext $context */
-
-$messagePublisher = new InteropMessagePublisher($context, 'aTopic');
-
-$messagePublisher->publish(new Message('aBody'));
-```
-
-_**Note: ** The second argument `key` is only supported by [amqp interop](https://github.com/queue-interop/amqp-interop) based transports. For example, [RetryProcessor](https://github.com/swarrot/swarrot/tree/master/src/Swarrot/Processor/Retry) does not work cuz it rely on `key` argument._
-
-Fetch a message:
-
-```php
-<?php
-use Swarrot\Broker\MessageProvider\InteropMessageProvider;
-
-/** @var \Interop\Queue\PsrContext $context */
-
-$messageProvider = new InteropMessageProvider($context, 'aQueue');
-
-if ($message = $messageProvider->get()) {
-    // do stuff
-    
-    $messageProvider->ack($message);
-}
-```
-
 ## Processors
 
 ### Official processors
@@ -156,10 +116,7 @@ if ($message = $messageProvider->get()) {
 * [MaxExecutionTimeProcessor](src/Swarrot/Processor/MaxExecutionTime) (thanks to [Remy Lemeunier](https://github.com/remyLemeunier))
 * [MaxMessagesProcessor](src/Swarrot/Processor/MaxMessages) (thanks to [Remy Lemeunier](https://github.com/remyLemeunier))
 * [MemoryLimitProcessor](src/Swarrot/Processor/MemoryLimit) (thanks to [Christophe Coevoet](https://github.com/stof))
-* [NewRelicProcessor](src/Swarrot/Processor/NewRelic) (thanks to [Adrien Brault](https://github.com/adrienbrault))
 * [RetryProcessor](src/Swarrot/Processor/Retry)
-* [RPC related processors](src/Swarrot/Processor/RPC) (thanks to [Baptiste Clavié](https://github.com/Taluu))
-* [SentryProcessor](src/Swarrot/Processor/Sentry) (thanks to [Floran Brutel](https://github.com/notFloran))
 * [ServicesResetterProcessor](src/Swarrot/Processor/ServicesResetter) (thanks to [Pierrick Vignand](https://github.com/pvgnd))
 * [SignalHandlerProcessor](src/Swarrot/Processor/SignalHandler)
 * [XDeathMaxCountProcessor](src/Swarrot/Processor/XDeath) (thanks to [Anthony Moutte](https://github.com/instabledesign))
@@ -170,6 +127,29 @@ if ($message = $messageProvider->get()) {
 To create your own processor and be able to use it with the `StackProcessor`, you
 just need to implement `ProcessorInterface` and to take another
 `ProcessorInterface` as first argument in constructor.
+
+## Deprecated processors & message providers / publishers
+
+In order to reduce `swarrot/swarrot` dependencies & ease the maintenance, some
+processors & message providers / publishers have been deprecated in 3.x version.
+They will be deleted in 4.0.
+
+If you use those deprecated classes you could create your own repository to
+keep them or we could create a dedicated repository under the swarrot
+organisation if you're willing to help to maintain them.
+
+### Message providers / publishers
+
+* SQS Message provider (in 3.5.0)
+* Stomp message providers (in 3.6.0)
+* Stomp message publishers (in 3.7.0)
+* Interop message publishers & providers (in 3.7.0)
+
+### Processors
+
+* SentryProcessor (in 3.5.0)
+* RPC related processors (in 3.5.0)
+* NewRelicProcessor (in 3.7.0)
 
 ## Inspiration
 
