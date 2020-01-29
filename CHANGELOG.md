@@ -5,7 +5,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
-## [3.7.0] - 2020-01-23
+## [3.7.0] - 2020-01-29
 
 - Add ServicesResetterProcessor
 - Deprecate non boolean return from processors
