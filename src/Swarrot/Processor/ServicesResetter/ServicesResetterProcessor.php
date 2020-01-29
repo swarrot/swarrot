@@ -13,14 +13,7 @@ use Symfony\Contracts\Service\ResetInterface;
  */
 class ServicesResetterProcessor implements ProcessorInterface
 {
-    /**
-     * @var ProcessorInterface
-     */
     private $processor;
-
-    /**
-     * @var ResetInterface
-     */
     private $servicesResetter;
 
     public function __construct(ProcessorInterface $processor, ResetInterface $servicesResetter)
@@ -32,7 +25,7 @@ class ServicesResetterProcessor implements ProcessorInterface
     /**
      * {@inheritdoc}
      */
-    public function process(Message $message, array $options)
+    public function process(Message $message, array $options): bool
     {
         try {
             return $this->processor->process($message, $options);
