@@ -5,6 +5,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [4.0.0] - 2020-02-05
+
 - Remove all deprecated processors & message providers / publishers
 - Add strict type hinting
 - Make all class properties private by default
@@ -203,7 +205,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [1.1.0] - 2014-04-01
 
-[Unreleased]: https://github.com/swarrot/swarrot/compare/v3.6.1...HEAD
+[Unreleased]: https://github.com/swarrot/swarrot/compare/v4.0.0...HEAD
+[4.0.0]: https://github.com/swarrot/swarrot/compare/v3.7.0...v4.0.0
+[3.7.0]: https://github.com/swarrot/swarrot/compare/v3.6.1...v3.7.0
 [3.6.1]: https://github.com/swarrot/swarrot/compare/v3.6.0...v3.6.1
 [3.6.0]: https://github.com/swarrot/swarrot/compare/v3.5.0...v3.6.0
 [3.5.0]: https://github.com/swarrot/swarrot/compare/v3.4.0...v3.5.0
