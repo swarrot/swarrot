@@ -9,15 +9,8 @@ use Swarrot\Processor\ProcessorInterface;
 
 class ExceptionCatcherProcessor implements ProcessorInterface
 {
-    /**
-     * @var ProcessorInterface
-     */
-    protected $processor;
-
-    /**
-     * @var LoggerInterface
-     */
-    protected $logger;
+    private $processor;
+    private $logger;
 
     public function __construct(ProcessorInterface $processor, LoggerInterface $logger = null)
     {
@@ -28,30 +21,20 @@ class ExceptionCatcherProcessor implements ProcessorInterface
     /**
      * {@inheritdoc}
      */
-    public function process(Message $message, array $options)
+    public function process(Message $message, array $options): bool
     {
         try {
             return $this->processor->process($message, $options);
         } catch (\Throwable $e) {
-            $this->handleException($e, $message, $options);
-        } catch (\Exception $e) {
-            $this->handleException($e, $message, $options);
+            $this->logger->error(
+                '[ExceptionCatcher] An exception occurred. This exception has been caught.',
+                [
+                    'swarrot_processor' => 'exception',
+                    'exception' => $e,
+                ]
+            );
         }
 
         return true;
-    }
-
-    /**
-     * @param \Throwable|\Exception $exception
-     */
-    private function handleException($exception, Message $message, array $options)
-    {
-        $this->logger->error(
-            '[ExceptionCatcher] An exception occurred. This exception has been caught.',
-            [
-                'swarrot_processor' => 'exception',
-                'exception' => $exception,
-            ]
-        );
     }
 }

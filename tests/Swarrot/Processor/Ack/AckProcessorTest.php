@@ -3,7 +3,6 @@
 namespace Swarrot\Tests\Processor\Ack;
 
 use PHPUnit\Framework\TestCase;
-use Prophecy\Argument;
 use Psr\Log\LoggerInterface;
 use Swarrot\Broker\Message;
 use Swarrot\Broker\MessageProvider\MessageProviderInterface;
@@ -34,54 +33,54 @@ class AckProcessorTest extends TestCase
 
     public function test_it_should_ack_when_no_exception_is_thrown()
     {
-        $processor = $this->prophesize(ProcessorInterface::class);
-        $messageProvider = $this->prophesize(MessageProviderInterface::class);
-        $logger = $this->prophesize(LoggerInterface::class);
-
         $message = new Message('body', [], 1);
 
-        $processor->process(Argument::exact($message), Argument::exact([]))->willReturn(null);
-        $messageProvider->ack(Argument::exact($message))->willReturn(null);
+        $processor = $this->prophesize(ProcessorInterface::class);
+        $processor->process($message, [])->shouldBeCalledTimes(1)->willReturn(true);
+
+        $messageProvider = $this->prophesize(MessageProviderInterface::class);
+        $messageProvider->ack($message)->shouldBeCalledTimes(1);
+
+        $logger = $this->prophesize(LoggerInterface::class);
 
         $processor = new AckProcessor($processor->reveal(), $messageProvider->reveal(), $logger->reveal());
-        $this->assertNull($processor->process($message, []));
+        $this->assertTrue($processor->process($message, []));
     }
 
     public function test_it_should_nack_when_an_exception_is_thrown()
     {
-        $processor = $this->prophesize(ProcessorInterface::class);
-        $messageProvider = $this->prophesize(MessageProviderInterface::class);
-        $logger = $this->prophesize(LoggerInterface::class);
-
         $message = new Message('body', [], 1);
 
-        $processor->process(Argument::exact($message), Argument::exact([]))->willThrow('\BadMethodCallException');
-        $messageProvider->nack(Argument::exact($message), Argument::exact(false))->willReturn(null);
+        $processor = $this->prophesize(ProcessorInterface::class);
+        $processor->process($message, [])->willThrow(new \BadMethodCallException());
+
+        $messageProvider = $this->prophesize(MessageProviderInterface::class);
+        $messageProvider->nack($message, false)->shouldBeCalledTimes(1);
+
+        $logger = $this->prophesize(LoggerInterface::class);
 
         $processor = new AckProcessor($processor->reveal(), $messageProvider->reveal(), $logger->reveal());
 
         $this->expectException('\BadMethodCallException');
-        $this->assertNull($processor->process($message, []));
+        $processor->process($message, []);
     }
 
     public function test_it_should_nack_and_requeue_when_an_exception_is_thrown_and_conf_updated()
     {
-        $processor = $this->prophesize(ProcessorInterface::class);
-        $messageProvider = $this->prophesize(MessageProviderInterface::class);
-        $logger = $this->prophesize(LoggerInterface::class);
-
         $message = new Message('body', [], 1);
 
-        $processor->process(
-            Argument::exact($message),
-            Argument::exact(['requeue_on_error' => true])
-        )->willThrow('\BadMethodCallException');
-        $messageProvider->nack(Argument::exact($message), Argument::exact(true))->willReturn(null);
+        $processor = $this->prophesize(ProcessorInterface::class);
+        $processor->process($message, ['requeue_on_error' => true])->shouldBeCalledTimes(1)->willThrow(new \BadMethodCallException());
+
+        $messageProvider = $this->prophesize(MessageProviderInterface::class);
+        $messageProvider->nack($message, true)->shouldBeCalledTimes(1);
+
+        $logger = $this->prophesize(LoggerInterface::class);
 
         $processor = new AckProcessor($processor->reveal(), $messageProvider->reveal(), $logger->reveal());
 
         $this->expectException('\BadMethodCallException');
-        $this->assertNull($processor->process($message, ['requeue_on_error' => true]));
+        $processor->process($message, ['requeue_on_error' => true]);
     }
 
     public function test_it_should_return_a_valid_array_of_option()

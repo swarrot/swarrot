@@ -3,7 +3,6 @@
 namespace Swarrot\Tests\Processor\MaxExecutionTime;
 
 use PHPUnit\Framework\TestCase;
-use Prophecy\Argument;
 use Psr\Log\LoggerInterface;
 use Swarrot\Broker\Message;
 use Swarrot\Processor\MaxExecutionTime\MaxExecutionTimeProcessor;
@@ -30,32 +29,20 @@ class MaxExecutionTimeProcessorTest extends TestCase
 
     public function test_count_default_messages_processed()
     {
+        $message = new Message('body', [], 1);
+
         $maxExecutionTime = 1;
         $processor = $this->prophesize(ProcessorInterface::class);
-        $processor->process(
-            Argument::type(Message::class),
-            Argument::exact([
-                'max_execution_time' => $maxExecutionTime,
-            ])
-        );
+        $processor->process($message, ['max_execution_time' => $maxExecutionTime])->willReturn(true);
 
         $logger = $this->prophesize(LoggerInterface::class);
-        $logger->info(
-            Argument::exact('[MaxExecutionTime] Max execution time has been reached'),
-            Argument::exact([
-                'max_execution_time' => $maxExecutionTime,
-                'swarrot_processor' => 'max_execution_time',
-            ])
-        )
-        ->shouldBeCalledTimes(1);
+        $logger->info('[MaxExecutionTime] Max execution time has been reached', [
+            'max_execution_time' => $maxExecutionTime,
+            'swarrot_processor' => 'max_execution_time',
+        ])->shouldBeCalledTimes(1);
 
-        $message = new Message('body', [], 1);
-        $processor = new MaxExecutionTimeProcessor(
-            $processor->reveal(),
-            $logger->reveal()
-        );
+        $processor = new MaxExecutionTimeProcessor($processor->reveal(), $logger->reveal());
 
-        // Should be called by the Consumer
         $processor->initialize([]);
 
         $startTime = microtime(true);

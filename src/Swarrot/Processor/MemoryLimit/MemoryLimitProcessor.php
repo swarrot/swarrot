@@ -11,20 +11,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class MemoryLimitProcessor implements ConfigurableInterface
 {
-    /**
-     * @var ProcessorInterface
-     */
     private $processor;
-
-    /**
-     * @var LoggerInterface
-     */
     private $logger;
 
-    /**
-     * @param ProcessorInterface $processor Processor
-     * @param LoggerInterface    $logger    Logger
-     */
     public function __construct(ProcessorInterface $processor, LoggerInterface $logger = null)
     {
         $this->processor = $processor;
@@ -34,7 +23,7 @@ class MemoryLimitProcessor implements ConfigurableInterface
     /**
      * {@inheritdoc}
      */
-    public function process(Message $message, array $options)
+    public function process(Message $message, array $options): bool
     {
         $return = $this->processor->process($message, $options);
 
@@ -56,7 +45,7 @@ class MemoryLimitProcessor implements ConfigurableInterface
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolver $resolver)
+    public function setDefaultOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'memory_limit' => null,

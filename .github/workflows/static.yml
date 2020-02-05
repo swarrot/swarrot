@@ -11,3 +11,12 @@ jobs:
         uses: docker://odolbeau/swarrot-phpqa:latest
         with:
             args: php-cs-fixer fix --dry-run --diff-format udiff -vvv
+
+  phpstan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - name: Run PHPStan
+        uses: docker://odolbeau/swarrot-phpqa:latest
+        with:
+          args: phpstan analyze

@@ -3,7 +3,6 @@
 namespace Swarrot\Tests\Processor\SignalHandler;
 
 use PHPUnit\Framework\TestCase;
-use Prophecy\Argument;
 use Psr\Log\LoggerInterface;
 use Swarrot\Broker\Message;
 use Swarrot\Processor\ProcessorInterface;
@@ -28,28 +27,27 @@ class SignalHandlerProcessorTest extends TestCase
         $this->assertInstanceOf(SignalHandlerProcessor::class, $processor);
     }
 
-    public function test_it_should_return_void_when_no_exception_is_thrown()
+    public function test_it_should_return_true_when_no_exception_is_thrown()
     {
+        $message = new Message('body', [], 1);
+
         $processor = $this->prophesize(ProcessorInterface::class);
+        $processor->process($message, [])->shouldBeCalledTimes(1)->willReturn(true);
+
         $logger = $this->prophesize(LoggerInterface::class);
 
-        $message = new Message('body', [], 1);
         $processor = new SignalHandlerProcessor($processor->reveal(), $logger->reveal());
-        $this->assertNull($processor->process($message, []));
+        $this->assertTrue($processor->process($message, []));
     }
 
     public function test_it_should_throw_an_exception_after_consecutive_failed()
     {
-        $processor = $this->prophesize(ProcessorInterface::class);
-        $logger = $this->prophesize(LoggerInterface::class);
-
         $message = new Message('body', [], 1);
 
-        $processor->process(
-            Argument::exact($message),
-            Argument::exact([])
-        )
-        ->willThrow('\BadMethodCallException');
+        $processor = $this->prophesize(ProcessorInterface::class);
+        $processor->process($message, [])->shouldBeCalledTimes(1)->willThrow(new \BadMethodCallException());
+
+        $logger = $this->prophesize(LoggerInterface::class);
 
         $processor = new SignalHandlerProcessor($processor->reveal(), $logger->reveal());
 

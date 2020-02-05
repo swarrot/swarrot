@@ -20,9 +20,9 @@ class PhpAmqpLibMessagePublisher implements MessagePublisherInterface
 
     public function __construct(
         AMQPChannel $channel,
-        $exchange,
-        $publisherConfirms = false,
-        $timeout = 0
+        string $exchange,
+        bool $publisherConfirms = false,
+        int $timeout = 0
     ) {
         $this->channel = $channel;
         $this->exchange = $exchange;
@@ -37,19 +37,10 @@ class PhpAmqpLibMessagePublisher implements MessagePublisherInterface
         $this->timeout = $timeout;
     }
 
-    private function getNackHandler()
-    {
-        return function (AMQPMessage $message) {
-            if ($message->has('delivery_tag') && is_scalar($message->get('delivery_tag'))) {
-                throw new \Exception('Error publishing deliveryTag: '.$message->get('delivery_tag'));
-            } else {
-                throw new \Exception('Error publishing message: '.$message->getBody());
-            }
-        };
-    }
-
-    /** {@inheritdoc} */
-    public function publish(Message $message, $key = null)
+    /**
+     * {@inheritdoc}
+     */
+    public function publish(Message $message, string $key = null): void
     {
         $properties = $message->getProperties();
         if (isset($properties['headers'])) {
@@ -57,9 +48,9 @@ class PhpAmqpLibMessagePublisher implements MessagePublisherInterface
                 $properties['application_headers'] = [];
             }
             foreach ($properties['headers'] as $header => $value) {
-                if (is_array($value)) {
+                if (\is_array($value)) {
                     $type = 'A';
-                } elseif (is_int($value)) {
+                } elseif (\is_int($value)) {
                     $type = 'I';
                 } else {
                     $type = 'S';
@@ -69,7 +60,7 @@ class PhpAmqpLibMessagePublisher implements MessagePublisherInterface
             }
         }
 
-        $amqpMessage = new AMQPMessage($message->getBody(), $properties);
+        $amqpMessage = new AMQPMessage($message->getBody() ?? '', $properties);
 
         $this->channel->basic_publish($amqpMessage, $this->exchange, (string) $key);
         if ($this->publisherConfirms) {
@@ -80,8 +71,19 @@ class PhpAmqpLibMessagePublisher implements MessagePublisherInterface
     /**
      * {@inheritdoc}
      */
-    public function getExchangeName()
+    public function getExchangeName(): string
     {
         return $this->exchange;
+    }
+
+    private function getNackHandler(): callable
+    {
+        return function (AMQPMessage $message) {
+            if ($message->has('delivery_tag') && is_scalar($message->get('delivery_tag'))) {
+                throw new \Exception('Error publishing deliveryTag: '.$message->get('delivery_tag'));
+            } else {
+                throw new \Exception('Error publishing message: '.$message->getBody());
+            }
+        };
     }
 }

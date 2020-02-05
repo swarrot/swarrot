@@ -16,30 +16,29 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class ConnectionProcessor implements ConfigurableInterface
 {
-    /**
-     * @var ProcessorInterface
-     */
     private $processor;
-
     /**
      * @var Connection[]
      */
     private $connections;
 
+    /**
+     * @param ConnectionRegistry|Connection[]|Connection $connections
+     */
     public function __construct(ProcessorInterface $processor, $connections)
     {
         if ($connections instanceof ConnectionRegistry) {
             $connections = $connections->getConnections();
-        }
-
-        if (!is_array($connections)) {
+        } elseif ($connections instanceof Connection) {
             $connections = [$connections];
-        }
-
-        foreach ($connections as $connection) {
-            if (!$connection instanceof Connection) {
-                throw new \InvalidArgumentException(sprintf('$connections must be an array of Connection, but one of the elements was %s', is_object($connection) ? get_class($connection) : gettype($connection)));
+        } elseif (\is_array($connections)) {
+            foreach ($connections as $connection) {
+                if (!$connection instanceof Connection) {
+                    throw new \InvalidArgumentException(sprintf('$connections must be an array of Connection, but one of the elements was %s', \is_object($connection) ? \get_class($connection) : \gettype($connection)));
+                }
             }
+        } else {
+            throw new \InvalidArgumentException('$connections must be an array of Connection, a ConnectionRegistry or a single Connection.');
         }
 
         $this->processor = $processor;
@@ -49,7 +48,7 @@ class ConnectionProcessor implements ConfigurableInterface
     /**
      * {@inheritdoc}
      */
-    public function process(Message $message, array $options)
+    public function process(Message $message, array $options): bool
     {
         if ($options['doctrine_ping']) {
             foreach ($this->connections as $connection) {
@@ -81,7 +80,7 @@ class ConnectionProcessor implements ConfigurableInterface
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolver $resolver)
+    public function setDefaultOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'doctrine_ping' => true,

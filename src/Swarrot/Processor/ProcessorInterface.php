@@ -12,8 +12,6 @@ interface ProcessorInterface
      *
      * @param Message $message The message given by a MessageProvider
      * @param array   $options An array containing all parameters
-     *
-     * @return bool
      */
-    public function process(Message $message, array $options);
+    public function process(Message $message, array $options): bool;
 }

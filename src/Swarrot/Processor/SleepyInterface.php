@@ -5,12 +5,8 @@ namespace Swarrot\Processor;
 interface SleepyInterface extends ProcessorInterface
 {
     /**
-     * sleep.
-     *
      * This method should return false if the consumer have to stop, true if
      * the consumer should continue to wait for messages.
-     *
-     * @return bool
      */
-    public function sleep(array $options);
+    public function sleep(array $options): bool;
 }

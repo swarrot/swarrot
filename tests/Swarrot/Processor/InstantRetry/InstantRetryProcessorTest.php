@@ -31,20 +31,20 @@ class InstantRetryProcessorTest extends TestCase
 
     public function test_it_should_return_void_when_no_exception_is_thrown()
     {
-        $processor = $this->prophesize(ProcessorInterface::class);
-        $logger = $this->prophesize(LoggerInterface::class);
-
         $message = new Message('body', [], 1);
+
+        $processor = $this->prophesize(ProcessorInterface::class);
+        $processor->process($message, Argument::type('array'))->shouldBeCalledTimes(1)->willReturn(true);
+
+        $logger = $this->prophesize(LoggerInterface::class);
 
         $processor = new InstantRetryProcessor($processor->reveal(), $logger->reveal());
 
-        $this->assertNull(
-            $processor->process($message, [
-                'instant_retry_attempts' => 3,
-                'instant_retry_delay' => 1000,
-                'instant_retry_log_levels_map' => [],
-            ])
-        );
+        $this->assertTrue($processor->process($message, [
+            'instant_retry_attempts' => 3,
+            'instant_retry_delay' => 1000,
+            'instant_retry_log_levels_map' => [],
+        ]));
     }
 
     public function test_it_should_throw_an_exception_after_consecutive_failed()
@@ -205,6 +205,29 @@ class InstantRetryProcessorTest extends TestCase
         $this->expectException('\BadMethodCallException');
         $processor->process($message, [
             'instant_retry_attempts' => 3,
+            'instant_retry_delay' => 1000,
+            'instant_retry_log_levels_map' => [
+                '\LogicException' => LogLevel::CRITICAL,
+            ],
+        ]);
+    }
+
+    public function test_misconfigured_processor()
+    {
+        $message = new Message('body', [], 1);
+
+        $processor = $this->prophesize(ProcessorInterface::class);
+        $processor->process(Argument::any())->shouldNotBeCalled();
+
+        $logger = $this->prophesize(LoggerInterface::class);
+
+        $processor = new InstantRetryProcessor($processor->reveal(), $logger->reveal());
+
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('You probably misconfigured the InstantRetryProcessor.');
+
+        $processor->process($message, [
+            'instant_retry_attempts' => 0,
             'instant_retry_delay' => 1000,
             'instant_retry_log_levels_map' => [
                 '\LogicException' => LogLevel::CRITICAL,

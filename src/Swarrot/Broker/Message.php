@@ -4,22 +4,12 @@ namespace Swarrot\Broker;
 
 class Message
 {
-    /**
-     * @var string
-     */
-    protected $body;
-
+    private $body;
     /**
      * Properties are similar to headers when using an \AMQPEnvelope object.
-     *
-     * @var array
      */
-    protected $properties;
-
-    /**
-     * @var int
-     */
-    protected $id;
+    private $properties;
+    private $id;
 
     /**
      * __construct.
@@ -38,35 +28,25 @@ class Message
      * More information on AMQP version:
      *
      * @see: http://www.amqp.org/resources/download
-     *
-     * @param mixed $body
-     * @param mixed $id
      */
-    public function __construct($body = null, array $properties = [], $id = null)
+    public function __construct(string $body = null, array $properties = [], string $id = null)
     {
         $this->body = $body;
         $this->properties = $properties;
         $this->id = $id;
     }
 
-    public function getBody()
+    public function getBody(): ?string
     {
         return $this->body;
     }
 
-    public function getHeaders()
-    {
-        trigger_error('getHeaders() method is deprecated. Use getProperties().', E_USER_DEPRECATED);
-
-        return $this->getProperties();
-    }
-
-    public function getProperties()
+    public function getProperties(): array
     {
         return $this->properties;
     }
 
-    public function getId()
+    public function getId(): ?string
     {
         return $this->id;
     }

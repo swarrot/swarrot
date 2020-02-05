@@ -91,43 +91,24 @@ class ConsumerTest extends TestCase
         $provider->getQueueName()->shouldBeCalledTimes(1)->willReturn('');
 
         $processor = $this->prophesize(TerminableInterface::class);
-        $processor->terminate(Argument::type('array'))->willReturn(null);
+        $processor->terminate(Argument::type('array'))->shouldBeCalledTimes(1);
         $processor->process($message, Argument::type('array'))->shouldBeCalledTimes(1)->willReturn(false);
 
         $consumer = new Consumer($provider->reveal(), $processor->reveal());
         $consumer->consume();
     }
 
-    public function test_it_call_processor_if_its_Sleepy()
+    public function test_it_call_processor_if_its_sleepy()
     {
         $message = new Message('body', [], 1);
 
         $provider = $this->prophesize(MessageProviderInterface::class);
-        $provider->get()->shouldBeCalledTimes(1)->willReturn($message);
+        $provider->get()->shouldBeCalledTimes(2)->willReturn($message, null);
         $provider->getQueueName()->shouldBeCalledTimes(1)->willReturn('');
 
         $processor = $this->prophesize(SleepyInterface::class);
-        $processor->sleep(Argument::type('array'))->willReturn(null);
-        $processor->process($message, Argument::type('array'))->shouldBeCalledTimes(1)->willReturn(false);
-
-        $consumer = new Consumer($provider->reveal(), $processor->reveal());
-        $consumer->consume();
-    }
-
-    /**
-     * @group legacy
-     * @expectedDeprecation Processors must return a bool since Swarrot 3.7
-     */
-    public function test_it_triggers_a_deprecation_when_processor_return_null()
-    {
-        $message = new Message('body', [], 1);
-
-        $provider = $this->prophesize(MessageProviderInterface::class);
-        $provider->get()->shouldBeCalledTimes(2)->willReturn($message);
-        $provider->getQueueName()->shouldBeCalledTimes(1)->willReturn('');
-
-        $processor = $this->prophesize(ProcessorInterface::class);
-        $processor->process($message, Argument::type('array'))->shouldBeCalledTimes(2)->willReturn(null, false);
+        $processor->sleep(Argument::type('array'))->shouldBeCalledTimes(1)->willReturn(false);
+        $processor->process($message, Argument::type('array'))->shouldBeCalledTimes(1)->willReturn(true);
 
         $consumer = new Consumer($provider->reveal(), $processor->reveal());
         $consumer->consume();

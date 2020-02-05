@@ -16,22 +16,11 @@ class SignalHandlerProcessor implements ConfigurableInterface, SleepyInterface, 
     /**
      * @var bool
      */
-    protected static $shouldExit = false;
+    private static $shouldExit = false;
 
-    /**
-     * @var ProcessorInterface
-     */
-    protected $processor;
+    private $processor;
+    private $logger;
 
-    /**
-     * @var LoggerInterface
-     */
-    protected $logger;
-
-    /**
-     * @param ProcessorInterface $processor Processor
-     * @param LoggerInterface    $logger    Logger
-     */
     public function __construct(ProcessorInterface $processor, LoggerInterface $logger = null)
     {
         $this->processor = $processor;
@@ -41,17 +30,17 @@ class SignalHandlerProcessor implements ConfigurableInterface, SleepyInterface, 
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolver $resolver)
+    public function setDefaultOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'signal_handler_signals' => extension_loaded('pcntl') ? [SIGTERM, SIGINT, SIGQUIT] : [],
+            'signal_handler_signals' => \extension_loaded('pcntl') ? [SIGTERM, SIGINT, SIGQUIT] : [],
         ]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function sleep(array $options)
+    public function sleep(array $options): bool
     {
         return !$this::$shouldExit;
     }
@@ -59,7 +48,7 @@ class SignalHandlerProcessor implements ConfigurableInterface, SleepyInterface, 
     /**
      * {@inheritdoc}
      */
-    public function process(Message $message, array $options)
+    public function process(Message $message, array $options): bool
     {
         $return = $this->processor->process($message, $options);
 
@@ -73,9 +62,9 @@ class SignalHandlerProcessor implements ConfigurableInterface, SleepyInterface, 
     /**
      * {@inheritdoc}
      */
-    public function initialize(array $options)
+    public function initialize(array $options): void
     {
-        if (!extension_loaded('pcntl')) {
+        if (!\extension_loaded('pcntl')) {
             $this->logger->warning(
                 '[SignalHandler] The SignalHandlerProcessor needs the pcntl extension to work',
                 [
@@ -95,7 +84,7 @@ class SignalHandlerProcessor implements ConfigurableInterface, SleepyInterface, 
                         'swarrot_processor' => 'signal_handler',
                     ]
                 );
-                SignalHandlerProcessor::$shouldExit = true;
+                self::$shouldExit = true;
             });
         }
 

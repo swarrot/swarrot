@@ -12,26 +12,10 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class AckProcessor implements ConfigurableInterface
 {
-    /**
-     * @var ProcessorInterface
-     */
-    protected $processor;
+    private $processor;
+    private $messageProvider;
+    private $logger;
 
-    /**
-     * @var MessageProviderInterface
-     */
-    protected $messageProvider;
-
-    /**
-     * @var LoggerInterface
-     */
-    protected $logger;
-
-    /**
-     * @param ProcessorInterface       $processor       Processor
-     * @param MessageProviderInterface $messageProvider Message provider
-     * @param LoggerInterface          $logger          Logger
-     */
     public function __construct(ProcessorInterface $processor, MessageProviderInterface $messageProvider, LoggerInterface $logger = null)
     {
         $this->processor = $processor;
@@ -42,7 +26,7 @@ class AckProcessor implements ConfigurableInterface
     /**
      * {@inheritdoc}
      */
-    public function process(Message $message, array $options)
+    public function process(Message $message, array $options): bool
     {
         try {
             $return = $this->processor->process($message, $options);
@@ -58,18 +42,29 @@ class AckProcessor implements ConfigurableInterface
 
             return $return;
         } catch (\Throwable $e) {
-            $this->handleException($e, $message, $options);
-        } catch (\Exception $e) {
-            $this->handleException($e, $message, $options);
-        }
+            $requeue = isset($options['requeue_on_error']) ? (bool) $options['requeue_on_error'] : false;
+            $this->messageProvider->nack($message, $requeue);
 
-        return true;
+            $this->logger->error(
+                sprintf(
+                    '[Ack] An exception occurred, the message has been %s.',
+                    $requeue ? 'requeued' : "nack'ed"
+                ),
+                [
+                    'message_id' => $message->getId(),
+                    'swarrot_processor' => 'ack',
+                    'exception' => $e,
+                ]
+            );
+
+            throw $e;
+        }
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setDefaultOptions(OptionsResolver $resolver)
+    public function setDefaultOptions(OptionsResolver $resolver): void
     {
         $resolver
             ->setDefaults([
@@ -77,28 +72,5 @@ class AckProcessor implements ConfigurableInterface
             ])
             ->setAllowedTypes('requeue_on_error', 'bool')
         ;
-    }
-
-    /**
-     * @param \Exception|\Throwable $exception
-     */
-    private function handleException($exception, Message $message, array $options)
-    {
-        $requeue = isset($options['requeue_on_error']) ? (bool) $options['requeue_on_error'] : false;
-        $this->messageProvider->nack($message, $requeue);
-
-        $this->logger->error(
-            sprintf(
-                '[Ack] An exception occurred, the message has been %s.',
-                $requeue ? 'requeued' : "nack'ed"
-            ),
-            [
-                'message_id' => $message->getId(),
-                'swarrot_processor' => 'ack',
-                'exception' => $exception,
-            ]
-        );
-
-        throw $exception;
     }
 }
