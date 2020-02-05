@@ -12,7 +12,8 @@ class PeclPackageMessagePublisher implements MessagePublisherInterface
     private $flags;
     private $logger;
     private $publisherConfirms;
-    private $timeout = 0;
+    /** @var int|float */
+    private $timeout;
     /** @var int */
     private $lastDeliveryTag = 0;
     /** @var array */
@@ -23,7 +24,7 @@ class PeclPackageMessagePublisher implements MessagePublisherInterface
         int $flags = AMQP_NOPARAM,
         LoggerInterface $logger = null,
         bool $publisherConfirms = false,
-        int $timeout = 0
+        $timeout = 0
     ) {
         $this->exchange = $exchange;
         $this->flags = $flags;

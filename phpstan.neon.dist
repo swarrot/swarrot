@@ -17,3 +17,13 @@ parameters:
             message: "#^Else branch is unreachable because ternary operator condition is always true\\.$#"
             count: 1
             path: src/Swarrot/Processor/Doctrine/ConnectionProcessor.php
+
+        -
+            message: "#^Method Swarrot\\\\Broker\\\\MessagePublisher\\\\PeclPackageMessagePublisher\\:\\:__construct\\(\\) has parameter \\$timeout with no typehint specified\\.$#"
+            count: 1
+            path: src/Swarrot/Broker/MessagePublisher/PeclPackageMessagePublisher.php
+
+        -
+            message: "#^Method Swarrot\\\\Broker\\\\MessagePublisher\\\\PhpAmqpLibMessagePublisher\\:\\:__construct\\(\\) has parameter \\$timeout with no typehint specified\\.$#"
+            count: 1
+            path: src/Swarrot/Broker/MessagePublisher/PhpAmqpLibMessagePublisher.php

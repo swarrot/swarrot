@@ -5,6 +5,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [4.0.1] - 2020-02-05
+
+- Correct processor constructor: timeout can be a float
+
 ## [4.0.0] - 2020-02-05
 
 - Remove all deprecated processors & message providers / publishers
