@@ -14,6 +14,7 @@ class PhpAmqpLibMessagePublisher implements MessagePublisherInterface
     /** @var string $exchange Exchange's name. Required by php-amqplib */
     private $exchange;
 
+    /** @var int|float */
     private $timeout;
 
     private $publisherConfirms;
@@ -22,7 +23,7 @@ class PhpAmqpLibMessagePublisher implements MessagePublisherInterface
         AMQPChannel $channel,
         string $exchange,
         bool $publisherConfirms = false,
-        int $timeout = 0
+        $timeout = 0
     ) {
         $this->channel = $channel;
         $this->exchange = $exchange;
