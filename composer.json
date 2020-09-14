@@ -20,6 +20,7 @@
         "php-amqplib/php-amqplib": "^2.1",
         "doctrine/common": "^2.3",
         "doctrine/dbal": "^2.4",
+        "doctrine/persistence": "^2.0",
         "php-http/curl-client": "^2.0",
         "symfony/phpunit-bridge": "^5.0",
         "symfony/error-handler": "^5.0",
