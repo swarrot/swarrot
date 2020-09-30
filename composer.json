@@ -18,7 +18,7 @@
     "require-dev": {
         "phpunit/phpunit": "^8.4",
         "php-amqplib/php-amqplib": "^2.1",
-        "doctrine/common": "^2.3",
+        "doctrine/common": "^2.9",
         "doctrine/dbal": "^2.4",
         "php-http/curl-client": "^2.0",
         "symfony/phpunit-bridge": "^5.0",
@@ -45,6 +45,9 @@
         "test": [
             "phpunit --colors=always"
         ]
+    },
+    "conflict": {
+        "doctrine/persistence": "<1.3"
     },
     "extra": {
         "branch-alias": {
