@@ -5,6 +5,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [4.0.2] - 2020-12-08
+
+- Improve doctrine support
+
 ## [4.0.1] - 2020-02-05
 
 - Correct processor constructor: timeout can be a float
@@ -209,7 +213,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [1.1.0] - 2014-04-01
 
-[Unreleased]: https://github.com/swarrot/swarrot/compare/v4.0.0...HEAD
+[Unreleased]: https://github.com/swarrot/swarrot/compare/v4.0.2...HEAD
+[4.0.2]: https://github.com/swarrot/swarrot/compare/v4.0.1...v4.0.2
+[4.0.1]: https://github.com/swarrot/swarrot/compare/v4.0.0...v4.0.1
 [4.0.0]: https://github.com/swarrot/swarrot/compare/v3.7.0...v4.0.0
 [3.7.0]: https://github.com/swarrot/swarrot/compare/v3.6.1...v3.7.0
 [3.6.1]: https://github.com/swarrot/swarrot/compare/v3.6.0...v3.6.1
