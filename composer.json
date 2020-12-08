@@ -11,7 +11,7 @@
         }
     ],
     "require": {
-        "php": "^7.2 || ^8.0",
+        "php": ">7.2.5 || ^8.0",
         "symfony/options-resolver": "^3.4 || ^4.3 || ^5.0",
         "psr/log": "^1.0"
     },
