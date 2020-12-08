@@ -2,8 +2,8 @@
 
 namespace Swarrot\Tests\Processor\Ack;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ObjectManager;
 use PHPUnit\Framework\TestCase;
 use Swarrot\Broker\Message;
 use Swarrot\Processor\Doctrine\ObjectManagerProcessor;

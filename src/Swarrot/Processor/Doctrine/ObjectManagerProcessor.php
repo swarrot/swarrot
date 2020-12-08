@@ -2,7 +2,7 @@
 
 namespace Swarrot\Processor\Doctrine;
 
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 use Swarrot\Broker\Message;
 use Swarrot\Processor\ProcessorInterface;
 
