@@ -24,6 +24,7 @@ matrix:
         - php: 7.2
         - php: 7.3
         - php: 7.4
+        - php: 8.0
 
         # Test against librabbitmq cutting-edge
         - { php: 7.4, env: LIBRABBITMQ_VERSION=master }
