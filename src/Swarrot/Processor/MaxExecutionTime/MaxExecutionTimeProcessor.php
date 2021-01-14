@@ -61,11 +61,7 @@ class MaxExecutionTimeProcessor implements ConfigurableInterface, InitializableI
      */
     public function process(Message $message, array $options): bool
     {
-        if (true === $this->isTimeExceeded($options)) {
-            return false;
-        }
-
-        return $this->processor->process($message, $options);
+        return $this->processor->process($message, $options) && !$this->isTimeExceeded($options);
     }
 
     protected function isTimeExceeded(array $options): bool

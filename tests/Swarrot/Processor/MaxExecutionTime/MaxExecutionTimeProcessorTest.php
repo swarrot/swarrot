@@ -54,4 +54,27 @@ class MaxExecutionTimeProcessorTest extends TestCase
 
         $this->assertTrue(microtime(true) - $startTime > $maxExecutionTime);
     }
+
+    public function test_it_stops_after_slow_processing()
+    {
+        $message = new Message('body', [], 1);
+
+        $maxExecutionTime = 1;
+        $innerProcessor = $this->prophesize(ProcessorInterface::class);
+        $innerProcessor->process($message, ['max_execution_time' => $maxExecutionTime])->willReturn(true);
+
+        $logger = $this->prophesize(LoggerInterface::class);
+        $logger->info('[MaxExecutionTime] Max execution time has been reached', [
+            'max_execution_time' => $maxExecutionTime,
+            'swarrot_processor' => 'max_execution_time',
+        ])->shouldBeCalledTimes(1);
+
+        $processor = new MaxExecutionTimeProcessor($innerProcessor->reveal(), $logger->reveal());
+
+        $processor->initialize([]);
+
+        sleep(1);
+
+        $this->assertFalse($processor->process($message, ['max_execution_time' => $maxExecutionTime]));
+    }
 }
