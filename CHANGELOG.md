@@ -5,6 +5,10 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [4.1.1] - 2021-01-21
+
+- Fix MaxExecutionTimeProcessor processor
+
 ## [4.1.0] - 2020-12-16
 
 - Add PHP 8 support
@@ -217,7 +221,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [1.1.0] - 2014-04-01
 
-[Unreleased]: https://github.com/swarrot/swarrot/compare/v4.1.0...HEAD
+[Unreleased]: https://github.com/swarrot/swarrot/compare/v4.1.1...HEAD
+[4.1.1]: https://github.com/swarrot/swarrot/compare/v4.1.0...v4.1.1
 [4.1.0]: https://github.com/swarrot/swarrot/compare/v4.0.2...v4.1.0
 [4.0.2]: https://github.com/swarrot/swarrot/compare/v4.0.1...v4.0.2
 [4.0.1]: https://github.com/swarrot/swarrot/compare/v4.0.0...v4.0.1
