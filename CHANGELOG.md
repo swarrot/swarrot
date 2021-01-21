@@ -5,6 +5,12 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## [4.11.0] - 2021-01-21
+
+There isn't anything new in this version.
+A version 4.10 have been release intead of a 4.1.0 version.
+That's why we go directly to the 4.11.0 version... :/
+
 ## [4.1.1] - 2021-01-21
 
 - Fix MaxExecutionTimeProcessor processor
@@ -221,7 +227,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [1.1.0] - 2014-04-01
 
-[Unreleased]: https://github.com/swarrot/swarrot/compare/v4.1.1...HEAD
+[Unreleased]: https://github.com/swarrot/swarrot/compare/v4.11.0...HEAD
+[4.11.0]: https://github.com/swarrot/swarrot/compare/v4.1.1...v4.11.0
 [4.1.1]: https://github.com/swarrot/swarrot/compare/v4.1.0...v4.1.1
 [4.1.0]: https://github.com/swarrot/swarrot/compare/v4.0.2...v4.1.0
 [4.0.2]: https://github.com/swarrot/swarrot/compare/v4.0.1...v4.0.2
