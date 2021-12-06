@@ -5,10 +5,10 @@ sudo: false
 services: [rabbitmq]
 
 addons:
-  apt:
-    packages:
-    - cmake
-    - rabbitmq-server
+    apt:
+        packages:
+            - cmake
+            - rabbitmq-server
 
 env:
     global:
@@ -44,12 +44,12 @@ matrix:
         - { php: 7.4, env: STABILITY=dev }
 
 before_install:
-  - if ! [ -z "$STABILITY" ]; then composer config minimum-stability ${STABILITY}; fi;
+    - if ! [ -z "$STABILITY" ]; then composer config minimum-stability ${STABILITY}; fi;
 
 install:
-  - composer update --prefer-dist --no-progress --no-suggest $COMPOSER_FLAGS --ansi
-  - sudo rabbitmq-plugins enable rabbitmq_management
-  - sudo env "PATH=$PATH" ./tests/bin/prepare_rabbit.sh
+    - composer update --prefer-dist --no-progress --no-suggest $COMPOSER_FLAGS --ansi
+    - sudo rabbitmq-plugins enable rabbitmq_management
+    - sudo env "PATH=$PATH" ./tests/bin/prepare_rabbit.sh
 
 script:
     - ./vendor/bin/phpunit
