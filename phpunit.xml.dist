@@ -16,7 +16,7 @@
     </listeners>
 
     <php>
-        <env name="SYMFONY_DEPRECATIONS_HELPER" value="disabled" />
+        <env name="SYMFONY_DEPRECATIONS_HELPER" value="max[total]=999" />
     </php>
 
     <testsuites>
