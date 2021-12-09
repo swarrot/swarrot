@@ -27,3 +27,11 @@ parameters:
             message: "#^Method Swarrot\\\\Broker\\\\MessagePublisher\\\\PhpAmqpLibMessagePublisher\\:\\:__construct\\(\\) has parameter \\$timeout with no typehint specified\\.$#"
             count: 1
             path: src/Swarrot/Broker/MessagePublisher/PhpAmqpLibMessagePublisher.php
+        -
+            message: "#^Parameter \\#1 \\$delivery_tag of method PhpAmqpLib\\\\Channel\\\\AMQPChannel\\:\\:basic_ack\\(\\) expects int, string given\\.$#"
+            count: 1
+            path: src/Swarrot/Broker/MessageProvider/PhpAmqpLibMessageProvider.php
+        -
+            message: "#^Parameter \\#1 \\$delivery_tag of method PhpAmqpLib\\\\Channel\\\\AMQPChannel\\:\\:basic_nack\\(\\) expects int, string given\\.$#"
+            count: 1
+            path: src/Swarrot/Broker/MessageProvider/PhpAmqpLibMessageProvider.php

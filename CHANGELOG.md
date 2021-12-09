@@ -5,6 +5,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+- add Symfony 6.0 support
+- bump minimul PHP support to 7.4
+
 ## [4.11.0] - 2021-01-21
 
 There isn't anything new in this version.
