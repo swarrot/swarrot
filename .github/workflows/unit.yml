@@ -1,0 +1,61 @@
+on: [push, pull_request]
+name: Unit test
+jobs:
+    tests:
+        name: PHP ${{ matrix.php }} / SF ${{ matrix.symfony }}
+        runs-on: ubuntu-latest
+        strategy:
+            fail-fast: false
+            matrix:
+                php: [7.4, 8.0, 8.1]
+                symfony: [4.4.*, 5.4.*, 6.0.*]
+                exclude:
+                    - php: 7.4
+                      symfony: 6.0.*
+
+        services:
+            rabbitmq:
+                image: rabbitmq:3.9-management
+                ports:
+                    - 5671:5671
+                    - 5672:5672
+                    - 15671:15671
+                    - 15672:15672
+                env:
+                    RABBITMQ_DEFAULT_VHOST: swarrot
+
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v2
+
+            - name: Setup PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: ${{ matrix.php }}
+                  extensions:  amqp
+                  coverage: none
+
+            - name: Start broker service
+              run: docker restart ${{ job.services.rabbitmq.id }}
+
+            - name: Install Symfony Flex
+              run: composer global require --no-progress --no-scripts --no-plugins symfony/flex
+
+            - name: Install the dependencies
+              env:
+                  SYMFONY_REQUIRE: ${{ matrix.symfony }}
+              run: composer install --no-interaction --prefer-dist --no-progress --no-suggest
+
+            - name: Wait for broker service
+              run: tests/bin/wait_broker
+
+            - name: Prepare broker for test
+              run: |
+                docker exec -i ${{ job.services.rabbitmq.id }} rabbitmqadmin declare exchange name=swarrot type=direct auto_delete=false durable=true --vhost=swarrot
+                docker exec -i ${{ job.services.rabbitmq.id }} rabbitmqadmin declare queue name=queue_with_messages auto_delete=false durable=true --vhost=swarrot
+                docker exec -i ${{ job.services.rabbitmq.id }} rabbitmqadmin declare queue name=empty_queue auto_delete=false durable=true --vhost=swarrot
+                docker exec -i ${{ job.services.rabbitmq.id }} rabbitmqadmin declare binding source=swarrot routing_key=test destination=queue_with_messages --vhost=swarrot
+                for i in `seq 1 5`; do docker exec -i ${{ job.services.rabbitmq.id }} rabbitmqadmin publish routing_key="test" payload="message$i" exchange="swarrot" --vhost=swarrot; done
+
+            - name: Run the unit tests
+              run: vendor/bin/phpunit --colors=always
