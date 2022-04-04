@@ -4,7 +4,8 @@ namespace Swarrot\Tests\Processor\Ack;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Connections\MasterSlaveConnection;
-use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\DBALException as DBAL2Exception;
+use Doctrine\DBAL\Exception as DBAL3Exception;
 use Doctrine\DBAL\Platforms\SqlitePlatform;
 use Doctrine\Persistence\ConnectionRegistry;
 use PHPUnit\Framework\TestCase;
@@ -95,8 +96,12 @@ class ConnectionProcessorTest extends TestCase
         $processor->process($message, $options);
     }
 
-    public function testCloseTimedOutConnection()
+    public function testCloseTimedOutConnectionDbal2()
     {
+        if (class_exists('\Doctrine\DBAL\Exception')) {
+            $this->markTestSkipped('doctrine/dbal >= 3.0 is installed');
+        }
+
         $innerProcessorProphecy = $this->prophesize(ProcessorInterface::class);
         $innerProcessorProphecy->process(Argument::cetera())->willReturn(true);
 
@@ -108,7 +113,35 @@ class ConnectionProcessorTest extends TestCase
         $connectionProphecy = $this->prophesizeConnection();
         $connectionProphecy->isConnected()->willReturn(true);
         $connectionProphecy->getDatabasePlatform()->willReturn($databasePlatformProphecy->reveal());
-        $connectionProphecy->query($dummySql)->willThrow(new DBALException());
+        $connectionProphecy->query($dummySql)->willThrow(new DBAL2Exception());
+        $connectionProphecy->close()->shouldBeCalled();
+
+        $options = [
+            'doctrine_ping' => true,
+            'doctrine_close_master' => true,
+        ];
+        $processor = new ConnectionProcessor($innerProcessorProphecy->reveal(), [$connectionProphecy->reveal()]);
+        $processor->process(new Message(), $options);
+    }
+
+    public function testCloseTimedOutConnectionDbal3()
+    {
+        if (!class_exists('\Doctrine\DBAL\Exception')) {
+            $this->markTestSkipped('doctrine/dbal >= 3.0 is not installed');
+        }
+
+        $innerProcessorProphecy = $this->prophesize(ProcessorInterface::class);
+        $innerProcessorProphecy->process(Argument::cetera())->willReturn(true);
+
+        $dummySql = 'SELECT 1';
+
+        $databasePlatformProphecy = $this->prophesize(SqlitePlatform::class);
+        $databasePlatformProphecy->getDummySelectSQL()->willReturn($dummySql);
+
+        $connectionProphecy = $this->prophesizeConnection();
+        $connectionProphecy->isConnected()->willReturn(true);
+        $connectionProphecy->getDatabasePlatform()->willReturn($databasePlatformProphecy->reveal());
+        $connectionProphecy->query($dummySql)->willThrow(new DBAL3Exception());
         $connectionProphecy->close()->shouldBeCalled();
 
         $options = [

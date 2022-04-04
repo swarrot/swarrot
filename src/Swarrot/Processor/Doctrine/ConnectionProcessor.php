@@ -4,7 +4,8 @@ namespace Swarrot\Processor\Doctrine;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Connections\MasterSlaveConnection;
-use Doctrine\DBAL\DBALException;
+use Doctrine\DBAL\DBALException as DBAL2Exception;
+use Doctrine\DBAL\Exception as DBAL3Exception;
 use Doctrine\Persistence\ConnectionRegistry;
 use Swarrot\Broker\Message;
 use Swarrot\Processor\ConfigurableInterface;
@@ -55,7 +56,7 @@ class ConnectionProcessor implements ConfigurableInterface
                 if ($connection->isConnected()) {
                     try {
                         $connection->query($connection->getDatabasePlatform()->getDummySelectSQL());
-                    } catch (DBALException $e) {
+                    } catch (DBAL2Exception | DBAL3Exception $e) {
                         $connection->close(); // close timed out connections so that using them connects again
                     }
                 }
