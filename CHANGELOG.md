@@ -5,10 +5,15 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## 4.13.0 - 2022-10-19
+
+- add support for psr/log 2 and 3
+- fix support for doctrine/dbal 3 in the ConnectionProcessor
+
 ## [4.12.0] - 2021-12-09
 
 - add Symfony 6.0 support
-- bump minimul PHP support to 7.4
+- bump minimum PHP support to 7.4
 
 ## [4.11.0] - 2021-01-21
 
