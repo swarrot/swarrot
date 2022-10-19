@@ -23,7 +23,8 @@
         "php-http/curl-client": "^2.0",
         "symfony/phpunit-bridge": "^5.0 || ^6.0",
         "symfony/error-handler": "^5.0 || ^6.0",
-        "symfony/contracts": "^1.0 || ^2.0 || ^3.0"
+        "symfony/contracts": "^1.0 || ^2.0 || ^3.0",
+        "phpspec/prophecy": "^1.15"
     },
     "suggest": {
         "pecl-amqp": "*",
