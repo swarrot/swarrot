@@ -6,7 +6,7 @@ jobs:
   php-cs-fixer:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v3
       - name: PHP-CS-Fixer
         uses: docker://odolbeau/swarrot-phpqa:latest
         with:
@@ -15,7 +15,7 @@ jobs:
   phpstan:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v3
       - name: Run PHPStan
         uses: docker://odolbeau/swarrot-phpqa:latest
         with:

@@ -2,16 +2,21 @@ on: [push, pull_request]
 name: Unit test
 jobs:
     tests:
-        name: PHP ${{ matrix.php }} / SF ${{ matrix.symfony }}
+        name: PHP ${{ matrix.php }}${{ matrix.name_suffix }}
         runs-on: ubuntu-latest
         strategy:
             fail-fast: false
             matrix:
-                php: [7.4, 8.0, 8.1]
-                symfony: [4.4.*, 5.4.*, 6.0.*]
-                exclude:
-                    - php: 7.4
-                      symfony: 6.0.*
+                php: ['7.4', '8.0', '8.1', '8.2']
+                symfony: ['']
+                name_suffix: ['']
+                include:
+                    - php: '7.4'
+                      symfony: 4.4.*
+                      name_suffix: ' / SF 4.4 LTS'
+                    - php: '8.1'
+                      symfony: 5.4.*
+                      name_suffix: ' / SF 5.4 LTS'
 
         services:
             rabbitmq:
@@ -26,7 +31,7 @@ jobs:
 
         steps:
             - name: Checkout
-              uses: actions/checkout@v2
+              uses: actions/checkout@v3
 
             - name: Setup PHP
               uses: shivammathur/setup-php@v2
@@ -39,6 +44,7 @@ jobs:
               run: docker restart ${{ job.services.rabbitmq.id }}
 
             - name: Install Symfony Flex
+              if: matrix.symfony != ''
               run: composer global require --no-progress --no-scripts --no-plugins symfony/flex && composer global config --no-plugins allow-plugins.symfony/flex true
 
             - name: Install the dependencies
