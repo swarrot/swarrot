@@ -10,8 +10,8 @@ interface ProcessorInterface
      * Process a message.
      * Return false to stop processing messages.
      *
-     * @param Message $message The message given by a MessageProvider
-     * @param array   $options An array containing all parameters
+     * @param Message              $message The message given by a MessageProvider
+     * @param array<string, mixed> $options An array containing all parameters
      */
     public function process(Message $message, array $options): bool;
 }

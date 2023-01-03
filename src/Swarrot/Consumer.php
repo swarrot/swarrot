@@ -28,7 +28,7 @@ class Consumer
     }
 
     /**
-     * @param array $options Parameters sent to the processor
+     * @param array<string, mixed> $options Parameters sent to the processor
      */
     public function consume(array $options = []): void
     {
