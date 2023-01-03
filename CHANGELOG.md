@@ -5,6 +5,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## 4.14.0 - 2023-01-03
+
+- improve types for static analysis tools
+- add testing on PHP 8.2
+
 ## 4.13.0 - 2022-10-19
 
 - add support for psr/log 2 and 3
@@ -18,7 +23,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 ## [4.11.0] - 2021-01-21
 
 There isn't anything new in this version.
-A version 4.10 have been release intead of a 4.1.0 version.
+A version 4.10 has been released instead of a 4.1.0 version.
 That's why we go directly to the 4.11.0 version... :/
 
 ## [4.1.1] - 2021-01-21
