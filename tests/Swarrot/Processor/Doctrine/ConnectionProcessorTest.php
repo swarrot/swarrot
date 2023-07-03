@@ -36,11 +36,13 @@ class ConnectionProcessorTest extends TestCase
 
             $connectionProphecy = $this->prophesizeMasterSlaveConnection();
             $connectionProphecy->isConnectedToMaster()->willReturn(false);
+            $connectionProphecy->isConnectedToPrimary()->willReturn(false);
             $connectionProphecy->close()->shouldNotBeCalled();
             $connections[] = $connectionProphecy->reveal();
 
             $connectionProphecy = $this->prophesizeMasterSlaveConnection();
             $connectionProphecy->isConnectedToMaster()->willReturn(true);
+            $connectionProphecy->isConnectedToPrimary()->willReturn(true);
             $connectionProphecy->close()->shouldBeCalled();
             $connections[] = $connectionProphecy->reveal();
 
@@ -77,11 +79,13 @@ class ConnectionProcessorTest extends TestCase
 
             $connectionProphecy = $this->prophesizeMasterSlaveConnection();
             $connectionProphecy->isConnectedToMaster()->willReturn(false);
+            $connectionProphecy->isConnectedToPrimary()->willReturn(false);
             $connectionProphecy->close()->shouldNotBeCalled();
             $connections[] = $connectionProphecy->reveal();
 
             $connectionProphecy = $this->prophesizeMasterSlaveConnection();
             $connectionProphecy->isConnectedToMaster()->willReturn(true);
+            $connectionProphecy->isConnectedToPrimary()->willReturn(true);
             $connectionProphecy->close()->shouldBeCalled();
             $connections[] = $connectionProphecy->reveal();
 
