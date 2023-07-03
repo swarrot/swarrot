@@ -69,21 +69,15 @@ class ConnectionProcessor implements ConfigurableInterface
         } finally {
             if ($options['doctrine_close_master']) {
                 foreach ($this->connections as $connection) {
-                    if ($this->isConnectedToPrimary($connection)) {
+                    if (
+                        ($connection instanceof PrimaryReadReplicaConnection && $connection->isConnectedToPrimary())
+                        || ($connection instanceof MasterSlaveConnection && $connection->isConnectedToMaster())
+                    ) {
                         $connection->close();
                     }
                 }
             }
         }
-    }
-
-    private function isConnectedToPrimary(Connection $connection): bool
-    {
-        if (!class_exists('\Doctrine\DBAL\Connections\PrimaryReadReplicaConnection')) {
-            return $connection instanceof MasterSlaveConnection && $connection->isConnectedToMaster();
-        }
-
-        return $connection instanceof PrimaryReadReplicaConnection && $connection->isConnectedToPrimary();
     }
 
     /**
