@@ -5,6 +5,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## 4.15.0 - 2023-09-12
+
+- Improve MemoryLimitProcessor
+- Add DBAL3 support on ConnectionProcessor
+
 ## 4.14.0 - 2023-01-03
 
 - improve types for static analysis tools
