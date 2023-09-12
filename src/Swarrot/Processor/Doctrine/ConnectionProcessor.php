@@ -4,6 +4,7 @@ namespace Swarrot\Processor\Doctrine;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Connections\MasterSlaveConnection;
+use Doctrine\DBAL\Connections\PrimaryReadReplicaConnection;
 use Doctrine\DBAL\DBALException as DBAL2Exception;
 use Doctrine\DBAL\Exception as DBAL3Exception;
 use Doctrine\Persistence\ConnectionRegistry;
@@ -68,8 +69,9 @@ class ConnectionProcessor implements ConfigurableInterface
         } finally {
             if ($options['doctrine_close_master']) {
                 foreach ($this->connections as $connection) {
-                    if ($connection instanceof MasterSlaveConnection
-                        && $connection->isConnectedToMaster()
+                    if (
+                        ($connection instanceof PrimaryReadReplicaConnection && $connection->isConnectedToPrimary())
+                        || ($connection instanceof MasterSlaveConnection && $connection->isConnectedToMaster())
                     ) {
                         $connection->close();
                     }
