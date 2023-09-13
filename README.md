@@ -46,7 +46,7 @@ use Swarrot\Broker\Message;
 
 class Processor implements ProcessorInterface
 {
-    public function process(Message $message, array $options)
+    public function process(Message $message, array $options): bool
     {
         echo sprintf("Consume message #%d\n", $message->getId());
 
@@ -85,9 +85,11 @@ use Swarrot\Broker\Message;
 
 class Processor implements ProcessorInterface
 {
-    public function process(Message $message, array $options)
+    public function process(Message $message, array $options): bool
     {
         echo sprintf("Consume message #%d\n", $message->getId());
+        
+        return true; // Continue processing other messages
     }
 }
 
