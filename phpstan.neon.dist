@@ -1,11 +1,9 @@
 parameters:
-    level: max
+    level: 8
     inferPrivatePropertyTypeFromConstructor: true
     checkMissingIterableValueType: false
     paths:
         - src
-    excludes_analyse:
-        - vendor
 
     ignoreErrors:
         -
@@ -19,14 +17,10 @@ parameters:
             path: src/Swarrot/Processor/Doctrine/ConnectionProcessor.php
 
         -
-            message: "#^Method Swarrot\\\\Broker\\\\MessagePublisher\\\\PeclPackageMessagePublisher\\:\\:__construct\\(\\) has parameter \\$timeout with no typehint specified\\.$#"
+            message: "#^Property Swarrot\\\\Processor\\\\Stack\\\\Builder\\:\\:\\$specs with generic class SplStack does not specify its types\\: TValue$#"
             count: 1
-            path: src/Swarrot/Broker/MessagePublisher/PeclPackageMessagePublisher.php
+            path: src/Swarrot/Processor/Stack/Builder.php
 
-        -
-            message: "#^Method Swarrot\\\\Broker\\\\MessagePublisher\\\\PhpAmqpLibMessagePublisher\\:\\:__construct\\(\\) has parameter \\$timeout with no typehint specified\\.$#"
-            count: 1
-            path: src/Swarrot/Broker/MessagePublisher/PhpAmqpLibMessagePublisher.php
         -
             message: "#^Parameter \\#1 \\$delivery_tag of method PhpAmqpLib\\\\Channel\\\\AMQPChannel\\:\\:basic_ack\\(\\) expects int, string given\\.$#"
             count: 1

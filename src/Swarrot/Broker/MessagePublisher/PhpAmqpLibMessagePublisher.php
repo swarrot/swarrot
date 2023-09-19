@@ -19,6 +19,9 @@ class PhpAmqpLibMessagePublisher implements MessagePublisherInterface
 
     private $publisherConfirms;
 
+    /**
+     * @param int|float $timeout
+     */
     public function __construct(
         AMQPChannel $channel,
         string $exchange,

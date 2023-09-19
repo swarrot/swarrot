@@ -19,6 +19,9 @@ class PeclPackageMessagePublisher implements MessagePublisherInterface
     /** @var array */
     private $pendingMessages = [];
 
+    /**
+     * @param int|float $timeout
+     */
     public function __construct(
         \AMQPExchange $exchange,
         int $flags = \AMQP_NOPARAM,

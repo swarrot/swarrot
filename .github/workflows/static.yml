@@ -24,8 +24,17 @@ jobs:
   phpstan:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - name: Run PHPStan
-        uses: docker://odolbeau/swarrot-phpqa:latest
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
         with:
-          args: phpstan analyze
+          php-version: '8.2'
+          extensions: amqp
+          coverage: none
+
+      - name: Install dependencies
+        run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: PHP-CS-Fixer
+        run: vendor/bin/phpstan analyze
