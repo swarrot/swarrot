@@ -8,6 +8,9 @@ use Swarrot\Broker\Message;
 use Swarrot\Processor\ProcessorInterface;
 use Swarrot\Processor\SleepyInterface;
 
+/**
+ * @final since 4.16.0
+ */
 class InsomniacProcessor implements SleepyInterface
 {
     private $processor;

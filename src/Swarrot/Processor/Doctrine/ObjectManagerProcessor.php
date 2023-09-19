@@ -8,6 +8,8 @@ use Swarrot\Processor\ProcessorInterface;
 
 /**
  * @author Adrien Brault <adrien.brault@gmail.com>
+ *
+ * @final since 4.16.0
  */
 class ObjectManagerProcessor implements ProcessorInterface
 {

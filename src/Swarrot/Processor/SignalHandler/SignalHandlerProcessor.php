@@ -11,6 +11,9 @@ use Swarrot\Processor\ProcessorInterface;
 use Swarrot\Processor\SleepyInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * @final since 4.16.0
+ */
 class SignalHandlerProcessor implements ConfigurableInterface, SleepyInterface, InitializableInterface
 {
     /**

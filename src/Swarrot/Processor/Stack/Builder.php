@@ -4,6 +4,9 @@ namespace Swarrot\Processor\Stack;
 
 use Swarrot\Processor\ProcessorInterface;
 
+/**
+ * @final since 4.16.0
+ */
 class Builder
 {
     /**

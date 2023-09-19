@@ -6,6 +6,9 @@ use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 use Swarrot\Broker\Message;
 
+/**
+ * @final since 4.16.0
+ */
 class PeclPackageMessagePublisher implements MessagePublisherInterface
 {
     private $exchange;

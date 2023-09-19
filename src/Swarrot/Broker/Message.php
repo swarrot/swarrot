@@ -2,6 +2,9 @@
 
 namespace Swarrot\Broker;
 
+/**
+ * @final since 4.16.0
+ */
 class Message
 {
     private $body;

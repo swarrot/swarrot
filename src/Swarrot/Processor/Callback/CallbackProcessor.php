@@ -5,6 +5,9 @@ namespace Swarrot\Processor\Callback;
 use Swarrot\Broker\Message;
 use Swarrot\Processor\ProcessorInterface;
 
+/**
+ * @final since 4.16.0
+ */
 class CallbackProcessor implements ProcessorInterface
 {
     private $process;
