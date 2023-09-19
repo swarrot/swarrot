@@ -6,11 +6,20 @@ jobs:
   php-cs-fixer:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - name: PHP-CS-Fixer
-        uses: docker://odolbeau/swarrot-phpqa:latest
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
         with:
-            args: php-cs-fixer fix --dry-run --diff-format udiff -vvv
+          php-version: '8.2'
+          extensions: amqp
+          coverage: none
+
+      - name: Install dependencies
+        run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: PHP-CS-Fixer
+        run: vendor/bin/php-cs-fixer fix --dry-run -vvv
 
   phpstan:
     runs-on: ubuntu-latest
