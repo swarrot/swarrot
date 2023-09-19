@@ -22,9 +22,9 @@
         "phpspec/prophecy": "^1.15",
         "phpspec/prophecy-phpunit": "^2.0",
         "phpunit/phpunit": "^9.6",
-        "symfony/contracts": "^1.0 || ^2.0 || ^3.0",
         "symfony/error-handler": "^5.0 || ^6.0",
-        "symfony/phpunit-bridge": "^5.0 || ^6.0"
+        "symfony/phpunit-bridge": "^5.0 || ^6.0",
+        "symfony/service-contracts": "^1.0 || ^2.0 || ^3.0"
     },
     "suggest": {
         "pecl-amqp": "*",
