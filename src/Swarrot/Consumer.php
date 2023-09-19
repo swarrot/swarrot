@@ -14,10 +14,10 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class Consumer
 {
-    private $messageProvider;
-    private $processor;
-    private $optionsResolver;
-    private $logger;
+    private MessageProviderInterface $messageProvider;
+    private ProcessorInterface $processor;
+    private OptionsResolver $optionsResolver;
+    private LoggerInterface $logger;
 
     public function __construct(MessageProviderInterface $messageProvider, ProcessorInterface $processor, OptionsResolver $optionsResolver = null, LoggerInterface $logger = null)
     {

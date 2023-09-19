@@ -10,8 +10,8 @@ use Swarrot\Processor\SleepyInterface;
 
 class InsomniacProcessor implements SleepyInterface
 {
-    private $processor;
-    private $logger;
+    private ProcessorInterface $processor;
+    private LoggerInterface $logger;
 
     public function __construct(ProcessorInterface $processor, LoggerInterface $logger = null)
     {

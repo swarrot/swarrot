@@ -8,16 +8,14 @@ use Swarrot\Broker\Message;
 
 class PhpAmqpLibMessagePublisher implements MessagePublisherInterface
 {
-    /** @var AMQPChannel */
-    private $channel;
+    private AMQPChannel $channel;
 
-    /** @var string Exchange's name. Required by php-amqplib */
-    private $exchange;
+    private string $exchange;
 
     /** @var int|float */
     private $timeout;
 
-    private $publisherConfirms;
+    private bool $publisherConfirms;
 
     /**
      * @param int|float $timeout

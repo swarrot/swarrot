@@ -11,8 +11,8 @@ use Swarrot\Processor\ProcessorInterface;
  */
 class ObjectManagerProcessor implements ProcessorInterface
 {
-    private $processor;
-    private $managerRegistry;
+    private ProcessorInterface $processor;
+    private ManagerRegistry $managerRegistry;
 
     public function __construct(ProcessorInterface $processor, ManagerRegistry $managerRegistry)
     {

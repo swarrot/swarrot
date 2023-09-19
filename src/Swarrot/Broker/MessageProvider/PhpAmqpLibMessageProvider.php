@@ -8,8 +8,8 @@ use Swarrot\Broker\Message;
 
 class PhpAmqpLibMessageProvider implements MessageProviderInterface
 {
-    private $channel;
-    private $queueName;
+    private AMQPChannel $channel;
+    private string $queueName;
 
     public function __construct(AMQPChannel $channel, string $queueName)
     {

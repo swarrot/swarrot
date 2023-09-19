@@ -11,13 +11,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class MaxMessagesProcessor implements ConfigurableInterface
 {
-    private $processor;
-    private $logger;
-
-    /**
-     * @var int
-     */
-    private $messagesProcessed = 0;
+    private ProcessorInterface $processor;
+    private LoggerInterface $logger;
+    private int $messagesProcessed = 0;
 
     public function __construct(ProcessorInterface $processor, LoggerInterface $logger = null)
     {

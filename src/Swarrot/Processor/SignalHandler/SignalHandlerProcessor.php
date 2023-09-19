@@ -13,13 +13,10 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SignalHandlerProcessor implements ConfigurableInterface, SleepyInterface, InitializableInterface
 {
-    /**
-     * @var bool
-     */
-    private static $shouldExit = false;
+    private static bool $shouldExit = false;
 
-    private $processor;
-    private $logger;
+    private ProcessorInterface $processor;
+    private LoggerInterface $logger;
 
     public function __construct(ProcessorInterface $processor, LoggerInterface $logger = null)
     {

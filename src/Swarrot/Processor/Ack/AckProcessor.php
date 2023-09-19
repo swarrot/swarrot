@@ -12,9 +12,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class AckProcessor implements ConfigurableInterface
 {
-    private $processor;
-    private $messageProvider;
-    private $logger;
+    private ProcessorInterface $processor;
+    private MessageProviderInterface $messageProvider;
+    private LoggerInterface $logger;
 
     public function __construct(ProcessorInterface $processor, MessageProviderInterface $messageProvider, LoggerInterface $logger = null)
     {

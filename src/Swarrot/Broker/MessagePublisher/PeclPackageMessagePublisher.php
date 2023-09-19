@@ -8,16 +8,15 @@ use Swarrot\Broker\Message;
 
 class PeclPackageMessagePublisher implements MessagePublisherInterface
 {
-    private $exchange;
-    private $flags;
-    private $logger;
-    private $publisherConfirms;
+    private \AMQPExchange $exchange;
+    private int $flags;
+    private LoggerInterface $logger;
+    private bool $publisherConfirms;
     /** @var int|float */
     private $timeout;
-    /** @var int */
-    private $lastDeliveryTag = 0;
-    /** @var array */
-    private $pendingMessages = [];
+    private int $lastDeliveryTag = 0;
+    /** @var array<int, Message> */
+    private array $pendingMessages = [];
 
     /**
      * @param int|float $timeout

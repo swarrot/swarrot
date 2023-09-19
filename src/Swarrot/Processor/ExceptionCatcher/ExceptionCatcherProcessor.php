@@ -9,8 +9,8 @@ use Swarrot\Processor\ProcessorInterface;
 
 class ExceptionCatcherProcessor implements ProcessorInterface
 {
-    private $processor;
-    private $logger;
+    private ProcessorInterface $processor;
+    private LoggerInterface $logger;
 
     public function __construct(ProcessorInterface $processor, LoggerInterface $logger = null)
     {

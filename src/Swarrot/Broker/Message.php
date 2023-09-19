@@ -4,24 +4,24 @@ namespace Swarrot\Broker;
 
 class Message
 {
-    private $body;
+    private ?string $body;
     /**
      * Properties are similar to headers when using an \AMQPEnvelope object.
      */
-    private $properties;
-    private $id;
+    private array $properties;
+    private ?string $id;
 
     /**
      * __construct.
      *
-     * In AMQP 0.9.1, a message contains properties. One of this properties is
+     * In AMQP 0.9.1, a message contains properties. One of these properties is
      * "headers".
      * In AMQP 1.0, a message contains both properties and headers.
      *
      * For example, RabbitMQ implement AMQP 0.9.1.
      * The "getHeaders" method of "\AMQPEnvelope" object actually return
      * message properties AND headers at the same level.
-     * But if you want to have additional informations, you have to put it in
+     * But if you want to have additional information, you have to put it in
      * the "headers" property. All unknown properties will be deleted by the
      * broker.
      *

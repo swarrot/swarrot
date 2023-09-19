@@ -6,7 +6,7 @@ use Swarrot\Broker\Message;
 
 class PeclPackageMessageProvider implements MessageProviderInterface
 {
-    private $queue;
+    private \AMQPQueue $queue;
 
     public function __construct(\AMQPQueue $queue)
     {

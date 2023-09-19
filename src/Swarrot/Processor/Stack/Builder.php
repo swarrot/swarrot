@@ -6,10 +6,7 @@ use Swarrot\Processor\ProcessorInterface;
 
 class Builder
 {
-    /**
-     * @var \SplStack
-     */
-    private $specs;
+    private \SplStack $specs;
 
     public function __construct()
     {
