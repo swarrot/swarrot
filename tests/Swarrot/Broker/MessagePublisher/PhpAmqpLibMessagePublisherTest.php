@@ -6,11 +6,14 @@ use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Message\AMQPMessage;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Swarrot\Broker\Message;
 use Swarrot\Broker\MessagePublisher\PhpAmqpLibMessagePublisher;
 
 class PhpAmqpLibMessagePublisherTest extends TestCase
 {
+    use ProphecyTrait;
+
     public function test_publish_with_valid_message()
     {
         $channel = $this->prophesize(AMQPChannel::class);

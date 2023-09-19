@@ -10,12 +10,15 @@ use Doctrine\DBAL\Platforms\SqlitePlatform;
 use Doctrine\Persistence\ConnectionRegistry;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Swarrot\Broker\Message;
 use Swarrot\Processor\Doctrine\ConnectionProcessor;
 use Swarrot\Processor\ProcessorInterface;
 
 class ConnectionProcessorTest extends TestCase
 {
+    use ProphecyTrait;
+
     public function test()
     {
         $message = new Message();

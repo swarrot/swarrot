@@ -4,6 +4,7 @@ namespace Swarrot\Tests\Processor\Stack;
 
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Swarrot\Broker\Message;
 use Swarrot\Processor\InitializableInterface;
 use Swarrot\Processor\ProcessorInterface;
@@ -13,6 +14,8 @@ use Swarrot\Processor\TerminableInterface;
 
 class StackedProcessorTest extends TestCase
 {
+    use ProphecyTrait;
+
     public function test_it_is_initializable()
     {
         $p1 = $this->prophesize(ProcessorInterface::class);

@@ -4,6 +4,7 @@ namespace Swarrot\Tests\Processor\Retry;
 
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 use Swarrot\Broker\Message;
@@ -15,6 +16,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class RetryProcessorTest extends TestCase
 {
+    use ProphecyTrait;
+
     public function test_it_is_initializable_without_a_logger()
     {
         $processor = $this->prophesize(ProcessorInterface::class);

@@ -4,6 +4,7 @@ namespace Swarrot\Tests\Processor\InstantRetry;
 
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 use Swarrot\Broker\Message;
@@ -12,6 +13,8 @@ use Swarrot\Processor\ProcessorInterface;
 
 class InstantRetryProcessorTest extends TestCase
 {
+    use ProphecyTrait;
+
     public function test_it_is_initializable_without_a_logger()
     {
         $processor = $this->prophesize(ProcessorInterface::class);

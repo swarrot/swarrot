@@ -3,12 +3,15 @@
 namespace Swarrot\Tests\Processor\Insomniac;
 
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Swarrot\Broker\Message;
 use Swarrot\Processor\Insomniac\InsomniacProcessor;
 use Swarrot\Processor\ProcessorInterface;
 
 class InsomniacProcessorTest extends TestCase
 {
+    use ProphecyTrait;
+
     public function test()
     {
         $message = new Message();

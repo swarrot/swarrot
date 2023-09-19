@@ -3,11 +3,14 @@
 namespace Swarrot\Tests\Broker\MessageProvider;
 
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Swarrot\Broker\Message;
 use Swarrot\Broker\MessageProvider\CallbackMessageProvider;
 
 class CallbackMessageProviderTest extends TestCase
 {
+    use ProphecyTrait;
+
     public function callable_with_message_provider()
     {
         return [

@@ -3,6 +3,7 @@
 namespace Swarrot\Tests\Processor\ServicesResetter;
 
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Swarrot\Broker\Message;
 use Swarrot\Processor\ProcessorInterface;
 use Swarrot\Processor\ServicesResetter\ServicesResetterProcessor;
@@ -10,6 +11,8 @@ use Symfony\Contracts\Service\ResetInterface;
 
 class ServicesResetterProcessorTest extends TestCase
 {
+    use ProphecyTrait;
+
     public function test()
     {
         $message = new Message();
