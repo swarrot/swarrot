@@ -47,6 +47,11 @@ jobs:
               if: matrix.symfony != ''
               run: composer global require --no-progress --no-scripts --no-plugins symfony/flex && composer global config --no-plugins allow-plugins.symfony/flex true
 
+            # Those tools might be incompatible with a lock on an old Symfony version.
+            - name: Remove static analysis tools
+              if: matrix.symfony != ''
+              run: composer remove --dev friendsofphp/php-cs-fixer phpstan/phpstan --no-update
+
             - name: Install the dependencies
               env:
                   SYMFONY_REQUIRE: ${{ matrix.symfony }}
