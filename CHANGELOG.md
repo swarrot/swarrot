@@ -7,6 +7,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 - Remove support for unmaintained Symfony versions. The min version is now 5.4
 - Mark all classes as `@final` when they will become final in 5.0. Composition should be used instead of inheritance.
+- Add MemoryResetProcessor
 
 ## 4.15.0 - 2023-09-12
 
