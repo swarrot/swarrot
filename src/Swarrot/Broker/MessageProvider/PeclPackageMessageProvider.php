@@ -13,9 +13,6 @@ class PeclPackageMessageProvider implements MessageProviderInterface
         $this->queue = $queue;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function get(): ?Message
     {
         $envelope = $this->queue->get();
@@ -52,9 +49,6 @@ class PeclPackageMessageProvider implements MessageProviderInterface
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function ack(Message $message): void
     {
         if (null === $id = $message->getId()) {
@@ -64,21 +58,15 @@ class PeclPackageMessageProvider implements MessageProviderInterface
         $this->queue->ack($id);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function nack(Message $message, bool $requeue = false): void
     {
         if (null === $id = $message->getId()) {
             throw new \RuntimeException('Cannot nack a message without id.');
         }
 
-        $this->queue->nack($id, $requeue ? AMQP_REQUEUE : 0);
+        $this->queue->nack($id, $requeue ? \AMQP_REQUEUE : 0);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getQueueName(): string
     {
         return $this->queue->getName();

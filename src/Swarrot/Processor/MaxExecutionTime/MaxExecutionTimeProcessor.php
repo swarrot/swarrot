@@ -27,9 +27,6 @@ class MaxExecutionTimeProcessor implements ConfigurableInterface, InitializableI
         $this->logger = $logger ?: new NullLogger();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setDefaultOptions(OptionsResolver $resolver): void
     {
         $resolver
@@ -40,25 +37,16 @@ class MaxExecutionTimeProcessor implements ConfigurableInterface, InitializableI
         ;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function initialize(array $options): void
     {
         $this->startTime = microtime(true);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function sleep(array $options): bool
     {
         return !$this->isTimeExceeded($options);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function process(Message $message, array $options): bool
     {
         return $this->processor->process($message, $options) && !$this->isTimeExceeded($options);

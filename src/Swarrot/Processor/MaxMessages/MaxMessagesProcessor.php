@@ -25,9 +25,6 @@ class MaxMessagesProcessor implements ConfigurableInterface
         $this->logger = $logger ?: new NullLogger();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function process(Message $message, array $options): bool
     {
         $return = $this->processor->process($message, $options);
@@ -47,9 +44,6 @@ class MaxMessagesProcessor implements ConfigurableInterface
         return $return;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setDefaultOptions(OptionsResolver $resolver): void
     {
         $resolver

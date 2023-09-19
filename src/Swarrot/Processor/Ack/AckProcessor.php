@@ -23,9 +23,6 @@ class AckProcessor implements ConfigurableInterface
         $this->logger = $logger ?: new NullLogger();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function process(Message $message, array $options): bool
     {
         try {
@@ -61,9 +58,6 @@ class AckProcessor implements ConfigurableInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setDefaultOptions(OptionsResolver $resolver): void
     {
         $resolver

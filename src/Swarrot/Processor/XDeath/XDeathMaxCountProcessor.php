@@ -30,9 +30,6 @@ class XDeathMaxCountProcessor implements ConfigurableInterface
         $this->logger = $logger ?: new NullLogger();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setDefaultOptions(OptionsResolver $resolver): void
     {
         $resolver
@@ -46,9 +43,6 @@ class XDeathMaxCountProcessor implements ConfigurableInterface
             ->setAllowedTypes('x_death_max_count_fail_log_levels_map', 'array');
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function process(Message $message, array $options): bool
     {
         try {

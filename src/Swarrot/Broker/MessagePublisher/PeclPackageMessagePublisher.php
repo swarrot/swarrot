@@ -21,7 +21,7 @@ class PeclPackageMessagePublisher implements MessagePublisherInterface
 
     public function __construct(
         \AMQPExchange $exchange,
-        int $flags = AMQP_NOPARAM,
+        int $flags = \AMQP_NOPARAM,
         LoggerInterface $logger = null,
         bool $publisherConfirms = false,
         $timeout = 0
@@ -40,9 +40,6 @@ class PeclPackageMessagePublisher implements MessagePublisherInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function publish(Message $message, string $key = null): void
     {
         $properties = $message->getProperties();
@@ -78,16 +75,13 @@ class PeclPackageMessagePublisher implements MessagePublisherInterface
             $this->sanitizeProperties($properties)
         );
         if ($this->publisherConfirms) {
-            //track published to see what needs to be acked
+            // track published to see what needs to be acked
             ++$this->lastDeliveryTag;
             $this->pendingMessages[$this->lastDeliveryTag] = $message;
             $this->exchange->getChannel()->waitForConfirm($this->timeout);
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getExchangeName(): string
     {
         return $this->exchange->getName();
@@ -96,7 +90,7 @@ class PeclPackageMessagePublisher implements MessagePublisherInterface
     private function getAckHandler(): callable
     {
         return function ($deliveryTag, $multiple) {
-            //remove acked from pending list
+            // remove acked from pending list
             if ($multiple) {
                 for ($tag = 0; $tag <= $multiple; ++$tag) {
                     unset($this->pendingMessages[$tag]);
@@ -106,7 +100,7 @@ class PeclPackageMessagePublisher implements MessagePublisherInterface
             }
 
             if (\count($this->pendingMessages) > 0) {
-                return true; //still need to wait
+                return true; // still need to wait
             }
 
             return false;

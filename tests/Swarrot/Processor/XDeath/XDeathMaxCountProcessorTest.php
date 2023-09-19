@@ -152,8 +152,6 @@ class XDeathMaxCountProcessorTest extends TestCase
 
     /**
      * @dataProvider messageProvider
-     *
-     * @param $message
      */
     public function test_it_should_not_rethrow_with_x_death_max_count_reached($message)
     {
@@ -184,8 +182,6 @@ class XDeathMaxCountProcessorTest extends TestCase
 
     /**
      * @dataProvider messageProvider
-     *
-     * @param $message
      */
     public function test_it_should_rethrow_with_x_death_max_count_reached_and_callback_returns_null($message)
     {
@@ -218,8 +214,6 @@ class XDeathMaxCountProcessorTest extends TestCase
 
     /**
      * @dataProvider messageProvider
-     *
-     * @param $message
      */
     public function test_it_should_rethrow_with_x_death_max_count_not_reached($message)
     {
@@ -284,8 +278,6 @@ class XDeathMaxCountProcessorTest extends TestCase
 
     /**
      * @dataProvider messageProvider
-     *
-     * @param $message
      */
     public function test_it_should_log_a_custom_log_level_with_x_death_max_count_not_reached($message)
     {
@@ -320,8 +312,6 @@ class XDeathMaxCountProcessorTest extends TestCase
 
     /**
      * @dataProvider messageProvider
-     *
-     * @param $message
      */
     public function test_it_should_log_x_death_max_count_not_found($message)
     {

@@ -166,7 +166,7 @@ class ConnectionProcessorTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('$connections must be an array of Connection, but one of the elements was stdClass');
 
-        new ConnectionProcessor($innerProcessorProphecy->reveal(), [new \StdClass()]);
+        new ConnectionProcessor($innerProcessorProphecy->reveal(), [new \stdClass()]);
     }
 
     public function testAcceptEmptyConnections()

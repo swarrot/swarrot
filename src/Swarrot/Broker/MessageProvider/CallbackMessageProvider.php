@@ -17,17 +17,11 @@ class CallbackMessageProvider implements MessageProviderInterface
         $this->nack = $nack;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function get(): ?Message
     {
         return \call_user_func($this->get);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function ack(Message $message): void
     {
         if (null === $this->ack) {
@@ -37,9 +31,6 @@ class CallbackMessageProvider implements MessageProviderInterface
         \call_user_func($this->ack, $message);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function nack(Message $message, bool $requeue = false): void
     {
         if (null === $this->nack) {
@@ -49,9 +40,6 @@ class CallbackMessageProvider implements MessageProviderInterface
         \call_user_func($this->nack, $message, $requeue);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getQueueName(): string
     {
         return '';

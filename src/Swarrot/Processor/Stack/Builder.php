@@ -44,9 +44,6 @@ class Builder
         return $this;
     }
 
-    /**
-     * @param mixed $processor
-     */
     public function resolve($processor): StackedProcessor
     {
         $middlewares = [$processor];

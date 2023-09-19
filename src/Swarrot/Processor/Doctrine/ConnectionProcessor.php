@@ -47,9 +47,6 @@ class ConnectionProcessor implements ConfigurableInterface
         $this->connections = $connections;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function process(Message $message, array $options): bool
     {
         if ($options['doctrine_ping']) {
@@ -57,7 +54,7 @@ class ConnectionProcessor implements ConfigurableInterface
                 if ($connection->isConnected()) {
                     try {
                         $connection->query($connection->getDatabasePlatform()->getDummySelectSQL());
-                    } catch (DBAL2Exception | DBAL3Exception $e) {
+                    } catch (DBAL2Exception|DBAL3Exception $e) {
                         $connection->close(); // close timed out connections so that using them connects again
                     }
                 }
@@ -80,9 +77,6 @@ class ConnectionProcessor implements ConfigurableInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setDefaultOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([

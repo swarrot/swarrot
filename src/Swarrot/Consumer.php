@@ -57,7 +57,7 @@ class Consumer
             while (null !== $message = $this->messageProvider->get()) {
                 $result = $this->processor->process($message, $options);
                 if (!\is_bool($result)) {
-                    @trigger_error('Processors must return a bool since Swarrot 3.7', E_USER_DEPRECATED);
+                    @trigger_error('Processors must return a bool since Swarrot 3.7', \E_USER_DEPRECATED);
                 }
                 if (false === $result) {
                     break 2;

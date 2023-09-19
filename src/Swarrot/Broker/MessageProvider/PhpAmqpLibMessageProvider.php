@@ -52,9 +52,6 @@ class PhpAmqpLibMessageProvider implements MessageProviderInterface
         return new Message($envelope->body, $properties, $envelope->get('delivery_tag'));
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function ack(Message $message): void
     {
         if (null === $id = $message->getId()) {
@@ -64,9 +61,6 @@ class PhpAmqpLibMessageProvider implements MessageProviderInterface
         $this->channel->basic_ack($id);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function nack(Message $message, bool $requeue = false): void
     {
         if (null === $id = $message->getId()) {
@@ -76,9 +70,6 @@ class PhpAmqpLibMessageProvider implements MessageProviderInterface
         $this->channel->basic_nack($id, false, $requeue);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getQueueName(): string
     {
         return $this->queueName;

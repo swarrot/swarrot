@@ -20,9 +20,6 @@ class ObjectManagerProcessor implements ProcessorInterface
         $this->managerRegistry = $managerRegistry;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function process(Message $message, array $options): bool
     {
         try {

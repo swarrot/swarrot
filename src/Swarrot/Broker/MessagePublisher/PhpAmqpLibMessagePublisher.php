@@ -8,10 +8,10 @@ use Swarrot\Broker\Message;
 
 class PhpAmqpLibMessagePublisher implements MessagePublisherInterface
 {
-    /** @var AMQPChannel $channel */
+    /** @var AMQPChannel */
     private $channel;
 
-    /** @var string $exchange Exchange's name. Required by php-amqplib */
+    /** @var string Exchange's name. Required by php-amqplib */
     private $exchange;
 
     /** @var int|float */
@@ -38,9 +38,6 @@ class PhpAmqpLibMessagePublisher implements MessagePublisherInterface
         $this->timeout = $timeout;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function publish(Message $message, string $key = null): void
     {
         $properties = $message->getProperties();
@@ -69,9 +66,6 @@ class PhpAmqpLibMessagePublisher implements MessagePublisherInterface
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getExchangeName(): string
     {
         return $this->exchange;
@@ -80,7 +74,7 @@ class PhpAmqpLibMessagePublisher implements MessagePublisherInterface
     private function getNackHandler(): callable
     {
         return function (AMQPMessage $message) {
-            if ($message->has('delivery_tag') && is_scalar($message->get('delivery_tag'))) {
+            if ($message->has('delivery_tag') && \is_scalar($message->get('delivery_tag'))) {
                 throw new \Exception('Error publishing deliveryTag: '.$message->get('delivery_tag'));
             } else {
                 throw new \Exception('Error publishing message: '.$message->getBody());

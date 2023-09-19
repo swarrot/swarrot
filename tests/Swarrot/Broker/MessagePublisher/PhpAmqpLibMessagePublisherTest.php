@@ -46,13 +46,13 @@ class PhpAmqpLibMessagePublisherTest extends TestCase
                 $properties = $message->get_properties();
 
                 return
-                    'body' === $message->body &&
-                    $properties['application_headers']['int_header'] === ['I', 42] &&
-                    $properties['application_headers']['string_header'] === ['S', 'my_value'] &&
-                    $properties['application_headers']['array_header'] === ['A', ['foo' => 'bar']] &&
-                    !isset($properties['headers']) &&
-                    $message->serialize_properties()
-                    ;
+                    'body' === $message->body
+                    && $properties['application_headers']['int_header'] === ['I', 42]
+                    && $properties['application_headers']['string_header'] === ['S', 'my_value']
+                    && $properties['application_headers']['array_header'] === ['A', ['foo' => 'bar']]
+                    && !isset($properties['headers'])
+                    && $message->serialize_properties()
+                ;
             }),
             Argument::exact('swarrot'),
             Argument::exact('')

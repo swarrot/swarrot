@@ -27,27 +27,18 @@ class SignalHandlerProcessor implements ConfigurableInterface, SleepyInterface, 
         $this->logger = $logger ?: new NullLogger();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setDefaultOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'signal_handler_signals' => \extension_loaded('pcntl') ? [SIGTERM, SIGINT, SIGQUIT] : [],
+            'signal_handler_signals' => \extension_loaded('pcntl') ? [\SIGTERM, \SIGINT, \SIGQUIT] : [],
         ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function sleep(array $options): bool
     {
         return !$this::$shouldExit;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function process(Message $message, array $options): bool
     {
         $return = $this->processor->process($message, $options);
@@ -59,9 +50,6 @@ class SignalHandlerProcessor implements ConfigurableInterface, SleepyInterface, 
         return $return;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function initialize(array $options): void
     {
         if (!\extension_loaded('pcntl')) {

@@ -33,9 +33,6 @@ class StackedProcessor implements ConfigurableInterface, InitializableInterface,
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function initialize(array $options): void
     {
         foreach ($this->middlewares as $middleware) {
@@ -45,17 +42,11 @@ class StackedProcessor implements ConfigurableInterface, InitializableInterface,
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function process(Message $message, array $options): bool
     {
         return $this->processor->process($message, $options);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function terminate(array $options): void
     {
         foreach ($this->middlewares as $middleware) {
@@ -65,9 +56,6 @@ class StackedProcessor implements ConfigurableInterface, InitializableInterface,
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function sleep(array $options): bool
     {
         foreach ($this->middlewares as $middleware) {
