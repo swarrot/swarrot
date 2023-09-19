@@ -106,7 +106,7 @@ class XDeathMaxLifetimeProcessorTest extends TestCase
         ], $config);
     }
 
-    public function messageProvider()
+    public static function messageProvider()
     {
         $data = [
             [

@@ -11,7 +11,7 @@ class CallbackMessageProviderTest extends TestCase
 {
     use ProphecyTrait;
 
-    public function callable_with_message_provider()
+    public static function callable_with_message_provider()
     {
         return [
             [
@@ -53,7 +53,7 @@ class CallbackMessageProviderTest extends TestCase
         $this->assertInstanceOf(Message::class, $message);
     }
 
-    public function callable_without_message_provider()
+    public static function callable_without_message_provider()
     {
         return [
             [

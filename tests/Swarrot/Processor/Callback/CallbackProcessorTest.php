@@ -11,7 +11,7 @@ class CallbackProcessorTest extends TestCase
 {
     use ProphecyTrait;
 
-    public function callable_provider()
+    public static function callable_provider()
     {
         return [
             [
