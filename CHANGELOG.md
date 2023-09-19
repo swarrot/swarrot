@@ -5,6 +5,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+- Remove support for unmaintained Symfony versions. The min version is now 5.4
+
 ## 4.15.0 - 2023-09-12
 
 - Improve MemoryLimitProcessor
