@@ -1,6 +1,6 @@
 <?php
 
-namespace Swarrot\Tests\Processor\Ack;
+namespace Swarrot\Tests\Processor\Doctrine;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Connections\MasterSlaveConnection;
@@ -10,12 +10,15 @@ use Doctrine\DBAL\Platforms\SqlitePlatform;
 use Doctrine\Persistence\ConnectionRegistry;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Swarrot\Broker\Message;
 use Swarrot\Processor\Doctrine\ConnectionProcessor;
 use Swarrot\Processor\ProcessorInterface;
 
 class ConnectionProcessorTest extends TestCase
 {
+    use ProphecyTrait;
+
     public function test()
     {
         $message = new Message();
@@ -163,7 +166,7 @@ class ConnectionProcessorTest extends TestCase
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('$connections must be an array of Connection, but one of the elements was stdClass');
 
-        new ConnectionProcessor($innerProcessorProphecy->reveal(), [new \StdClass()]);
+        new ConnectionProcessor($innerProcessorProphecy->reveal(), [new \stdClass()]);
     }
 
     public function testAcceptEmptyConnections()

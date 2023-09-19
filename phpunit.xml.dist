@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<phpunit backupGlobals="false"
+<phpunit
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    backupGlobals="false"
     backupStaticAttributes="false"
     colors="true"
     convertErrorsToExceptions="true"
@@ -9,7 +10,17 @@
     processIsolation="false"
     stopOnFailure="false"
     bootstrap="vendor/autoload.php"
-    >
+    xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
+>
+    <coverage>
+        <include>
+            <directory suffix=".php">./</directory>
+        </include>
+        <exclude>
+            <directory>vendor</directory>
+            <directory>tests</directory>
+        </exclude>
+    </coverage>
 
     <listeners>
         <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener"/>
@@ -24,15 +35,4 @@
             <directory>./tests</directory>
         </testsuite>
     </testsuites>
-
-    <filter>
-        <whitelist>
-            <directory suffix=".php">./</directory>
-            <exclude>
-                <directory>vendor</directory>
-                <directory>tests</directory>
-            </exclude>
-        </whitelist>
-    </filter>
-
 </phpunit>

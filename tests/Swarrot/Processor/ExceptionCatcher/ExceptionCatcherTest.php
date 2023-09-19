@@ -4,6 +4,7 @@ namespace Swarrot\Tests\Processor\ExceptionCatcher;
 
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Log\LoggerInterface;
 use Swarrot\Broker\Message;
 use Swarrot\Processor\ExceptionCatcher\ExceptionCatcherProcessor;
@@ -11,6 +12,8 @@ use Swarrot\Processor\ProcessorInterface;
 
 class ExceptionCatcherTest extends TestCase
 {
+    use ProphecyTrait;
+
     public function test_it_is_initializable_without_a_logger()
     {
         $processor = $this->prophesize(ProcessorInterface::class);

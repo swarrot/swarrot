@@ -4,11 +4,14 @@ namespace Swarrot\Tests\Broker\MessagePublisher;
 
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Swarrot\Broker\Message;
 use Swarrot\Broker\MessagePublisher\PeclPackageMessagePublisher;
 
 class PeclPackageMessagePublisherTest extends TestCase
 {
+    use ProphecyTrait;
+
     protected function setUp(): void
     {
         if (!class_exists('AMQPConnection')) {
@@ -127,7 +130,7 @@ class PeclPackageMessagePublisherTest extends TestCase
         $exchange->getChannel()->willReturn($channel->reveal());
         $exchange->publish('body', '', 0, [])->shouldBeCalledTimes(1);
 
-        $provider = new PeclPackageMessagePublisher($exchange->reveal(), AMQP_NOPARAM, null, true, 10);
+        $provider = new PeclPackageMessagePublisher($exchange->reveal(), \AMQP_NOPARAM, null, true, 10);
         $return = $provider->publish(
             new Message('body', [
                 'delivery_mode' => 0,

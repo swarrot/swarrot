@@ -6,11 +6,14 @@ use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Message\AMQPMessage;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Swarrot\Broker\Message;
 use Swarrot\Broker\MessagePublisher\PhpAmqpLibMessagePublisher;
 
 class PhpAmqpLibMessagePublisherTest extends TestCase
 {
+    use ProphecyTrait;
+
     public function test_publish_with_valid_message()
     {
         $channel = $this->prophesize(AMQPChannel::class);
@@ -43,13 +46,13 @@ class PhpAmqpLibMessagePublisherTest extends TestCase
                 $properties = $message->get_properties();
 
                 return
-                    'body' === $message->body &&
-                    $properties['application_headers']['int_header'] === ['I', 42] &&
-                    $properties['application_headers']['string_header'] === ['S', 'my_value'] &&
-                    $properties['application_headers']['array_header'] === ['A', ['foo' => 'bar']] &&
-                    !isset($properties['headers']) &&
-                    $message->serialize_properties()
-                    ;
+                    'body' === $message->body
+                    && $properties['application_headers']['int_header'] === ['I', 42]
+                    && $properties['application_headers']['string_header'] === ['S', 'my_value']
+                    && $properties['application_headers']['array_header'] === ['A', ['foo' => 'bar']]
+                    && !isset($properties['headers'])
+                    && $message->serialize_properties()
+                ;
             }),
             Argument::exact('swarrot'),
             Argument::exact('')

@@ -19,17 +19,11 @@ class InsomniacProcessor implements SleepyInterface
         $this->logger = $logger ?? new NullLogger();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function process(Message $message, array $options): bool
     {
         return $this->processor->process($message, $options);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function sleep(array $options): bool
     {
         // Since this should be called after the consumer was not able to retrieve a message,

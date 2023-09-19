@@ -4,6 +4,7 @@ namespace Swarrot\Tests;
 
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Swarrot\Broker\Message;
 use Swarrot\Broker\MessageProvider\MessageProviderInterface;
 use Swarrot\Consumer;
@@ -16,6 +17,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ConsumerTest extends TestCase
 {
+    use ProphecyTrait;
+
     public function test_it_is_initializable()
     {
         $provider = $this->prophesize(MessageProviderInterface::class);

@@ -26,9 +26,6 @@ class RetryProcessor implements ConfigurableInterface
         $this->logger = $logger ?? new NullLogger();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function process(Message $message, array $options): bool
     {
         try {
@@ -84,9 +81,6 @@ class RetryProcessor implements ConfigurableInterface
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setDefaultOptions(OptionsResolver $resolver): void
     {
         $resolver

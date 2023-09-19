@@ -1,16 +1,19 @@
 <?php
 
-namespace Swarrot\Tests\Processor\Ack;
+namespace Swarrot\Tests\Processor\Doctrine;
 
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\Persistence\ObjectManager;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Swarrot\Broker\Message;
 use Swarrot\Processor\Doctrine\ObjectManagerProcessor;
 use Swarrot\Processor\ProcessorInterface;
 
 class ObjectManagerProcessorTest extends TestCase
 {
+    use ProphecyTrait;
+
     public function test()
     {
         $message = new Message();

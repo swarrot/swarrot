@@ -58,11 +58,13 @@ $stack = (new \Swarrot\Processor\Stack\Builder())
         function ($e, $message, $options) {
             if (end($message->getProperties()['headers']['x-death'])['count'] > 5) {
                 printf("XDeathMaxCountProcessor callback executed. Not rethrow original exception\n");
+
                 // when you return false it not rethrow the catched exception
                 return false;
             }
 
             printf("XDeathMaxCountProcessor callback executed. Rethrow original exception\n");
+
             // when you return null it rethrow the catched exception
             return;
         },

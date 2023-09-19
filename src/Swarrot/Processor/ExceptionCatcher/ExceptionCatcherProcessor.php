@@ -18,9 +18,6 @@ class ExceptionCatcherProcessor implements ProcessorInterface
         $this->logger = $logger ?: new NullLogger();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function process(Message $message, array $options): bool
     {
         try {

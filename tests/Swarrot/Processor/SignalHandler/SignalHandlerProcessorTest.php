@@ -3,6 +3,7 @@
 namespace Swarrot\Tests\Processor\SignalHandler;
 
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Log\LoggerInterface;
 use Swarrot\Broker\Message;
 use Swarrot\Processor\ProcessorInterface;
@@ -10,6 +11,8 @@ use Swarrot\Processor\SignalHandler\SignalHandlerProcessor;
 
 class SignalHandlerProcessorTest extends TestCase
 {
+    use ProphecyTrait;
+
     public function test_it_is_initializable_without_a_logger()
     {
         $processor = $this->prophesize(ProcessorInterface::class);

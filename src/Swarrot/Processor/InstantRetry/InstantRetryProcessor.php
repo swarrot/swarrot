@@ -21,9 +21,6 @@ class InstantRetryProcessor implements ConfigurableInterface
         $this->logger = $logger ?: new NullLogger();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function process(Message $message, array $options): bool
     {
         $retry = 0;
@@ -60,9 +57,6 @@ class InstantRetryProcessor implements ConfigurableInterface
         throw new \RuntimeException('You probably misconfigured the InstantRetryProcessor.');
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setDefaultOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([

@@ -14,9 +14,6 @@ class CallbackProcessor implements ProcessorInterface
         $this->process = $process;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function process(Message $message, array $options): bool
     {
         return \call_user_func($this->process, $message, $options);

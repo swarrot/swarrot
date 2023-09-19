@@ -3,6 +3,7 @@
 namespace Swarrot\Tests\Processor\MemoryLimit;
 
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Log\LoggerInterface;
 use Swarrot\Broker\Message;
 use Swarrot\Processor\MemoryLimit\MemoryLimitProcessor;
@@ -10,6 +11,8 @@ use Swarrot\Processor\ProcessorInterface;
 
 class MemoryLimitProcessorTest extends TestCase
 {
+    use ProphecyTrait;
+
     public function test_it_is_initializable_without_a_logger()
     {
         $processor = $this->prophesize(ProcessorInterface::class);

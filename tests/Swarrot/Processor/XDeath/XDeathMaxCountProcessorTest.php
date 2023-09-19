@@ -6,6 +6,7 @@ use PhpAmqpLib\Wire\AMQPArray;
 use PhpAmqpLib\Wire\AMQPTable;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 use Swarrot\Broker\Message;
@@ -15,6 +16,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class XDeathMaxCountProcessorTest extends TestCase
 {
+    use ProphecyTrait;
+
     public function test_it_is_initializable_without_a_logger()
     {
         $processorMock = $this->prophesize(ProcessorInterface::class);
@@ -149,8 +152,6 @@ class XDeathMaxCountProcessorTest extends TestCase
 
     /**
      * @dataProvider messageProvider
-     *
-     * @param $message
      */
     public function test_it_should_not_rethrow_with_x_death_max_count_reached($message)
     {
@@ -181,8 +182,6 @@ class XDeathMaxCountProcessorTest extends TestCase
 
     /**
      * @dataProvider messageProvider
-     *
-     * @param $message
      */
     public function test_it_should_rethrow_with_x_death_max_count_reached_and_callback_returns_null($message)
     {
@@ -215,8 +214,6 @@ class XDeathMaxCountProcessorTest extends TestCase
 
     /**
      * @dataProvider messageProvider
-     *
-     * @param $message
      */
     public function test_it_should_rethrow_with_x_death_max_count_not_reached($message)
     {
@@ -281,8 +278,6 @@ class XDeathMaxCountProcessorTest extends TestCase
 
     /**
      * @dataProvider messageProvider
-     *
-     * @param $message
      */
     public function test_it_should_log_a_custom_log_level_with_x_death_max_count_not_reached($message)
     {
@@ -317,8 +312,6 @@ class XDeathMaxCountProcessorTest extends TestCase
 
     /**
      * @dataProvider messageProvider
-     *
-     * @param $message
      */
     public function test_it_should_log_x_death_max_count_not_found($message)
     {

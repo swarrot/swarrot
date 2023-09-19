@@ -22,9 +22,6 @@ class ServicesResetterProcessor implements ProcessorInterface
         $this->servicesResetter = $servicesResetter;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function process(Message $message, array $options): bool
     {
         try {

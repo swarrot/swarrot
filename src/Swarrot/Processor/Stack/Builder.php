@@ -2,6 +2,8 @@
 
 namespace Swarrot\Processor\Stack;
 
+use Swarrot\Processor\ProcessorInterface;
+
 class Builder
 {
     /**
@@ -45,7 +47,7 @@ class Builder
     }
 
     /**
-     * @param mixed $processor
+     * @param ProcessorInterface $processor
      */
     public function resolve($processor): StackedProcessor
     {
