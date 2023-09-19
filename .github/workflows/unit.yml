@@ -11,9 +11,6 @@ jobs:
                 symfony: ['']
                 name_suffix: ['']
                 include:
-                    - php: '7.4'
-                      symfony: 4.4.*
-                      name_suffix: ' / SF 4.4 LTS'
                     - php: '8.1'
                       symfony: 5.4.*
                       name_suffix: ' / SF 5.4 LTS'
