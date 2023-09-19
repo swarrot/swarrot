@@ -1,6 +1,6 @@
 <?php
 
-namespace Swarrot\Tests\Processor\Ack;
+namespace Swarrot\Tests\Processor\Callback;
 
 use PHPUnit\Framework\TestCase;
 use Swarrot\Broker\Message;

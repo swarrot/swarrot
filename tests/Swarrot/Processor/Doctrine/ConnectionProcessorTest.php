@@ -1,6 +1,6 @@
 <?php
 
-namespace Swarrot\Tests\Processor\Ack;
+namespace Swarrot\Tests\Processor\Doctrine;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Connections\MasterSlaveConnection;
