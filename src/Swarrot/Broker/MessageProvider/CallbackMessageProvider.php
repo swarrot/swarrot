@@ -4,6 +4,9 @@ namespace Swarrot\Broker\MessageProvider;
 
 use Swarrot\Broker\Message;
 
+/**
+ * @final since 4.16.0
+ */
 class CallbackMessageProvider implements MessageProviderInterface
 {
     private $get;

@@ -5,7 +5,7 @@ namespace Swarrot\Processor\MemoryReset;
 use Swarrot\Broker\Message;
 use Swarrot\Processor\ProcessorInterface;
 
-class MemoryResetProcessor implements ProcessorInterface
+final class MemoryResetProcessor implements ProcessorInterface
 {
     private ProcessorInterface $processor;
 

@@ -11,6 +11,9 @@ use Swarrot\Processor\ConfigurableInterface;
 use Swarrot\Processor\ProcessorInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * @final since 4.16.0
+ */
 class XDeathMaxLifetimeProcessor implements ConfigurableInterface
 {
     private $processor;

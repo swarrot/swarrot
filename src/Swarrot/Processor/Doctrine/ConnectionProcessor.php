@@ -15,6 +15,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @author Adrien Brault <adrien.brault@gmail.com>
+ *
+ * @final since 4.16.0
  */
 class ConnectionProcessor implements ConfigurableInterface
 {

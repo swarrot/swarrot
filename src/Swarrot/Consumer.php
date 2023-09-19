@@ -12,6 +12,9 @@ use Swarrot\Processor\SleepyInterface;
 use Swarrot\Processor\TerminableInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * @final since 4.16.0
+ */
 class Consumer
 {
     private $messageProvider;

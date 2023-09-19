@@ -6,6 +6,9 @@ use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Wire\AMQPArray;
 use Swarrot\Broker\Message;
 
+/**
+ * @final since 4.16.0
+ */
 class PhpAmqpLibMessageProvider implements MessageProviderInterface
 {
     private $channel;

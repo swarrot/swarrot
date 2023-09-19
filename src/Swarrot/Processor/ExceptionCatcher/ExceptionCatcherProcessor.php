@@ -7,6 +7,9 @@ use Psr\Log\NullLogger;
 use Swarrot\Broker\Message;
 use Swarrot\Processor\ProcessorInterface;
 
+/**
+ * @final since 4.16.0
+ */
 class ExceptionCatcherProcessor implements ProcessorInterface
 {
     private $processor;

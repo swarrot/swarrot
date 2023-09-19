@@ -13,6 +13,9 @@ use Symfony\Component\OptionsResolver\Exception\MissingOptionsException;
 use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * @final since 4.16.0
+ */
 class RetryProcessor implements ConfigurableInterface
 {
     private $processor;

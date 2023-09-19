@@ -10,6 +10,8 @@ use Symfony\Contracts\Service\ResetInterface;
 
 /**
  * @author Pierrick Vignand <pierrick.vignand@gmail.com>
+ *
+ * @final since 4.16.0
  */
 class ServicesResetterProcessor implements ProcessorInterface
 {
