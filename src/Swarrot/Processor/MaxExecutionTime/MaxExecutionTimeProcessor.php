@@ -16,8 +16,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class MaxExecutionTimeProcessor implements ConfigurableInterface, InitializableInterface, SleepyInterface
 {
-    private $processor;
-    private $logger;
+    private ProcessorInterface $processor;
+    private LoggerInterface $logger;
 
     /**
      * @var float

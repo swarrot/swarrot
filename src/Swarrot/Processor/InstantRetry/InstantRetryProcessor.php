@@ -15,8 +15,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class InstantRetryProcessor implements ConfigurableInterface
 {
-    private $processor;
-    private $logger;
+    private ProcessorInterface $processor;
+    private LoggerInterface $logger;
 
     public function __construct(ProcessorInterface $processor, LoggerInterface $logger = null)
     {

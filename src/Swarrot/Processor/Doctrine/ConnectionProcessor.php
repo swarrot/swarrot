@@ -20,11 +20,11 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class ConnectionProcessor implements ConfigurableInterface
 {
-    private $processor;
+    private ProcessorInterface $processor;
     /**
      * @var Connection[]
      */
-    private $connections;
+    private array $connections;
 
     /**
      * @param ConnectionRegistry|Connection[]|Connection $connections

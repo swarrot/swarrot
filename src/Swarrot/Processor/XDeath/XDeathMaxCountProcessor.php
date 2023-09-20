@@ -16,10 +16,10 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class XDeathMaxCountProcessor implements ConfigurableInterface
 {
-    private $processor;
-    private $queueName;
+    private ProcessorInterface $processor;
+    private string $queueName;
     private $callback;
-    private $logger;
+    private LoggerInterface $logger;
 
     public function __construct(
         ProcessorInterface $processor,

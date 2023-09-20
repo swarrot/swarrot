@@ -15,8 +15,8 @@ use Symfony\Contracts\Service\ResetInterface;
  */
 class ServicesResetterProcessor implements ProcessorInterface
 {
-    private $processor;
-    private $servicesResetter;
+    private ProcessorInterface $processor;
+    private ResetInterface $servicesResetter;
 
     public function __construct(ProcessorInterface $processor, ResetInterface $servicesResetter)
     {
