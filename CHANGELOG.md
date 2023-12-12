@@ -5,6 +5,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+- Drop support for unmaintained Doctrine versions
+
 ## 4.16.0 - 2023-09-20
 
 - Remove support for unmaintained Symfony versions. The min version is now 5.4
