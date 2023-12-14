@@ -7,7 +7,7 @@ jobs:
         strategy:
             fail-fast: false
             matrix:
-                php: ['7.4', '8.0', '8.1', '8.2']
+                php: ['7.4', '8.0', '8.1', '8.2', '8.3']
                 symfony: ['']
                 name_suffix: ['']
                 include:
@@ -17,7 +17,7 @@ jobs:
 
         services:
             rabbitmq:
-                image: rabbitmq:3.9-management
+                image: rabbitmq:3.12-management
                 ports:
                     - 5671:5671
                     - 5672:5672
@@ -28,7 +28,7 @@ jobs:
 
         steps:
             - name: Checkout
-              uses: actions/checkout@v3
+              uses: actions/checkout@v4
 
             - name: Setup PHP
               uses: shivammathur/setup-php@v2
