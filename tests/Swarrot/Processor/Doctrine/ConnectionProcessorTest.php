@@ -4,6 +4,7 @@ namespace Swarrot\Tests\Processor\Doctrine;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Connections\MasterSlaveConnection;
+use Doctrine\DBAL\Connections\PrimaryReadReplicaConnection;
 use Doctrine\DBAL\DBALException as DBAL2Exception;
 use Doctrine\DBAL\Exception as DBAL3Exception;
 use Doctrine\DBAL\Platforms\SqlitePlatform;
@@ -37,14 +38,26 @@ class ConnectionProcessorTest extends TestCase
             $connectionProphecy->close()->shouldNotBeCalled();
             $connections[] = $connectionProphecy->reveal();
 
-            $connectionProphecy = $this->prophesizeMasterSlaveConnection();
-            $connectionProphecy->isConnectedToMaster()->willReturn(false);
+            if (class_exists(MasterSlaveConnection::class)) {
+                $connectionProphecy = $this->prophesizeMasterSlaveConnection();
+                $connectionProphecy->isConnectedToMaster()->willReturn(false);
+                $connectionProphecy->isConnectedToPrimary()->willReturn(false);
+                $connectionProphecy->close()->shouldNotBeCalled();
+                $connections[] = $connectionProphecy->reveal();
+
+                $connectionProphecy = $this->prophesizeMasterSlaveConnection();
+                $connectionProphecy->isConnectedToMaster()->willReturn(true);
+                $connectionProphecy->isConnectedToPrimary()->willReturn(true);
+                $connectionProphecy->close()->shouldBeCalled();
+                $connections[] = $connectionProphecy->reveal();
+            }
+
+            $connectionProphecy = $this->prophesize(PrimaryReadReplicaConnection::class);
             $connectionProphecy->isConnectedToPrimary()->willReturn(false);
             $connectionProphecy->close()->shouldNotBeCalled();
             $connections[] = $connectionProphecy->reveal();
 
-            $connectionProphecy = $this->prophesizeMasterSlaveConnection();
-            $connectionProphecy->isConnectedToMaster()->willReturn(true);
+            $connectionProphecy = $this->prophesize(PrimaryReadReplicaConnection::class);
             $connectionProphecy->isConnectedToPrimary()->willReturn(true);
             $connectionProphecy->close()->shouldBeCalled();
             $connections[] = $connectionProphecy->reveal();
@@ -80,14 +93,26 @@ class ConnectionProcessorTest extends TestCase
             $connectionProphecy->close()->shouldNotBeCalled();
             $connections[] = $connectionProphecy->reveal();
 
-            $connectionProphecy = $this->prophesizeMasterSlaveConnection();
-            $connectionProphecy->isConnectedToMaster()->willReturn(false);
+            if (class_exists(MasterSlaveConnection::class)) {
+                $connectionProphecy = $this->prophesizeMasterSlaveConnection();
+                $connectionProphecy->isConnectedToMaster()->willReturn(false);
+                $connectionProphecy->isConnectedToPrimary()->willReturn(false);
+                $connectionProphecy->close()->shouldNotBeCalled();
+                $connections[] = $connectionProphecy->reveal();
+
+                $connectionProphecy = $this->prophesizeMasterSlaveConnection();
+                $connectionProphecy->isConnectedToMaster()->willReturn(true);
+                $connectionProphecy->isConnectedToPrimary()->willReturn(true);
+                $connectionProphecy->close()->shouldBeCalled();
+                $connections[] = $connectionProphecy->reveal();
+            }
+
+            $connectionProphecy = $this->prophesize(PrimaryReadReplicaConnection::class);
             $connectionProphecy->isConnectedToPrimary()->willReturn(false);
             $connectionProphecy->close()->shouldNotBeCalled();
             $connections[] = $connectionProphecy->reveal();
 
-            $connectionProphecy = $this->prophesizeMasterSlaveConnection();
-            $connectionProphecy->isConnectedToMaster()->willReturn(true);
+            $connectionProphecy = $this->prophesize(PrimaryReadReplicaConnection::class);
             $connectionProphecy->isConnectedToPrimary()->willReturn(true);
             $connectionProphecy->close()->shouldBeCalled();
             $connections[] = $connectionProphecy->reveal();
