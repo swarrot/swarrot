@@ -7,10 +7,10 @@ to the master the connection would never switch back to the slave.
 
 ## Configuration
 
-|Key                  |Default|Description                                            |
-|:-------------------:|:-----:|-------------------------------------------------------|
-|doctrine_ping        |true   |Ping and close timed out connections                   |
-|doctrine_close_master|true   |Close MasterSlave connections connected to the master  |
+|Key                  |Default|Description                                               |
+|:-------------------:|:-----:|----------------------------------------------------------|
+|doctrine_ping        |true   |Ping and close timed out connections                      |
+|doctrine_close_master|true   |Close PrimaryReplica connections connected to the primary |
 
 # ObjectManagerProcessor
 
