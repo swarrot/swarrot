@@ -29,11 +29,11 @@ class FailProcessor implements ProcessorInterface
     {
         printf("Fail processor consume message #%d\n", $message->getId());
 
-        throw new \Exception('This is my process exception.');
+        throw new Exception('This is my process exception.');
     }
 }
 
-class PrintLogger extends \Psr\Log\AbstractLogger
+class PrintLogger extends Psr\Log\AbstractLogger
 {
     public function log($level, $message, array $context = [])
     {
@@ -43,14 +43,14 @@ class PrintLogger extends \Psr\Log\AbstractLogger
 
 $printLogger = new PrintLogger();
 
-$connection = new \AMQPConnection();
+$connection = new AMQPConnection();
 $connection->connect();
-$channel = new \AMQPChannel($connection);
-$queue = new \AMQPQueue($channel);
+$channel = new AMQPChannel($connection);
+$queue = new AMQPQueue($channel);
 $queue->setName('global');
 
 $messageProvider = new PeclPackageMessageProvider($queue);
-$stack = (new \Swarrot\Processor\Stack\Builder())
+$stack = (new Swarrot\Processor\Stack\Builder())
     ->push('\Swarrot\Processor\Ack\AckProcessor', $messageProvider, $printLogger)
     ->push(
         '\Swarrot\Processor\XDeath\XDeathMaxCountProcessor',
@@ -83,7 +83,7 @@ try {
     $consumer->consume([
         'x_death_max_count' => 3,
     ]);
-} catch (\Exception $exception) {
+} catch (Exception $exception) {
     printf("[%s] %s\n", get_class($exception), $exception->getMessage());
 }
 echo '</pre>';

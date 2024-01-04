@@ -16,7 +16,7 @@ require_once __DIR__.'/../vendor/autoload.php';
 use Swarrot\Broker\Message;
 use Swarrot\Broker\MessagePublisher\StatefulStompMessagePublisher;
 
-$client = new \Stomp\Client('tcp://localhost:61613');
+$client = new Stomp\Client('tcp://localhost:61613');
 $client->setLogin('stompUser', 'stompPass');
 $client->setVhostname('/');
 $client->connect();
