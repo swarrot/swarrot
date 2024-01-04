@@ -5,7 +5,11 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+## 4.17.0 - 2024-01-04
+
 - Drop support for unmaintained Doctrine versions
+- Add support for Symfony 7
+- Allow using the latest version of PHPUnit
 
 ## 4.16.0 - 2023-09-20
 
