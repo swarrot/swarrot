@@ -20,7 +20,7 @@ use Swarrot\Broker\MessageProvider\StatefulStompMessageProvider;
 use Swarrot\Consumer;
 use Swarrot\Processor\Callback\CallbackProcessor;
 
-$client = new \Stomp\Client('tcp://localhost:61613');
+$client = new Stomp\Client('tcp://localhost:61613');
 $client->setLogin('stompUser', 'stompPass');
 $client->setVhostname('/');
 $client->connect();

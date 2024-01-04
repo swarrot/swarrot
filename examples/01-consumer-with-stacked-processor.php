@@ -37,15 +37,15 @@ class FinalProcessor implements ProcessorInterface
     }
 }
 
-$connection = new \AMQPConnection();
+$connection = new AMQPConnection();
 $connection->connect();
-$channel = new \AMQPChannel($connection);
-$queue = new \AMQPQueue($channel);
+$channel = new AMQPChannel($connection);
+$queue = new AMQPQueue($channel);
 $queue->setName('global');
 
 $messageProvider = new PeclPackageMessageProvider($queue);
 
-$stack = (new \Swarrot\Processor\Stack\Builder())
+$stack = (new Swarrot\Processor\Stack\Builder())
     ->push('Processor', 1)
     ->push('Processor', 2)
 ;

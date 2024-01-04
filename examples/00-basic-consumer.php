@@ -15,10 +15,10 @@ class Processor implements ProcessorInterface
     }
 }
 
-$connection = new \AMQPConnection();
+$connection = new AMQPConnection();
 $connection->connect();
-$channel = new \AMQPChannel($connection);
-$queue = new \AMQPQueue($channel);
+$channel = new AMQPChannel($connection);
+$queue = new AMQPQueue($channel);
 $queue->setName('global');
 
 $messageProvider = new PeclPackageMessageProvider($queue);
