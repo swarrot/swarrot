@@ -19,7 +19,7 @@ class AckProcessor implements ConfigurableInterface
     private MessageProviderInterface $messageProvider;
     private LoggerInterface $logger;
 
-    public function __construct(ProcessorInterface $processor, MessageProviderInterface $messageProvider, LoggerInterface $logger = null)
+    public function __construct(ProcessorInterface $processor, MessageProviderInterface $messageProvider, ?LoggerInterface $logger = null)
     {
         $this->processor = $processor;
         $this->messageProvider = $messageProvider;

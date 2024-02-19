@@ -13,7 +13,7 @@ class CallbackMessageProvider implements MessageProviderInterface
     private $ack;
     private $nack;
 
-    public function __construct(callable $get, callable $ack = null, callable $nack = null)
+    public function __construct(callable $get, ?callable $ack = null, ?callable $nack = null)
     {
         $this->get = $get;
         $this->ack = $ack;

@@ -22,7 +22,7 @@ class Consumer
     private OptionsResolver $optionsResolver;
     private LoggerInterface $logger;
 
-    public function __construct(MessageProviderInterface $messageProvider, ProcessorInterface $processor, OptionsResolver $optionsResolver = null, LoggerInterface $logger = null)
+    public function __construct(MessageProviderInterface $messageProvider, ProcessorInterface $processor, ?OptionsResolver $optionsResolver = null, ?LoggerInterface $logger = null)
     {
         $this->messageProvider = $messageProvider;
         $this->processor = $processor;

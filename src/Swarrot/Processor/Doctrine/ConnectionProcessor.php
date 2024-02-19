@@ -53,7 +53,7 @@ class ConnectionProcessor implements ConfigurableInterface
             foreach ($this->connections as $connection) {
                 if ($connection->isConnected()) {
                     try {
-                        $connection->query($connection->getDatabasePlatform()->getDummySelectSQL());
+                        $connection->executeQuery($connection->getDatabasePlatform()->getDummySelectSQL());
                     } catch (DBALException $e) {
                         $connection->close(); // close timed out connections so that using them connects again
                     }

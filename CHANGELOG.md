@@ -5,6 +5,8 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+- Add support for doctrine/dbal 4
+
 ## 4.17.0 - 2024-01-04
 
 - Drop support for unmaintained Doctrine versions

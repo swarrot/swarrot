@@ -32,7 +32,7 @@ class Message
      *
      * @see: http://www.amqp.org/resources/download
      */
-    public function __construct(string $body = null, array $properties = [], string $id = null)
+    public function __construct(?string $body = null, array $properties = [], ?string $id = null)
     {
         $this->body = $body;
         $this->properties = $properties;

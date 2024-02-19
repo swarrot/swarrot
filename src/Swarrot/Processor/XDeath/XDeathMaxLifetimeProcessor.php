@@ -25,7 +25,7 @@ class XDeathMaxLifetimeProcessor implements ConfigurableInterface
         ProcessorInterface $processor,
         string $queueName,
         callable $callback,
-        LoggerInterface $logger = null
+        ?LoggerInterface $logger = null
     ) {
         $this->processor = $processor;
         $this->queueName = $queueName;
