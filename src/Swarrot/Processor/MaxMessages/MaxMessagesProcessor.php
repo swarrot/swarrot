@@ -18,7 +18,7 @@ class MaxMessagesProcessor implements ConfigurableInterface
     private LoggerInterface $logger;
     private int $messagesProcessed = 0;
 
-    public function __construct(ProcessorInterface $processor, LoggerInterface $logger = null)
+    public function __construct(ProcessorInterface $processor, ?LoggerInterface $logger = null)
     {
         $this->processor = $processor;
         $this->logger = $logger ?: new NullLogger();

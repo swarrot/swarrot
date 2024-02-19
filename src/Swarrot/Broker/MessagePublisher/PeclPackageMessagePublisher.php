@@ -27,7 +27,7 @@ class PeclPackageMessagePublisher implements MessagePublisherInterface
     public function __construct(
         \AMQPExchange $exchange,
         int $flags = \AMQP_NOPARAM,
-        LoggerInterface $logger = null,
+        ?LoggerInterface $logger = null,
         bool $publisherConfirms = false,
         $timeout = 0
     ) {
@@ -45,7 +45,7 @@ class PeclPackageMessagePublisher implements MessagePublisherInterface
         }
     }
 
-    public function publish(Message $message, string $key = null): void
+    public function publish(Message $message, ?string $key = null): void
     {
         $properties = $message->getProperties();
         if (isset($properties['application_headers'])) {

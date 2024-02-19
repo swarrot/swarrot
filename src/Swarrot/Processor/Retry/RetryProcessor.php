@@ -22,7 +22,7 @@ class RetryProcessor implements ConfigurableInterface
     private MessagePublisherInterface $publisher;
     private LoggerInterface $logger;
 
-    public function __construct(ProcessorInterface $processor, MessagePublisherInterface $publisher, LoggerInterface $logger = null)
+    public function __construct(ProcessorInterface $processor, MessagePublisherInterface $publisher, ?LoggerInterface $logger = null)
     {
         $this->processor = $processor;
         $this->publisher = $publisher;

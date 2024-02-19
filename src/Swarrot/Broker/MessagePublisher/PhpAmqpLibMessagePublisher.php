@@ -42,7 +42,7 @@ class PhpAmqpLibMessagePublisher implements MessagePublisherInterface
         $this->timeout = $timeout;
     }
 
-    public function publish(Message $message, string $key = null): void
+    public function publish(Message $message, ?string $key = null): void
     {
         $properties = $message->getProperties();
         if (isset($properties['headers'])) {

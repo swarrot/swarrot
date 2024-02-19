@@ -6,7 +6,7 @@ use Swarrot\Broker\Message;
 
 interface MessagePublisherInterface
 {
-    public function publish(Message $message, string $key = null): void;
+    public function publish(Message $message, ?string $key = null): void;
 
     /**
      * Return the name of the exchange where the message will be published.

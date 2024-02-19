@@ -18,7 +18,7 @@ class InstantRetryProcessor implements ConfigurableInterface
     private ProcessorInterface $processor;
     private LoggerInterface $logger;
 
-    public function __construct(ProcessorInterface $processor, LoggerInterface $logger = null)
+    public function __construct(ProcessorInterface $processor, ?LoggerInterface $logger = null)
     {
         $this->processor = $processor;
         $this->logger = $logger ?: new NullLogger();
