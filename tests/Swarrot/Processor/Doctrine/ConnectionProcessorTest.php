@@ -5,7 +5,7 @@ namespace Swarrot\Tests\Processor\Doctrine;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Connections\PrimaryReadReplicaConnection;
 use Doctrine\DBAL\Exception as DBALException;
-use Doctrine\DBAL\Platforms\SqlitePlatform;
+use Doctrine\DBAL\Platforms\SQLitePlatform;
 use Doctrine\Persistence\ConnectionRegistry;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
@@ -105,13 +105,14 @@ class ConnectionProcessorTest extends TestCase
 
         $dummySql = 'SELECT 1';
 
-        $databasePlatformProphecy = $this->prophesize(SqlitePlatform::class);
+        $databasePlatformProphecy = $this->prophesize(class_exists(SQLitePlatform::class) ? SQLitePlatform::class : '\Doctrine\DBAL\Platforms\SqlitePlatform');
         $databasePlatformProphecy->getDummySelectSQL()->willReturn($dummySql);
 
         $connectionProphecy = $this->prophesizeConnection();
         $connectionProphecy->isConnected()->willReturn(true);
         $connectionProphecy->getDatabasePlatform()->willReturn($databasePlatformProphecy->reveal());
-        $connectionProphecy->query($dummySql)->willThrow(new DBALException());
+        $exception = interface_exists(DBALException::class) ? new class() extends \Exception implements DBALException {} : new DBALException();
+        $connectionProphecy->executeQuery($dummySql)->willThrow($exception);
         $connectionProphecy->close()->shouldBeCalled();
 
         $options = [
