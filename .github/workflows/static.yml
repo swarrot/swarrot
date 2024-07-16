@@ -1,4 +1,4 @@
-on: [push, pull_request]
+on: [pull_request]
 
 name: Static analysis
 
@@ -11,15 +11,17 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.2'
+          php-version: '8.3'
           extensions: amqp
           coverage: none
 
-      - name: Install dependencies
-        run: composer install --no-interaction --prefer-dist --no-progress
+      - name: Install php-cs-fixer
+        uses: ramsey/composer-install@v2
+        with:
+          composer-options: "--working-dir=tools/php-cs-fixer"
 
       - name: PHP-CS-Fixer
-        run: vendor/bin/php-cs-fixer fix --dry-run -vvv
+        run: tools/php-cs-fixer/vendor/bin/php-cs-fixer fix --dry-run --diff --config=.php-cs-fixer.dist.php
 
   phpstan:
     runs-on: ubuntu-latest
@@ -29,12 +31,17 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.2'
+          php-version: '8.3'
           extensions: amqp
           coverage: none
 
-      - name: Install dependencies
-        run: composer install --no-interaction --prefer-dist --no-progress
+      - name: Download dependencies
+        uses: ramsey/composer-install@v2
 
-      - name: PHP-CS-Fixer
-        run: vendor/bin/phpstan analyze
+      - name: Install PHPStan
+        uses: ramsey/composer-install@v2
+        with:
+          composer-options: "--working-dir=tools/phpstan"
+
+      - name: PHPStan
+        run: tools/phpstan/vendor/bin/phpstan analyze --no-progress --error-format=checkstyle

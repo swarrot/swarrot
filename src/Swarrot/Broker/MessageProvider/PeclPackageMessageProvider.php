@@ -58,7 +58,7 @@ class PeclPackageMessageProvider implements MessageProviderInterface
             throw new \RuntimeException('Cannot ack a message without id.');
         }
 
-        $this->queue->ack($id);
+        $this->queue->ack((int) $id);
     }
 
     public function nack(Message $message, bool $requeue = false): void
@@ -67,11 +67,11 @@ class PeclPackageMessageProvider implements MessageProviderInterface
             throw new \RuntimeException('Cannot nack a message without id.');
         }
 
-        $this->queue->nack($id, $requeue ? \AMQP_REQUEUE : 0);
+        $this->queue->nack((int) $id, $requeue ? \AMQP_REQUEUE : 0);
     }
 
     public function getQueueName(): string
     {
-        return $this->queue->getName();
+        return (string) $this->queue->getName();
     }
 }

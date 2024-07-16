@@ -1,0 +1,34 @@
+parameters:
+	ignoreErrors:
+		-
+			message: """
+				#^Access to deprecated property \\$body of class PhpAmqpLib\\\\Message\\\\AMQPMessage\\:
+				Will be removed in version 4\\.0, use getBody\\(\\) instead\\.$#
+			"""
+			count: 1
+			path: src/Swarrot/Broker/MessageProvider/PhpAmqpLibMessageProvider.php
+
+		-
+			message: "#^Parameter \\#1 \\$delivery_tag of method PhpAmqpLib\\\\Channel\\\\AMQPChannel\\:\\:basic_ack\\(\\) expects int, string given\\.$#"
+			count: 1
+			path: src/Swarrot/Broker/MessageProvider/PhpAmqpLibMessageProvider.php
+
+		-
+			message: "#^Parameter \\#1 \\$delivery_tag of method PhpAmqpLib\\\\Channel\\\\AMQPChannel\\:\\:basic_nack\\(\\) expects int, string given\\.$#"
+			count: 1
+			path: src/Swarrot/Broker/MessageProvider/PhpAmqpLibMessageProvider.php
+
+		-
+			message: "#^Else branch is unreachable because ternary operator condition is always true\\.$#"
+			count: 1
+			path: src/Swarrot/Processor/Doctrine/ConnectionProcessor.php
+
+		-
+			message: "#^Property Swarrot\\\\Processor\\\\Doctrine\\\\ConnectionProcessor\\:\\:\\$connections \\(array\\<Doctrine\\\\DBAL\\\\Connection\\>\\) does not accept array\\<object\\>\\.$#"
+			count: 1
+			path: src/Swarrot/Processor/Doctrine/ConnectionProcessor.php
+
+		-
+			message: "#^Property Swarrot\\\\Processor\\\\Stack\\\\Builder\\:\\:\\$specs with generic class SplStack does not specify its types\\: TValue$#"
+			count: 1
+			path: src/Swarrot/Processor/Stack/Builder.php
