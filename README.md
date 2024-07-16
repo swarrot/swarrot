@@ -104,7 +104,7 @@ $processor = $stack->resolve(new Processor());
 
 Here is an illustration to show you what happens when this order is used:
 
-![this](https://docs.google.com/drawings/d/1Ea_QJHo-9p7YW8l_by7S4NID0e-AGpXRzzitAlYY5Cc/pub?w=960&h=720)
+![this](https://github.com/user-attachments/assets/b1aa419d-f10a-44ef-895b-a995c3215aa6)
 
 ## Processors
 
