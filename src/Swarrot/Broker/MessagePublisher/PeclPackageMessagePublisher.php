@@ -89,7 +89,7 @@ class PeclPackageMessagePublisher implements MessagePublisherInterface
 
     public function getExchangeName(): string
     {
-        return $this->exchange->getName();
+        return (string) $this->exchange->getName();
     }
 
     private function getAckHandler(): callable
