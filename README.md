@@ -5,6 +5,9 @@
 [![Latest Stable Version](https://poser.pugx.org/swarrot/swarrot/v/stable.svg)](https://packagist.org/packages/swarrot/swarrot)
 [![Latest Unstable Version](https://poser.pugx.org/swarrot/swarrot/v/unstable.svg)](https://packagist.org/packages/swarrot/swarrot)
 
+> [!IMPORTANT]
+> You should consider using [The Symfony Messenger Component](https://symfony.com/doc/current/components/messenger.html) instead of Swarrot. More contributors, more users, more features, this is probably the best choice you can do nowadays. :)
+
 Swarrot is a PHP library to consume messages from any broker.
 
 ## Installation
