@@ -22,7 +22,7 @@ class CallbackProcessorTest extends TestCase
             ],
             [
                 [
-                    new class() {
+                    new class {
                         public function get()
                         {
                             return true;
@@ -32,7 +32,7 @@ class CallbackProcessorTest extends TestCase
                 ],
             ],
             [
-                new class() {
+                new class {
                     public function __invoke()
                     {
                         return true;

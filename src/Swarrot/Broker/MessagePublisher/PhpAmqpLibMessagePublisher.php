@@ -27,7 +27,7 @@ class PhpAmqpLibMessagePublisher implements MessagePublisherInterface
         AMQPChannel $channel,
         string $exchange,
         bool $publisherConfirms = false,
-        $timeout = 0
+        $timeout = 0,
     ) {
         $this->channel = $channel;
         $this->exchange = $exchange;

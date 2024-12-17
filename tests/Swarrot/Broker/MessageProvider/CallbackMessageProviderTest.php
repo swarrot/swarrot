@@ -22,7 +22,7 @@ class CallbackMessageProviderTest extends TestCase
             ],
             [
                 [
-                    new class() {
+                    new class {
                         public function get()
                         {
                             return new Message();
@@ -32,7 +32,7 @@ class CallbackMessageProviderTest extends TestCase
                 ],
             ],
             [
-                new class() {
+                new class {
                     public function __invoke()
                     {
                         return new Message();
@@ -64,7 +64,7 @@ class CallbackMessageProviderTest extends TestCase
             ],
             [
                 [
-                    new class() {
+                    new class {
                         public function get()
                         {
                             return null;
@@ -74,7 +74,7 @@ class CallbackMessageProviderTest extends TestCase
                 ],
             ],
             [
-                new class() {
+                new class {
                     public function __invoke()
                     {
                         return null;

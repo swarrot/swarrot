@@ -111,7 +111,7 @@ class ConnectionProcessorTest extends TestCase
         $connectionProphecy = $this->prophesizeConnection();
         $connectionProphecy->isConnected()->willReturn(true);
         $connectionProphecy->getDatabasePlatform()->willReturn($databasePlatformProphecy->reveal());
-        $exception = interface_exists(DBALException::class) ? new class() extends \Exception implements DBALException {} : new DBALException();
+        $exception = interface_exists(DBALException::class) ? new class extends \Exception implements DBALException {} : new DBALException();
         $connectionProphecy->executeQuery($dummySql)->willThrow($exception);
         $connectionProphecy->close()->shouldBeCalled();
 
