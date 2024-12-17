@@ -4,6 +4,7 @@ namespace Swarrot\Tests\Processor\XDeath;
 
 use PhpAmqpLib\Wire\AMQPArray;
 use PhpAmqpLib\Wire\AMQPTable;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -150,9 +151,7 @@ class XDeathMaxCountProcessorTest extends TestCase
         return $data;
     }
 
-    /**
-     * @dataProvider messageProvider
-     */
+    #[DataProvider('messageProvider')]
     public function test_it_should_not_rethrow_with_x_death_max_count_reached($message)
     {
         $options = [
@@ -180,9 +179,7 @@ class XDeathMaxCountProcessorTest extends TestCase
         $this->assertFalse($processor->process($message, $options));
     }
 
-    /**
-     * @dataProvider messageProvider
-     */
+    #[DataProvider('messageProvider')]
     public function test_it_should_rethrow_with_x_death_max_count_reached_and_callback_returns_null($message)
     {
         $this->expectException('\BadMethodCallException');
@@ -212,9 +209,7 @@ class XDeathMaxCountProcessorTest extends TestCase
         $processor->process($message, $options);
     }
 
-    /**
-     * @dataProvider messageProvider
-     */
+    #[DataProvider('messageProvider')]
     public function test_it_should_rethrow_with_x_death_max_count_not_reached($message)
     {
         $this->expectException(\BadMethodCallException::class);
@@ -244,9 +239,7 @@ class XDeathMaxCountProcessorTest extends TestCase
         $processor->process($message, $options);
     }
 
-    /**
-     * @dataProvider messageProvider
-     */
+    #[DataProvider('messageProvider')]
     public function test_it_should_log_a_custom_log_level_with_x_death_max_count_reached(Message $message)
     {
         $options = [
@@ -276,9 +269,7 @@ class XDeathMaxCountProcessorTest extends TestCase
         $this->assertFalse($processor->process($message, $options));
     }
 
-    /**
-     * @dataProvider messageProvider
-     */
+    #[DataProvider('messageProvider')]
     public function test_it_should_log_a_custom_log_level_with_x_death_max_count_not_reached($message)
     {
         $this->expectException('\BadMethodCallException');
@@ -310,9 +301,7 @@ class XDeathMaxCountProcessorTest extends TestCase
         $processor->process($message, $options);
     }
 
-    /**
-     * @dataProvider messageProvider
-     */
+    #[DataProvider('messageProvider')]
     public function test_it_should_log_x_death_max_count_not_found($message)
     {
         $this->expectException('\BadMethodCallException');
