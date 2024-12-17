@@ -69,4 +69,4 @@ jobs:
                 for i in `seq 1 5`; do docker exec -i ${{ job.services.rabbitmq.id }} rabbitmqadmin publish routing_key="test" payload="message$i" exchange="swarrot" --vhost=swarrot; done
 
             - name: Run the unit tests
-              run: vendor/bin/phpunit --colors=always
+              run: vendor/bin/phpunit --colors=always --fail-on-deprecation --display-deprecations --display-phpunit-deprecations
