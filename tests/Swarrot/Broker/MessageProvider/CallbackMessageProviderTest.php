@@ -2,6 +2,7 @@
 
 namespace Swarrot\Tests\Broker\MessageProvider;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Swarrot\Broker\Message;
@@ -22,7 +23,7 @@ class CallbackMessageProviderTest extends TestCase
             ],
             [
                 [
-                    new class() {
+                    new class {
                         public function get()
                         {
                             return new Message();
@@ -32,7 +33,7 @@ class CallbackMessageProviderTest extends TestCase
                 ],
             ],
             [
-                new class() {
+                new class {
                     public function __invoke()
                     {
                         return new Message();
@@ -42,9 +43,7 @@ class CallbackMessageProviderTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider callable_with_message_provider
-     */
+    #[DataProvider('callable_with_message_provider')]
     public function test_get_with_messages_in_queue_return_message($callableProvider)
     {
         $provider = new CallbackMessageProvider($callableProvider);
@@ -64,7 +63,7 @@ class CallbackMessageProviderTest extends TestCase
             ],
             [
                 [
-                    new class() {
+                    new class {
                         public function get()
                         {
                             return null;
@@ -74,7 +73,7 @@ class CallbackMessageProviderTest extends TestCase
                 ],
             ],
             [
-                new class() {
+                new class {
                     public function __invoke()
                     {
                         return null;
@@ -84,9 +83,7 @@ class CallbackMessageProviderTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider callable_without_message_provider
-     */
+    #[DataProvider('callable_without_message_provider')]
     public function test_get_without_messages_in_queue_return_null($callableProvider)
     {
         $provider = new CallbackMessageProvider($callableProvider);

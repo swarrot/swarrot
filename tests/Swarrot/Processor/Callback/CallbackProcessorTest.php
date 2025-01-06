@@ -2,6 +2,7 @@
 
 namespace Swarrot\Tests\Processor\Callback;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Swarrot\Broker\Message;
@@ -22,7 +23,7 @@ class CallbackProcessorTest extends TestCase
             ],
             [
                 [
-                    new class() {
+                    new class {
                         public function get()
                         {
                             return true;
@@ -32,7 +33,7 @@ class CallbackProcessorTest extends TestCase
                 ],
             ],
             [
-                new class() {
+                new class {
                     public function __invoke()
                     {
                         return true;
@@ -42,9 +43,7 @@ class CallbackProcessorTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider callable_provider
-     */
+    #[DataProvider('callable_provider')]
     public function test_process(callable $callable)
     {
         $callbackProcessor = new CallbackProcessor($callable);

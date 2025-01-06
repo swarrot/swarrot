@@ -21,3 +21,6 @@ cs-fix: ## Fix CS using PHP-CS
 phpstan: ## Run PHPStan
 	@composer install --working-dir=tools/phpstan
 	@tools/phpstan/vendor/bin/phpstan analyse --memory-limit=512M
+
+test: ## Run Tests
+	@vendor/bin/phpunit --fail-on-deprecation --display-deprecations --display-phpunit-deprecations

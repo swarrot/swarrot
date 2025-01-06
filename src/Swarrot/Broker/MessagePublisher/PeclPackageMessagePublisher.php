@@ -29,7 +29,7 @@ class PeclPackageMessagePublisher implements MessagePublisherInterface
         int $flags = \AMQP_NOPARAM,
         ?LoggerInterface $logger = null,
         bool $publisherConfirms = false,
-        $timeout = 0
+        $timeout = 0,
     ) {
         $this->exchange = $exchange;
         $this->flags = $flags;
