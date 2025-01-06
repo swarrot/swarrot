@@ -21,6 +21,9 @@ class PeclPackageMessageProvider implements MessageProviderInterface
         try {
             $envelope = $this->queue->get();
         } catch (\AMQPConnectionException $exception) {
+            // Try to reconnect once to accommodate need for one of the nodes in cluster needing to stop serving the
+            // traffic. This may happen for example when one of the nodes in cluster is going into maintenance node.
+            // see https://github.com/php-amqplib/php-amqplib/issues/1161
             $this->queue->getConnection()->reconnect();
             $envelope = $this->queue->get();
         }
