@@ -18,7 +18,12 @@ class PeclPackageMessageProvider implements MessageProviderInterface
 
     public function get(): ?Message
     {
-        $envelope = $this->queue->get();
+        try {
+            $envelope = $this->queue->get();
+        } catch (\AMQPConnectionException $exception) {
+            $this->queue->getConnection()->reconnect();
+            $envelope = $this->queue->get();
+        }
 
         if (!$envelope instanceof \AMQPEnvelope) {
             return null;
