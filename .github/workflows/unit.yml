@@ -7,14 +7,14 @@ jobs:
         strategy:
             fail-fast: false
             matrix:
-                php: ['7.4', '8.0', '8.1', '8.2', '8.3']
+                php: ['8.2', '8.3']
                 symfony: ['']
                 name_suffix: ['']
                 include:
-                    - php: '8.1'
-                      symfony: 5.4.*
-                      name_suffix: ' / SF 5.4 LTS'
                     - php: '8.2'
+                      symfony: 6.4.*
+                      name_suffix: ' / SF 6.4 LTS'
+                    - php: '8.3'
                       symfony: 6.4.*
                       name_suffix: ' / SF 6.4 LTS'
 
@@ -69,4 +69,4 @@ jobs:
                 for i in `seq 1 5`; do docker exec -i ${{ job.services.rabbitmq.id }} rabbitmqadmin publish routing_key="test" payload="message$i" exchange="swarrot" --vhost=swarrot; done
 
             - name: Run the unit tests
-              run: vendor/bin/phpunit --colors=always
+              run: vendor/bin/phpunit --colors=always --fail-on-deprecation --display-deprecations --display-phpunit-deprecations

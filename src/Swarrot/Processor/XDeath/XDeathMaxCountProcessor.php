@@ -25,7 +25,7 @@ class XDeathMaxCountProcessor implements ConfigurableInterface
         ProcessorInterface $processor,
         string $queueName,
         callable $callback,
-        ?LoggerInterface $logger = null
+        ?LoggerInterface $logger = null,
     ) {
         $this->processor = $processor;
         $this->queueName = $queueName;
@@ -73,7 +73,7 @@ class XDeathMaxCountProcessor implements ConfigurableInterface
             if (null === $queueXDeathHeader) {
                 $this->logException(
                     $e,
-                    sprintf(
+                    \sprintf(
                         '[XDeathMaxCount] No x-death header found for queue name "%s". Do nothing.',
                         $this->queueName
                     ),
@@ -90,7 +90,7 @@ class XDeathMaxCountProcessor implements ConfigurableInterface
             if ($queueXDeathHeader['count'] < $options['x_death_max_count']) {
                 $this->logException(
                     $e,
-                    sprintf(
+                    \sprintf(
                         '[XDeathMaxCount] %d/%d attempts.',
                         $queueXDeathHeader['count'],
                         $options['x_death_max_count']
@@ -103,7 +103,7 @@ class XDeathMaxCountProcessor implements ConfigurableInterface
 
             $this->logException(
                 $e,
-                sprintf(
+                \sprintf(
                     '[XDeathMaxCount] Max count reached. %d/%d attempts. Execute the configured callback.',
                     $queueXDeathHeader['count'],
                     $options['x_death_max_count']

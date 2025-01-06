@@ -1,4 +1,5 @@
 <?php
+
 /**
  * See http://www.rabbitmq.com/stomp.html for more infos.
  * Run with rabbit stomp plugin.

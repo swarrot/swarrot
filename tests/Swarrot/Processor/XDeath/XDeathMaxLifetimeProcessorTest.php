@@ -4,6 +4,7 @@ namespace Swarrot\Tests\Processor\XDeath;
 
 use PhpAmqpLib\Wire\AMQPArray;
 use PhpAmqpLib\Wire\AMQPTable;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -170,9 +171,7 @@ class XDeathMaxLifetimeProcessorTest extends TestCase
         return $data;
     }
 
-    /**
-     * @dataProvider messageProvider
-     */
+    #[DataProvider('messageProvider')]
     public function test_it_should_not_rethrow_with_x_death_max_lifetime_reached(Message $message)
     {
         $options = [
@@ -206,9 +205,7 @@ class XDeathMaxLifetimeProcessorTest extends TestCase
         $this->assertTrue($processor->process($message, $options));
     }
 
-    /**
-     * @dataProvider messageProvider
-     */
+    #[DataProvider('messageProvider')]
     public function test_it_should_rethrow_with_x_death_max_lifetime_reached_and_callback_return_null(Message $message)
     {
         $this->expectException(\BadMethodCallException::class);
@@ -244,9 +241,7 @@ class XDeathMaxLifetimeProcessorTest extends TestCase
         $processor->process($message, $options);
     }
 
-    /**
-     * @dataProvider messageProvider
-     */
+    #[DataProvider('messageProvider')]
     public function test_it_should_rethrow_with_x_death_max_lifetime_not_reached(Message $message)
     {
         $this->expectException('\BadMethodCallException');
@@ -282,9 +277,7 @@ class XDeathMaxLifetimeProcessorTest extends TestCase
         $processor->process($message, $options);
     }
 
-    /**
-     * @dataProvider messageProvider
-     */
+    #[DataProvider('messageProvider')]
     public function test_it_should_log_a_custom_log_level_with_x_death_max_lifetime_reached(Message $message)
     {
         $options = [
@@ -320,9 +313,7 @@ class XDeathMaxLifetimeProcessorTest extends TestCase
         $this->assertTrue($processor->process($message, $options));
     }
 
-    /**
-     * @dataProvider messageProvider
-     */
+    #[DataProvider('messageProvider')]
     public function test_it_should_log_a_custom_log_level_with_x_death_max_lifetime_not_reached(Message $message)
     {
         $this->expectException('\BadMethodCallException');
@@ -360,9 +351,7 @@ class XDeathMaxLifetimeProcessorTest extends TestCase
         $processor->process($message, $options);
     }
 
-    /**
-     * @dataProvider messageProvider
-     */
+    #[DataProvider('messageProvider')]
     public function test_it_should_log_x_death_max_lifetime_not_found(Message $message)
     {
         $this->expectException('\BadMethodCallException');
