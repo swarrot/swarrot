@@ -20,7 +20,7 @@ class PeclPackageMessageProvider implements MessageProviderInterface
     {
         try {
             $envelope = $this->queue->get();
-        } catch (\AMQPConnectionException $exception) {
+        } catch (\AMQPConnectionException) {
             // Try to reconnect once to accommodate need for one of the nodes in cluster needing to stop serving the
             // traffic. This may happen for example when one of the nodes in cluster is going into maintenance node.
             // see https://github.com/php-amqplib/php-amqplib/issues/1161
@@ -66,7 +66,12 @@ class PeclPackageMessageProvider implements MessageProviderInterface
             throw new \RuntimeException('Cannot ack a message without id.');
         }
 
-        $this->queue->ack((int) $id);
+        try {
+            $this->queue->ack((int) $id);
+        } catch (\AMQPConnectionException) {
+            $this->queue->getConnection()->reconnect();
+            $this->queue->ack((int) $id);
+        }
     }
 
     public function nack(Message $message, bool $requeue = false): void
@@ -75,7 +80,12 @@ class PeclPackageMessageProvider implements MessageProviderInterface
             throw new \RuntimeException('Cannot nack a message without id.');
         }
 
-        $this->queue->nack((int) $id, $requeue ? \AMQP_REQUEUE : 0);
+        try {
+            $this->queue->nack((int) $id, $requeue ? \AMQP_REQUEUE : 0);
+        } catch (\AMQPConnectionException) {
+            $this->queue->getConnection()->reconnect();
+            $this->queue->nack((int) $id, $requeue ? \AMQP_REQUEUE : 0);
+        }
     }
 
     public function getQueueName(): string
