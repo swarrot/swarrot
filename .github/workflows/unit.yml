@@ -1,4 +1,4 @@
-on: [pull_request]
+on: [push, pull_request]
 name: Unit test
 jobs:
     tests:
@@ -20,7 +20,7 @@ jobs:
 
         services:
             rabbitmq:
-                image: rabbitmq:3.12-management
+                image: rabbitmq:4-management
                 ports:
                     - 5671:5671
                     - 5672:5672
@@ -31,12 +31,13 @@ jobs:
 
         steps:
             - name: Checkout
-              uses: actions/checkout@v4
+              uses: actions/checkout@v6
 
             - name: Setup PHP
               uses: shivammathur/setup-php@v2
               with:
                   php-version: ${{ matrix.php }}
+                  ini-file: 'development'
                   extensions:  amqp
                   coverage: none
 
@@ -46,11 +47,6 @@ jobs:
             - name: Install Symfony Flex
               if: matrix.symfony != ''
               run: composer global require --no-progress --no-scripts --no-plugins symfony/flex && composer global config --no-plugins allow-plugins.symfony/flex true
-
-            # Those tools might be incompatible with a lock on an old Symfony version.
-            - name: Remove static analysis tools
-              if: matrix.symfony != ''
-              run: composer remove --dev friendsofphp/php-cs-fixer phpstan/phpstan --no-update
 
             - name: Install the dependencies
               env:
