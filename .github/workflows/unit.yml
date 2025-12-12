@@ -15,8 +15,8 @@ jobs:
                       symfony: 6.4.*
                       name_suffix: ' / SF 6.4 LTS'
                     - php: '8.3'
-                      symfony: 6.4.*
-                      name_suffix: ' / SF 6.4 LTS'
+                      symfony: 7.4.*
+                      name_suffix: ' / SF 7.4 LTS'
 
         services:
             rabbitmq:
