@@ -10,6 +10,8 @@ class Message
     private ?string $body;
     /**
      * Properties are similar to headers when using an \AMQPEnvelope object.
+     *
+     * @var array<string, mixed>
      */
     private array $properties;
     private ?string $id;
@@ -31,6 +33,8 @@ class Message
      * More information on AMQP version:
      *
      * @see: http://www.amqp.org/resources/download
+     *
+     * @param array<string, mixed> $properties
      */
     public function __construct(?string $body = null, array $properties = [], ?string $id = null)
     {
@@ -44,6 +48,9 @@ class Message
         return $this->body;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getProperties(): array
     {
         return $this->properties;

@@ -55,6 +55,9 @@ class MaxExecutionTimeProcessor implements ConfigurableInterface, InitializableI
         return $this->processor->process($message, $options) && !$this->isTimeExceeded($options);
     }
 
+    /**
+     * @param array<string, mixed> $options
+     */
     protected function isTimeExceeded(array $options): bool
     {
         if (microtime(true) - $this->startTime > $options['max_execution_time']) {

@@ -33,9 +33,6 @@ class PhpAmqpLibMessagePublisher implements MessagePublisherInterface
         $this->exchange = $exchange;
         $this->publisherConfirms = $publisherConfirms;
         if ($publisherConfirms) {
-            if (!method_exists($this->channel, 'set_nack_handler')) {
-                throw new \Exception('Publisher confirms are not supported. Update your php amqplib package to >=2.2');
-            }
             $this->channel->set_nack_handler($this->getNackHandler());
             $this->channel->confirm_select();
         }

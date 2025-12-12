@@ -18,9 +18,7 @@ final class MemoryResetProcessor implements ProcessorInterface
     {
         $return = $this->processor->process($message, $options);
 
-        if (\PHP_VERSION_ID >= 80200) {
-            memory_reset_peak_usage();
-        }
+        memory_reset_peak_usage();
 
         return $return;
     }

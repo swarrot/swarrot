@@ -119,6 +119,11 @@ class PeclPackageMessagePublisher implements MessagePublisherInterface
         };
     }
 
+    /**
+     * @param array<string, mixed> $properties
+     *
+     * @return array<string, mixed>
+     */
     private function sanitizeProperties(array $properties): array
     {
         if (isset($properties['headers'])) {

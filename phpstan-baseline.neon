@@ -1,34 +1,31 @@
 parameters:
 	ignoreErrors:
 		-
-			message: """
-				#^Access to deprecated property \\$body of class PhpAmqpLib\\\\Message\\\\AMQPMessage\\:
-				Will be removed in version 4\\.0, use getBody\\(\\) instead\\.$#
-			"""
+			message: '#^Parameter \#1 \$delivery_tag of method PhpAmqpLib\\Channel\\AMQPChannel\:\:basic_ack\(\) expects int, string given\.$#'
+			identifier: argument.type
 			count: 1
 			path: src/Swarrot/Broker/MessageProvider/PhpAmqpLibMessageProvider.php
 
 		-
-			message: "#^Parameter \\#1 \\$delivery_tag of method PhpAmqpLib\\\\Channel\\\\AMQPChannel\\:\\:basic_ack\\(\\) expects int, string given\\.$#"
+			message: '#^Parameter \#1 \$delivery_tag of method PhpAmqpLib\\Channel\\AMQPChannel\:\:basic_nack\(\) expects int, string given\.$#'
+			identifier: argument.type
 			count: 1
 			path: src/Swarrot/Broker/MessageProvider/PhpAmqpLibMessageProvider.php
 
 		-
-			message: "#^Parameter \\#1 \\$delivery_tag of method PhpAmqpLib\\\\Channel\\\\AMQPChannel\\:\\:basic_nack\\(\\) expects int, string given\\.$#"
+			message: '#^Call to function is_bool\(\) with bool will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
 			count: 1
-			path: src/Swarrot/Broker/MessageProvider/PhpAmqpLibMessageProvider.php
+			path: src/Swarrot/Consumer.php
 
 		-
-			message: "#^Else branch is unreachable because ternary operator condition is always true\\.$#"
+			message: '#^Property Swarrot\\Processor\\Doctrine\\ConnectionProcessor\:\:\$connections \(array\<Doctrine\\DBAL\\Connection\>\) does not accept array\<object\>\.$#'
+			identifier: assign.propertyType
 			count: 1
 			path: src/Swarrot/Processor/Doctrine/ConnectionProcessor.php
 
 		-
-			message: "#^Property Swarrot\\\\Processor\\\\Doctrine\\\\ConnectionProcessor\\:\\:\\$connections \\(array\\<Doctrine\\\\DBAL\\\\Connection\\>\\) does not accept array\\<object\\>\\.$#"
-			count: 1
-			path: src/Swarrot/Processor/Doctrine/ConnectionProcessor.php
-
-		-
-			message: "#^Property Swarrot\\\\Processor\\\\Stack\\\\Builder\\:\\:\\$specs with generic class SplStack does not specify its types\\: TValue$#"
+			message: '#^Property Swarrot\\Processor\\Stack\\Builder\:\:\$specs with generic class SplStack does not specify its types\: TValue$#'
+			identifier: missingType.generics
 			count: 1
 			path: src/Swarrot/Processor/Stack/Builder.php
