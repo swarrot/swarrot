@@ -1,4 +1,4 @@
-on: [pull_request]
+on: [push, pull_request]
 
 name: Static analysis
 
@@ -6,7 +6,7 @@ jobs:
   php-cs-fixer:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -21,12 +21,12 @@ jobs:
           composer-options: "--working-dir=tools/php-cs-fixer"
 
       - name: PHP-CS-Fixer
-        run: tools/php-cs-fixer/vendor/bin/php-cs-fixer fix --dry-run --diff --config=.php-cs-fixer.dist.php
+        run: tools/php-cs-fixer/vendor/bin/php-cs-fixer check --diff --config=.php-cs-fixer.dist.php
 
   phpstan:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
