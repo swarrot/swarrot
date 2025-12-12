@@ -12,17 +12,17 @@
     ],
     "require": {
         "php": "^8.2",
-        "symfony/options-resolver": "^6.4 || ^7.1",
+        "symfony/options-resolver": "^6.4 || ^7.1 || ^8.0",
         "psr/log": "^3.0"
     },
     "require-dev": {
-        "doctrine/persistence": "^3.0",
+        "doctrine/persistence": "^3.0 || ^4.0",
         "doctrine/dbal": "^3.0 || ^4.0",
         "php-amqplib/php-amqplib": "^2.7 || ^3.0",
         "phpspec/prophecy": "^1.15",
         "phpspec/prophecy-phpunit": "^2.0",
-        "phpunit/phpunit": "^11.5",
-        "symfony/error-handler": "^6.4 || ^7.1",
+        "phpunit/phpunit": "^11.5 || ^12.5",
+        "symfony/error-handler": "^6.4 || ^7.1 || ^8.0",
         "symfony/service-contracts": "^2.5 || ^3.0"
     },
     "suggest": {
