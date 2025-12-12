@@ -119,6 +119,9 @@ class XDeathMaxCountProcessor implements ConfigurableInterface
         }
     }
 
+    /**
+     * @param array<class-string, LogLevel::*> $logLevelsMap
+     */
     private function logException(\Throwable $exception, string $logMessage, array $logLevelsMap): void
     {
         $logLevel = LogLevel::WARNING;

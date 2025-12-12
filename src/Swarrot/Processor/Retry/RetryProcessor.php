@@ -114,6 +114,10 @@ class RetryProcessor implements ConfigurableInterface
         ;
     }
 
+    /**
+     * @param array<class-string, LogLevel::*> $logLevelsMap
+     * @param array<string, mixed>             $extraContext
+     */
     private function logException(\Throwable $exception, string $logMessage, array $logLevelsMap, array $extraContext): void
     {
         $logLevel = LogLevel::WARNING;

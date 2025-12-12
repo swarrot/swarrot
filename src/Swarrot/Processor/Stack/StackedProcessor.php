@@ -16,8 +16,14 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class StackedProcessor implements ConfigurableInterface, InitializableInterface, TerminableInterface, SleepyInterface
 {
     private ProcessorInterface $processor;
+    /**
+     * @var ProcessorInterface[]
+     */
     private array $middlewares;
 
+    /**
+     * @param ProcessorInterface[] $middlewares
+     */
     public function __construct(ProcessorInterface $processor, array $middlewares)
     {
         $this->processor = $processor;

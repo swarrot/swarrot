@@ -52,7 +52,7 @@ class PhpAmqpLibMessageProvider implements MessageProviderInterface
             }
         }
 
-        return new Message($envelope->body, $properties, $envelope->get('delivery_tag'));
+        return new Message($envelope->getBody(), $properties, $envelope->get('delivery_tag'));
     }
 
     public function ack(Message $message): void
